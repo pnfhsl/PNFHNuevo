@@ -4,6 +4,39 @@
   <title><?php echo _NAMESYSTEM_; ?> | <?php if(!empty($action)){echo $action; } ?> <?php if(!empty($url)){echo $url;} ?></title>
   <?php //require_once('assets/headers.php'); ?>
 </head>
+<style type="text/css">
+  .zmdi-upload {
+    padding: 0px 10px 0px 0px;
+  }
+
+  .zmdi-upload:hover {
+    color: black;
+    transition: color 0.2s linear 0.2s;
+  }
+
+  .file-input__input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .file-input__label {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px 12px;
+    background-color: #4245a8;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+  }
+</style>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -42,7 +75,79 @@
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
 
+              <button type="button" class="btn btn-next btn-fill btn btn-success btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarArchivo">Subir archivo</button>
 
+                  <!--=====================================
+                  MODAL AGREGAR ARCHIVO
+                  ======================================-->
+
+                  <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
+
+                    <div class="modal-dialog">
+
+                      <div class="modal-content">
+
+                        <form role="form" method="post" enctype="multipart/form-data" id="form_data">
+
+                          <!--=====================================
+                          CABEZA DEL MODAL
+                          ======================================-->
+
+                          <div class="modal-header" style="background:#3c8dbc; color:white">
+
+                            <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+
+                            <h4 class="modal-title" style="text-align: left;">Agregar Data</h4>
+
+                          </div>
+
+                          <!--=====================================
+                          CUERPO DEL MODAL
+                          ======================================-->
+
+                          <div class="modal-body">
+
+                            <div class="box-body">
+
+                              <br>
+                              <div class="file-input text-center custom-input-file">
+                                <input type="file" name="file[]" multiple id="file-input" class="file-input__input input-file" accept=".xls, .xlsx" />
+                                <label class="file-input__label" for="file-input">
+                                  <i class="fa fa-upload zmdi zmdi-upload"></i>
+                                  <span> Seleccionar Archivo</span></label>
+                                <span id="archivoSeleccionado"></span>
+                              </div>
+                              <div>
+                                <span>
+                                </span>
+                              </div>
+                              <br>
+
+
+                            </div>
+
+                          </div>
+
+                          <!--=====================================
+                        PIE DEL MODAL
+                        ======================================-->
+
+                          <div class="modal-footer">
+
+                            <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+                            <span type="submit" class="btn btn-primary subir" id="subir">Subir</span>
+
+                          </div>
+
+
+                        </form>
+
+                      </div>
+
+                    </div>
+
+                  </div>
               <!--=====================================
               MODAL MODIFICAR PROF
               ======================================-->
@@ -436,6 +541,96 @@
 
 $(document).ready(function(){ 
 
+  console.clear();
+
+  $("#subir").click(function(e) {
+        e.preventDefault();
+
+        if ($("#file-input").get(0).files.length == 0) {
+          Swal.fire({
+            position: 'center',
+            type: 'warning',
+            title: '¡Debe seleccionar un archivo!',
+            footer: 'SCHSL',
+            timer: 3000,
+            showCloseButton: false,
+            showConfirmButton: false,
+          });
+          return 0;
+        }
+        if ($("#file-input").get(0).files.length > 1) {
+          Swal.fire({
+            position: 'center',
+            type: 'warning',
+            title: '¡No puede seleccionar más de un archivo!',
+            footer: 'SCHSL',
+            timer: 3000,
+            showCloseButton: false,
+            showConfirmButton: false,
+          });
+          return 0;
+        }
+        var extesiones_permitidas = [".xls", ".xlsx"];
+        var input_file = $("#file-input");
+        var exp_reg = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + extesiones_permitidas.join('|') + ")$");
+
+        console.log(exp_reg);
+        console.log(input_file.val());
+
+        if (!exp_reg.test(input_file.val().toLowerCase())) {
+          Swal.fire({
+            position: 'center',
+            type: 'warning',
+            title: 'Debe seleccionar un archivo con extensión .xls o .xlsx',
+            footer: 'SCHSL',
+            timer: 3000,
+            showCloseButton: false,
+            showConfirmButton: false,
+          });
+          return false;
+        }
+
+        var formData = new FormData($(form_data)[0]);
+        console.log(formData);
+        $("#subir").attr('disabled', true);
+        // console.log($("#subir").attr('disabled', true));
+
+        $.ajax({
+          url: 'Profesores/Cargar',
+          type: 'POST',
+          data: formData,
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: function(respuesta) {
+            // alert(respuesta);
+            console.log('hola');
+            var datos = JSON.parse(respuesta);
+            if (datos.msj === "Good") {
+              Swal.fire({
+                position: 'center',
+                type: 'success',
+                title: 'Se han cargado los datos de los profesores exitosamente',
+                footer: 'SCHSL',
+                timer: 3000,
+                showCloseButton: false,
+                showConfirmButton: false,
+              }).then((isConfirm) => {
+                location.reload();
+              });
+            }
+          }
+
+        });
+
+  });
+
+  $('#file-input').on('change', function() {
+    name = $(this).get(0).files[0].name;
+    $('#archivoSeleccionado').text(name);
+
+  });
+
   $('#cedula').on('input', function () {
     this.value = this.value.replace(/[^0-9]/g,''); 
     if(this.value.length >= 8 && this.value.length <= 8){
@@ -553,29 +748,6 @@ $(document).ready(function(){
       $("#telefonoS"+id).html("El numero de celular debe contener 11 caracteres");
     }
   });
-
-/*  $("#trayecto").change(function(){
-    var trayecto = $(this).val();
-    if(trayecto == ""){
-      $("#trayectoS").html("Seleccione un trayecto para el alumno");
-    }else{
-      $("#trayectoS").html("");
-    }
-  });
-  $(".trayectoModificar").change(function(){
-    var id = $(this).attr("name");
-    // var ids = $(this).attr("id");
-    // var index = ids.indexOf(" ");
-    // var id = ids.substring(index+1);
-    var trayecto = $(this).val();
-    if(trayecto == ""){
-      $("#trayectoS"+id).html("Seleccione un trayecto para el alumno");
-    }else{
-      $("#trayectoS"+id).html("");
-    }
-  });
-*/
-
 
   $(".modificarButtonModal").click(function(){
     var id = $(this).val();
@@ -932,7 +1104,6 @@ $(document).ready(function(){
 });  
 
 
-
 function validar(modificar = false, id=""){
   var form = "";
   if(!modificar){
@@ -992,14 +1163,7 @@ function validar(modificar = false, id=""){
     $(form+" #telefonoS"+id).html("La telefono debe contener 11 caracteres");
   }
 
-/*  var trayecto = $(form+" #trayecto"+id).val();
-  var rtrayecto = false;
-  if(trayecto == ""){
-    $(form+" #trayectoS"+id).html("Seleccione un trayecto para el alumno");
-  }else{
-    rtrayecto = true;
-    $(form+" #trayectoS"+id).html("");
-  }*/
+
 
   var validado = false;
   if(rcedula==true && rnombre==true && rapellido==true && rcorreo==true && rtelefono==true /*&& rtrayecto==true*/){
