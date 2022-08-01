@@ -13,7 +13,8 @@
 	define("_MODEL_" , "content/modelo/");							/* direccion de los modelos */
 	define("_CONTROLLER_" , "Controller.php");						/* complemento para la llamada de controladores */
 	
-	define("_DB_SERVER_" , "http://localhost/");					/* nombre del servidor */
+	define("_DB_SERVER_" , "http://localhost/");
+	define("_URL_" , "http://localhost/PNFHNuevo/");					/* nombre del servidor */
 
 	define('_DB_MANAGER_', 	'mysql');						        /* manejador de base de datos */
 	define("_DB_WEB_" , "pnfhslt4");								/* nombre de la base de datos */
