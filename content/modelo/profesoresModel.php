@@ -3,6 +3,8 @@
 	namespace content\modelo;
 
 	use content\config\conection\database as database;
+	use PDOException;
+	use PhpOffice\PhpSpreadsheet\IOFactory;
 
 	class profesoresModel extends database{
 
@@ -32,13 +34,74 @@
 			}
 		}
 
-		public function setAgregar($datos){
-			$this->cedula = $datos['cedula'];
-			$this->nombre = $datos['nombre'];
-			$this->apellido = $datos['apellido'];
-			$this->correo = $datos['correo'];
-			$this->telefono = $datos['telefono'];
-			$this->Agregar();
+		public function Cargar($fileArchivo){
+			// var_dump($fileArchivo);
+			$nombreArchivo = $fileArchivo;
+			// var_dump($nombreArchivo);
+
+			$documento = IOFactory::load($nombreArchivo);
+			// var_dump($documento);
+
+			$hojaProfesor = $documento->getSheet(0);
+			$numeroFilas = $hojaProfesor->getHighestDataRow(); 
+			// var_dump($numeroFilas);
+			$error = 0;
+
+			$profesoresRegistrados = 0;
+			for ($i=2; $i <= $numeroFilas; $i++) { 
+				$cedula = $hojaProfesor->getCellByColumnAndRow(1,$i);
+				$nombre = $hojaProfesor->getCellByColumnAndRow(2,$i);
+				$apellido = $hojaProfesor->getCellByColumnAndRow(3,$i);
+				$correo = $hojaProfesor->getCellByColumnAndRow(4,$i);
+				$telef = $hojaProfesor->getCellByColumnAndRow(5,$i);
+				$status = $hojaProfesor->getCellByColumnAndRow(6,$i);
+				// var_dump($cedula);
+
+				if (!empty($cedula)) {
+					
+						$query = parent::prepare('INSERT INTO profesores (cedula_profesor, 
+																	  nombre_profesor, 
+																	  apellido_profesor,
+																	  correo_profesor,
+																	  telefono_profesor, 
+																	  estatus) 
+															   VALUES (:cedula_profesor, 
+																	   :nombre_profesor, 
+																	   :apellido_profesor, 
+																	   :correo_profesor, 
+																	   :telefono_profesor, 
+																	   :estatus)');
+						$query->bindValue(':cedula_profesor', $cedula);
+						$query->bindValue(':nombre_profesor', $nombre);
+						$query->bindValue(':apellido_profesor', $apellido);
+						$query->bindValue(':correo_profesor', $correo);
+						$query->bindValue(':telefono_profesor', $telef);
+						$query->bindValue(':estatus', $status);
+						$res = $query->execute();
+						// print_r($respuestaArreglo);
+						if(!$res){
+							$error++;
+						}
+						$respuestaArreglo = $query->fetchAll();
+						
+					// } catch (PDOException $e) {
+					// 	$error++;
+						// $errorReturn = ['estatus' => false];
+						// $errorReturn['msj'] = "Error";
+						// $errorReturn += ['info' => "Error sql:{$e}"];
+						// return $errorReturn; 
+					// }				
+				}
+			}
+			if (!$error) {
+				$Result = array('msj' => "Good");		//Si todo esta correcto 
+				return $Result;
+			}
+			else{
+				$errorReturn['msj'] = "Error: Se encontraron $error errores";
+				return $errorReturn;
+			}
+
 		}
 
 		public function Agregar($datos){

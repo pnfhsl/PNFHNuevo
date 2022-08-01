@@ -10,5 +10,8 @@
             "config\\": "content/config",
             "content\\": "content"
         }
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.24"
     }
 }
