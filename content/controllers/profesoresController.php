@@ -6,6 +6,7 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\profesoresModel as profesoresModel;
+	use content\traits\Utility;
 
 	class profesoresController{
 		private $url;
