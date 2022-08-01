@@ -53,12 +53,80 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="content-input pass" style="color:white"><p></p></div>
             </div>
             <div class="forgot">
-                <a href="#">¿Has olvidado la contraseña?</a>
+                <a href="#" data-toggle="modal" data-target="#modalAgregarArchivo">¿Has olvidado la contraseña?</a>
                 <p><input type="checkbox">Recordar</p>
             </div>
             <button type="submit" id="loginBtn">Login</button>
         </form>
         <p class=" w3l-register-p">¿No tienes cuenta?<a href="#" class="register"> Regístrate</a></p>
+    </div>
+    <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
+
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+
+            <form role="form" method="post" enctype="multipart/form-data" id="form_data">
+
+              <!--=====================================
+              CABEZA DEL MODAL
+              ======================================-->
+
+              <div class="modal-header" style="background:#3c8dbc; color:white">
+
+                <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+
+                <h4 class="modal-title" style="text-align: left;">Enviar correo</h4>
+
+              </div>
+
+              <!--=====================================
+                  CUERPO DEL MODAL
+              ======================================-->
+
+              <div class="modal-body">
+
+                <div class="box-body">
+
+                  <!--ENTRADA CORREO -->
+
+                  <div class="form-group">
+
+                    <div class="input-group">
+
+                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                      <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="nuevoCorreo" id="correo" placeholder="Ingresar Correo" required>
+
+                    </div>
+
+
+                  </div>
+
+
+                </div>
+
+              </div>
+
+            <!--=====================================
+                      PIE DEL MODAL
+            ======================================-->
+
+              <div class="modal-footer">
+
+                <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+                <span type="submit" class="btn btn-primary subir" id="enviar">Enviar</span>
+
+              </div>
+
+
+            </form>
+
+          </div>
+
+        </div>
+
     </div>
     <footer>
         <p class="copyright-agileinfo"> &copy; 2022 Todos los Derechos Reservados | <a href="#">SCHSL</a></p>
@@ -66,64 +134,95 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
     <script type="text/javascript">
         
-      $(document).ready(function() { //Al Cargar la pagina
+  $(document).ready(function() { //Al Cargar la paginaZ
 
-      $('#loginBtn').click(function(e) { //Si ejecuta el evento del click al boton con el id loginBtn
-        e.preventDefault(); //bloquea el envio del formulario
+    console.clear();
+      $('#loginBtn').click(function(e) { 
+        e.preventDefault();
 
-        if($("#usuario").val().length > 3) {        //Verifica el valor para comprobar que los caracteres                                   ingresados sean mayores a 3
-          $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw"); //muestra alerta  indicando que ingrese el usuario
-          if($("#password").val().length > 3) {     //Contraseña mayor a 3 caracteres
+        if ($("#usuario").val().length > 3) {
+          $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw"); 
+          if ($("#password").val().length > 3) { 
             $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
-            let user = $("#usuario").val();     //Se capturan la informacion en las variables user y password 
+            let user = $("#usuario").val(); 
             let pass = $("#password").val();
-            
-            $.ajax({        // se envian mediante ajax
-                url: '',    //se deja tal cual ya que estamos manejando ese controlador
-                type: 'POST',   //empleamos el metodo post
-                data: {
-                  loginSistema: true,   //esta variable permite identificar en el controlador en cual elemento va a entrar
-                  username: user,       //se pasan las variables de usuario y contraseña
-                  password: pass,
-                },
-                success: function(respuesta){       //Si la respuesta es satisfactoria
-                  // alert(respuesta);
-                  var data = JSON.parse(respuesta);     // Obtiene la respuesta desde el controlador obtenida del modelo y se transforma el string a Json
 
-                   if (data.msj === "Good") {       //Si el mensaje es igual a Good tal y como esta en el modelo, oculta los errores del formulario 
-                     $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
-                     $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw");
-                     
-                        location.href = "<?=_ROUTE_?>Home";     //Me redirige a la vista de inicio del sistema
-                      
-                   }
-              
-               if (data.msj === "Usuario o contraseña invalido!") {
-                 $(".content-input.pass p").html(data.msj);
-                 $(".content-input.pass p").attr("style", "visibility:;margin-top:.2vw");
-                 return;
-               }
-                  
-                },error: function(respuesta){       
-                  var data = JSON.parse(respuesta);
-                  console.log(data);
+            $.ajax({
+              url: '', 
+              type: 'POST', 
+              data: {
+                loginSistema: true, 
+                username: user, 
+                password: pass,
+              },
+              success: function(respuesta) {
+                // alert(respuesta);
+                var data = JSON.parse(respuesta); 
+
+                if (data.msj === "Good") { 
+                  $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
+                  $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw");
+
+                  location.href = "<?= _ROUTE_ ?>Home"; 
 
                 }
-              }); 
-          
-          }else{
+
+                if (data.msj === "Usuario o contraseña invalido!") {
+                  $(".content-input.pass p").html(data.msj);
+                  $(".content-input.pass p").attr("style", "visibility:;margin-top:.2vw");
+                  return;
+                }
+
+              },
+              error: function(respuesta) {
+                var data = JSON.parse(respuesta);
+                console.log(data);
+
+              }
+            });
+
+          } else {
             $(".content-input.pass p").html("Ingrese contraseña!");
             $(".content-input.pass p").attr("style", "visibility:;margin-top:.2vw");
           }
 
-        } else{
+        } else {
           $(".content-input.user p").html("Ingrese nombre de usuario!");
           $(".content-input.user p").attr("style", "visibility:;margin-top:.2vw");
         }
-        
+
       })
-    });
-    </script>
+
+
+      $("#enviar").click(function(){
+        let correo = $("#correo").val();
+        $.ajax({
+          url: 'Login/enviarLink',    
+          type: 'POST',   
+          data: { 
+            correo: correo,    
+          },
+          success: function(resp){
+            console.log(resp);
+            var datos = JSON.parse(resp);     
+              if (datos.msj === "Good") {   
+                Swal.fire({
+                  type: 'success',
+                  title: '¡Correo enviado!',
+                  text: 'El link para el cambio de contraseña se ha enviado exitosamente al correo ' + correo,
+                  footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                });
+              }    
+            },
+            error: function(respuesta){       
+              var datos = JSON.parse(respuesta);
+              console.log(datos);
+
+          }
+        });  
+      });
+  });
+</script>
 
 </body>
 </html>

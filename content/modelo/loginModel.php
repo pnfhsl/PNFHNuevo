@@ -2,6 +2,7 @@
 
 	namespace content\modelo;
 	use content\config\conection\database as database;
+	use PDOException;
 
 	class loginModel extends database{
 
@@ -60,6 +61,61 @@
 				}
 			
 
+		}
+
+		public function busquedaCorreo($correo){
+			try {
+		    	// $query = parent::prepare('SELECT cedula_alumno AS cedula, correo_alumno AS correo, nombre_alumno AS nombre
+				// 	FROM alumnos WHERE correo_alumno = :correo');
+		    	// $respuestaArreglo = '';
+		        // $query->execute(['correo'=>$correo]);
+		        // $respuestaArreglo = $query->fetch();
+				// if ($respuestaArreglo == false) {
+					$query = parent::prepare('SELECT cedula_usuario AS cedula, correo AS correo, nombre_usuario AS nombre 
+					FROM usuarios WHERE correo = :correo');
+					$respuestaArreglo = '';
+					$query->execute(['correo'=>$correo]);
+					$respuestaArreglo = $query->fetch();
+					if ($respuestaArreglo) {
+						$respuestaArreglo['role'] = 'Profesor';
+					}
+				// }
+				else{
+					$respuestaArreglo['role'] = 'Estudiante';
+				}
+				// var_dump($respuestaArreglo);
+				return $respuestaArreglo;
+		        // if ($respuestaArreglo += ['estatus' => true]) {
+		        // 	$Result = array('msj' => "Good");		
+		        // 	// $Result['data'] = ['ejecucion'=>true];
+		        // 	// if(count($respuestaArreglo)>1){
+		        // 	// 	$Result['data'] = $respuestaArreglo;
+		        // 	// }
+				// 	// echo json_encode($Result);
+				// 	return $Result;
+		        // }
+		       //return $respuestaArreglo;
+		      //require_once 'Vista/usuarios.php';
+		      } catch (PDOException $e) {
+		        $errorReturn = ['estatus' => false];
+		        $errorReturn += ['info' => "error sql:{$e}"];
+		        return $errorReturn;
+		      }
+		}
+
+		public function busquedaUsuario($correo){
+			try {
+					$query = parent::prepare('SELECT nombre_usuario AS nombre FROM usuarios WHERE correo = :correo');
+					$respuestaArreglo = '';
+					$query->execute(['correo'=>$correo]);
+					$respuestaArreglo = $query->fetch();
+				// var_dump($respuestaArreglo);
+				return $respuestaArreglo;
+		      } catch (PDOException $e) {
+		        $errorReturn = ['estatus' => false];
+		        $errorReturn += ['info' => "error sql:{$e}"];
+		        return $errorReturn;
+		      }
 		}
 
 
