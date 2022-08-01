@@ -1,0 +1,14 @@
+CREATE TABLE especialidades(
+	idEspecialidad SERIAL NOT NULL,
+    nombreEspecialidad varchar(50),
+    estatus INt,
+    Primary Key(idEspecialidad)
+);
+
+CREATE TABLE especialidad_profesor(
+	idEP SERIAL NOT NULL,
+    cedProfesor Int,
+    idEspecialidad Int,
+    estatus INt,
+    Primary Key(idEP)
+);

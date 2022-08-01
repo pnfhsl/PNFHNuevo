@@ -1,0 +1,14 @@
+{
+    "description": "Electiva III",
+    "type": "project",
+    "authors": [{
+        "name": "Jesus Bracho",
+        "email": "brachojd22@gmail.com"
+    }],
+    "autoload": {
+        "psr-4": {
+            "config\\": "content/config",
+            "content\\": "content"
+        }
+    }
+}
