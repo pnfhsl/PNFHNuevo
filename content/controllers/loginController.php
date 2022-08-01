@@ -8,12 +8,15 @@
 	use content\modelo\loginModel as loginModel;
 	use content\traits\Utility;
 	use PHPMailer\PHPMailer\PHPMailer;
+	use PHPMailer\PHPMailer\SMTP;
 	use PHPMailer\PHPMailer\Exception;
 
 	class loginController{
 		use Utility;
+
 		private $url;
 		private $login;
+		private $user;
 		function __construct($url){
 
 			$this->url = $url;
@@ -30,7 +33,6 @@
 					$objModel = new homeModel;
 					$_css = new headElement;
 					$_css->Heading();
-
 					$url = $this->url;
 					require_once("view/homeView.php");
 				}
@@ -52,7 +54,7 @@
 		
 		private function email($usuario, $token){
 			$mail = new PHPMailer(true);
-			$link = _URL_ . 'Login/recuperarAcceso/'.$token;
+			$link = _ROUTE_ . 'Login/recuperarAcceso/'.$token;
 			$user = $this->login->busquedaUsuario($_POST['correo']);
 			var_dump($user);
 			// var_dump($this->user['nombre']); 
@@ -63,8 +65,8 @@
 					$mail->isSMTP();                                            //Send using SMTP
 					$mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
 					$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-					$mail->Username   = 'lynnethpereira12@gmail.com'; //SMTP username
-					$mail->Password   = 'bwzbvsykholxfbza'; //SMTP password
+					$mail->Username   = 'pnfhsl10@gmail.com'; //SMTP username
+					$mail->Password   = 'laielvidadiuxrzq'; //SMTP password
 					$mail->SMTPSecure = 'ssl';         //Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
 					$mail->Port       = 465;   //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 					$mail->CharSet = 'UTF-8';                              
