@@ -54,7 +54,7 @@
 		
 		private function email($usuario, $token){
 			$mail = new PHPMailer(true);
-			$link = _ROUTE_ . 'Login/recuperarAcceso/'.$token;
+			$link = _URL_ . 'Login/recuperarAcceso/'.$token;
 			$user = $this->login->busquedaUsuario($_POST['correo']);
 			var_dump($user);
 			// var_dump($this->user['nombre']); 
