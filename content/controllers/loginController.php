@@ -55,8 +55,8 @@
 		private function email($usuario, $token){
 			$mail = new PHPMailer(true);
 			$link = _URL_ . 'Login/recuperarAcceso/'.$token;
-			$user = $this->login->busquedaUsuario($_POST['correo']);
-			var_dump($user);
+			// $user = $this->login->busquedaUsuario($_POST['correo']);
+			// var_dump($user);
 			// var_dump($this->user['nombre']); 
 			// $usuario->email = $this->desencriptar($usuario->email);
 				try {
@@ -108,8 +108,10 @@
 		public function enviarLink(){
 			if (isset($_POST['correo'])) {
 				$usuario = $this->login->busquedaCorreo($_POST['correo']);
+				// var_dump($usuario);
 				if($usuario){
 					$token = bin2hex(random_bytes(10));
+					unset($_SESSION['RC']);
 					$_SESSION['RC'] = array(
 						'token' => $this->encriptar($token),
 						'cedula_recuperacion' => $usuario['cedula']
@@ -122,6 +124,31 @@
 					echo json_encode(['msj'=>"Error"]);
 				}
 			}
+		}
+
+		public function recuperarAcceso($param){
+			// echo $param."<br/>"; //Token que viene del correo
+			$token = $this->encriptar($param); //Encriptar ese token para comparar con el que está en sesión
+			// echo $token."<br/>";
+			// var_dump($_SESSION);//Esto es lo que se encuntra en la variable SESSION 
+
+			if($token == $_SESSION['RC']['token']){
+				// echo "<br/><br/> Token es correcto <br/><br/>";
+				// Obtener datos del usuario usando cedula_recuperacion que esta en sesión. Debería ser con id en realidad
+
+				//Luego importar la vista para cambio de contraseña
+				$objModel = new homeModel;
+				$_css = new headElement;
+				$_css->Heading();
+
+				$url = $this->url;
+				require_once("view/recuperarView.php");
+			}
+			else{
+				//Mostrar vista de error (Homero dice: D'oh!)
+				require_once("errorController.php");
+			}
+
 		}
 
 	}

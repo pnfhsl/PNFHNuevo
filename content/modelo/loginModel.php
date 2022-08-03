@@ -75,6 +75,7 @@
 					FROM usuarios WHERE correo = :correo');
 					$respuestaArreglo = '';
 					$query->execute(['correo'=>$correo]);
+					
 					$respuestaArreglo = $query->fetch();
 					if ($respuestaArreglo) {
 						$respuestaArreglo['role'] = 'Profesor';

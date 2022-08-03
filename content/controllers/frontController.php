@@ -81,12 +81,13 @@
 				
 				$root = str_replace("/", "\\", $this->direccion);
 				$method = $this->method;
+				$param = $this->params;
 
 				$class = $root.mb_strtolower($url)."Controller";
 				if(class_exists($class)){
 					$object = new $class($url);
 					if(method_exists($object, $method)){
-						$object->$method();
+						$object->$method($param);
 					}else{
 						require_once("errorController.php");					
 					}
