@@ -8,7 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html lang="en">
 
 <head>
-  <title>Login </title>
+  <title>Recuperar contraseña</title>
   <!-- meta tags -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,7 +38,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <label>Password:</label>
         <div class="group">
           <i class="fas fa-user" style="margin-top: 5px;"></i>
-          <input type="password" class="form-control" id="usuario" placeholder="Password" required="required" />
+          <input type="password" class="form-control" id="password" placeholder="Password" required="required" />
         </div>
         <div class="content-input user" style="color:white">
           <p></p>
@@ -48,7 +48,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <label>confirmar Password:</label>
         <div class="group">
           <i class="fas fa-unlock" style="margin-top:5px;"></i>
-          <input type="password" class="form-control" id="password" placeholder="confirmar Password" required="required" />
+          <input type="password" class="form-control" id="pass" placeholder="confirmar Password" required="required" />
         </div>
         <div class="content-input pass" style="color:white">
           <p></p>
@@ -74,54 +74,94 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       $('#loginBtn').click(function(e) { 
         e.preventDefault();
 
-        if ($("#usuario").val().length > 3) {
+        if ($("#password").val().length > 3) {
           $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw"); 
-          if ($("#password").val().length > 3) { 
+          if ($("#pass").val().length > 3) { 
             $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
-            let user = $("#usuario").val(); 
-            let pass = $("#password").val();
+            let password = $("#password").val(); 
+            let pass = $("#pass").val();
 
+            // alert(pass);
             $.ajax({
-              url: '', 
-              type: 'POST', 
-              data: {
-                loginSistema: true, 
-                username: user, 
-                password: pass,
-              },
-              success: function(respuesta) {
-                // alert(respuesta);
-                var data = JSON.parse(respuesta); 
+                url: 'Login/recuperarAcceso',    
+                type: 'POST',   
+                data: {
+                  recuperarSistema: true,
+                  pass: pass,
+                },
+                success: function(respuesta){
+                  alert(respuesta);
+                  console.log(respuesta);
+                  var data = JSON.parse(respuesta); 
+                  console.log(data);
 
-                if (data.msj === "Good") { 
-                  $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
-                  $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw");
+                  if (data.msj === "Good") {   
+                    Swal.fire({
+                      type: 'success',
+                      title: '¡Modificación Exitosa!',
+                      text: 'Se ha modificado la contraseña exitosamente',
+                      footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                    }).then((isConfirm) => {
+                      location.href = '<?=_ROUTE_?>Login';
+                    });
+                  }
 
-                  location.href = "<?= _ROUTE_ ?>Home"; 
+                  if (data.msj === "Usuario o contraseña invalido!") {
+                    $(".content-input.pass p").html(data.msj);
+                    $(".content-input.pass p").attr("style", "visibility:;margin-top:.2vw");
+                    return;
+                  }
+               },
+                error: function(respuesta){       
+                  var datos = JSON.parse(respuesta);
+                  console.log(datos);
 
                 }
 
-                if (data.msj === "Usuario o contraseña invalido!") {
-                  $(".content-input.pass p").html(data.msj);
-                  $(".content-input.pass p").attr("style", "visibility:;margin-top:.2vw");
-                  return;
-                }
+              });
+            // $.ajax({
+            //   url: 'Login',    
+            //   type: 'POST',
+            //   data: {
+            //     recuperarSistema: true,
+            //     pass: pass,
+            //   },
+            //   success: function(respuesta) {
+            //     alert(respuesta);
 
-              },
-              error: function(respuesta) {
-                var data = JSON.parse(respuesta);
-                console.log(data);
+            //     console.log(respuesta);
+            //     var data = JSON.parse(respuesta); 
+            //     console.log(data);
 
-              }
-            });
+            //         if (data.msj === "Good") {   
+            //           Swal.fire({
+            //             type: 'success',
+            //             title: '¡Modificación Exitosa!',
+            //             text: 'Se ha modificado la contraseña exitosamente',
+            //             footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+            //           });
+            //         }
+
+            //     if (data.msj === "Usuario o contraseña invalido!") {
+            //       $(".content-input.pass p").html(data.msj);
+            //       $(".content-input.pass p").attr("style", "visibility:;margin-top:.2vw");
+            //       return;
+            //     }
+
+            //   },
+            //   error: function(respuesta) {
+            //     var data = JSON.parse(respuesta);
+            //     console.log(data);
+            //   }
+            // });
 
           } else {
-            $(".content-input.pass p").html("Ingrese contraseña!");
+            $(".content-input.pass p").html("confirme la contraseña!");
             $(".content-input.pass p").attr("style", "visibility:;margin-top:.2vw");
           }
 
         } else {
-          $(".content-input.user p").html("Ingrese nombre de usuario!");
+          $(".content-input.user p").html("Ingrese la contraseña");
           $(".content-input.user p").attr("style", "visibility:;margin-top:.2vw");
         }
 

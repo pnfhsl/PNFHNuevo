@@ -653,7 +653,7 @@ console.log('telefono', telefono);*/
                       footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                     }).then((isConfirm) => {
                         location.reload();
-                    } );
+                    });
                   } 
                   if (datos.msj === "Repetido") {   
                     Swal.fire({

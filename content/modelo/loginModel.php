@@ -10,6 +10,8 @@
 		private $user;
 		private $passw;
 		private $password;
+		private $pass;
+		private $pass_recuperar;
 		private $usuario;
 		private $cont;
 
@@ -23,6 +25,13 @@
 
 			$this->loginSistema();
 		}
+
+		// public function getRecuperarSistema($pass){
+		// 	$this->pass = $pass;
+
+		// 	$this->recuperarPass();
+		// }
+
 
 		private function loginSistema(){		//Se hace una consulta de los usuarios recibidos
 			$this->password = md5($this->passw);
@@ -39,16 +48,6 @@
 				$this->usuario = $currentUser['nombre_usuario'];
 				$this->cont = $currentUser['password_usuario'];
 			}
-				// var_dump($this->usuario);
-				// var_dump($this->cont);
-
-			// var_dump($user);
-
-			
-				// echo "User: ".$this->user;
-				// echo " = ";
-				// echo "Usuario: ".$this->usuario;
-				// echo " = ";
 				if ($this->user == $this->usuario AND $this->password == $this->cont) {
 					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
 					echo json_encode($Result);
@@ -63,14 +62,31 @@
 
 		}
 
+		public function recuperarPass($user, $pass){		//Se hace una consulta de los usuarios recibidos
+			
+			try{
+				$this->pass_recuperar = md5($pass);
+				$sql = "UPDATE usuarios SET password_usuario = '{$this->pass_recuperar}' WHERE cedula_usuario = '{$user}'";
+				$query = parent::prepare($sql);
+				$query->execute();          
+				$respuestaArreglo = $query->fetchAll();
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					// var_dump($Result);
+					return $Result;
+				}
+
+			} catch (PDOException $e) {
+		        $errorReturn = ['estatus' => false];
+		        $errorReturn += ['info' => "error sql:{$e}"];
+		        return $errorReturn;
+		    }
+			
+
+		}
+
 		public function busquedaCorreo($correo){
 			try {
-		    	// $query = parent::prepare('SELECT cedula_alumno AS cedula, correo_alumno AS correo, nombre_alumno AS nombre
-				// 	FROM alumnos WHERE correo_alumno = :correo');
-		    	// $respuestaArreglo = '';
-		        // $query->execute(['correo'=>$correo]);
-		        // $respuestaArreglo = $query->fetch();
-				// if ($respuestaArreglo == false) {
 					$query = parent::prepare('SELECT cedula_usuario AS cedula, correo AS correo, nombre_usuario AS nombre 
 					FROM usuarios WHERE correo = :correo');
 					$respuestaArreglo = '';
@@ -80,23 +96,12 @@
 					if ($respuestaArreglo) {
 						$respuestaArreglo['role'] = 'Profesor';
 					}
-				// }
+				
 				else{
 					$respuestaArreglo['role'] = 'Estudiante';
 				}
 				// var_dump($respuestaArreglo);
 				return $respuestaArreglo;
-		        // if ($respuestaArreglo += ['estatus' => true]) {
-		        // 	$Result = array('msj' => "Good");		
-		        // 	// $Result['data'] = ['ejecucion'=>true];
-		        // 	// if(count($respuestaArreglo)>1){
-		        // 	// 	$Result['data'] = $respuestaArreglo;
-		        // 	// }
-				// 	// echo json_encode($Result);
-				// 	return $Result;
-		        // }
-		       //return $respuestaArreglo;
-		      //require_once 'Vista/usuarios.php';
 		      } catch (PDOException $e) {
 		        $errorReturn = ['estatus' => false];
 		        $errorReturn += ['info' => "error sql:{$e}"];

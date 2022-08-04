@@ -19,15 +19,16 @@
 		private $user;
 		function __construct($url){
 
-			$this->url = $url;
+				// $objModel = new homeModel;
+				// $_css = new headElement;
+				// $_css->Heading();
+
+				$this->url = $url;
 			$this->login = new loginModel();		//Se instancia el objeto
 		}
 
 		public function Consultar(){
-
-
-			if($_POST){		//Se verifica que se hayan pasado datos mediante el metodo post
-				// print_r($_POST);
+			if($_POST){		
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
 					$this->login->getLoginSistema($_POST['username'], $_POST['password']); //pasa el user y pass
 					$objModel = new homeModel;
@@ -37,8 +38,14 @@
 					require_once("view/homeView.php");
 				}
 
-				if (isset($_POST['recuperarSistema']) && isset($_POST['correo'])) {
-					$objModel->getRecuperarSistema($_POST['correo']);
+				if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
+					$this->login->recuperarPass($_SESSION['RC']['cedula_recuperacion'], $_POST['pass']);
+					var_dump($_POST['pass']);
+					// $objModel = new homeModel;
+					// $_css = new headElement;
+					// $_css->Heading();
+					$url = $this->url;
+					require_once("view/recuperarView.php");
 				}
 			}else{
 				$objModel = new homeModel;
@@ -130,7 +137,7 @@
 			// echo $param."<br/>"; //Token que viene del correo
 			$token = $this->encriptar($param); //Encriptar ese token para comparar con el que está en sesión
 			// echo $token."<br/>";
-			// var_dump($_SESSION);//Esto es lo que se encuntra en la variable SESSION 
+			// var_dump($_SESSION['RC']['cedula_recuperacion']);//Esto es lo que se encuntra en la variable SESSION 
 
 			if($token == $_SESSION['RC']['token']){
 				// echo "<br/><br/> Token es correcto <br/><br/>";
@@ -140,18 +147,42 @@
 				$objModel = new homeModel;
 				$_css = new headElement;
 				$_css->Heading();
-
 				$url = $this->url;
 				require_once("view/recuperarView.php");
-			}
-			else{
-				//Mostrar vista de error (Homero dice: D'oh!)
-				require_once("errorController.php");
+			} else {
+				if($_POST){
+					if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
+						// var_dump($_SESSION['RC']['cedula_recuperacion']);
+						$exec = $this->login->recuperarPass($_SESSION['RC']['cedula_recuperacion'], $_POST['pass']);
+						// var_dump($exec);
+						echo json_encode($exec);					
+					}
+				}else{
+					//Mostrar vista de error (Homero dice: D'oh!)
+					require_once("errorController.php");
+				}
 			}
 
 		}
 
-	}
+		// public function RecuperarPass($numero){
+		// 	echo "asdasd ". $numero;
+		// }
+		// public function Recuperar(){
+		// 	echo "Llamando al metodo recuperar";
+		// 	if($_POST){
+		// 		if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
+		// 			var_dump($_SESSION['RC']['cedula_recuperacion']);
+		// 			$exec = $this->login->recuperarPass($_SESSION['RC']['cedula_recuperacion'], $_POST['pass']);
+		// 			var_dump($exec);
+		// 			echo json_encode($exec);					
+		// 		}
+
+		// 	}
+
+		// }
+}
+	
 		
 
 ?>
