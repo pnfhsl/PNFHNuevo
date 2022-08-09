@@ -8,7 +8,7 @@
 	use content\modelo\usuariosModel as usuariosModel;
 	use content\traits\Utility;
 	class usuariosController{
-	use Utility;
+		use Utility;
 		private $url;
 		private $usuario;
 		function __construct($url){

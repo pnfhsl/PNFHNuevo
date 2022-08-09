@@ -303,7 +303,7 @@
                             <?php }else{ ?>
             <li class="">
                             <?php } ?>
-              <a href="<?=_ROUTE_?>Bitacora">
+              <a href="<?=_ROUTE_.$this->encriptar('Bitacora');?>">
                 <i class="fa fa-cog"></i> <span>Bitacora</span>
               </a>
             </li>
@@ -313,7 +313,7 @@
                             <?php }else{ ?>
             <li class="">
                             <?php } ?>
-              <a href="<?=_ROUTE_?>Modulos">
+              <a href="<?=_ROUTE_.$this->encriptar('Modulos');?>">
                 <i class="fa fa-cog"></i> <span>Modulos</span>
               </a>
             </li>
@@ -327,7 +327,7 @@
                             <?php }else{ ?>
             <li>
                             <?php } ?>
-              <a href="<?=_ROUTE_?>Permisos">
+              <a href="<?=_ROUTE_.$this->encriptar('Permisos');?>">
                 <i class="fa fa-cog"></i> <span>Permisos</span>
               </a>
             </li>
@@ -337,7 +337,7 @@
                             <?php }else{ ?>
             <li class="">
                             <?php } ?>
-              <a href="<?=_ROUTE_?>Roles">
+              <a href="<?=_ROUTE_.$this->encriptar('Roles');?>">
                 <i class="fa fa-cog"></i> <span>Roles</span>
               </a>
             </li>
@@ -361,7 +361,7 @@
                             <?php }else{ ?>
         <li class="">
                             <?php } ?>
-          <a href="<?=_ROUTE_?>Reportes">
+          <a href="<?=_ROUTE_.$this->encriptar('Reportes');?>">
             <i class="fa fa-user-circle-o"></i> <span>Reportes</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
