@@ -6,8 +6,9 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\usuariosModel as usuariosModel;
-
+	use content\traits\Utility;
 	class usuariosController{
+	use Utility;
 		private $url;
 		private $usuario;
 		function __construct($url){

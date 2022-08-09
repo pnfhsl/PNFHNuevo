@@ -6,8 +6,9 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\mantenimientoModel as mantenimientoModel;
-
+	use content\traits\Utility;
 	class mantenimientoController{
+		use Utility;
 		private $url;
 		private $manteniment;
 		function __construct($url){

@@ -9,6 +9,7 @@
 	use content\traits\Utility;
 
 	class profesoresController{
+		use Utility;
 		private $url;
 		private $profesor;
 

@@ -757,7 +757,7 @@ $(document).ready(function(){
               type: 'POST',  
               data: {
                 Buscar: true,   
-                userNofif: userMofif,       
+                userMofif: userMofif,       
               },
               success: function(respuesta){       
                 // alert(respuesta); 

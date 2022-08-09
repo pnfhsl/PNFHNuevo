@@ -6,8 +6,9 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\clasesModel as clasesModel;
-
+	use content\traits\Utility;
 	class clasesController{
+		use Utility;
 		private $url;
 		private $clase;
 		private $idClase;

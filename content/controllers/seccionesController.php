@@ -8,8 +8,9 @@
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\periodosModel as periodosModel;
 	use content\modelo\alumnosModel as alumnosModel;
-
+	use content\traits\Utility;
 	class seccionesController{
+		use Utility;
 		private $url;
 		private $seccion;
 		private $periodo;

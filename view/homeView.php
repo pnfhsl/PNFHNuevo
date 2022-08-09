@@ -14,7 +14,7 @@
 
   <div class="content-wrapper">
     <section class="content-header" >
-      <h1 style="">
+      <h1>
         <?php echo "Inicio"; ?>
       </h1>
       <ol class="breadcrumb">
@@ -35,7 +35,7 @@
           <!-- /.box -->
           <div class="col-lg-3 col-md-6">
             <div class="box card" style="border-radius:15px;border-left:5px solid #2C7;border-top:none;">
-              <div class="box-body" style="">
+              <div class="box-body">
                 <div class="row" style="margin:12px 2px;">
                   <div style="text-align:left;font-size:1em;" class="col-xs-6">
                     <b>
@@ -54,7 +54,7 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="box card" style="border-radius:15px;border-left:5px solid #27C;border-top:none;">
-              <div class="box-body" style="">
+              <div class="box-body">
                 <div class="row"  style="margin:12px 2px;">
                   <div style="text-align:left;font-size:1em;" class="col-xs-6">
                     <b>
@@ -73,7 +73,7 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="box card" style="border-radius:15px;border-left:5px solid #F90;border-top:none;">
-              <div class="box-body" style="">
+              <div class="box-body">
                 <div class="row"  style="margin:12px 2px;">
                   <div style="text-align:left;font-size:1em;" class="col-xs-6 ">
                     <b>
@@ -92,7 +92,7 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="box card" style="border-radius:15px;border-left:5px solid #4AC;border-top:none;">
-              <div class="box-body" style="">
+              <div class="box-body">
                 <div class="row"  style="margin:12px 2px;">
                   <div style="text-align:left;font-size:1em;" class="col-xs-6 ">
                     <b>

@@ -104,11 +104,11 @@
 		public function Agregar($datos){
 
 			try{
-	        $query = parent::prepare('INSERT INTO alumnos (cedula_alumno, nombre_alumno, apellido_alumno,correo_alumno,telefono_alumno, trayecto_alumno, estatus) VALUES (:cedula_alumno, :nombre_alumno, :apellido_alumno, :correo_alumno, :telefono_alumno, :trayecto_alumno, 1)');
+	        $query = parent::prepare('INSERT INTO alumnos (cedula_alumno, nombre_alumno, apellido_alumno, telefono_alumno, trayecto_alumno, estatus) VALUES (:cedula_alumno, :nombre_alumno, :apellido_alumno, :telefono_alumno, :trayecto_alumno, 1)');
 	        $query->bindValue(':cedula_alumno', $datos['cedula']);
 	        $query->bindValue(':nombre_alumno', $datos['nombre']);
 	        $query->bindValue(':apellido_alumno', $datos['apellido']);
-	        $query->bindValue(':correo_alumno', $datos['correo']);
+	        // $query->bindValue(':correo_alumno', $datos['correo']);
 	        $query->bindValue(':telefono_alumno', $datos['telefono']);
 	        $query->bindValue(':trayecto_alumno', $datos['trayecto']);
 	        $query->execute();
@@ -130,12 +130,11 @@
 		public function Modificar($datos){
 
 			try{
-	        $query = parent::prepare('UPDATE alumnos SET cedula_alumno=:cedula_alumno, nombre_alumno = :nombre_alumno, apellido_alumno = :apellido_alumno, correo_alumno = :correo_alumno, telefono_alumno=:telefono_alumno, trayecto_alumno=:trayecto_alumno, estatus=1 WHERE cedula_alumno = :cedula_alumno2');
+	        $query = parent::prepare('UPDATE alumnos SET cedula_alumno=:cedula_alumno, nombre_alumno = :nombre_alumno, apellido_alumno = :apellido_alumno, telefono_alumno=:telefono_alumno, trayecto_alumno=:trayecto_alumno, estatus=1 WHERE cedula_alumno = :cedula_alumno2');
 	        $query->bindValue(':cedula_alumno2', $datos['id']);
 	        $query->bindValue(':cedula_alumno', $datos['cedula']);
 	        $query->bindValue(':nombre_alumno', $datos['nombre']);
 	        $query->bindValue(':apellido_alumno', $datos['apellido']);
-	        $query->bindValue(':correo_alumno', $datos['correo']);
 	        $query->bindValue(':telefono_alumno', $datos['telefono']);
 	        $query->bindValue(':trayecto_alumno', $datos['trayecto']);
 	        $query->execute();

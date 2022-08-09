@@ -6,8 +6,9 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\notasModel as notasModel;
-
+	use content\traits\Utility;
 	class notasController{
+		use Utility;
 		private $url;
 		private $nota;
 		private $idNota;

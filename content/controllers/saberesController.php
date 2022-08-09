@@ -6,8 +6,9 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\saberesModel as saberesModel;
-
+	use content\traits\Utility;
 	class saberesController{
+		use Utility;
 		private $url;
 		private $saber;
 

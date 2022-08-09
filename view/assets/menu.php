@@ -72,8 +72,9 @@
       <?php }else{ ?>
         <li>
       <?php } ?>
-          <a href="<?=_ROUTE_?>Home">
-            <i class="fa fa-home"></i> <span>Inicio</span>
+          <a href="<?=_ROUTE_.$this->encriptar('Home'); ?>">
+            <i class="fa fa-home"></i> <span>Inicio
+            </span>
             <span class="pull-right-container">
               <!-- <small class="label pull-right bg-green">new</small> -->
             </span>
@@ -112,7 +113,7 @@
                             <?php }else{ ?>
         <li class="">
                             <?php } ?>
-          <a href="<?=_ROUTE_?>Alumnos">
+          <a href="<?=_ROUTE_.$this->encriptar('Alumnos'); ?>">
             <i class="fa fa-male"></i> <span>Alumnos</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
@@ -128,7 +129,7 @@
                             <?php }else{ ?>
         <li class="">
                             <?php } ?>
-          <a href="<?=_ROUTE_?>Profesores">
+          <a href="<?=_ROUTE_.$this->encriptar('Profesores'); ?>">
             <i class="fa fa-users"></i> <span>Profesores</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
@@ -141,7 +142,7 @@
                             <?php }else{ ?>
         <li class="">
                             <?php } ?>
-          <a href="<?=_ROUTE_?>Proyectos">
+          <a href="<?=_ROUTE_.$this->encriptar('Proyectos');?>">
             <i class="fa fa-codepen"></i> <span>Proyectos</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
@@ -182,7 +183,7 @@
                             <?php }else{ ?>
             <li class="">
                             <?php } ?>
-              <a href="<?=_ROUTE_?>Clases">
+              <a href="<?=_ROUTE_.$this->encriptar('Clases');?>">
                 <i class="fa fa-fighter-jet"></i> <span>Clases</span>
               </a>
             </li>
@@ -196,7 +197,7 @@
                             <?php }else{ ?>
             <li>
                             <?php } ?>
-              <a href="<?=_ROUTE_?>Periodos">
+              <a href="<?=_ROUTE_.$this->encriptar('Periodos');?>">
                 <i class="fa fa-fighter-jet"></i> <span>Periodos</span>
               </a>
             </li>
@@ -206,7 +207,7 @@
                             <?php }else{ ?>
             <li class="">
                             <?php } ?>
-              <a href="<?=_ROUTE_?>Secciones">
+              <a href="<?=_ROUTE_.$this->encriptar('Secciones');?>">
                 <i class="fa fa-fighter-jet"></i> <span>Secciones</span>
               </a>
             </li>
@@ -216,7 +217,7 @@
                             <?php }else{ ?>
             <li class="">
                             <?php } ?>
-              <a href="<?=_ROUTE_?>Saberes">
+              <a href="<?=_ROUTE_.$this->encriptar('Saberes');?>">
                 <i class="fa fa-fighter-jet"></i> <span>Saberes</span>
               </a>
             </li>
@@ -243,7 +244,7 @@
                             <?php }else{ ?>
         <li class="">
                             <?php } ?>
-          <a href="<?=_ROUTE_?>Notas">
+          <a href="<?=_ROUTE_.$this->encriptar('Notas');?>">
             <i class="fa fa-tasks"></i> <span>Notas</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
@@ -256,7 +257,7 @@
                             <?php }else{ ?>
         <li class="">
                             <?php } ?>
-          <a href="<?=_ROUTE_?>Usuarios">
+          <a href="<?=_ROUTE_.$this->encriptar('Usuarios');?>">
             <i class="fa fa-user-circle-o"></i> <span>Usuarios</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
@@ -269,7 +270,7 @@
                             <?php }else{ ?>
         <li class="">
                             <?php } ?>
-          <a href="<?=_ROUTE_?>Mantenimiento">
+          <a href="<?=_ROUTE_.$this->encriptar('Mantenimiento');?>">
             <i class="fa fa-list"></i> <span>Mantenimiento</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->

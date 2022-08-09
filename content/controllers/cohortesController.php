@@ -6,8 +6,9 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\cohortesModel as cohortesModel;
-
+	use content\traits\Utility;
 	class cohortesController{
+		use Utility;
 		private $url;
 		private $cohorte;
 		function __construct($url){

@@ -53,14 +53,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <div class="content-input pass" style="color:white"><p></p></div>
             </div>
             <div class="forgot">
-                <a href="#" data-toggle="modal" data-target="#modalAgregarArchivo">¿Has olvidado la contraseña?</a>
-                <p><input type="checkbox">Recordar</p>
+                <a href="#" data-toggle="modal" data-target="#modalAgregarArchivo">¿Deseas modificar la contraseña?</a>
+                <!-- <p><input type="checkbox">Recordar</p> -->
             </div>
-            <button type="submit" id="loginBtn" data-toggle="modal" data-target="#modalPreguntas">Login</button>
-        </form>
-        <p class=" w3l-register-p">¿No tienes cuenta?<a href="#" class="register"> Regístrate</a></p>
-    </div>
-    <!-- <div id="modalPreguntas" class="#modalPreguntas modal fade" role="dialog">
+            <button type="submit" id="loginBtn">Login</button>
+          </form>
+          <!-- <p class=" w3l-register-p">¿No tienes cuenta?<a href="#" class="register"> Regístrate</a></p> -->
+        </div>
+        <button type="submit" id="preguntas" data-toggle="modal" data-target="#modalPreguntas" style="display:none;">Preguntas</button>
+    
+
+
+    <div id="modalPreguntas" class="#modalPreguntas modal fade" role="dialog">
 
         <div class="modal-dialog">
 
@@ -122,7 +126,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                 <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
 
-                <span type="submit" class="btn btn-primary subir" id="enviar">Enviar</span>
+                <span type="submit" class="btn btn-primary subir" id="enviarPregunta">Enviar</span>
 
               </div>
 
@@ -134,14 +138,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
 
     </div>
- -->
+
     <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
 
         <div class="modal-dialog">
 
           <div class="modal-content">
 
-            <form role="form" method="post" enctype="multipart/form-data" id="form_data">
+            <!-- <form role="form" method="post" enctype="multipart/form-data" id="form_data"> -->
 
               <!--=====================================
               CABEZA DEL MODAL
@@ -191,12 +195,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                 <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
 
-                <span type="submit" class="btn btn-primary subir" id="enviar">Enviar</span>
+                <span type="submit" class="btn btn-primary subir" id="enviarCorreo">Enviar</span>
 
               </div>
 
 
-            </form>
+            <!-- </form> -->
 
           </div>
 
@@ -210,7 +214,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script type="text/javascript">
         
   $(document).ready(function() { //Al Cargar la paginaZ
-
+    
     console.clear();
       $('#loginBtn').click(function(e) { 
         e.preventDefault();
@@ -231,34 +235,51 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 password: pass,
               },
               success: function(respuesta) {
-                //  alert(respuesta);
+                // alert(respuesta);
                 var data = JSON.parse(respuesta); 
                 console.log(data);
 
-                if (data.msj === "Good") { 
+                if (data.access === "Acceder") { 
+                  Swal.fire({
+                    type: 'success',
+                    title: '¡Ingreso exitoso!',
+                    text: 'El nombre de usuario y la contraseña no coinciden',
+                    footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
+                  }); 
                   $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
                   $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw");
 
-                  location.href = "<?= _ROUTE_ ?>Home"; 
+                  location.href = "<?= _ROUTE_ ?>Preguntas"; 
 
                 }
 
                 if (data.msj === "Usuario o contraseña invalido!") {
+                  // alert('asd');
+                  // Swal.fire({
+                  //   type: 'warning',
+                  //   title: '¡Usuario o contraseña inválido',
+                  //   text: 'El nombre de usuario y la contraseña no coinciden',
+                  //   footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
+                  // }); 
+                  $("#usuario").focus();
+                  $("#usuario").val("");
+                  $("#password").val("");
                   Swal.fire({
                     type: 'warning',
                     title: '¡Usuario o contraseña inválido',
                     text: 'El nombre de usuario y la contraseña no coinciden',
                     footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
-                  }); 
+                  });
                 }
 
                 if (data.look === "Bloqueo") {
-                  Swal.fire({
-                    type: 'warning',
-                    title: '¡Usuario bloqueado!',
-                    text: 'El usuario ' + user + ' ha sido bloqueado',
-                    footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
-                  });
+                  $("#preguntas").click(); 
+                  // Swal.fire({
+                  //   type: 'warning',
+                  //   title: '¡Usuario bloqueado!',
+                  //   text: 'El usuario ' + user + ' ha sido bloqueado',
+                  //   footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
+                  // });
                 
                 }
 
@@ -284,7 +305,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       })
 
 
-      $("#enviar").click(function(){
+      $("#enviarCorreo").click(function(){
         let correo = $("#correo").val();
         $.ajax({
           url: 'Login/enviarLink',    
@@ -293,16 +314,33 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             correo: correo,    
           },
           success: function(resp){
+            // alert(resp);
             console.log(resp);
             var datos = JSON.parse(resp);     
-              if (datos.msj === "Good") {   
+              if (datos.msj === "Good") {  
                 Swal.fire({
                   type: 'success',
                   title: '¡Correo enviado!',
                   text: 'El link para el cambio de contraseña se ha enviado exitosamente al correo ' + correo,
                   footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                 });
-              }    
+              } 
+              if (datos.msj === "Vacio") {  
+                Swal.fire({
+                  type: 'warning',
+                  title: '¡Correo no coinciden!',
+                  text: 'El correo electronico '+correo+' no fue encontrado',
+                  footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                });
+              }
+              if (datos.msj === "error") {  
+                Swal.fire({
+                  type: 'warning',
+                  title: '¡Correo no enviado!',
+                  text: 'No se pudo enviar el correo electronico',
+                  footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                });
+              }
             },
             error: function(respuesta){       
               var datos = JSON.parse(respuesta);

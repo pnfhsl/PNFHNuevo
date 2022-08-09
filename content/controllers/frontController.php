@@ -1,15 +1,17 @@
 <?php
 	/* utilizaremos namespace en la primera línea de código */
 	namespace content\controllers;
+	use content\traits\Utility as Utility;
 
 	use config\settings\sysConfig as sysConfig;  /* El as nos ayuda a renombrar el directorio sysConfig*/
 
 	/* Extender el sysConfig utilizando composer dentro de la clase frontController*/
 	class frontController extends sysConfig{
-
+		use Utility;
 		private $url;
 		private $direccion;
 		private $controlador;
+		private $utility;
 
 		private $request;
 		private $controller;
@@ -45,10 +47,15 @@
 			$this->controlador = _CONTROLLER_;  /* asignamos el contenido de la constante definida en  sysConfig*/
 		}
 		public function Controller(){
+			// $control = $this->url[0];
+			$control = $this->desencriptar($this->url[0]);
+			// echo $control;
 			if(!empty($_SESSION['cuentaActiva']) && $_SESSION['cuentaActiva']==true){
-				$this->controller = $this->url[0] == '' ? 'Home' : $this->url[0];
+				// $this->controller = $this->url[0] == '' ? 'Home' : $this->url[0];
+				$this->controller = $control == '' ? 'Home' : $control;
 			}else{
-			$this->controller = $this->url[0] == '' ? 'login' : $this->url[0];
+				$this->controller = $control == '' ? 'login' : $control;
+				// $this->controller = $this->url[0] == '' ? 'login' : $this->url[0];
 			}
 			$this->url[0] = $this->controller;
 		}

@@ -8,8 +8,9 @@
 	use content\modelo\rolesModel as rolesModel;
 	use content\modelo\permisosModel as permisosModel;
 	use content\modelo\modulosModel as modulosModel;
-
+	use content\traits\Utility;
 	class rolesController{
+	use Utility;
 		private $url;
 		private $rol;
 		private $modulo;

@@ -93,7 +93,7 @@
                   <a href="#" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <div class="pull-right">
-                  <a href="<?=_ROUTE_?>Logout" class="btn btn-default btn-flat">Cerrar Sesion</a>
+                  <a href="<?=_ROUTE_.$this->encriptar('Logout'); ?>" class="btn btn-default btn-flat">Cerrar Sesion</a>
                 </div>
               </li>
             </ul>

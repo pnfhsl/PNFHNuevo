@@ -33,41 +33,57 @@
 			if($_POST){		
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
 					$resp = $this->login->loginSistema($_POST['username'], $_POST['password']); //pasa el user y pass
-					//  var_dump($resp['msj']);
-					
-					$intentos = $this->usuario->Intentos($_POST['username']);
-					// var_dump($intentos);
-
-					if($resp === 'Good'){
-
-						$objModel = new homeModel;
-						$_css = new headElement;
-						$_css->Heading();
-						$url = $this->url;
-						require_once("view/homeView.php");
-
-						// location.href._ROUTE_ . "Home";
-					}
-					if($resp['msj'] === 'Usuario o contraseña invalido!'){
-						// var_dump($intentos[0]["intentos"]);
-						if(isset($intentos[0]["intentos"])){
-							$intentos[0]["intentos"] += 1;
+					 // var_dump($resp['msj']);
+					if($resp['msj'] == "Good"){
+						$intentos = $this->usuario->Intentos($_POST['username']);
+						$int = 0;
+						if(count($intentos)>0){
+							$int = $intentos[0]["intentos"];
 						}
-						// var_dump($intentos[0]["intentos"]);
-						$fallos = $intentos[0]["intentos"];
-						$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
-						// var_dump($respuest);
-						if($fallos >= 3){
-							// echo json_encode('Bloqueo');
+						if($resp['msj'] === 'Good' && $int < 3){
+							$resp = array('access' => "Acceder");
+							$this->usuario->Bloqueo($_POST['username'], 0);
+						}
+						// else
+						if($intentos[0]["intentos"] >= 3){
 							$resp = array('look' => "Bloqueo");
-							// session_destroy();
-							// $this->usuario->eliminar('usuarios', $id);
-							// var_dump("El Usuario ha sido bloqueado");
-							// $this->usuario->Bloqueo($_POST['username']);
 						}
-						
+						echo json_encode($resp);
+					}else{
+						$intentos = $this->usuario->Intentos($_POST['username']);
+						$int = 0;
+						if(count($intentos)>0){
+							$int = $intentos[0]["intentos"];
+							if($resp['msj'] === 'Usuario o contraseña invalido!'){
+								// echo $intentos[0]["intentos"];
+								if(isset($intentos[0]["intentos"])){
+									$intentos[0]["intentos"] += 1;
+								}
+								$fallos = $intentos[0]["intentos"];
+								$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
+							}
+							if($intentos[0]["intentos"] >= 3){
+								$resp = array('look' => "Bloqueo");
+							}
+						}
+						echo json_encode($resp);
 					}
-					echo json_encode($resp);
+					// if($resp['msj'] == "Good"){
+					// 	$intentos = $this->usuario->Intentos($_POST['username']);
+					// 	$int = $intentos[0]["intentos"];
+					// 	if($resp['msj'] === 'Good' && $int < 3){
+					// 		$resp = array('access' => "Acceder");
+					// 	}
+					// 	if($intentos[0]["intentos"] >= 3){
+					// 		$resp = array('look' => "Bloqueo");
+					// 	}
+					// } else if($resp['msj'] === 'Usuario o contraseña invalido!'){
+					// 	if(isset($intentos[0]["intentos"])){
+					// 		$intentos[0]["intentos"] += 1;
+					// 	}
+					// 	$fallos = $intentos[0]["intentos"];
+					// 	$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
+					// }
 				}
 
 				if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
@@ -134,32 +150,40 @@
 					//     'error' => false,
 					//     'message' => 'Enlace de recuperación enviado al correo ',
 					// ]);
+					return ['msj'=>'Good'];
 				} catch (Exception $e) {
 					// var_dump($e);
-					echo json_encode([
-						'error' => true,
-						'msj' => 'No se pudo enviar el correo. Lo sentimos! Intente de nuevo.' .$e->getMessage(),
-					]);
-					return 0;
+					// echo json_encode([
+					// 	'error' => true,
+					// 	'msj' => 'No se pudo enviar el correo. Lo sentimos! Intente de nuevo.' .$e->getMessage(),
+					// ]);
+					return ['msj'=>'error', 'data'=>'No se pudo enviar el correo. Lo sentimos! Intente de nuevo.' .$e->getMessage(),];
 				}
 		}
 	
 		public function enviarLink(){
 			if (isset($_POST['correo'])) {
-				$usuario = $this->login->busquedaCorreo($_POST['correo']);
-				// var_dump($usuario);
-				if($usuario){
-					$token = bin2hex(random_bytes(10));
-					unset($_SESSION['RC']);
-					$_SESSION['RC'] = array(
-						'token' => $this->encriptar($token),
-						'cedula_recuperacion' => $usuario['cedula']
-					);
-	
-					$this->email($usuario, $token);
-					echo json_encode(['msj'=>"Good"]);
-				}
-				else{
+				$usuarios = $this->login->busquedaCorreo($_POST['correo']);
+				if($usuarios['msj']){
+					if(!empty($usuarios['data'])){
+						$usuario = $usuarios['data'][0];
+						// print_r($usuario);
+						$token = bin2hex(random_bytes(10));
+						unset($_SESSION['RC']);
+						$_SESSION['RC'] = array(
+							'token' => $this->encriptar($token),
+							'cedula_recuperacion' => $usuario['cedula']
+						);
+						$resp = $this->email($usuario, $token);
+						// print_r($resp);
+						if($resp['msj']=="Good"){
+
+							echo json_encode(['msj'=>"Good"]);
+						}
+					}else{
+						echo json_encode(['msj'=>"Vacio"]);
+					}
+				} else{
 					echo json_encode(['msj'=>"Error"]);
 				}
 			}

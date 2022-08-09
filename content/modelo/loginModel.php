@@ -91,21 +91,29 @@
 
 		public function busquedaCorreo($correo){
 			try {
-					$query = parent::prepare('SELECT cedula_usuario AS cedula, correo AS correo, nombre_usuario AS nombre 
-					FROM usuarios WHERE correo = :correo');
-					$respuestaArreglo = '';
-					$query->execute(['correo'=>$correo]);
-					
-					$respuestaArreglo = $query->fetch();
-					if ($respuestaArreglo) {
-						$respuestaArreglo['role'] = 'Profesor';
-					}
-				
-				else{
-					$respuestaArreglo['role'] = 'Estudiante';
+				$query = parent::prepare('SELECT cedula_usuario AS cedula, correo AS correo, nombre_usuario AS nombre 
+				FROM usuarios WHERE correo = :correo');
+				$respuestaArreglo = '';
+				$query->execute(['correo'=>$correo]);
+				$respuestaArreglo = $query->fetchAll();
+				// print_r($respuestaArreglo);
+				// echo count($respuestaArreglo);
+				if(count($respuestaArreglo)>0){
+					$Result['data'] = $respuestaArreglo;
 				}
+					
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result['msj'] = "Good";		//Si todo esta correcto y consigue al usuario
+					return $Result;
+				}
+				// if ($respuestaArreglo) {
+				// 	$respuestaArreglo['role'] = 'Profesor';
+				// }else{
+				// 	$respuestaArreglo['role'] = 'Estudiante';
+				// }
 				// var_dump($respuestaArreglo);
 				return $respuestaArreglo;
+				
 		      } catch (PDOException $e) {
 		        $errorReturn = ['estatus' => false];
 		        $errorReturn += ['info' => "error sql:{$e}"];

@@ -6,8 +6,9 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\permisosModel as permisosModel;
-
+	use content\traits\Utility;
 	class permisosController{
+		use Utility;
 		private $url;
 		private $permiso;
 

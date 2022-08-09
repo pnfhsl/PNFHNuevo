@@ -6,8 +6,9 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\modulosModel as modulosModel;
-
+	use content\traits\Utility;
 	class modulosController{
+		use Utility;
 		private $url;
 		private $modulo;
 

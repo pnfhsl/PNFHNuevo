@@ -76,7 +76,7 @@
               <div class="col-xs-12 col-sm-6" style="text-align:right">
 
               <button type="button" class="btn btn-next btn-fill btn btn-success btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarArchivo">Subir archivo</button>
-
+              <input type="hidden" id="url" value="<?=$this->encriptar($this->url); ?>">
                   <!--=====================================
                   MODAL AGREGAR ARCHIVO
                   ======================================-->
@@ -538,6 +538,7 @@
 $(document).ready(function(){ 
 
   console.clear();
+  
 
 $("#subir").click(function(e) {
       e.preventDefault();
@@ -651,9 +652,6 @@ $('#cedula').on('input', function () {
 
 $('.cedulaModificar').on('input', function () {
   var id = $(this).attr("name");
-  // var ids = $(this).attr("id");
-  // var index = ids.indexOf(" ");
-  // var id = ids.substring(index+1);
   this.value = this.value.replace(/[^0-9]/g,'');
   if(this.value.length >= 8 && this.value.length <= 8){
     $("#cedulaS"+id).html("");
@@ -675,38 +673,9 @@ $('#apellido').on('input', function () {
 $('.apellidoModificar').on('input', function () {      
   this.value = this.value.replace(/[^a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú ]/g,''); });
 
-$('#correo').on('input', function () {      
-  this.value = this.value.replace(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{4,6}))$/,'');
 
-  let pos1 = this.value.indexOf("@");
-  let pos = this.value.indexOf(".com");
-  if((pos > 1) && (pos1 > 1) && (pos > pos1)){
-    let maxleng = this.value.length;
-    $(this).attr("maxlength",maxleng);
-    $("#correoS").html("");
-  }else{
-    $("#correoS").html("Ingresar una dirección de correo electronico válida");
-    $(this).attr("maxlength","");
-  }
-});
 
-$('.correoModificar').on('input', function () {      
-  var id = $(this).attr("name");
-  // var ids = $(this).attr("id");
-  // var index = ids.indexOf(" ");
-  // var id = ids.substring(index+1);
-  this.value = this.value.replace(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{4,6}))$/,'');
-  let pos1 = this.value.indexOf("@");
-  let pos = this.value.indexOf(".com");
-  if((pos > 1) && (pos1 > 1) && (pos > pos1)){
-    let maxleng = this.value.length;
-    $(this).attr("maxlength",maxleng);
-    $("#correoS"+id).html("");
-  }else{
-    $("#correoS"+id).html("Ingresar una dirección de correo electronico valida");
-    $(this).attr("maxlength","");
-  }
-});
+
 
 
 $('#telefono').on('input', function () {      
@@ -741,9 +710,6 @@ $("#trayecto").change(function(){
 });
 $(".trayectoModificar").change(function(){
   var id = $(this).attr("name");
-  // var ids = $(this).attr("id");
-  // var index = ids.indexOf(" ");
-  // var id = ids.substring(index+1);
   var trayecto = $(this).val();
   if(trayecto == ""){
     $("#trayectoS"+id).html("Seleccione un trayecto para el alumno");
@@ -752,25 +718,9 @@ $(".trayectoModificar").change(function(){
   }
 });
 
-
-/*var cedula = $("#cedula").val();
-console.log('cedula', cedula);
-
-var nombre = $("#nombre").val();
-console.log('nombre', nombre);
-
-var apellido = $("#apellido").val();
-console.log('apellido', apellido);
-
-var correo = $("#correo").val();
-console.log('correo', correo);
-
-var telefono = $("#telefono").val();
-console.log('telefono', telefono);*/
-
-
   $(".modificarButtonModal").click(function(){
     var id = $(this).val();
+    let url = $("#url").val(); 
 
     var response = validar(true, id);
     if(response){
@@ -794,7 +744,7 @@ console.log('telefono', telefono);*/
             let trayecto = $("#trayecto"+id).val(); 
 
             $.ajax({
-              url: 'Alumnos/Modificar',    
+              url: url + '/Modificar',    
               type: 'POST',   
               data: {
                 Editar: true,   
@@ -868,7 +818,10 @@ console.log('telefono', telefono);*/
 
 
   $("#guardar").click(function(){
+    let url = $("#url").val();  
+    // alert(url);
     var response = validar();
+    // alert(response);
     if(response){
 
       swal.fire({ 
@@ -887,25 +840,23 @@ console.log('telefono', telefono);*/
             let cedula = $("#cedula").val();     
             let nombre = $("#nombre").val();     
             let apellido = $("#apellido").val();
-            let correo = $("#correo").val();
             let telefono = $("#telefono").val();
             let trayecto = $("#trayecto").val();
 
           /*alert(cedula + ' ' + nombre + ' ' + apellido + ' ' + especialidad);*/
               $.ajax({
-                url: 'Alumnos/Agregar',    
+                url: url + '/Agregar',    
                 type: 'POST',   
                 data: {
                   Agregar: true,   
                   cedula: cedula,       
                   nombre: nombre,       
                   apellido: apellido,
-                  correo: correo,
                   telefono: telefono,
                   trayecto: trayecto,
                 },
                 success: function(resp){
-                  // alert(resp);
+                    // alert(resp);
                 /*window.alert("Hola mundo");   
                 console.log(resp); 
                   window.alert(resp);*/
@@ -964,6 +915,7 @@ console.log('telefono', telefono);*/
 
 
   $(".modificarBtn").click(function(){
+    let url = $("#url").val(); 
     swal.fire({ 
           title: "¿Desea modificar los datos?",
           text: "Se movera al formulario para modificar los datos, ¿desea continuar?",
@@ -979,7 +931,7 @@ console.log('telefono', telefono);*/
             let userMofif = $(this).val();
             // alert(userMofif);
             $.ajax({
-              url: 'Alumnos/Buscar',    
+              url: url + '/Buscar',    
               type: 'POST',  
               data: {
                 Buscar: true,   
@@ -1032,6 +984,7 @@ console.log('telefono', telefono);*/
   });
 
   $(".eliminarBtn").click(function(){
+    let url = $("#url").val(); 
       swal.fire({ 
           title: "¿Desea borrar los datos?",
           text: "Se borraran los datos escogidos, ¿desea continuar?",
@@ -1058,7 +1011,7 @@ console.log('telefono', telefono);*/
                         /*window.alert($(this).val());*/
                         let userDelete = $(this).val();
                       $.ajax({
-                        url: 'Alumnos/Eliminar',    
+                        url: url + '/Eliminar',    
                         type: 'POST',   
                         data: {
                           Eliminar: true,   
@@ -1161,21 +1114,6 @@ function validar(modificar = false, id=""){
     $(form+" #apellidoS"+id).html("Debe ingresar el apellido del alumno");
   }
 
-  var correo = $(form+" #correo"+id).val();
-  var rcorreo = false;
-
-  var pos1 = correo.indexOf("@");
-  var pos = correo.indexOf(".com");
-  if((pos > 1) && (pos1 > 1) && (pos > pos1)){
-    var maxleng = correo.length;
-    $(this).attr("maxlength",maxleng);
-    $(form+" #correoS"+id).html("");
-    rcorreo = true;
-  }else{
-    $(form+" #correoS"+id).html("Ingresar una direccion de correo electronico valida");
-    $(this).attr("maxlength","");
-  }
-
   var telefono = $(form+" #telefono"+id).val();
   var rtelefono = false;
   if(telefono.length >= 11 && telefono.length <= 11){
@@ -1195,7 +1133,7 @@ function validar(modificar = false, id=""){
   }
 
   var validado = false;
-  if(rcedula==true && rnombre==true && rapellido==true && rcorreo==true && rtelefono==true && rtrayecto==true){
+  if(rcedula==true && rnombre==true && rapellido==true && rtelefono==true && rtrayecto==true){
     validado=true;
   }else{
     validado=false;

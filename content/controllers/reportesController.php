@@ -7,8 +7,9 @@
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\reportesModel as reportesModel;
 	use Dompdf\Dompdf;
-
+	use content\traits\Utility;
 	class reportesController{
+use Utility;
 		private $url;
 		private $reportes;
 		private $dompdf;

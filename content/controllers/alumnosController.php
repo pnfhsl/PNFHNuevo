@@ -6,8 +6,10 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\alumnosModel as alumnosModel;
+	use content\traits\Utility;
 
 	class alumnosController{
+		use Utility;
 		private $url;
 		private $alumno;
 
@@ -51,11 +53,11 @@
 
 		public function Agregar(){
 			if($_POST){		
-				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['correo']) && !empty($_POST['telefono'])  && !empty($_POST['trayecto'])) {
+				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['telefono'])  && !empty($_POST['trayecto'])) {
 					$datos['cedula'] = $_POST['cedula'];
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
 					$datos['apellido'] = ucwords(mb_strtolower($_POST['apellido']));
-					$datos['correo'] = mb_strtolower($_POST['correo']);
+					// $datos['correo'] = mb_strtolower($_POST['correo']);
 					$datos['telefono'] = $_POST['telefono'];
 					$datos['trayecto'] = $_POST['trayecto'];
 					$buscar = $this->alumno->getOne($_POST['cedula']);
@@ -85,12 +87,11 @@
 
 		public function Modificar(){
 			if($_POST){		
-				if (!empty($_POST['cedula']) && !empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['correo']) && !empty($_POST['telefono']) && !empty($_POST['trayecto'])) {
+				if (!empty($_POST['cedula']) && !empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['telefono']) && !empty($_POST['trayecto'])) {
 					$datos['id'] = $_POST['codigo'];
 					$datos['cedula'] = $_POST['cedula'];
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
 					$datos['apellido'] = ucwords(mb_strtolower($_POST['apellido']));
-					$datos['correo'] = mb_strtolower($_POST['correo']);
 					$datos['telefono'] = $_POST['telefono'];
 					$datos['trayecto'] = $_POST['trayecto'];
 					$buscar = $this->alumno->getOne($_POST['cedula']);

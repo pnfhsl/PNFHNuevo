@@ -8,8 +8,9 @@
 	use content\modelo\proyectosModel as proyectosModel;
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\alumnosModel as alumnosModel;
-
+	use content\traits\Utility;
 	class proyectosController{
+		use Utility;
 		private $url;
 		private $proyecto;
 		private $seccion;

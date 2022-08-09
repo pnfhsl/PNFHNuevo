@@ -6,9 +6,9 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\periodosModel as periodosModel;
-
+	use content\traits\Utility;
 	class periodosController{
-
+		use Utility;
 		private $url;
 		private $periodo;
 
@@ -23,8 +23,8 @@
 		public function Buscar(){
 
 			if($_POST){		
-				if (isset($_POST['Buscar']) && isset($_POST['userNofif'])) {
-					$buscar = $this->periodo->getOne($_POST['userNofif']);
+				if (isset($_POST['Buscar']) && isset($_POST['userMofif'])) {
+					$buscar = $this->periodo->getOne($_POST['userMofif']);
 					echo json_encode($buscar);
 				}
 

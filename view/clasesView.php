@@ -44,15 +44,7 @@
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
                
-
-              <!--=====================================
-              MODAL MODIFICAR CLASES
-              ======================================-->
-
-              
-
-
-                <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarClase">Agregar Nuevo</button>
+               <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarClase">Agregar Nuevo</button>
 
               <!--=====================================
               MODAL AGREGAR PROF
@@ -343,16 +335,6 @@
 
                           </div>
                               
-                               
-
-
-                              
-
-
-
-                          
-
-
                           <!--=====================================
                           PIE DEL MODAL
                           ======================================-->
