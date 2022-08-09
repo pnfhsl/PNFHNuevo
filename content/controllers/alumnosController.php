@@ -34,6 +34,21 @@
 			}
 		}
 
+		public function Cargar(){
+			// var_dump($_FILES["file"]["tmp_name"][0]);
+			if (isset($_FILES)) {
+				$respuesta = $this->alumno->Cargar($_FILES["file"]["tmp_name"][0]);
+				// var_dump($respuesta);
+				if($respuesta['msj']=="Good")
+					echo json_encode($respuesta);
+				}else{
+					echo json_encode(['msj'=>"Error"]);
+				}
+
+			
+			
+		}
+
 		public function Agregar(){
 			if($_POST){		
 				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['correo']) && !empty($_POST['telefono'])  && !empty($_POST['trayecto'])) {

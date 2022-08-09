@@ -4,6 +4,39 @@
   <title><?php echo _NAMESYSTEM_; ?> | <?php if(!empty($action)){echo $action; } ?> <?php if(!empty($url)){echo $url;} ?></title>
   <?php //require_once('assets/headers.php'); ?>
 </head>
+<style type="text/css">
+  .zmdi-upload {
+    padding: 0px 10px 0px 0px;
+  }
+
+  .zmdi-upload:hover {
+    color: black;
+    transition: color 0.2s linear 0.2s;
+  }
+
+  .file-input__input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .file-input__label {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px 12px;
+    background-color: #4245a8;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+  }
+</style>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -42,13 +75,79 @@
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
 
+              <button type="button" class="btn btn-next btn-fill btn btn-success btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarArchivo">Subir archivo</button>
 
-              <!--=====================================
-              MODAL MODIFICAR ALUM
-              ======================================-->
+                  <!--=====================================
+                  MODAL AGREGAR ARCHIVO
+                  ======================================-->
 
-              
+                  <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
 
+                    <div class="modal-dialog">
+
+                      <div class="modal-content">
+
+                        <form role="form" method="post" enctype="multipart/form-data" id="form_data">
+
+                          <!--=====================================
+                          CABEZA DEL MODAL
+                          ======================================-->
+
+                          <div class="modal-header" style="background:#3c8dbc; color:white">
+
+                            <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+
+                            <h4 class="modal-title" style="text-align: left;">Agregar Data</h4>
+
+                          </div>
+
+                          <!--=====================================
+                          CUERPO DEL MODAL
+                          ======================================-->
+
+                          <div class="modal-body">
+
+                            <div class="box-body">
+
+                              <br>
+                              <div class="file-input text-center custom-input-file">
+                                <input type="file" name="file[]" multiple id="file-input" class="file-input__input input-file" accept=".xls, .xlsx" />
+                                <label class="file-input__label" for="file-input">
+                                  <i class="fa fa-upload zmdi zmdi-upload"></i>
+                                  <span> Seleccionar Archivo</span></label>
+                                <span id="archivoSeleccionado"></span>
+                              </div>
+                              <div>
+                                <span>
+                                </span>
+                              </div>
+                              <br>
+
+
+                            </div>
+
+                          </div>
+
+                          <!--=====================================
+                        PIE DEL MODAL
+                        ======================================-->
+
+                          <div class="modal-footer">
+
+                            <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+                            <span type="submit" class="btn btn-primary subir" id="subir">Subir</span>
+
+                          </div>
+
+
+                        </form>
+
+                      </div>
+
+                    </div>
+
+                  </div>  
 
                 <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarAlum">Agregar Nuevo</button>
 
@@ -122,19 +221,6 @@
                                 <span id="apellidoS" class="mensajeError"></span>
                               </div>
                             </div>
-
-                            <!--ENTRADA CORREO -->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="correo">Correo</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
-                                <input type="text" class="form-control input-lg" name="nuevoCorreo" id="correo" placeholder="Ingresar Correo" required>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="correoS" class="mensajeError"></span>
-                              </div>
-                            </div>
-
 
                             <!--ENTRADA TELÉFONO -->
                             <div class="form-group col-xs-12 col-sm-12">
@@ -214,7 +300,6 @@
                   <th>Nº</th>
                   <th>Cédula</th>
                   <th>Nombre y Apellido</th>
-                  <th>Correo</th>
                   <th>Télefono</th>
                   <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
                   <th>Acciones</th>
@@ -241,11 +326,6 @@
                   <td style="width:20%">
                     <span class="contenido2">
                       <?php echo $data['nombre_alumno']." ".$data['apellido_alumno']; ?>
-                    </span>
-                  </td>
-                  <td style="width:20%">
-                    <span class="contenido2">
-                      <?php echo $data['correo_alumno']; ?>
                     </span>
                   </td>
                   <td style="width:20%">
@@ -346,21 +426,7 @@
                                   <div style="width:100%;text-align:right;">
                                     <span id="apellidoS<?=$data['cedula_alumno']?>" class="mensajeError"></span>
                                   </div>
-                                </div>
-
-
-                                <!--ENTRADA CORREO -->
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="correo<?=$data['cedula_alumno']?>">Correo</label>
-                                  <div class="input-group" style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
-                                    <input type="text" class="form-control input-lg correoModificar" value="<?=$data['correo_alumno']?>" name="<?=$data['cedula_alumno']?>" id="correo<?=$data['cedula_alumno']?>" placeholder="Ingresar Correo" required>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="correoS<?=$data['cedula_alumno']?>" class="mensajeError"></span>
-                                  </div>
-                                </div>
-
+                                </div>                        
 
                                 <!--ENTRADA TELÉFONO -->
                                 <div class="form-group col-xs-12 col-sm-12">
@@ -471,6 +537,108 @@
 <script>
 $(document).ready(function(){ 
 
+  console.clear();
+
+$("#subir").click(function(e) {
+      e.preventDefault();
+
+      if ($("#file-input").get(0).files.length == 0) {
+        Swal.fire({
+          position: 'center',
+          type: 'warning',
+          title: '¡Debe seleccionar un archivo!',
+          footer: 'SCHSL',
+          timer: 3000,
+          showCloseButton: false,
+          showConfirmButton: false,
+        });
+        return 0;
+      }
+      if ($("#file-input").get(0).files.length > 1) {
+        Swal.fire({
+          position: 'center',
+          type: 'warning',
+          title: '¡No puede seleccionar más de un archivo!',
+          footer: 'SCHSL',
+          timer: 3000,
+          showCloseButton: false,
+          showConfirmButton: false,
+        });
+        return 0;
+      }
+      var extesiones_permitidas = [".xls", ".xlsx"];
+      var input_file = $("#file-input");
+      var exp_reg = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + extesiones_permitidas.join('|') + ")$");
+
+      console.log(exp_reg);
+      console.log(input_file.val());
+
+      if (!exp_reg.test(input_file.val().toLowerCase())) {
+        Swal.fire({
+          position: 'center',
+          type: 'warning',
+          title: 'Debe seleccionar un archivo con extensión .xls o .xlsx',
+          footer: 'SCHSL',
+          timer: 3000,
+          showCloseButton: false,
+          showConfirmButton: false,
+        });
+        return false;
+      }
+
+      var formData = new FormData($(form_data)[0]);
+      console.log(formData);
+      $("#subir").attr('disabled', true);
+      // console.log($("#subir").attr('disabled', true));
+
+      $.ajax({
+        url: 'Alumnos/Cargar',
+        type: 'POST',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(respuesta) {
+           alert(respuesta);
+          console.log('hola');
+          var datos = JSON.parse(respuesta);
+          if (datos.msj === "Good") {
+            Swal.fire({
+              position: 'center',
+              type: 'success',
+              title: 'Se han cargado los datos de los alumnos exitosamente',
+              footer: 'SCHSL',
+              timer: 3000,
+              showCloseButton: false,
+              showConfirmButton: false,
+            }).then((isConfirm) => {
+              location.reload();
+            });
+          }
+          if (datos.msj === "Error") {
+              Swal.fire({
+                position: 'center',
+                type: 'danger',
+                title: 'No se han cargado los datos de los alumnos',
+                footer: 'SCHSL',
+                timer: 3000,
+                showCloseButton: false,
+                showConfirmButton: false,
+              }).then((isConfirm) => {
+                location.reload();
+              });
+            }
+        }
+
+      });
+
+});
+
+$('#file-input').on('change', function() {
+  name = $(this).get(0).files[0].name;
+  $('#archivoSeleccionado').text(name);
+
+});
 
 $('#cedula').on('input', function () {      
   this.value = this.value.replace(/[^0-9]/g,''); 

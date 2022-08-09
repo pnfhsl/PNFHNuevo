@@ -6,6 +6,7 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\loginModel as loginModel;
+	use content\modelo\usuariosModel as usuariosModel;
 	use content\traits\Utility;
 	use PHPMailer\PHPMailer\PHPMailer;
 	use PHPMailer\PHPMailer\SMTP;
@@ -24,18 +25,49 @@
 				// $_css->Heading();
 
 				$this->url = $url;
-			$this->login = new loginModel();		//Se instancia el objeto
+			$this->login = new loginModel();		
+			$this->usuario = new usuariosModel();		
 		}
 
 		public function Consultar(){
 			if($_POST){		
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
-					$this->login->getLoginSistema($_POST['username'], $_POST['password']); //pasa el user y pass
-					$objModel = new homeModel;
-					$_css = new headElement;
-					$_css->Heading();
-					$url = $this->url;
-					require_once("view/homeView.php");
+					$resp = $this->login->loginSistema($_POST['username'], $_POST['password']); //pasa el user y pass
+					//  var_dump($resp['msj']);
+					
+					$intentos = $this->usuario->Intentos($_POST['username']);
+					// var_dump($intentos);
+
+					if($resp === 'Good'){
+
+						$objModel = new homeModel;
+						$_css = new headElement;
+						$_css->Heading();
+						$url = $this->url;
+						require_once("view/homeView.php");
+
+						// location.href._ROUTE_ . "Home";
+					}
+					if($resp['msj'] === 'Usuario o contraseña invalido!'){
+						// var_dump($intentos[0]["intentos"]);
+						if(isset($intentos[0]["intentos"])){
+							$intentos[0]["intentos"] += 1;
+						}
+						// var_dump($intentos[0]["intentos"]);
+						$fallos = $intentos[0]["intentos"];
+						$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
+						// var_dump($respuest);
+						if($fallos >= 3){
+							// echo json_encode('Bloqueo');
+							$resp = array('look' => "Bloqueo");
+							// session_destroy();
+							// $this->usuario->eliminar('usuarios', $id);
+							// var_dump("El Usuario ha sido bloqueado");
+							// $this->usuario->Bloqueo($_POST['username']);
+						}
+						
+					}
+					echo json_encode($resp);
 				}
 
 				if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {

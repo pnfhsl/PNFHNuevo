@@ -37,8 +37,10 @@
 
 		public function Cargar(){
 			// var_dump($_FILES["file"]["tmp_name"]);
+			// var_dump($_FILES["file"]["tmp_name"][0]);
 			if (isset($_FILES)) {
-				$respuesta = $this->profesor->Cargar($_FILES["file"]["tmp_name"]);
+				$respuesta = $this->profesor->Cargar($_FILES["file"]["tmp_name"][0]);
+				// var_dump($respuesta);
 				if($respuesta['msj']=="Good")
 					echo json_encode($respuesta);
 				}else{

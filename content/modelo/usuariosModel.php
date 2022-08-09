@@ -31,7 +31,6 @@
 			}
 		}
 
-
 		public function Agregar($datos){
 
 			try{
@@ -132,6 +131,52 @@
 		        return $errorReturn;
 		      }
 	    }
+
+		public function Intentos($user){
+			try {
+			  $query = parent::prepare('SELECT intentos FROM usuarios WHERE nombre_usuario = :user');
+			  $respuestaArreglo = '';
+			  $query->execute(['user'=>$user]);
+			  $respuestaArreglo = $query->fetchAll();
+			//   if ($respuestaArreglo += ['estatus' => true]) {
+			// 	  $Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+			// 	//   $Result['data'] = ['ejecucion'=>true];
+			// 	//   if(count($respuestaArreglo)>1){
+			// 	// 	  $Result['data'] = $respuestaArreglo;
+			// 	//   }
+			// 	  // echo json_encode($Result);
+			// 	  return $Result;
+			//   }
+				  return $respuestaArreglo;
+			 //return $respuestaArreglo;
+			//require_once 'Vista/usuarios.php';
+			} catch (PDOException $e) {
+			  $errorReturn = ['estatus' => false];
+			  $errorReturn += ['info' => "error sql:{$e}"];
+			  return $errorReturn;
+			}
+	  	}
+
+		  public function Bloqueo($user,$int){
+
+			try{
+	        $query = parent::prepare('UPDATE usuarios SET intentos=:intentos WHERE nombre_usuario = :nombre_usuario');
+	        $query->bindValue(':nombre_usuario', $user);
+	        $query->bindValue(':intentos', $int);
+	        $query->execute();
+	        $respuestaArreglo = $query->fetchAll();
+	        if ($respuestaArreglo += ['estatus' => true]) {
+	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+				return $Result;
+	        }
+	      } catch(PDOException $e){
+
+	        $errorReturn = ['estatus' => false];
+	      		$errorReturn['msj'] = "Error";
+		        $errorReturn += ['info' => "Error sql:{$e}"];
+		        return $errorReturn; 
+	      }
+		}
 
 
 

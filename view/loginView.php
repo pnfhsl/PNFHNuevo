@@ -56,10 +56,85 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <a href="#" data-toggle="modal" data-target="#modalAgregarArchivo">¿Has olvidado la contraseña?</a>
                 <p><input type="checkbox">Recordar</p>
             </div>
-            <button type="submit" id="loginBtn">Login</button>
+            <button type="submit" id="loginBtn" data-toggle="modal" data-target="#modalPreguntas">Login</button>
         </form>
         <p class=" w3l-register-p">¿No tienes cuenta?<a href="#" class="register"> Regístrate</a></p>
     </div>
+    <!-- <div id="modalPreguntas" class="#modalPreguntas modal fade" role="dialog">
+
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+
+            <form role="form" method="post" enctype="multipart/form-data" id="form_data">
+
+              <div class="modal-header" style="background:#3c8dbc; color:white">
+
+                
+
+                <h4 class="modal-title" style="text-align: left;">Seguridad</h4>
+
+              </div>
+
+              <div class="modal-body">
+
+                <div class="box-body">
+
+
+                  <div class="form-group">
+
+                    <label for="">¿Cuál es su año de nacimiento?</label>
+                    <div class="input-group">
+
+                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                      <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="nuevoCorreo" id="respuesta_uno" placeholder="Ingresar su respuesta" required>
+
+                    </div>
+                    <br>
+                    <label for="">¿Cuál es el nombre se primer perro?</label>
+                    <div class="input-group">
+
+                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                      <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="nuevoCorreo" id="respuesta_dos" placeholder="Ingresar su respuesta" required>
+
+                    </div>
+                    <br>
+                    <label for="">¿Cuál es la profesión de su madre?</label>
+                    <div class="input-group">
+
+                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                      <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="nuevoCorreo" id="respuesta_tres" placeholder="Ingresar su respuesta" required>
+
+                    </div>
+
+
+                  </div>
+
+
+                </div>
+
+              </div>
+
+              <div class="modal-footer">
+
+                <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+                <span type="submit" class="btn btn-primary subir" id="enviar">Enviar</span>
+
+              </div>
+
+
+            </form>
+
+          </div>
+
+        </div>
+
+    </div>
+ -->
     <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
 
         <div class="modal-dialog">
@@ -156,8 +231,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 password: pass,
               },
               success: function(respuesta) {
-                // alert(respuesta);
+                //  alert(respuesta);
                 var data = JSON.parse(respuesta); 
+                console.log(data);
 
                 if (data.msj === "Good") { 
                   $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
@@ -168,10 +244,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 }
 
                 if (data.msj === "Usuario o contraseña invalido!") {
-                  $(".content-input.pass p").html(data.msj);
-                  $(".content-input.pass p").attr("style", "visibility:;margin-top:.2vw");
-                  return;
+                  Swal.fire({
+                    type: 'warning',
+                    title: '¡Usuario o contraseña inválido',
+                    text: 'El nombre de usuario y la contraseña no coinciden',
+                    footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
+                  }); 
                 }
+
+                if (data.look === "Bloqueo") {
+                  Swal.fire({
+                    type: 'warning',
+                    title: '¡Usuario bloqueado!',
+                    text: 'El usuario ' + user + ' ha sido bloqueado',
+                    footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
+                  });
+                
+                }
+
 
               },
               error: function(respuesta) {

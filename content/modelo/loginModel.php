@@ -23,7 +23,7 @@
 			$this->user = $user;
 			$this->passw = $passw;
 
-			$this->loginSistema();
+			// $this->loginSistema();
 		}
 
 		// public function getRecuperarSistema($pass){
@@ -33,7 +33,9 @@
 		// }
 
 
-		private function loginSistema(){		//Se hace una consulta de los usuarios recibidos
+		public function loginSistema($user, $passw){		//Se hace una consulta de los usuarios recibidos
+			$this->user = $user;
+			$this->passw = $passw;
 			$this->password = md5($this->passw);
 			
 			$sql = ('SELECT * FROM usuarios WHERE nombre_usuario = :user AND password_usuario = :password AND estatus = 1');
@@ -50,13 +52,15 @@
 			}
 				if ($this->user == $this->usuario AND $this->password == $this->cont) {
 					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-					echo json_encode($Result);
+					// echo json_encode($Result);
 					$_SESSION['cuentaActiva'] = true;
-					die();
+					// die();
+					return $Result;
 				}else{
 					$Result = array('msj' => "Usuario o contraseña invalido!");
-					echo json_encode($Result);
-					die();
+					// echo json_encode($Result);
+					// die();
+					return $Result;
 				}
 			
 

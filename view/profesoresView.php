@@ -147,12 +147,7 @@
 
                     </div>
 
-                  </div>
-              <!--=====================================
-              MODAL MODIFICAR PROF
-              ======================================-->
-
-              
+                  </div>              
 
 
                 <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarProf">Agregar Nuevo</button>
@@ -228,20 +223,6 @@
                                 <span id="apellidoS" class="mensajeError"></span>
                               </div>
                             </div>
-                            
-
-                            <!--ENTRADA CORREO -->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="correo">Correo</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
-                                <input type="text" class="form-control input-lg" name="nuevoCorreo" id="correo" placeholder="Ingresar Correo" required>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="correoS" class="mensajeError"></span>
-                              </div>
-                            </div>
-                          
 
                             <!--ENTRADA TELÉFONO -->
                             <div class="form-group col-xs-12 col-sm-12">
@@ -296,8 +277,8 @@
                 <tr>
                   <th>Nº</th>
                   <th>Cédula</th>
-                  <th>Nombre y Apellido</th>
-                  <th>Especialidad</th>
+                  <th>Nombre </th>
+                  <th>Apellido</th>
                   <th>Teléfono</th>
                   <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
                   <th>Acciones</th>
@@ -323,12 +304,12 @@
                   </td>
                   <td style="width:20%">
                     <span class="contenido2">
-                      <?php echo $data['nombre_profesor']." ".$data['apellido_profesor']; ?>
+                      <?php echo $data['nombre_profesor']; ?>
                     </span>
                   </td>
                   <td style="width:20%">
                     <span class="contenido2">
-                      <?php echo $data['correo_profesor']; ?>
+                      <?php echo $data['apellido_profesor']; ?>
                     </span>
                   </td>
                   <td style="width:20%">
@@ -432,20 +413,6 @@
                                   </div>
                                 </div>
 
-
-                                <!--ENTRADA CORREO -->
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="correo<?=$data['cedula_profesor']?>">Correo</label>
-                                  <div class="input-group" style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
-                                    <input type="text" class="form-control input-lg correoModificar correoModificar<?=$data['cedula_profesor']?>" value="<?=$data['correo_profesor']?>" name="<?=$data['cedula_profesor']?>" id="correo<?=$data['cedula_profesor']?>" placeholder="Ingresar Correo" required>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="correoS<?=$data['cedula_profesor']?>" class="mensajeError"></span>
-                                  </div>
-                                </div>
-
-
                                 <!--ENTRADA TELÉFONO -->
                                 <div class="form-group col-xs-12 col-sm-12">
                                   <label for="telefono<?=$data['cedula_profesor']?>">Telefono</label>
@@ -496,8 +463,8 @@
                  <tr>
                   <th>Nº</th>
                   <th>Cédula</th>
-                  <th>Nombre y Apellido</th>
-                  <th>Especialidad</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
                   <th>Teléfono</th>
                   <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
                   <th>Acciones</th>
@@ -603,7 +570,7 @@ $(document).ready(function(){
           contentType: false,
           processData: false,
           success: function(respuesta) {
-            // alert(respuesta);
+            //  alert(respuesta);
             console.log('hola');
             var datos = JSON.parse(respuesta);
             if (datos.msj === "Good") {
@@ -618,7 +585,20 @@ $(document).ready(function(){
               }).then((isConfirm) => {
                 location.reload();
               });
-            }
+            }else {
+              alert('probando');
+                Swal.fire({
+                  position: 'center',
+                  type: 'danger',
+                  title: 'No se han cargado los datos de los profesores',
+                  footer: 'SCHSL',
+                  timer: 3000,
+                  showCloseButton: false,
+                  showConfirmButton: false,
+                }).then((isConfirm) => {
+                  location.reload();
+                });
+              }
           }
 
         });

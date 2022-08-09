@@ -1,9 +1,9 @@
-{
-    "description": "Electiva III",
+{   
+    "description": "SCHSL",
     "type": "project",
     "authors": [{
-        "name": "Jesus Bracho",
-        "email": "brachojd22@gmail.com"
+        "name": "Josmar, Samuel, Yosneidy, Lynneth",
+        "email": "pnfhsl10@gmail.com"
     }],
     "autoload": {
         "psr-4": {
