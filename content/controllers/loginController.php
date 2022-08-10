@@ -33,18 +33,29 @@
 			if($_POST){		
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
 					$resp = $this->login->loginSistema($_POST['username'], $_POST['password']); //pasa el user y pass
-					 // var_dump($resp['msj']);
+					 // var_dump($resp);
 					if($resp['msj'] == "Good"){
 						$intentos = $this->usuario->Intentos($_POST['username']);
 						$int = 0;
+						$estatus = -1;
+						if(!empty($resp['data']) && count($resp['data'])>0){
+							// print_r($resp['data'][0]);
+							$estatus = $resp['data'][0]['estatus'];
+						}
 						if(count($intentos)>0){
 							$int = $intentos[0]["intentos"];
 						}
 						if($resp['msj'] === 'Good' && $int < 3){
 							$resp = array('access' => "Acceder");
+							if($estatus=="1"){
+								$resp['stat'] = "1";
+							}
+							if($estatus=="2"){
+								$resp['stat'] = "2";
+							}
 							$this->usuario->Bloqueo($_POST['username'], 0);
 						}
-						// else
+
 						if($intentos[0]["intentos"] >= 3){
 							$resp = array('look' => "Bloqueo");
 						}

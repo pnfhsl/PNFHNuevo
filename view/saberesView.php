@@ -23,8 +23,8 @@
         <small><?php echo "Ver ".$url; ?></small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="?route=Home"><i class="fa fa-dashboard"></i> Inicio </a></li>
-        <li><a href="?route=<?php echo $url ?>"><?php echo $url; ?></a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Home"); ?>"><i class="fa fa-dashboard"></i> Inicio </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Saberes"); ?>"><?php echo $url; ?></a></li>
         <li class="active"><?php if(!empty($action)){echo $action;} echo " ". $url; ?></li>
       </ol>
     </section>
@@ -39,20 +39,19 @@
           <div class="box">
             <div class="box-header">
               <div class="col-xs-12 col-sm-6">
-                <img src="assets/img/logolista.png" style="width:25px;color:red !importante;">
+                <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
 
                     <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarSC">Agregar Nuevo</button>
+                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
                 <div id="modalAgregarSC" class="modalAgregarSC modal fade" role="dialog">
                 
-                <div class="modal-dialog">
+                <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;">
 
                   <div class="modal-content">
-
-                    <form role="form" method="post" enctype="multipart/form-data">
 
 
                       <!--=====================================
@@ -71,28 +70,30 @@
                       CUERPO DEL MODAL
                       ======================================-->
 
-                      <div class="modal-body">
+                      <div class="modal-body" style="max-height:70vh;overflow:auto;">
 
                         <div class="box-body">
 
-                          
-                          <!-- ENTRADA PARA EL NOMBRE DEL SC -->
-
-                           <div class="form-group"> 
-                            <div class="input-group">                         
-                              <span class="input-group-addon"><i class="fa fa-address-card"></i></span> 
-                              <input type="text" class="form-control input-lg" name="nuevoNombre" placeholder="Ingresar Saber Complementario" id="nombreSC" required>
-                              
+                          <div class="row">
+                            
+                            <!-- ENTRADA PARA EL NOMBRE DEL SC -->
+                            <div class="form-group col-xs-12 col-sm-12"> 
+                              <label for="nombreSC">Nombre</label>
+                              <div class="input-group" style="width:100%;">
+                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                <input type="text" class="form-control input-lg" name="nuevoNombre" placeholder="Ingresar Saber Complementario" id="nombreSC" required>
+                              </div>
+                              <div style="width:100%;text-align:right;">
+                                <span id="nombreS" class="mensajeError"></span>
+                              </div>
                             </div>
-                            <span id="nombreS" class="mensajeError"></span>
-                          </div>
-
-                          <!-- ENTRADA PARA EL TRAYECTO -->
 
                           
-                          <div class="form-group ">
-                              <div class="input-group" style="text-align: left !important;" >
-                                <span class="input-group-addon"><i class="fa fa-address-card"></i></span> 
+                            <!-- ENTRADA PARA EL TRAYECTO -->
+                            <div class="form-group col-xs-12 col-sm-12">
+                              <label for="trayectoSC">Trayecto</label>
+                              <div class="input-group" style="width:100%;">
+                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
                                 <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayectoSC"  required>
                                   <option value="" style="text-align: left;">Seleccione un trayecto</option>
                                   <option value="1">Trayecto I</option>
@@ -101,27 +102,31 @@
                                   <option value="4">Trayecto IV</option>
                                 </select>
                               </div>
-
-                              <span id="trayectoS" class="mensajeError"></span>
+                              <div style="width:100%;text-align:right;">
+                                <span id="trayectoS" class="mensajeError"></span>
+                              </div>
                             </div>
 
-                          <!-- ENTRADA PARA EL FASE -->
 
-
-                           <div class="form-group ">
-                              <div class="input-group" style="text-align: left !important;" >
-                                <span class="input-group-addon"><i class="fa fa-address-card"></i></span> 
+                            <!-- ENTRADA PARA EL FASE -->
+                            <div class="form-group col-xs-12 col-sm-12">
+                              <label for="faseSC">Fase</label>
+                              <div class="input-group" style="width:100%;">
+                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
                                 <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar fase" id="faseSC" required>
                                   <option value="">Seleccione un Fase</option>
                                   <option value="1">Fase I</option>
                                   <option value="2">Fase II</option>   
                                 </select>
                               </div>
-                              <span id="fase" class="mensajeError"></span>
+                              <div style="width:100%;text-align:right;">
+                                <span id="faseS" class="mensajeError"></span>
+                              </div>
                             </div>
 
-                              <span id="faseS" class="mensajeError"></span>
 
+                          </div>
+                                <!-- <span id="fase" class="mensajeError"></span> -->
                         </div>
 
                       </div>
@@ -138,8 +143,6 @@
 
                       </div>
 
-
-                    </form>
 
                   </div>
 
@@ -247,7 +250,7 @@
 
                   <div id="modalmodificarButtonsc<?=$data['id_SC']?>" class="modalmodificarButtonsc modal fade modificarButtonsc<?=$data['id_SC']?>" role="dialog">
                     
-                    <div class="modal-dialog">
+                    <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;">
                       <div class="modal-content">
 
                         <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
@@ -268,54 +271,65 @@
                           CUERPO DEL MODAL
                           ======================================-->
 
-                          <div class="modal-body">
+                          <div class="modal-body" style="max-height:70vh;overflow:auto;">
 
                             <div class="box-body">
 
-                          
-                              <!-- ENTRADA SABER COMPLEMENTARIO -->
-
-                               <div class="form-group">
-                               <div class="input-group">
-                               <span class="input-group-addon"><i class="fa fa-address-card"></i></span> 
-                               <input type="text" class="form-control input-lg" value="<?=$data['nombreSC']?>" name="nuevaNombreSC" placeholder="Ingresar Saber Complementario" id="nombreSC<?=$data['id_SC']?>" required>
-                               </div>
-                               <span id="nombreS<?=$data['id_SC']?>" class="mensajeError"></span>
-                               </div>
-
-                              <!-- ENTRADA PARA EL TRAYECTO-->
+                              <div class="row">
                               
-                            <div class="form-group">
-                              <div class="input-group " style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayectoSC<?=$data['id_SC']?>" required>
-                                  <option value="">Seleccione un trayecto</option>
-                                  <option <?php if($data['trayecto_SC']=="1"){ echo "selected"; } ?> value="1">Trayecto I</option>
-                                  <option <?php if($data['trayecto_SC']=="2"){ echo "selected"; } ?> value="2">Trayecto II</option>
-                                  <option <?php if($data['trayecto_SC']=="3"){ echo "selected"; } ?> value="3">Trayecto III</option>
-                                  <option <?php if($data['trayecto_SC']=="4"){ echo "selected"; } ?> value="4">Trayecto IV</option>
-                                </select>
-                              </div>
-                                <span id="trayectoS<?=$data['id_SC']?>" class="mensajeError"></span>
-                            </div>
+                                <!-- ENTRADA SABER COMPLEMENTARIO -->
+                                <div class="form-group col-xs-12 col-sm-12">
+                                  <label for="nombreSC<?=$data['id_SC']?>">Nombre</label>
+                                  <div class="input-group" style="width:100%;">
+                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                    <input type="text" class="form-control input-lg" value="<?=$data['nombreSC']?>" name="nuevaNombreSC" placeholder="Ingresar Saber Complementario" id="nombreSC<?=$data['id_SC']?>" required>
+                                  </div>
+                                  <div style="width:100%;text-align:right;">
+                                    <span id="nombreS<?=$data['id_SC']?>" class="mensajeError"></span>
+                                  </div>
+                                </div>
 
-                              <!-- ENTRADA PARA LA FASE -->
-                              
-                            <div class="form-group ">
-                              <div class="input-group " style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="fase" placeholder="Ingresar trayecto" id="faseSC<?=$data['id_SC']?>" required>
-                                  <option value="">Seleccione un fase</option>
-                                  <option <?php if($data['fase_SC']=="1"){ echo "selected"; } ?> value="1">Fase I</option>
-                                  <option <?php if($data['fase_SC']=="2"){ echo "selected"; } ?> value="2">Fase II</option>
-                                </select>
+                                
+                                <!-- ENTRADA PARA EL TRAYECTO-->
+                                <div class="form-group col-xs-12 col-sm-12">
+                                  <label for="trayectoSC<?=$data['id_SC']?>">Trayecto</label>
+                                  <div class="input-group" style="width:100%;">
+                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                    <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayectoSC<?=$data['id_SC']?>" required>
+                                      <option value="">Seleccione un trayecto</option>
+                                      <option <?php if($data['trayecto_SC']=="1"){ echo "selected"; } ?> value="1">Trayecto I</option>
+                                      <option <?php if($data['trayecto_SC']=="2"){ echo "selected"; } ?> value="2">Trayecto II</option>
+                                      <option <?php if($data['trayecto_SC']=="3"){ echo "selected"; } ?> value="3">Trayecto III</option>
+                                      <option <?php if($data['trayecto_SC']=="4"){ echo "selected"; } ?> value="4">Trayecto IV</option>
+                                    </select>
+                                  </div>
+                                  <div style="width:100%;text-align:right;">
+                                    <span id="trayectoS<?=$data['id_SC']?>" class="mensajeError"></span>
+                                  </div>
+                                </div>
+
+                                
+                                <!-- ENTRADA PARA LA FASE -->
+                                <div class="form-group col-xs-12 col-sm-12">
+                                  <label for="faseSC<?=$data['id_SC']?>">Fase</label>
+                                  <div class="input-group " style="width:100%;">
+                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                    <select class="form-control select2 input-lg" style="width:100%;" name="fase" placeholder="Ingresar trayecto" id="faseSC<?=$data['id_SC']?>" required>
+                                      <option value="">Seleccione un fase</option>
+                                      <option <?php if($data['fase_SC']=="1"){ echo "selected"; } ?> value="1">Fase I</option>
+                                      <option <?php if($data['fase_SC']=="2"){ echo "selected"; } ?> value="2">Fase II</option>
+                                    </select>
+                                  </div>
+                                  <div style="width:100%;text-align:right;">
+                                    <span id="faseS<?=$data['id_SC']?>" class="mensajeError"></span>
+                                  </div>
+                                </div>
+
                               </div>
-                              <span id="faseS<?=$data['id_SC']?>" class="mensajeError"></span>
+
                             </div>
 
                           </div>
-
-                        </div>
 
                           <!--=====================================
                           PIE DEL MODAL
@@ -452,7 +466,7 @@ $(document).ready(function(){
   });
 */
  $("#guardar").click(function(){
-
+    var url = $("#url").val();
     var response = validar();
     if(response){
     swal.fire({ 
@@ -474,7 +488,7 @@ $(document).ready(function(){
             // alert(nombreSC + ' ' + trayectoSC+ ' '+ faseSC);
 
               $.ajax({
-                url: 'Saberes/Agregar',    
+                url: url+'/Agregar',    
                 type: 'POST',   
                 data:{
 
@@ -485,7 +499,7 @@ $(document).ready(function(){
                       },
 
                 success: function(resp){
-                   // alert(resp);
+                   alert(resp);
                 /*window.alert("Hola mundo");   
                 console.log(resp); 
                   window.alert(resp);*/
@@ -543,6 +557,7 @@ $(document).ready(function(){
   });
    
   $(".modificarButtonModal").click(function(){
+    var url = $("#url").val();
     var id = $(this).val();
 
     var response = validar(true, id);
@@ -564,7 +579,7 @@ $(document).ready(function(){
             let fase = $("#faseSC" + id).val();
              // alert(id + ' '+ nombreSC + ' ' + trayecto + ' ' + fase);
             $.ajax({
-              url: 'Saberes/Modificar',    
+              url: url+'/Modificar',    
               type: 'POST',   
               data: {
                 Editar: true,    
@@ -637,6 +652,7 @@ $(document).ready(function(){
 
 
  $(".modificarBtn").click(function(){
+    var url = $("#url").val();
     swal.fire({ 
           title: "¿Desea modificar los datos?",
           text: "Se movera al formulario para modificar los datos, ¿desea continuar?",
@@ -652,7 +668,7 @@ $(document).ready(function(){
             let userMofif = $(this).val();
             //alert(userMofif);
             $.ajax({
-              url: 'Saberes/Buscar',    
+              url: url+'/Buscar',    
               type: 'POST',  
               data: {
                 Buscar: true,   
@@ -703,6 +719,7 @@ $(document).ready(function(){
 
 
   $(".eliminarBtn").click(function(){
+    var url = $("#url").val();
       swal.fire({ 
           title: "¿Desea borrar los datos?",
           text: "Se borraran los datos escogidos, ¿desea continuar?",
@@ -731,7 +748,7 @@ $(document).ready(function(){
                       let userDelete = $(this).val();
 
                       $.ajax({
-                        url: 'Saberes/Eliminar',    
+                        url: url+'/Eliminar',    
                         type: 'POST',   
                         data: {
                         Eliminar: true,   

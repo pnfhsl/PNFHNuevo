@@ -102,11 +102,10 @@
 		public function Agregar($datos){
 
 			try{
-	        $query = parent::prepare('INSERT INTO profesores (cedula_profesor, nombre_profesor, apellido_profesor,correo_profesor,telefono_profesor, estatus) VALUES (:cedula_profesor, :nombre_profesor, :apellido_profesor, :correo_profesor, :telefono_profesor, 1)');
+	        $query = parent::prepare('INSERT INTO profesores (cedula_profesor, nombre_profesor, apellido_profesor, telefono_profesor, estatus) VALUES (:cedula_profesor, :nombre_profesor, :apellido_profesor, :telefono_profesor, 1)');
 	        $query->bindValue(':cedula_profesor', $datos['cedula']);
 	        $query->bindValue(':nombre_profesor', $datos['nombre']);
 	        $query->bindValue(':apellido_profesor', $datos['apellido']);
-	        $query->bindValue(':correo_profesor', $datos['correo']);
 	        $query->bindValue(':telefono_profesor', $datos['telefono']);
 	        $query->execute();
 	        $respuestaArreglo = $query->fetchAll();
@@ -127,12 +126,11 @@
 		public function Modificar($datos){
 
 			try{
-	        $query = parent::prepare('UPDATE profesores SET cedula_profesor=:cedula_profesor, nombre_profesor = :nombre_profesor, apellido_profesor = :apellido_profesor, correo_profesor = :correo_profesor, telefono_profesor=:telefono_profesor, estatus=1 WHERE cedula_profesor = :cedula_profesor2');
+	        $query = parent::prepare('UPDATE profesores SET cedula_profesor=:cedula_profesor, nombre_profesor = :nombre_profesor, apellido_profesor = :apellido_profesor, telefono_profesor=:telefono_profesor, estatus=1 WHERE cedula_profesor = :cedula_profesor2');
 	        $query->bindValue(':cedula_profesor2', $datos['id']);
 	        $query->bindValue(':cedula_profesor', $datos['cedula']);
 	        $query->bindValue(':nombre_profesor', $datos['nombre']);
 	        $query->bindValue(':apellido_profesor', $datos['apellido']);
-	        $query->bindValue(':correo_profesor', $datos['correo']);
 	        $query->bindValue(':telefono_profesor', $datos['telefono']);
 	        $query->execute();
 	        $respuestaArreglo = $query->fetchAll();

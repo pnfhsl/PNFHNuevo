@@ -23,8 +23,8 @@
         <small><?php echo "Ver ".$url; ?></small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="?route=Home"><i class="fa fa-dashboard"></i> Inicio </a></li>
-        <li><a href="?route=<?php echo $url ?>"><?php echo $url; ?></a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Home"); ?>"><i class="fa fa-dashboard"></i> Inicio </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Clases"); ?>"><?php echo $url; ?></a></li>
         <li class="active"><?php if(!empty($action)){echo $action;} echo " ". $url; ?></li>
       </ol>
     </section>
@@ -39,12 +39,21 @@
           <div class="box">
             <div class="box-header">
                <div class="col-xs-12 col-sm-6">
-                <img src="assets/img/logolista.png" style="width:25px;color:red !importante;">
+                <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
                
-               <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarClase">Agregar Nuevo</button>
+
+              <!--=====================================
+              MODAL MODIFICAR CLASES
+              ======================================-->
+
+              
+
+
+                <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarClase">Agregar Nuevo</button>
+                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
               <!--=====================================
               MODAL AGREGAR PROF
@@ -82,10 +91,10 @@
 
                             <!-- ENTRADA PARA SELECCIONAR SECCIONES-->
                             <div class="form-group col-xs-12 col-sm-12">
-                              <label for="seccion">Seccion</label>                              
+                              <label for="seccion">Seccion</label>
                               <div class="input-group" style="width:100%;">
                                 <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="nuevo" id="seccion">
+                                <select class="form-control select2 input-lg" style="width:100%;" name="seccion" id="seccion">
                                   <option value="">Sección</option>
                                   <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])):  ?>
                                   <option value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
@@ -93,7 +102,7 @@
                                 </select>
                               </div>
                               <div style="width:100%;text-align:right;">
-                                <span id="seccionS" class="mensajeError col-lg-5" ></span>
+                                <span id="seccionS" class="mensajeError" ></span>
                               </div>
                             </div>
 
@@ -106,12 +115,12 @@
                                 <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="saber">
                                   <option value="">Saber Complementario</option>
                                   <?php foreach ($saberes as $dateS): if(!empty($dateS['id_SC'])):  ?>
-                                  <option value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option>
+                                  <!-- <option value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option> -->
                                   <?php endif; endforeach; ?>
                                 </select>
                               </div>
                               <div style="width:100%;text-align:right;">
-                                <span id="saberS" class="mensajeError col-lg-7" ></span>
+                                <span id="saberS" class="mensajeError" ></span>
                               </div>
                             </div>
                           
@@ -281,7 +290,7 @@
                                   <label for="seccion<?=$data['id_clase'];?>">Seccion</label>                             
                                   <div class="input-group" style="width:100%;">
                                     <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span> 
-                                    <select class="form-control select2 input-lg" style="width:100%;" name="nuevo" id="seccion<?=$data['id_clase'];?>">
+                                    <select class="form-control select2 input-lg seccionModificar" style="width:100%;" name="<?=$data['id_clase'];?>" id="seccion<?=$data['id_clase'];?>">
                                       <option value="">Sección</option>
                                       <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])):   ?>
                                       <option value="<?php echo $date['cod_seccion'] ?>" <?php if($date['cod_seccion']==$data['cod_seccion']){ echo "selected"; } ?> ><?php echo $date['nombre_seccion'] ?></option>
@@ -289,25 +298,28 @@
                                     </select>
                                   </div>
                                   <div style="width:100%;text-align:right;">
-                                    <span id="seccionS<?=$data['id_clase']?>" class="mensajeError col-lg-5"></span>
+                                    <span id="seccionS<?=$data['id_clase']?>" class="mensajeError"></span>
                                   </div>
                                 </div>
-
 
                                 <!-- ENTRADA PARA EL SABER -->                              
                                 <div class="form-group col-xs-12 col-sm-12">
                                   <label for="saber<?=$data['id_clase'];?>">Saber complementario</label>
                                   <div class="input-group" style="width:100%;">
                                     <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
-                                    <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="saber<?=$data['id_clase'];?>">
+                                    <select class="form-control select2 input-lg saberModificar" style="width:100%;" name="nuevoPerfil" id="saber<?=$data['id_clase'];?>">
                                       <option value="">Saber Complementario</option>
                                       <?php foreach ($saberes as $dateS): if(!empty($dateS['id_SC'])): ?>
+                                        <?php if (($dateS['trayecto_SC']==$data['trayecto_SC'])&&($dateS['fase_SC']==$data['fase_SC'])): ?>
+                                          
                                       <option value="<?php echo $dateS['id_SC'] ?>" <?php if($dateS['id_SC']==$data['id_SC']){ echo "selected"; } ?> ><?php echo $dateS['nombreSC'] ?></option>
+
+                                        <?php endif; ?>
                                       <?php endif; endforeach; ?>
                                     </select>
                                   </div>
                                   <div style="width:100%;text-align:right;">
-                                    <span id="saberS<?=$data['id_clase']?>" class="mensajeError col-lg-7"></span>
+                                    <span id="saberS<?=$data['id_clase']?>" class="mensajeError"></span>
                                   </div>
                                 </div>
 
@@ -335,6 +347,16 @@
 
                           </div>
                               
+                               
+
+
+                              
+
+
+
+                          
+
+
                           <!--=====================================
                           PIE DEL MODAL
                           ======================================-->
@@ -409,9 +431,142 @@
 <?php endif; ?>
 <script>
 $(document).ready(function(){ 
-  
+  $('#seccion').change(function(){
+    var url = $("#url").val();
+    var seccion = $(this).val();
+    if(seccion==""){
+      var html = '';
+      html += '<option value="">Saber Complementario</option>';
+      $("#saber").html(html);
+    }else{
+      $.ajax({
+        url: url+'/Buscar',    
+        type: 'POST',  
+        data: {
+          Buscar: true,   
+          saberes: true,   
+          cod_seccion: seccion,       
+        },
+        success: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);
+          console.log(resp);
+          if (resp.msj == "Good") {
+            var data = resp.data;
+            var dataSaberes = "";
+            if(resp.msjSaberes=="Good"){
+              dataSaberes = resp.dataSaberes;
+            }
+            // console.log("DATA: ");
+            // console.log(data);
+            // console.log("SABERES: ");
+            // console.log(dataSaberes);
+            var html = '';
+            html += '<option value="">Saber Complementario</option>';
+            for (var i = 0; i < data.length; i++) {
+              html += '<option value="'+data[i]['id_SC']+'" ';
+
+              if(dataSaberes.length>0){
+                for (var j = 0; j < dataSaberes.length; j++) {
+                  if(dataSaberes[j]['id_SC']==data[i]['id_SC']){
+                    html += 'disabled="disabled"'
+                  }
+                }
+              }
+              
+              html += ' >'+data[i]['nombreSC']+'</option>';
+            }
+            $("#saber").html(html);
+          }
+          if(resp.msj == "Vacio"){
+            var html = '';
+            html += '<option value="">Saber Complementario</option>';
+            $("#saber").html(html);
+          }
+        },
+        error: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);
+          console.log(resp);
+        }
+      });
+    }
+  });
+
+  $('.seccionModificar').change(function(){
+
+    var url = $("#url").val();
+    var id = $(this).attr("name");
+    var seccion = $(this).val();
+    // alert(id);
+    // alert(seccion);
+    if(seccion==""){
+      var html = '';
+      html += '<option value="">Saber Complementario</option>';
+      $("#saber"+id).html(html);
+    }else{
+      $.ajax({
+        url: url+'/Buscar',    
+        type: 'POST',  
+        data: {
+          Buscar: true,   
+          saberes: true,   
+          cod_seccion: seccion,       
+        },
+        success: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);   
+          // alert(resp.msj);
+          if (resp.msj == "Good") {  
+            var data = resp.data;
+            var dataSaberes = "";
+            if(resp.msjSaberes=="Good"){
+              dataSaberes = resp.dataSaberes;
+            }
+            // console.log("DATA: ");
+            // console.log(data);
+            // console.log("Saberes: ");
+            // console.log(dataSaberes);
+            // console.log($("#saber"+id).html());
+            var html = '';
+            html += '<option value="">Saber Complementario</option>';
+            // alert(dataSaberes);
+            // alert(dataSaberes);
+
+            for (var i = 0; i < data.length; i++) {
+              html += '<option value="'+data[i]['id_SC']+'" ';
+              if(dataSaberes.length>0){
+                for (var j = 0; j < dataSaberes.length; j++) {
+                  if(dataSaberes[j]['id_SC']==data[i]['id_SC']){
+                    if(dataSaberes[j]['id_clase']==id){
+                      html += 'selected="selected"'
+                    }else{
+                      html += 'disabled="disabled"'
+                    }
+                  }
+                }
+              }
+              html += ' >'+data[i]['nombreSC']+'</option>';
+            }
+            $("#saber"+id).html(html);
+          }
+          if(resp.msj == "Vacio"){
+            var html = '';
+            html += '<option value="">Saber Complementario</option>';
+            $("#saber"+id).html(html);
+          }
+        },
+        error: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);
+          console.log(resp);
+        }
+      });
+    }
+  });
 
   $(".modificarButtonModal").click(function(){
+    var url = $("#url").val();
     var id = $(this).val();
 
     var response = validar(true, id);
@@ -436,7 +591,7 @@ $(document).ready(function(){
             
             // alert( seccion + ' ' + saber + ' ' + profesor);
             $.ajax({
-              url: 'Clases/Modificar',    
+              url: url+'/Modificar',    
               type: 'POST',   
               data: {
                 Editar: true,   
@@ -459,7 +614,7 @@ $(document).ready(function(){
                       footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                     }).then((isConfirm) => {
                         location.reload();
-                    } );
+                    });
                   } 
                   if (datos.msj === "Repetido") {   
                     Swal.fire({
@@ -505,7 +660,9 @@ $(document).ready(function(){
 
 
   $("#guardar").click(function(){
-      var response = validar();
+
+    var url = $("#url").val();
+    var response = validar();
     if(response){
       swal.fire({ 
             title: "¿Desea guardar los datos?",
@@ -532,7 +689,7 @@ $(document).ready(function(){
           // alert( profesor);
 
               $.ajax({
-                url: 'Clases/Agregar',    
+                url: url+'/Agregar',    
                 type: 'POST',   
                 data: {
                   Agregar: true,   
@@ -671,6 +828,8 @@ $(document).ready(function(){
   });
 
   $(".eliminarBtn").click(function(){
+
+    var url = $("#url").val();
       swal.fire({ 
           title: "¿Desea borrar los datos?",
           text: "Se borraran los datos escogidos, ¿desea continuar?",
@@ -699,7 +858,7 @@ $(document).ready(function(){
 
                        /* alert(claseDelete);*/
                       $.ajax({
-                        url: 'Clases/Eliminar',    
+                        url: url+'/Eliminar',    
                         type: 'POST',   
                         data: {
                           Eliminar: true,   

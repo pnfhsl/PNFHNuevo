@@ -110,50 +110,75 @@
 		}
 
 		public function getOne($dato){
-		      try {
-		    	$query = parent::prepare('SELECT * FROM saberes WHERE nombreSC = :nombreSC');
-		    	$respuestaArreglo = '';
-		        $query->execute([':nombreSC'=>$dato]);
-		        $respuestaArreglo = $query->fetchAll();
-		        if ($respuestaArreglo += ['estatus' => true]) {
-		        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-		        	$Result['data'] = ['ejecucion'=>true];
-		        	if(count($respuestaArreglo)>1){
-		        		$Result['data'] = $respuestaArreglo;
-		        	}
+			try {
+				$query = parent::prepare('SELECT * FROM saberes WHERE nombreSC = :nombreSC');
+				$respuestaArreglo = '';
+				$query->execute([':nombreSC'=>$dato]);
+				$respuestaArreglo = $query->fetchAll();
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					$Result['data'] = ['ejecucion'=>true];
+					if(count($respuestaArreglo)>1){
+						$Result['data'] = $respuestaArreglo;
+					}
 					// echo json_encode($Result);
 					return $Result;
-		        }
-		       //return $respuestaArreglo;
-		      //require_once 'Vista/usuarios.php';
-		      } catch (PDOException $e) {
-		        $errorReturn = ['estatus' => false];
-		        $errorReturn += ['info' => "error sql:{$e}"];
-		        return $errorReturn;
-		      }
-	    }
+				}
+				//return $respuestaArreglo;
+				//require_once 'Vista/usuarios.php';
+			} catch (PDOException $e) {
+				$errorReturn = ['estatus' => false];
+				$errorReturn += ['info' => "error sql:{$e}"];
+				return $errorReturn;
+			}
+		}
+		public function getSaber($trayecto, $fase){
+			try {
+				$query = parent::prepare("SELECT * FROM saberes WHERE trayecto_SC = '{$trayecto}' and fase_SC = '{$fase}'");
+				$respuestaArreglo = '';
+				// $query->bindValue(':trayecto_SC', $trayecto);
+				// $query->bindValue(':fase_SC', $fase);
+				$query->execute();
+				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
+				// if ($respuestaArreglo += ['estatus' => true]) {
+				// 	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+				// 	$Result['data'] = ['ejecucion'=>true];
+				// 	if(count($respuestaArreglo)>0){
+				// 		$Result['data'] = $respuestaArreglo;
+				// 	}
+				// 	// echo json_encode($Result);
+				// 	return $Result;
+				// }
+				return $respuestaArreglo;
+				//require_once 'Vista/usuarios.php';
+			} catch (PDOException $e) {
+				$errorReturn = ['estatus' => false];
+				$errorReturn += ['info' => "error sql:{$e}"];
+				return $errorReturn;
+			}
+		}
 
-public function getOneId($dato){
+		public function getOneId($dato){
 		      try {
-		    	$query = parent::prepare('SELECT * FROM saberes WHERE id_SC = :id_SC');
-		    	$respuestaArreglo = '';
-		        $query->execute([':id_SC'=>$dato]);
-		        $respuestaArreglo = $query->fetchAll();
-		        if ($respuestaArreglo += ['estatus' => true]) {
-		        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-		        	$Result['data'] = ['ejecucion'=>true];
-		        	if(count($respuestaArreglo)>1){
-		        		$Result['data'] = $respuestaArreglo;
-		        	}
+				$query = parent::prepare('SELECT * FROM saberes WHERE id_SC = :id_SC');
+				$respuestaArreglo = '';
+				$query->execute([':id_SC'=>$dato]);
+				$respuestaArreglo = $query->fetchAll();
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					$Result['data'] = ['ejecucion'=>true];
+					if(count($respuestaArreglo)>1){
+						$Result['data'] = $respuestaArreglo;
+					}
 					// echo json_encode($Result);
 					return $Result;
-		        }
-		       //return $respuestaArreglo;
-		      //require_once 'Vista/usuarios.php';
+				}
+				//return $respuestaArreglo;
+				//require_once 'Vista/usuarios.php';
 		      } catch (PDOException $e) {
-		        $errorReturn = ['estatus' => false];
-		        $errorReturn += ['info' => "error sql:{$e}"];
-		        return $errorReturn;
+				$errorReturn = ['estatus' => false];
+				$errorReturn += ['info' => "error sql:{$e}"];
+				return $errorReturn;
 		      }
 	    }
 		

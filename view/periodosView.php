@@ -23,8 +23,8 @@
         <small><?php echo "Ver ".$url; ?></small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="?route=Home"><i class="fa fa-dashboard"></i> Inicio </a></li>
-        <li><a href="?route=<?php echo $url ?>"><?php echo $url; ?></a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Home"); ?>"><i class="fa fa-dashboard"></i> Inicio </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Periodos"); ?>"><?php echo $url; ?></a></li>
         <li class="active"><?php if(!empty($action)){echo $action;} echo " ". $url; ?></li>
       </ol>
     </section>
@@ -39,12 +39,15 @@
           <div class="box">
             <div class="box-header">
               <div class="col-xs-12 col-sm-6">
-                <img src="assets/img/logolista.png" style="width:25px;color:red !importante;">
+                <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
 
                 <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarPeriodo">Agregar Nuevo</button>
+                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
+
+
 
                 <div id="modalAgregarPeriodo" class="modal fade" role="dialog">
                 
@@ -642,7 +645,7 @@ $(document).ready(function(){
   });
 
   $("#guardar").click(function(){
-
+    var url = $("#url").val();
     var response = validar();
     if(response){
       swal.fire({ 
@@ -666,7 +669,7 @@ $(document).ready(function(){
          // alert(numeroPr + ' ' + yearPeriodo + ' ' + fechaAP + ' ' + fechaAC);
 
               $.ajax({
-                url: 'periodos/Agregar',    
+                url: url+'/Agregar',    
                 type: 'POST',   
                 data: {
 
@@ -738,6 +741,7 @@ $(document).ready(function(){
   });
 
   $(".modificarBtn").click(function(){
+    var url = $("#url").val();
     swal.fire({ 
           title: "¿Desea modificar los datos?",
           text: "Se movera al formulario para modificar los datos, ¿desea continuar?",
@@ -753,11 +757,11 @@ $(document).ready(function(){
             let userMofif = $(this).val();
             //alert(userMofif);
             $.ajax({
-              url: 'Saberes/Buscar',    
+              url: url+'/Buscar',    
               type: 'POST',  
               data: {
                 Buscar: true,   
-                userMofif: userMofif,       
+                userNofifId: userMofif,       
               },
               success: function(respuesta){       
                 // alert(respuesta); 
@@ -805,7 +809,7 @@ $(document).ready(function(){
 
 
   $(".modificarButtonModal").click(function(){
-    var id = $(this).val();
+    var url = $("#url").val();
     var response = validar(true, id);
     if(response){
       swal.fire({ 
@@ -827,7 +831,7 @@ $(document).ready(function(){
               let fechaAC = $("#fechaC" + id).val();
                 // alert(id + ' '+ nombrePr + ' ' + yearPeriodo + ' ' + fechaAP + ' ' + fechaAC);
               $.ajax({
-                url: 'Periodos/Modificar',    
+                url: url+'/Modificar',    
                 type: 'POST',   
                 data: {
                   
@@ -896,6 +900,7 @@ $(document).ready(function(){
 
 
   $(".eliminarBtn").click(function(){
+    var url = $("#url").val();
       swal.fire({ 
           title: "¿Desea borrar los datos?",
           text: "Se borraran los datos escogidos, ¿desea continuar?",
@@ -925,7 +930,7 @@ $(document).ready(function(){
                    
 
                       $.ajax({
-                        url: 'periodos/Eliminar',    
+                        url: url+'/Eliminar',    
                         type: 'POST',   
                         data: {
                         Eliminar: true,   

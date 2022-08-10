@@ -18,7 +18,8 @@
         <?php echo "Reportes"; ?>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="<?=_ROUTE_?>home"><i class="fa fa-dashboard"></i> Home </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar('Home'); ?>"><i class="fa fa-dashboard"></i> Home </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar('Reportes'); ?>"><?php echo $url; ?></a></li>
         <li class="active"><?php echo $url; ?></li>
       </ol>
     </section>
@@ -36,7 +37,7 @@
           <div class="col-lg-2"></div>
           <div class="col-lg-3">
             <div class="box card" style="border-radius:15px;border-left:5px solid #F90;border-top:none;">
-                      <a href="<?=_ROUTE_?>Reportes/Aprobacion" target="_blank">
+                      <a href="<?=_ROUTE_.$this->encriptar('Reportes')?>/Aprobacion" target="_blank">
               <div class="box-body" style="">
                 <div class="row"  style="margin:12px 2px;">
                       <br>

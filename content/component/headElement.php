@@ -36,9 +36,11 @@
 				<script src="'._ROUTE_.'view/vendor/plugins/DataTables/DataTables/js/dataTables.bootstrap.js"></script>
 				<script src="'._ROUTE_.'view/vendor/plugins/DataTables/DataTables/js/dataTables.responsive.min.js"></script>
 				<script src="'._ROUTE_.'view/vendor/plugins/sweetalert/sweet-alert.js"></script>
-				<script src="'._ROUTE_.'view/vendor/plugins/select2/js/select2.js"></script>
+        
+        <script src="'._ROUTE_.'view/vendor/plugins/select2/js/select2.js"></script>
 				<script src="'._ROUTE_.'view/assets/js/validacionCampos.js"></script>
-				<script src="'._ROUTE_.'view/assets/js/volver.js"></script>
+        <script src="'._ROUTE_.'view/assets/js/volver.js"></script>
+
 
 
 <script>
@@ -102,7 +104,16 @@
       "info"        : true,
       "autoWidth"   : false
     });
+    $.fn.select2.defaults.set("language", "es");
+
     $(".select2").select2();
+    $(".select2GrupoProyecto").select2({
+      maximumSelectionLength: 5,
+    });
+    $(".select2SeccionAlumnos").select2({
+      maximumSelectionLength: 40,
+    });
+
     $("input").attr("autocomplete","off");
     
 
@@ -112,9 +123,10 @@
 
 
 
-  })
+  });
   
 </script>
+  <script src="'._ROUTE_.'view/vendor/plugins/select2/es.js"></script>
 				'
 			);
 		}

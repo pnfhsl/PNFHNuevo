@@ -6,7 +6,7 @@
 </head>
 	<?php 
 		require_once("content/component/error404.php");
-		echo $html404;
+		echo $html404; 
 	 ?>
 	 
 </html>

@@ -23,8 +23,8 @@
         <small><?php echo "Ver ".$url; ?></small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="?route=Home"><i class="fa fa-dashboard"></i> Inicio </a></li>
-        <li><a href="?route=<?php echo $url ?>"><?php echo $url; ?></a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Home"); ?>"><i class="fa fa-dashboard"></i> Inicio </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Usuarios"); ?>"><?php echo $url; ?></a></li>
         <li class="active"><?php if(!empty($action)){echo $action;} echo " ". $url; ?></li>
       </ol>
     </section>
@@ -39,13 +39,14 @@
           <div class="box">
             <div class="box-header">
               <div class="col-xs-12 col-sm-6">
-                <img src="assets/img/logolista.png" style="width:25px;color:red !importante;">
+                <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
 
 
                 <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarUsuario">Agregar Nuevo</button>
+                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
                  <!--=====================================
               MODAL AGREGAR USUARIO
@@ -522,6 +523,7 @@ $(".confirmarPassword").keyup(function(){
 
 
   $("#guardar").click(function(){
+    var url = $("#url").val();
     // alert('hola');
 
     var response = validar();
@@ -545,8 +547,10 @@ $(".confirmarPassword").keyup(function(){
           let user = $("#user").val();
           let pass = $("#pass").val();
 
-          $.ajax({
-            url: 'Usuarios/Agregar',    
+        
+        ajax({
+            url: url+
+            '/Agregar',    
             type: 'POST',   
             data: {
               Agregar: true,   
@@ -620,6 +624,7 @@ $(".confirmarPassword").keyup(function(){
   });
 
   $(".modificarBtn").click(function(){
+    var url = $("#url").val();
     swal.fire({ 
           title: "¿Desea modificar los datos?",
           text: "Se movera al formulario para modificar los datos, ¿desea continuar?",
@@ -635,7 +640,7 @@ $(".confirmarPassword").keyup(function(){
             let userModif = $(this).val();
             // alert(userModif);
             $.ajax({
-              url: 'Usuarios/Buscar',    
+              url: url+'/Buscar',    
               type: 'POST',  
               data: {
                 Buscar: true,   
@@ -672,6 +677,7 @@ $(".confirmarPassword").keyup(function(){
 
 
  $(".modificarButtonModal").click(function(){
+    var url = $("#url").val();
     var id = $(this).val();
     // alert(id);
     
@@ -706,7 +712,7 @@ $(".confirmarPassword").keyup(function(){
             }*/
             
             $.ajax({
-              url: 'Usuarios/Modificar',    
+              url: url+'/Modificar',    
               type: 'POST',   
               data: {
                 Editar: true,   
@@ -776,6 +782,7 @@ $(".confirmarPassword").keyup(function(){
 
 
   $(".eliminarBtn").click(function(){
+    var url = $("#url").val();
       swal.fire({ 
           title: "¿Desea borrar los datos?",
           text: "Se borraran los datos escogidos, ¿desea continuar?",
@@ -802,7 +809,7 @@ $(".confirmarPassword").keyup(function(){
                         /*window.alert($(this).val());*/
                         let userDelete = $(this).val();
                       $.ajax({
-                        url: 'Usuarios/Eliminar',    
+                        url: url+'/Eliminar',    
                         type: 'POST',   
                         data: {
                           Eliminar: true,   

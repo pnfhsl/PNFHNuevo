@@ -23,8 +23,8 @@
         <small><?php echo "Ver ".$url; ?></small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="?route=Home"><i class="fa fa-dashboard"></i> Inicio </a></li>
-        <li><a href="?route=<?php echo $url ?>"><?php echo $url; ?></a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Home"); ?>"><i class="fa fa-dashboard"></i> Inicio </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar("Secciones"); ?>"><?php echo $url; ?></a></li>
         <li class="active"><?php if(!empty($action)){echo $action;} echo " ". $url; ?></li>
       </ol>
     </section>
@@ -39,18 +39,19 @@
           <div class="box">
             <div class="box-header">
               <div class="col-xs-12 col-sm-6">
-                <img src="assets/img/logolista.png" style="width:25px;color:red !importante;">
+                <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
                 <button class="btn enviar2" style=""  data-toggle="modal" data-target="#modalAgregarSeccion">Agregar Nuevo</button>
+                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
                  <!--=====================================
               MODAL AGREGAR Seccion
               ======================================-->
 
               <div id="modalAgregarSeccion" class="modal fade" role="dialog" style="text-align:left;">
-                <div class="modal-dialog" ><?php #style="margin-right:auto;margin-left:auto;width:80%;" ?>
+                <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;"><?php #style="margin-right:auto;margin-left:auto;width:80%;" ?>
                   <div class="modal-content">
                       <!--=====================================
                       CABEZA DEL MODAL
@@ -62,30 +63,37 @@
                       <!--=====================================
                       CUERPO DEL MODAL
                       ======================================-->
-                      <div class="modal-body">
+                      <div class="modal-body" style="max-height:70vh;overflow:auto;">
                         <div class="box-body">
                           <!-- ENTRADA PARA EL USUARIO -->
                           <div class="row">
-                            <div class="form-group col-xs-12">
-                              <div class="input-group " style="">
-                                <span class="input-group-addon"><i class="fa fa-address-card"></i></span> 
+
+                            <div class="form-group col-xs-12 col-sm-12">
+                              <label for="periodo">Período</label>
+                              <div class="input-group" style="width:100%;">
+                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
                                 <select class="form-control select2 input-lg" style="width:100%;" name="periodo" placeholder="Ingresar periodo" id="periodo" required>
                                   <option value="">Seleccione un periodo</option>
                                   <?php
                                   foreach ($periodos as $per):
                                     if(!empty($per['id_periodo'])):
                                   ?>
-                                  <option value="<?=$per['id_periodo']?>"><?=mb_strtoupper($per['nombre_periodo'])." (".$per['year_periodo'].")"?></option>
+                                  <option value="<?=$per['id_periodo']?>"><?=mb_strtoupper($per['year_periodo']."-".$per['nombre_periodo']); ?></option>
                                   <?php 
                                     endif;
                                   endforeach;
                                   ?>
                                 </select>
                               </div>
+                              <div style="width:100%;text-align:right;">
+                                <span id="periodoS" class="mensajeError"></span>
+                              </div>
                             </div>
-                            <div class="form-group col-xs-12">
-                              <div class="input-group " >
-                                <span class="input-group-addon"><i class="fa fa-address-card"></i></span> 
+
+                            <div class="form-group col-xs-12 col-sm-12">
+                              <label for="trayecto">Trayecto</label>
+                              <div class="input-group " style="width:100%;">
+                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
                                 <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayecto" required>
                                   <option value="">Seleccione un trayecto</option>
                                   <option value="1">Trayecto I</option>
@@ -94,33 +102,50 @@
                                   <option value="4">Trayecto IV</option>
                                 </select>
                               </div>
+                              <div style="width:100%;text-align:right;">
+                                <span id="trayectoS" class="mensajeError"></span>
+                              </div>
                             </div>
-                            <div class="form-group col-xs-12">
-                              <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-user"></i></span> 
+
+                            <div class="form-group col-xs-12 col-sm-12">
+                              <label for="nombre">Nombre</label>
+                              <div class="input-group" style="width:100%;">
+                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
                                 <input type="text" class="form-control input-lg" name="nombre" id="nombre" placeholder="Ingresar nombre (Ej.: SH3001)" maxlength="6" required>
                               </div>
-                              <span id="nombreS"></span>
-
-
+                              <div style="width:100%;text-align:right;">
+                                <span id="nombreS" class="mensajeError"></span>
+                              </div>
                             </div>
-                            <div class="form-group col-xs-12">
-                              <div class="input-group " >
-                                <span class="input-group-addon"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Cargar alumnos" id="alumnos" multiple="multiple" required>
+
+                            <div class="form-group col-xs-12 col-sm-12">
+                              <label for="alumnos">Alumnos</label>
+                              <div class="input-group " style="width:100%;">
+                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                <select class="form-control select2SeccionAlumnos input-lg" style="width:100%;" name="trayecto" placeholder="Cargar alumnos" id="alumnos" multiple="multiple" required>
                                   <option value="" disabled="">Cargar Alumnos</option>
                                    <?php
                                   foreach ($alumnos as $alum):
                                     if(!empty($alum['cedula_alumno'])):
                                   ?>
-                                  <option value="<?=$alum['cedula_alumno']?>"><?=mb_strtoupper($alum['cedula_alumno'])." ".$alum['nombre_alumno']." "."".$alum['apellido_alumno']." "?></option>
+                                  <!-- <option  -->
+                                    <?php
+                                      // foreach ($seccionAlumnos as $key): if(!empty($key['cedula_alumno'])): if($key['cedula_alumno'] == $alum['cedula_alumno']):
+                                      //   echo 'disabled="disabled"';
+                                      // endif; endif; endforeach;
+                                    ?>
+                                   <!-- value="<?=$alum['cedula_alumno']?>"><?=mb_strtoupper($alum['cedula_alumno'])." ".$alum['nombre_alumno']." "."".$alum['apellido_alumno']." "?></option> -->
                                   <?php 
                                     endif;
                                   endforeach;
                                   ?>
                                 </select>
                               </div>
+                              <div style="width:100%;text-align:right;">
+                                <span id="alumnosS" class="mensajeError"></span>
+                              </div>
                             </div>
+
                           </div>
                         </div>
                       </div>
@@ -248,7 +273,7 @@
                                       <tbody>
                                       <?php 
                                         $numx = 1;
-                                        foreach ($alumnos as $dataAlum): if(!empty($dataAlum['cedula_alumno'])):  
+                                        foreach ($seccionAlumnos as $dataAlum): if(!empty($dataAlum['cedula_alumno'])):  if($dataAlum['cod_seccion']==$data['cod_seccion']):
                                       ?>
                                         <tr>
                                           <td style="width:5%">
@@ -267,7 +292,7 @@
                                             </span>
                                           </td>
                                         </tr>
-                                        <?php endif; endforeach; ?>
+                                        <?php endif; endif; endforeach; ?>
                                       </tbody>
                                     
                                   </table>
@@ -304,101 +329,7 @@
 
 
                                       <!--Cargar-->
-              <button type="button" id="cargarButton<?=$data['cod_seccion']?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalCargarAlumnos<?=$data['cod_seccion']?>" style="display: none;">Cargar</button>
-              <div id="modalCargarAlumnos<?=$data['cod_seccion']?>" class="modal fade" role="dialog" style="text-align:left;">
-                   
-                
-                <div class="modal-dialog" ><?php #style="margin-right:auto;margin-left:auto;width:80%;" ?>
-
-                  <div class="modal-content">
-
-                      <!--=====================================
-                      CABEZA DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                        <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
-                        <h4 class="modal-title" style="text-align: left;">Cargar Alumnos</h4>
-
-                      </div>
-
-                      <!--=====================================
-                      CUERPO DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-body">
-
-                        <div class="box-body">
-
-                          
-                          <!-- ENTRADA PARA EL USUARIO -->
-                          <div class="row" style="">
-                            <div class="form-group col-xs-12">
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="periodo" placeholder="Ingresar periodo" id="periodo<?=$data['cod_seccion']?>" required>
-                                  <option value="">Seleccione un periodo</option>
-                                  <?php
-                                  foreach ($periodos as $per):
-                                    if(!empty($per['id_periodo'])):
-                                  ?>
-                                  <option <?php if($data['id_periodo']==$per['id_periodo']){ echo "selected"; } ?> value="<?=$per['id_periodo']?>"><?=mb_strtoupper($per['nombre_periodo'])." (".$per['year_periodo'].")"?></option>
-                                  <?php 
-                                    endif;
-                                  endforeach;
-                                  ?>
-                                </select>
-                              </div>
-                            </div>
-
-                            <div class="form-group col-xs-12">
-                              <div class="input-group " style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayecto<?=$data['cod_seccion']?>" required>
-                                  <option value="">Seleccione un trayecto</option>
-                                  <option <?php if($data['trayecto_seccion']=="1"){ echo "selected"; } ?> value="1">Trayecto I</option>
-                                  <option <?php if($data['trayecto_seccion']=="2"){ echo "selected"; } ?> value="2">Trayecto II</option>
-                                  <option <?php if($data['trayecto_seccion']=="3"){ echo "selected"; } ?> value="3">Trayecto III</option>
-                                  <option <?php if($data['trayecto_seccion']=="4"){ echo "selected"; } ?> value="4">Trayecto IV</option>
-                                </select>
-                              </div>
-                            </div>
-                            
-                            <div class="form-group col-xs-12">
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:7.5%;"><i class="fa fa-user"></i></span> 
-                                <input type="text" value="<?=$data['nombre_seccion']?>" style="width:100%;" class="form-control input-lg" name="nombre" id="nombre<?=$data['cod_seccion']?>" placeholder="Ingresar nombre" required>
-                              </div>
-                            </div>
-                          </div>
-
-
-                                             
-                        </div>
-
-                      </div>
-
-                      <!--=====================================
-                      PIE DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-footer">
-
-                        <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                        <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$data['cod_seccion']?>" id="modificar">Guardar</button>
-
-                      </div>
-
-
-
-                  </div>
-
-                </div>
-
-              </div>
+              
 
 
                      <!--Modificar-->
@@ -408,12 +339,13 @@
                             </span>
                           </button>
 
-                          <!--Moficiar-->
+                          <!--Modificar-->
               <button type="button" id="modificarButton<?=$data['cod_seccion']?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarSeccion<?=$data['cod_seccion']?>" style="display: none">Modificar</button>
+
               <div id="modalModificarSeccion<?=$data['cod_seccion']?>" class="modal fade" role="dialog" style="text-align:left;">
                    
                 
-                <div class="modal-dialog" ><?php #style="margin-right:auto;margin-left:auto;width:80%;" ?>
+                <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;"><?php #style="margin-right:auto;margin-left:auto;width:80%;" ?>
 
                   <div class="modal-content">
 
@@ -428,31 +360,38 @@
                       <!--=====================================
                       CUERPO DEL MODAL
                       ======================================-->
-                      <div class="modal-body">
+                      <div class="modal-body" style="max-height:70vh;overflow:auto;">
                         <div class="box-body">
                           <!-- ENTRADA PARA EL USUARIO -->
                           <div class="row" style="">
-                            <div class="form-group col-xs-12">
+                            
+                            <div class="form-group col-xs-12 col-sm-12">
+                              <label for="periodo<?=$data['cod_seccion']?>">Período</label>
                               <div class="input-group" style="width:100%;">
                                 <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="periodo" placeholder="Ingresar periodo" id="periodoeditar<?=$data['cod_seccion']?>" required>
+                                <select class="form-control select2 input-lg periodoModificar" style="width:100%;" name="<?=$data['cod_seccion']?>" placeholder="Ingresar periodo" id="periodo<?=$data['cod_seccion']?>" required>
                                   <option value="">Seleccione un periodo</option>
                                   <?php
                                   foreach ($periodos as $per):
                                     if(!empty($per['id_periodo'])):
                                   ?>
-                                  <option <?php if($data['id_periodo']==$per['id_periodo']){ echo "selected"; } ?> value="<?=$per['id_periodo']?>"><?=mb_strtoupper($per['nombre_periodo'])." (".$per['year_periodo'].")"?></option>
+                                  <option <?php if($data['id_periodo']==$per['id_periodo']){ echo "selected"; } ?> value="<?=$per['id_periodo']?>"><?=mb_strtoupper($per['year_periodo']."-".$per['nombre_periodo']); ?></option>
                                   <?php 
                                     endif;
                                   endforeach;
                                   ?>
                                 </select>
                               </div>
+                              <div style="width:100%;text-align:right;">
+                                <span id="periodoS<?=$data['cod_seccion']?>" class="mensajeError"></span>
+                              </div>
                             </div>
-                            <div class="form-group col-xs-12" style="margin-top:2%;">
+
+                            <div class="form-group col-xs-12 col-sm-12" style="margin-top:;">
+                              <label for="trayecto<?=$data['cod_seccion']?>">Trayecto</label>
                               <div class="input-group " style="width:100%;">
                                 <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayectoeditar<?=$data['cod_seccion']?>" required>
+                                <select class="form-control select2 input-lg trayectoModificar" style="width:100%;" name="<?=$data['cod_seccion']?>" placeholder="Ingresar trayecto" id="trayecto<?=$data['cod_seccion']?>" required>
                                   <option value="">Seleccione un trayecto</option>
                                   <option <?php if($data['trayecto_seccion']=="1"){ echo "selected"; } ?> value="1">Trayecto I</option>
                                   <option <?php if($data['trayecto_seccion']=="2"){ echo "selected"; } ?> value="2">Trayecto II</option>
@@ -460,41 +399,56 @@
                                   <option <?php if($data['trayecto_seccion']=="4"){ echo "selected"; } ?> value="4">Trayecto IV</option>
                                 </select>
                               </div>
+                              <div style="width:100%;text-align:right;">
+                                <span id="trayectoS<?=$data['cod_seccion']?>" class="mensajeError"></span>
+                              </div>
                             </div>
-                            <div class="form-group col-xs-12" style="margin-top:2%;">
+
+                            <div class="form-group col-xs-12 col-sm-12" style="margin-top:;">
+                              <label for="nombre<?=$data['cod_seccion']?>">Nombre</label>
                               <div class="input-group" style="width:100%;">
                                 <span class="input-group-addon" style="width:7.5%;"><i class="fa fa-user"></i></span> 
-                                <input type="text" style="width:100%;" class="form-control input-lg" name="nombre" id="nombreeditar<?=$data['cod_seccion']?>" value="<?=$data['nombre_seccion']?>" placeholder="Ingresar nombre" required>
+                                <input type="text" style="width:100%;" class="form-control input-lg nombreModificar" name="<?=$data['cod_seccion']?>" id="nombre<?=$data['cod_seccion']?>" value="<?=$data['nombre_seccion']?>" placeholder="Ingresar nombre" required>
+                              </div>
+                              <div style="width:100%;text-align:right;">
+                                <span id="nombreS<?=$data['cod_seccion']?>" class="mensajeError"></span>
                               </div>
                             </div>
                         
-                            <div class="form-group col-xs-12" style="margin-top:2%;">
+                            <div class="form-group col-xs-12 col-sm-12" style="margin-top:;">
+                              <label for="alumnos<?=$data['cod_seccion']?>">Alumnos</label>
                               <div class="input-group " style="width:100%;">
                                 <span class="input-group-addon" style="width:8%;"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;color:red;" name="trayecto" placeholder="Cargar alumnos" id="alumnoseditar<?=$data['cod_seccion']?>" multiple="multiple" required>
+                                <select class="form-control select2SeccionAlumnos input-lg alumnosModificar" style="width:100%;color:red;" name="<?=$data['cod_seccion']?>" placeholder="Cargar alumnos" id="alumnos<?=$data['cod_seccion']?>" multiple="multiple" required>
                                   <option value="" disabled="">Cargar Alumnos</option>
                                    <?php
                                   foreach ($alumnos as $alum):
                                     if(!empty($alum['cedula_alumno'])):
+                                      if($alum['trayecto_alumno']==$data['trayecto_seccion']){
                                   ?>
                                   <option <?php foreach ($seccionAlumnos as $secAlum) {
                                     if(!empty($secAlum['cedula_alumno'])){
-                                      if($secAlum['cedula_alumno'] == $alum['cedula_alumno']){
-                                        if($secAlum['cod_seccion'] == $data['cod_seccion']){
-                                          echo "selected";
-                                        }else{
-                                          echo "disabled";
+                                        if($secAlum['cedula_alumno'] == $alum['cedula_alumno']){
+                                          if($secAlum['cod_seccion'] == $data['cod_seccion']){
+                                            echo "selected";
+                                          }else{
+                                            echo "disabled";
+                                          }
                                         }
-                                      }
                                     }
                                   } ?> value="<?=$alum['cedula_alumno']?>" ><?=$alum['cedula_alumno']." ".ucwords(mb_strtolower($alum['nombre_alumno']))." "."".ucwords(mb_strtolower($alum['apellido_alumno']))." "?></option>
                                   <?php 
+                                      }
                                     endif;
                                   endforeach;
                                   ?>
                                 </select>
                               </div>
+                              <div style="width:100%;text-align:right;">
+                                <span id="alumnosS<?=$data['cod_seccion']?>" class="mensajeError"></span>
+                              </div>
                             </div>
+
                           </div>
                         </div>
                       </div>
@@ -563,7 +517,8 @@
 </div>
 <!-- ./wrapper -->
 
-
+<input type="hidden" id="minimoAlumnos" value="2">
+<input type="hidden" id="maximoAlumnos" value="40">
   <?php //require_once('assets/footered.php'); ?>
 <?php if(!empty($response)): ?>
 <input type="hidden" class="responses" value="<?php echo $response ?>">
@@ -571,35 +526,183 @@
 <script>
 $(document).ready(function(){ 
 
-$('#nombre').on('input', function () {      
-  this.value = this.value.replace(/[^0-9- H h S s ]/g,''); });
+  $('#nombre').on('input', function () {      
+    this.value = this.value.replace(/[^0-9 H S h s]/g,''); });
+    // this.value = this.value.replace(/[^0-9- H h S s ]/g,''); });
+  $('.nombreModificar').on('input', function () {      
+    this.value = this.value.replace(/[^0-9 H S h s]/g,''); });
+  $("#alumnos").change(function(){
+    var alumnos = $(this).val();
+    if(alumnos.length == 0){
+      $("#alumnosS").html("Seleccione los alumnos para conformar la sección");
+    }else{
+      var minimo = $("#minimoAlumnos").val();
+      var maximo = $("#maximoAlumnos").val();
+      if(alumnos.length >= minimo && alumnos.length <= maximo ){
+        ralumnos = true;
+        $("#alumnosS").html("");
+      }else{
+        $("#alumnosS").html("Debe seleccionar entre "+minimo+" y "+maximo+" alumnos para conformar la sección");
+      }
+    }
+  });
 
+  $(".alumnosModificar").change(function(){
+    var id = $(this).attr("name");
+    var alumnos = $("#alumnos"+id).val();
+    if(alumnos.length == 0){
+      $("#alumnosS"+id).html("Seleccione los alumnos para conformar la sección");
+    }else{
+      var minimo = $("#minimoAlumnos").val();
+      var maximo = $("#maximoAlumnos").val();
+      if(alumnos.length >= minimo && alumnos.length <= maximo ){
+        ralumnos = true;
+        $("#alumnosS"+id).html("");
+      }else{
+        $("#alumnosS"+id).html("Debe seleccionar entre "+minimo+" y "+maximo+" alumnos para conformar la sección");
+      }
+    }
+  }); 
 
+  $('#trayecto').change(function(){
+    var url = $("#url").val();
+    var trayecto = $(this).val();
+    if(trayecto==""){
+      var html = '';
+      html += '<option disabled="" value="">Cargar Alumnos</option>';
+      $("#alumnos").html(html);
 
-    var response = $(".responses").val();
-  if(response==undefined){
-
-  }else{
-    if(response == "1"){
-      swal.fire({
-          type: 'success',
-          title: '¡Datos borrados correctamente!',
-      }).then(function(){
-        window.location = "?route=Campanas";
+    }else{
+      $.ajax({
+        url: url+'/Buscar',    
+        type: 'POST',  
+        data: {
+          Buscar: true,   
+          alumnos: true,   
+          trayecto: trayecto,       
+        },
+        success: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);   
+          // alert(resp.msj);
+          if (resp.msj == "Good") {  
+            var data = resp.data;
+            var dataSecciones = "";
+            if(resp.msjSecciones=="Good"){
+              dataSecciones = resp.dataSecciones;
+            }
+            // console.log("DATA: ");
+            // console.log(data);
+            // console.log("SECCIONES: ");
+            // console.log(dataSecciones);
+            // console.log(data);
+            // console.log($("#alumnos").html());
+            var html = '';
+            html += '<option disabled="" value="">Cargar Alumnos</option>';
+            for (var i = 0; i < data.length; i++) {
+              html += '<option value="'+data[i]['cedula_alumno']+'"';
+              if(dataSecciones.length>0){
+                for (var j = 0; j < dataSecciones.length; j++) {
+                  if(dataSecciones[j]['trayecto_alumno']==data[i]['trayecto_alumno']){
+                    html += 'disabled="disabled"'
+                  }
+                }
+              }
+              html += '>'+data[i]['cedula_alumno']+" "+data[i]['nombre_alumno']+" "+data[i]['apellido_alumno']+'</option>';
+            }
+            $("#alumnos").html(html);
+          }
+          if(resp.msj == "Vacio"){
+            var html = '';
+            html += '<option disabled="" value="">Cargar Alumnos</option>';
+            $("#alumnos").html(html);
+          }
+        },
+        error: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);
+          console.log(resp);
+        }
       });
     }
-    if(response == "2"){
-      swal.fire({
-          type: 'error',
-          title: '¡Error al realizar la operacion!',
+  });
+
+  $('.trayectoModificar').change(function(){
+    var url = $("#url").val();
+
+    var id = $(this).attr("name");
+    // console.log(id);
+    var trayecto = $(this).val();
+    if(trayecto==""){
+      var html = '';
+      html += '<option disabled="" value="">Cargar Alumnos</option>';
+      $("#alumnos"+id).html(html);
+
+    }else{
+      $.ajax({
+        url: url+'/Buscar',    
+        type: 'POST',  
+        data: {
+          Buscar: true,   
+          alumnos: true,   
+          trayecto: trayecto,       
+        },
+        success: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);   
+          // alert(resp.msj);
+          if (resp.msj == "Good") {  
+            var data = resp.data;
+            var dataSecciones = "";
+            if(resp.msjSecciones=="Good"){
+              dataSecciones = resp.dataSecciones;
+            }
+            // console.log("DATA: ");
+            // console.log(data);
+            // console.log("SECCIONES: ");
+            // console.log(dataSecciones);
+            // console.log(data);
+            // console.log($("#alumnos"+id).html());
+            var html = '';
+            html += '<option disabled="" value="">Cargar Alumnos</option>';
+            for (var i = 0; i < data.length; i++) {
+              html += '<option value="'+data[i]['cedula_alumno']+'"';
+              if(dataSecciones.length>0){
+                for (var j = 0; j < dataSecciones.length; j++) {
+                  if(dataSecciones[j]['cedula_alumno']==data[i]['cedula_alumno']){
+                    if(dataSecciones[j]['cod_seccion']==id){
+                      html += 'selected="selected"';
+                    }else{
+                      html += 'disabled="disabled"';
+                    }
+                  }
+                }
+              }
+              html += '>'+data[i]['cedula_alumno']+" "+data[i]['nombre_alumno']+" "+data[i]['apellido_alumno']+'</option>';
+            }
+            $("#alumnos"+id).html(html);
+          }
+          if(resp.msj == "Vacio"){
+            var html = '';
+            html += '<option disabled="" value="">Cargar Alumnos</option>';
+            $("#alumnos"+id).html(html);
+          }
+        },
+        error: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);
+          console.log(resp);
+        }
       });
     }
-    
-  }
+  });
 
   $(".modificarButtonModal").click(function(){
+    var url = $("#url").val();
     var id = $(this).val();
-    swal.fire({ 
+    var response = validar(true, id);
+    if(response){
+      swal.fire({ 
           title: "¿Desea guardar los datos?",
           text: "Se guardaran los datos, ¿desea continuar?",
           type: "question",
@@ -620,7 +723,7 @@ $('#nombre').on('input', function () {
             // alert(id + " " + nombre + " " + periodo + " " + trayecto + " " + alumnos);
 
             $.ajax({
-              url: 'Secciones/Modificar',    
+              url: url+'/Modificar',    
               type: 'POST',   
               data: {
                 Editar: true,   
@@ -684,10 +787,11 @@ $('#nombre').on('input', function () {
               });
           } 
       });
-
+    }
   });
 
   $(".modificarBtn").click(function(){
+    var url = $("#url").val();
     swal.fire({ 
           title: "¿Desea modificar los datos?",
           text: "Se movera al formulario para modificar los datos, ¿desea continuar?",
@@ -702,7 +806,7 @@ $('#nombre').on('input', function () {
             let cod_seccion = $(this).val();
             // alert(cod_seccion);
             $.ajax({
-              url: 'Secciones/Buscar',    
+              url: url+'/Buscar',    
               type: 'POST',  
               data: {
                 Buscar: true,   
@@ -734,6 +838,7 @@ $('#nombre').on('input', function () {
   });
 
   $(".CargarBtn").click(function(){
+    var url = $("#url").val();
     swal.fire({ 
           title: "¿Desea cargar los datos de los alumnos?",
           text: "Se movera al formulario para cargar los datos, ¿desea continuar?",
@@ -749,7 +854,7 @@ $('#nombre').on('input', function () {
             let cod_seccion = $(this).val();
              // alert(cod_seccion);
             $.ajax({
-              url: 'Secciones/Buscar',    
+              url: url+'/Buscar',    
               type: 'POST',  
               data: {
                 Buscar: true,   
@@ -781,6 +886,7 @@ $('#nombre').on('input', function () {
   });
 
   $(".eliminarBtn").click(function(){
+    var url = $("#url").val();
       swal.fire({ 
           title: "¿Desea borrar los datos?",
           text: "Se borraran los datos escogidos, ¿desea continuar?",
@@ -807,7 +913,7 @@ $('#nombre').on('input', function () {
                       var cod = $(this).val();
                       // alert(cod);
                       $.ajax({
-                        url: 'Secciones/Eliminar',    
+                        url: url+'/Eliminar',    
                         type: 'POST',   
                         data: {
                           Eliminar: true,   
@@ -875,6 +981,10 @@ $('#nombre').on('input', function () {
   });
 
   $("#guardar").click(function(){
+    var url = $("#url").val();
+    var response = validar();
+    if(response){
+
       swal.fire({ 
             title: "¿Desea guardar los datos?",
             text: "Se guardaran los datos, ¿desea continuar?",
@@ -895,7 +1005,7 @@ $('#nombre').on('input', function () {
 
             //alert(nombre + ' ' + periodo + ' ' + trayecto + ' '+ alumnos);
               $.ajax({
-                url: 'Secciones/Agregar',    
+                url: url+'/Agregar',    
                 type: 'POST',   
                 data: {
                   Agregar: true,   
@@ -959,8 +1069,74 @@ $('#nombre').on('input', function () {
                 });
           } 
       });
+
+    }
+
   });
 });  
+
+function validar(modificar = false, id=""){
+  var form = "";
+  if(!modificar){
+    form = "#modalAgregarSeccion";
+  }else{
+    form = "#modalModificarSeccion"+id;
+  }
+
+  var nombre = $(form+" #nombre"+id).val();
+  var rnombre = false;
+  if(nombre.length > 2){ 
+    rnombre = true;
+    $(form+" #nombreS"+id).html("");
+  }else{
+    $(form+" #nombreS"+id).html("Debe ingresar el nombre de la sección");
+  }
+
+  var periodo = $(form+" #periodo"+id).val();
+  var rperiodo = false;
+  if(periodo == ""){
+    $(form+" #periodoS"+id).html("Seleccione el periodo para la sección");
+  }else{
+    rperiodo = true;
+    $(form+" #periodoS"+id).html("");
+  }
+
+  var trayecto = $(form+" #trayecto"+id).val();
+  var rtrayecto = false;
+  if(trayecto == ""){
+    $(form+" #trayectoS"+id).html("Seleccione un trayecto para la sección");
+  }else{
+    rtrayecto = true;
+    $(form+" #trayectoS"+id).html("");
+  }
+
+  var alumnos = $(form+" #alumnos"+id).val();
+  var ralumnos = false;
+  // alert(alumnos.length);
+  if(alumnos.length == 0){
+    $(form+" #alumnosS"+id).html("Seleccione los alumnos para conformar la sección");
+  }else{
+    var minimo = $("#minimoAlumnos").val();
+    var maximo = $("#maximoAlumnos").val();
+    if(alumnos.length >= minimo && alumnos.length <= maximo ){
+      ralumnos = true;
+      $(form+" #alumnosS"+id).html("");
+    }else{
+      $(form+" #alumnosS"+id).html("Debe seleccionar entre "+minimo+" y "+maximo+" alumnos para conformar la sección");
+    }
+  }
+
+
+  var validado = false;
+  if(rnombre==true && rperiodo==true && rtrayecto==true && ralumnos==true){
+    validado=true;
+  }else{
+    validado=false;
+  }
+  
+  // alert(validado);
+  return validado;
+}
 </script>
 </body>
 </html>

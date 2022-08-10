@@ -9,6 +9,8 @@
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\alumnosModel as alumnosModel;
 	use content\traits\Utility;
+
+
 	class proyectosController{
 		use Utility;
 		private $url;
@@ -30,24 +32,68 @@
 			$_css->Heading();
 
 			$proyectos = $this->proyecto->Consultar();
-			$gruposAlumnos = $this->proyecto->ConsultarGrupos();
-			$gruposSec = $this->proyecto->ConsultarGrupos2();
-			// print_r($proyectos);
-			$secciones = $this->seccion->Consultar();
-			$seccionAlumnos = $this->seccion->ConsultarSeccionAlumnos();
-			$alumnos = $this->alumno->Consultar();
 
+			$gruposAlumnos = $this->proyecto->ConsultarGrupos();
+
+			// $secciones1 = $this->seccion->Consultar("1");
+			// $secciones2 = $this->seccion->Consultar("2");
+			// $secciones3 = $this->seccion->Consultar("3");
+			// $secciones4 = $this->seccion->Consultar("4");
+			$secciones = $this->seccion->Consultar();
+			$gruposSec = $this->proyecto->ConsultarGrupos2();
+
+			// $alumnos1 = $this->alumno->Consultar("1");
+			// $alumnos2 = $this->alumno->Consultar("2");
+			// $alumnos3 = $this->alumno->Consultar("3");
+			// $alumnos4 = $this->alumno->Consultar("4");
+			// $alumnos = $this->alumno->Consultar();
+			// $seccionAlumnos1 = $this->seccion->ConsultarSeccionAlumnos("1");
+			// $seccionAlumnos2 = $this->seccion->ConsultarSeccionAlumnos("2");
+			// $seccionAlumnos3 = $this->seccion->ConsultarSeccionAlumnos("3");
+			// $seccionAlumnos4 = $this->seccion->ConsultarSeccionAlumnos("4");
+			$seccionAlumnos = $this->seccion->ConsultarSeccionAlumnos();
+			
 			$url = $this->url;
 			require_once("view/proyectosView.php");
 		}
 
 		public function Buscar(){
 			if($_POST){		
-				if (isset($_POST['Buscar']) && isset($_POST['userNofif'])) {
-					$buscar = $this->seccion->getOne($_POST['userNofif']);
+				if (isset($_POST['Buscar']) && isset($_POST['cod_proyecto'])) {
+					$buscar = $this->proyecto->getOne($_POST['cod_proyecto']);
 					echo json_encode($buscar);
 				}
-
+				if(isset($_POST['Buscar']) && isset($_POST['secciones']) && isset($_POST['trayecto'])){
+					$trayecto = $_POST['trayecto'];
+					$buscar = $this->seccion->Consultar($trayecto);
+					$response = [];
+					if(count($buscar)>0){
+						$response['data'] = $buscar;
+						$response['msj'] = "Good";
+					}else{
+						$response['msj'] = "Vacio";
+					}
+					echo json_encode($response);
+				}
+				if(isset($_POST['Buscar']) && isset($_POST['alumnos']) && isset($_POST['cod_seccion'])){
+					$cod_seccion = $_POST['cod_seccion'];
+					$buscar = $this->seccion->ConsultarSeccionAlumnos($cod_seccion);
+					$response = [];
+					if(count($buscar)>0){
+						$response['data'] = $buscar;
+						$response['msj'] = "Good";
+						$buscar2 = $this->proyecto->ConsultarGrupos($cod_seccion);
+						if(count($buscar2)>0){
+							$response['msjProyectos'] = "Good";
+							$response['dataProyectos'] = $buscar2;
+						}else{
+							$response['msjProyectos'] = "Vacio";
+						}
+					}else{
+						$response['msj'] = "Vacio";
+					}
+					echo json_encode($response);
+				}
 			}
 		}
 		

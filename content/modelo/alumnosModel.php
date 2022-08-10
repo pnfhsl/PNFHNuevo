@@ -18,10 +18,14 @@
 			// $this->con = parent::__construct();
 			parent::__construct();
 		}
-		public function Consultar(){
-			
+		public function Consultar($trayecto=""){
 			try {
-				$query = parent::prepare('SELECT * FROM alumnos WHERE estatus = 1');
+				if($trayecto==""){
+					$query = parent::prepare("SELECT * FROM alumnos WHERE estatus = 1");
+				}
+				if($trayecto!=""){
+					$query = parent::prepare("SELECT * FROM alumnos WHERE estatus = 1 and trayecto_alumno = '{$trayecto}'");
+				}
 				$respuestaArreglo = '';
 				$query->execute();
 				$query->setFetchMode(parent::FETCH_ASSOC);

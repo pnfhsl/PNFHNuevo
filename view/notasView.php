@@ -21,8 +21,8 @@
         <small><?php echo "Ver ".$url; ?></small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="?route=Home"><i class="fa fa-dashboard"></i> Inicio </a></li>
-        <li><a href="?route=<?php echo $url ?>"><?php echo $url; ?></a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar('Home'); ?>"><i class="fa fa-dashboard"></i> Inicio </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar('Notas'); ?>"><?php echo $url; ?></a></li>
         <li class="active"><?php if(!empty($action)){echo $action;} echo " ". $url; ?></li>
       </ol>
     </section>
@@ -37,7 +37,7 @@
           <div class="box">
             <div class="box-header">
               <div class="col-xs-12 col-sm-6">
-                <img src="assets/img/logolista.png" style="width:25px;color:red !importante;">
+                <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
@@ -51,214 +51,189 @@
 
 
                 <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarNota">Agregar Nuevo</button>
+                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
-              <!--=====================================
-              MODAL AGREGAR PROF
-              ======================================-->
+                <!--=====================================
+                MODAL AGREGAR PROF
+                ======================================-->
 
-              <div id="modalAgregarNota" class="modal fade" role="dialog">
+              <div id="modalAgregarNota" class="modalAgregarNota modal fade" role="dialog">
                 
-                <div class="modal-dialog">
+                <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;">
 
                   <div class="modal-content">
-
-                    <form role="form" method="post" enctype="multipart/form-data">
-
-                      <!--=====================================
-                      CABEZA DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                        <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
-                        <h4 class="modal-title" style="text-align: left;">Agregar Nota</h4>
-
-                      </div>
-
-                      <!--=====================================
-                      CUERPO DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-body">
-
-                        <div class="box-body">
-
-                          
-                          <!-- ENTRADA PARA EL USUARIO --><!-- ENTRADA PARA LA SECCION -->
-
-
-                           <div class="form-group">
-                            
-                            <div class="form-group">                              
-                              <div class="input-group">
+                        <!--=====================================
+                        CABEZA DEL MODAL
+                        ======================================-->
+                        <div class="modal-header" style="background:#3c8dbc; color:white">
+                          <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+                          <h4 class="modal-title" style="text-align: left;">Agregar Nota</h4>
+                        </div>
+                        <!--=====================================
+                        CUERPO DEL MODAL
+                        ======================================-->
+                        <div class="modal-body" style="max-height:70vh;overflow:auto">
+                          <div class="box-body">
+                            <div class="row" style="width:100%;">
                               
-                                <span class="input-group-addon"><i class="fa fa-cogs"></i></span> 
-
-                                <select class="form-control input-lg" name="nuevoRol" id="seccion">
-                                  
-                                  <option value="">Sección</option>
-                                  <?php 
-                                  foreach ($secciones as $date):
-                                  if(!empty($date['cod_seccion'])):  
-                                  ?>
-
-                                   <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
-                                                                          
-                                        <?php //if ($amUsuariosE==1): ?>
-                                          
-                                      <option value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
-
-                                        <?php //endif; ?>                             
-                                        
-                                    <?php //endif ?>
-                                    <?php
-                                     endif; endforeach;
-                                      ?>
-
-
-                                </select>
-
-                                <span class="input-group-addon"><i class="fa fa-indent"></i></span> 
-
-                                <select class="form-control input-lg" name="nuevoPerfil" id="saber">
-                                      <option value="">Saber Complementario</option>
-                                      <?php 
-                                      foreach ($saberes as $dateS):
-                                      if(!empty($dateS['id_SC'])):  
-                                      ?>
-
-                                      <option value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option>
-
-                                      <?php //endif; ?>                             
-                                          
-                                      <?php //endif ?>
-                                      <?php
-                                       endif; endforeach;
-                                        ?>
-
-
-                                </select>
-
+                              <!-- ENTRADA PARA LA SECCION -->
+                              <div class="form-group col-xs-12 col-sm-6">
+                                <label for="seccion">Sección</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span> 
+                                  <select class="form-control input-lg select2" style="width:100%;" name="nuevoRol" id="seccion">
+                                    <option value="">Sección</option>
+                                    <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])): ?>
+                                        <option value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
+                                    <?php endif; endforeach; ?>
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="error_seccion" class="mensajeError" ></span>
+                                </div>
                               </div>
+
+                              <!-- ENTRADA PARA EL SABER -->
+                              <div class="form-group col-xs-12 col-sm-6">
+                                <label for="saber">Saber complementario</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
+                                  <select class="form-control input-lg select2" style="width:100% !important;" name="nuevoPerfil" id="saber">
+                                    <option value="">Saber Complementario</option>
+                                    <?php /* ?>
+                                    <?php foreach ($saberes as $dateS): if(!empty($dateS['id_SC'])): ?>
+                                      <option value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option>
+                                    <?php endif; endforeach; ?>
+                                    <?php */ ?>
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="error_saber" class="mensajeError" ></span>
+                                </div>
+                              </div>
+
+
+
 
                             </div>
-                         
-
-                          </div>
-
-
-                          
-                          
-                          
-
-                                <?php 
-                                  $num = 1;
-                                  $alumnosJson = [];
-                                  $i = 0;
-                                  foreach ($alumnos as $datos):
-                                  if(!empty($datos['cedula_alumno'])):  
-                                  ?>
-                          <div class="form-group">
-                              
-                              <div class="input-group">
-                              
-                                <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-
-                                                                     
-                                    <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
-                                    
-                                      
-                                          <?php //if ($amUsuariosE==1): ?>
-                                          
-
-                                            <input type="text" class="form-control input-lg" name="nuevoAl" id="alumno" placeholder="Alumno" value="<?php echo $datos['nombre_alumno'] . ' ' . $datos['apellido_alumno'] ?>" disabled required>
-                                            
-
-                                        
-                                          <?php //endif; ?>
-                                         
-                                        
-                                   
-                                    <?php //endif ?>
-                                    
-
-                                                                     
-                                  
-
-                                <span class="input-group-addon"><i class="fa fa-key"></i></span> 
-                                <input type="number" class="form-control input-lg" name="nuevoPass" value="0" max="1" min="0" step="0.1" placeholder="Nota" id="nota<?=$datos['cedula_alumno']?>" required>
-                                <?php 
-                                      $alumnosJson[$i] = $datos['cedula_alumno'];
-                                      $i++;
-                                 ?>
-
+                            
+                            <div class="row">
+                              <div class="col-xs-12" style="text-align:right;">
+                                <button class="btn btn-primary" id="cargarAlumnosNotas">Cargar Alumnos</button>
                               </div>
+                            </div>
 
-                          </div>
-                                  <?php
-                                 endif; endforeach;
-                                  ?>
-                              <span id="notaS" class="mensajeError"></span>
-
-                                  <span class="json_alumnos" style="display:none"><?=json_encode($alumnosJson);?></span>
-
-                                  <?php 
-                                  foreach ($sa as $dateSA):
-                                  if(!empty($dateSA['id_SA'])):  
-                                  ?>
+                            <div class="row">
+                              <hr>
+                            </div>
 
 
 
-                                    <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
-                                    
-                                      
-                                          <?php //if ($amUsuariosE==1): ?>
-                                          
-                                          <input type="hidden" name="" value="<?php echo $dateSA['id_SA'] ?>" id="idAlumno<?=$dateSA['cedula_alumno']?>">
+                            <div class="row boxlist_alumnosnotas" style="display:none;">
 
+                              <!-- <div class="form-group col-xs-12">
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                  <input type="text" class="form-control input-lg" style="width:100%;" name="nuevoAl" id="alumno" placeholder="Alumno" value="<?php echo $datos['nombre_alumno'] . ' ' . $datos['apellido_alumno'] ?>" disabled required>
+                                  <span class="input-group-addon" style="width:5%"><i class="fa fa-key"></i></span> 
+                                  <input type="number" class="form-control input-lg" style="width:100%;" name="nuevoPass" value="0" max="1" min="0" step="0.1" placeholder="Nota" id="nota<?=$datos['cedula_alumno']?>" required>
+                                </div>
+                              </div> -->
 
-                                    <?php //endif; ?>
-                                         
-                                        
-                                   
-                                    <?php //endif ?>
-
-                                    <?php
-                                   endif; endforeach;
-                                    ?>
-
-
-
+                            </div>
                            
 
+
+
+                            
+                            
+                            
+
+                            <?php 
+                              /*
+                              $num = 1;
+                              $alumnosJson = [];
+                              $i = 0;
+                              foreach ($alumnos as $datos): if(!empty($datos['cedula_alumno'])):  
+                            ?>
+                            <div class="form-group">
+                                
+                                <div class="input-group">
+                                
+                                  <span class="input-group-addon"><i class="fa fa-user"></i></span> 
+
+                                                                       
+                                      <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
+                                      
+                                        
+                                            <?php //if ($amUsuariosE==1): ?>
+                                            
+
+                                              <input type="text" class="form-control input-lg" name="nuevoAl" id="alumno" placeholder="Alumno" value="<?php echo $datos['nombre_alumno'] . ' ' . $datos['apellido_alumno'] ?>" disabled required>
+                                              
+
+                                          
+                                            <?php //endif; ?>
+                                           
+                                          
+                                     
+                                      <?php //endif ?>
+                                      
+
+                                                                       
+                                    
+
+                                  <span class="input-group-addon"><i class="fa fa-key"></i></span> 
+                                  <input type="number" class="form-control input-lg" name="nuevoPass" value="0" max="1" min="0" step="0.1" placeholder="Nota" id="nota<?=$datos['cedula_alumno']?>" required>
+                                  <?php 
+                                        $alumnosJson[$i] = $datos['cedula_alumno'];
+                                        $i++;
+                                   ?>
+
+                                </div>
+
+                            </div>
+                            <?php
+                              endif; endforeach;
+                            ?>
+                            <span id="notaS" class="mensajeError"></span>
+                            <span class="json_alumnos" style="display:none"><?=json_encode($alumnosJson);?></span>
+                            <?php
+                              foreach ($sa as $dateSA):
+                                if(!empty($dateSA['id_SA'])):
+                            ?>
+                              <input type="hidden" name="" value="<?=$dateSA['id_SA']; ?>" id="idAlumno<?=$dateSA['cedula_alumno']?>">
+                            <?php
+                                endif;
+                              endforeach;
+                              */
+                            ?>
+
+
+
+                             
+
+                          </div>
+
                         </div>
+                        <!--=====================================
+                        PIE DEL MODAL
+                        ======================================-->
+                        <div class="modal-footer">
 
-                      </div>
+                          <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
 
-                      <!--=====================================
-                      PIE DEL MODAL
-                      ======================================-->
+                          <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
 
-                      <div class="modal-footer">
-
-                        <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                        <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
-                      </div>
-
-
-                    </form>
-
+                        </div>
+                    </div>
                   </div>
-
                 </div>
 
+
               </div>
 
 
-              </div>
             </div>
             <!-- /.box-header -->
 
@@ -469,6 +444,159 @@
 <script>
 $(document).ready(function(){ 
 
+  $('#seccion').change(function(){
+    var url = $("#url").val();
+    var seccion = $(this).val();
+    if(seccion==""){
+      var html = '';
+      html += '<option value="">Saber Complementario</option>';
+      $("#saber").html(html);
+    }else{
+      $.ajax({
+        url: url+'/Buscar',    
+        type: 'POST',  
+        data: {
+          Buscar: true,   
+          saberes: true,   
+          cod_seccion: seccion,       
+        },
+        success: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);
+          console.log(resp);
+          if (resp.msj == "Good") {
+            var data = resp.data;
+            var dataSaberes = "";
+            if(resp.msjSaberes=="Good"){
+              dataSaberes = resp.dataSaberes;
+            }
+            // console.log("DATA: ");
+            // console.log(data);
+            // console.log("SABERES: ");
+            // console.log(dataSaberes);
+            var html = '';
+            html += '<option value="">Saber Complementario</option>';
+            for (var i = 0; i < data.length; i++) {
+              if(dataSaberes.length>0){
+                for (var j = 0; j < dataSaberes.length; j++) {
+                  if(dataSaberes[j]['id_SC']==data[i]['id_SC']){
+              html += '<option value="'+data[i]['id_SC']+'" ';
+
+                    // html += 'disabled="disabled"'
+              
+              html += ' >'+data[i]['nombreSC']+'</option>';
+                  }
+                }
+              }
+            }
+            $("#saber").html(html);
+          }
+          if(resp.msj == "Vacio"){
+            var html = '';
+            html += '<option value="">Saber Complementario</option>';
+            $("#saber").html(html);
+          }
+        },
+        error: function(respuesta){       
+          // alert(respuesta);
+          var resp = JSON.parse(respuesta);
+          console.log(resp);
+        }
+      });
+    }
+  });
+
+
+  // $('.seccionModificar').change(function(){
+
+  //   var url = $("#url").val();
+  //   var id = $(this).attr("name");
+  //   var seccion = $(this).val();
+  //   // alert(id);
+  //   // alert(seccion);
+  //   if(seccion==""){
+  //     var html = '';
+  //     html += '<option value="">Saber Complementario</option>';
+  //     $("#saber"+id).html(html);
+  //   }else{
+  //     $.ajax({
+  //       url: url+'/Buscar',    
+  //       type: 'POST',  
+  //       data: {
+  //         Buscar: true,   
+  //         saberes: true,   
+  //         cod_seccion: seccion,       
+  //       },
+  //       success: function(respuesta){       
+  //         // alert(respuesta);
+  //         var resp = JSON.parse(respuesta);   
+  //         // alert(resp.msj);
+  //         if (resp.msj == "Good") {  
+  //           var data = resp.data;
+  //           var dataSaberes = "";
+  //           if(resp.msjSaberes=="Good"){
+  //             dataSaberes = resp.dataSaberes;
+  //           }
+  //           // console.log("DATA: ");
+  //           // console.log(data);
+  //           // console.log("Saberes: ");
+  //           // console.log(dataSaberes);
+  //           // console.log($("#saber"+id).html());
+  //           var html = '';
+  //           html += '<option value="">Saber Complementario</option>';
+  //           // alert(dataSaberes);
+  //           // alert(dataSaberes);
+
+  //           for (var i = 0; i < data.length; i++) {
+  //             html += '<option value="'+data[i]['id_SC']+'" ';
+  //             if(dataSaberes.length>0){
+  //               for (var j = 0; j < dataSaberes.length; j++) {
+  //                 if(dataSaberes[j]['id_SC']==data[i]['id_SC']){
+  //                   if(dataSaberes[j]['id_clase']==id){
+  //                     html += 'selected="selected"'
+  //                   }else{
+  //                     html += 'disabled="disabled"'
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //             html += ' >'+data[i]['nombreSC']+'</option>';
+  //           }
+  //           $("#saber"+id).html(html);
+  //         }
+  //         if(resp.msj == "Vacio"){
+  //           var html = '';
+  //           html += '<option value="">Saber Complementario</option>';
+  //           $("#saber"+id).html(html);
+  //         }
+  //       },
+  //       error: function(respuesta){       
+  //         // alert(respuesta);
+  //         var resp = JSON.parse(respuesta);
+  //         console.log(resp);
+  //       }
+  //     });
+  //   }
+  // });
+
+  $("#cargarAlumnosNotas").click(function(){
+    var seccion = $("#seccion").val();
+    var saber = $("#saber").val();
+    if((seccion!="" && saber != "")){
+      // alert(seccion);
+      // alert(saber);
+      // alert('asd');
+    }else{
+      Swal.fire({
+        type: 'warning',
+        title: '¡Debe seleccionar la sección y el saber complementario!',
+        text: 'La sección y el saber complementario deben ser seleccionados para buscar a los alumnos de la clase',
+        footer: 'SCHSL', showCloseButton: false, showConfirmButton: true,
+        // footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+      });
+    }
+  });
+
 // $("#nota").keypress(function (e) {
 //         console.log(e.target)
 //         expresion = /^[0-1]$/
@@ -499,8 +627,8 @@ $(document).ready(function(){
 
 
 
-
   $("#guardar").click(function(){
+    var url = $("#url").val();
     // var id = $(this).val();
     // alert(id);
     var response = validar();
@@ -542,7 +670,7 @@ $(document).ready(function(){
           // alert(saber + ' ' + seccion + ' ');
           // alert(saber + ' ' + alumno + ' ' + nota + ' ');
               $.ajax({
-                url: 'Notas/Agregar',    
+                url: url+'/Agregar',    
                 type: 'POST',   
                 data: {
                   Agregar: true,          
@@ -613,6 +741,7 @@ $(document).ready(function(){
 
 
   $(".modificarBtn").click(function(){
+    var url = $("#url").val();
     // var id = $(this).val();
     swal.fire({ 
           title: "¿Desea modificar los datos?",
@@ -629,7 +758,7 @@ $(document).ready(function(){
             let notaModif = $(this).val();
             // alert(notaModif);
             $.ajax({
-              url: 'Notas/Buscar',    
+              url: url+'/Buscar',    
               type: 'POST',  
               data: {
                 Buscar: true,   
@@ -666,6 +795,7 @@ $(document).ready(function(){
   });
 
   $(".modificarButtonModal").click(function(){
+    var url = $("#url").val();
     // alert(id);
     var id = $(this).val();
 
@@ -685,7 +815,7 @@ $(document).ready(function(){
             // alert(nota);
 
             $.ajax({
-              url: 'Notas/Modificar',    
+              url: url+'/Modificar',    
               type: 'POST',   
               data: {
                 Editar: true,   
@@ -748,6 +878,7 @@ $(document).ready(function(){
   });
 
   $(".eliminarBtn").click(function(){
+    var url = $("#url").val();
       swal.fire({ 
           title: "¿Desea borrar los datos?",
           text: "Se borraran los datos escogidos, ¿desea continuar?",
@@ -774,7 +905,7 @@ $(document).ready(function(){
                         /*window.alert($(this).val());*/
                         let notaDelete = $(this).val();
                       $.ajax({
-                        url: 'Notas/Eliminar',    
+                        url: url+'/Eliminar',    
                         type: 'POST',   
                         data: {
                           Eliminar: true,   

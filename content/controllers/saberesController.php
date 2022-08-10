@@ -7,6 +7,7 @@
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\saberesModel as saberesModel;
 	use content\traits\Utility;
+
 	class saberesController{
 		use Utility;
 		private $url;
@@ -44,7 +45,6 @@
 					$datos['trayectoSC'] = ucwords(mb_strtolower($_POST['trayectoSC']));
 					$datos['faseSC'] = $_POST['faseSC'];
 					$buscar = $this->saber->getOne($_POST['nombreSC']);
-
 					if ($buscar['msj']=="Good") {
 					    if(count($buscar['data'])>1){
 					    	if($_POST['']==$_POST['nombreSC']){
@@ -60,12 +60,12 @@
 							echo json_encode($exec);
 						}
 
-						}else{
-							echo json_encode(['msj'=>"Error"]);
-						}
 					}else{
-						echo json_encode(['msj'=>"Vacio"]);
-					 }    
+						echo json_encode(['msj'=>"Error"]);
+					}
+				}else{
+					echo json_encode(['msj'=>"Vacio"]);
+				}    
 			}
 		}
 				

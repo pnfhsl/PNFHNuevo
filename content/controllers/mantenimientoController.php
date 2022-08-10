@@ -37,21 +37,41 @@
 		}
 
 		public function Respaldar(){
-			$objModel = new homeModel;
+			if(!empty($_POST)){
+				$mantenimiento = $this->manteniment->Respaldar();
+				// print_r($mantenimiento);
+				if($mantenimiento['ejecucion']=="1"){
+					if(!empty($mantenimiento['response'])){
+						$result['msj'] = "Good";
+						$result['rutaFile'] = $mantenimiento['response'];
+					}else{
+						$result['msj'] = "Vacio";
+					}
+				}else{
+					$result['msj'] = "Error";
+				}
+				echo json_encode($result);
+			}
+			if(empty($_POST)){
+				$objModel = new homeModel;
 				$_css = new headElement;
 				$_css->Heading();
-				
-			$mantenimiento = $this->manteniment->Respaldar();
-			
-			$url = $this->url;
-			require_once("view/mantenimiento2View.php");
+				$mantenimiento = $this->manteniment->Respaldar();
+				$url = $this->url;
+				require_once("view/mantenimiento2View.php");
+			}
 		}
 		// public function Consultar(){
 		// 	$url = $this->url;
 		// }
 		public function Borrarfile(){
 			$resul = unlink($_POST['file']);
-			echo $resul;
+			if($resul=="1"){
+				$result['msj'] = "Good";
+			}else{
+				$result['msj'] = "Error";
+			}
+			echo json_encode($result);
 		}
 		
 		public function Agregar(){

@@ -75,7 +75,7 @@
 				fwrite($handle,$return);
 				fclose($handle);
 				$response = $this->mysqlImportFilename;
-				$response = '../libs/backup/'._DB_WEB_."_".$this->fecha.'.sql';
+				$response = './libs/backup/'._DB_WEB_."_".$this->fecha.'.sql';
 				// $response = '/backup/'._DB_WEB_."_".$this->fecha.'.sql';
 				$resul = ['ejecucion'=>true];
 				$resul += ['response'=>$response];

@@ -54,7 +54,7 @@
 				// $this->controller = $this->url[0] == '' ? 'Home' : $this->url[0];
 				$this->controller = $control == '' ? 'Home' : $control;
 			}else{
-				$this->controller = $control == '' ? 'login' : $control;
+				$this->controller = $control == '' ? 'Login' : $control;
 				// $this->controller = $this->url[0] == '' ? 'login' : $this->url[0];
 			}
 			$this->url[0] = $this->controller;

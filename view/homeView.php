@@ -18,7 +18,7 @@
         <?php echo "Inicio"; ?>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="<?=_ROUTE_?>home"><i class="fa fa-dashboard"></i> Inicio </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar('Home'); ?>"><i class="fa fa-dashboard"></i> Inicio </a></li>
         <li class="active"><?php echo $url; ?></li>
       </ol>
     </section>

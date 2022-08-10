@@ -21,8 +21,8 @@
         <small><?php echo "Ver ".$url; ?></small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="?route=Home"><i class="fa fa-dashboard"></i> Inicio </a></li>
-        <li><a href="?route=<?php echo $url ?>"><?php echo $url; ?></a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar('Home'); ?>"><i class="fa fa-dashboard"></i> Inicio </a></li>
+        <li><a href="<?=_ROUTE_.$this->encriptar('Roles'); ?>"><?php echo $url; ?></a></li>
         <li class="active"><?php if(!empty($action)){echo $action;} echo " ". $url; ?></li>
       </ol>
     </section>
@@ -37,7 +37,7 @@
           <div class="box">
             <div class="box-header">
               <div class="col-xs-12 col-sm-6">
-                <img src="assets/img/logolista.png" style="width:25px;color:red !importante;">
+                <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
@@ -49,6 +49,7 @@
 
 
                 <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarRoles">Agregar Nuevo</button>
+                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
               <!--=====================================
               MODAL AGREGAR Roles
@@ -662,6 +663,7 @@ $(document).ready(function(){
     this.value = this.value.replace(/[^a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú ]/g,''); });
 
   $("#guardar").click(function(){
+    var url = $("#url").val();
     var response = validar();
     if(response){
 
@@ -709,7 +711,7 @@ $(document).ready(function(){
             // console.log(options);
           /*alert(cedula + ' ' + nombre + ' ' + apellido + ' ' + especialidad);*/
               $.ajax({
-                url: 'Roles/Agregar',    
+                url: url+'/Agregar',    
                 type: 'POST',   
                 data: {
                   Agregar: true,   
@@ -771,6 +773,7 @@ $(document).ready(function(){
   });
 
   $(".modificarButtonModal").click(function(){
+    var url = $("#url").val();
     var id = $(this).val();
     var response = validar(true, id);
     if(response){
@@ -815,7 +818,7 @@ $(document).ready(function(){
             let nombre = $("#nombre"+id).val();     
 
             $.ajax({
-              url: 'Roles/Modificar',    
+              url: url+'/Modificar',    
               type: 'POST',   
               data: {
                 Editar: true,   
@@ -882,6 +885,7 @@ $(document).ready(function(){
   });
 
   $(".modificarBtn").click(function(){
+    var url = $("#url").val();
     swal.fire({ 
           title: "¿Desea modificar los datos?",
           text: "Se movera al formulario para modificar los datos, ¿desea continuar?",
@@ -897,7 +901,7 @@ $(document).ready(function(){
             let userNofif = $(this).val();
             // alert(userNofif);
             $.ajax({
-              url: 'Roles/Buscar',    
+              url: url+'/Buscar',    
               type: 'POST',  
               data: {
                 Buscar: true,   
@@ -950,6 +954,7 @@ $(document).ready(function(){
   });
 
   $(".CargarBtn").click(function(){
+    var url = $("#url").val();
     swal.fire({ 
           title: "¿Desea cargar los datos del rol?",
           text: "Se movera a la tabla para cargar los datos, ¿desea continuar?",
@@ -965,7 +970,7 @@ $(document).ready(function(){
             let userNofif = $(this).val();
             // alert(userNofif);
             $.ajax({
-              url: 'Roles/Buscar',    
+              url: url+'/Buscar',    
               type: 'POST',  
               data: {
                 Buscar: true,   
@@ -1018,6 +1023,7 @@ $(document).ready(function(){
   });
 
   $(".eliminarBtn").click(function(){
+    var url = $("#url").val();
       swal.fire({ 
           title: "¿Desea borrar los datos?",
           text: "Se borraran los datos escogidos, ¿desea continuar?",
@@ -1044,7 +1050,7 @@ $(document).ready(function(){
                         /*window.alert($(this).val());*/
                         let userDelete = $(this).val();
                       $.ajax({
-                        url: 'Roles/Eliminar',    
+                        url: url+'/Eliminar',    
                         type: 'POST',   
                         data: {
                           Eliminar: true,   

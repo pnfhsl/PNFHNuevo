@@ -52,6 +52,7 @@
 			}
 				if ($this->user == $this->usuario AND $this->password == $this->cont) {
 					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					$Result['data'] = $user;
 					// echo json_encode($Result);
 					$_SESSION['cuentaActiva'] = true;
 					// die();

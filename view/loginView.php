@@ -31,6 +31,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 
 <body>
+
+                  <!-- <input type="hidden" id="url" value="<?=$this->url; ?>"> -->
+                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
+                  <input type="hidden" id="urlPreguntas" value="<?= $this->encriptar("Preguntas"); ?>">
+                  <input type="hidden" id="urlHome" value="<?= $this->encriptar("Home"); ?>">
     <h1>Iniciar Sesión</h1>
     <div class=" w3l-login-form">
         <!-- <h2>Inicio de Sesión</h2> -->
@@ -217,6 +222,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     
     console.clear();
       $('#loginBtn').click(function(e) { 
+
+        var url = $("#url").val();
+        var urlPreguntas = $("#urlPreguntas").val();
+        var urlHome = $("#urlHome").val();
         e.preventDefault();
 
         if ($("#usuario").val().length > 3) {
@@ -248,8 +257,17 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                   }); 
                   $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
                   $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw");
+                  
+                  if(data.stat=="1"){
+                    location.href = "<?= _ROUTE_ ?>"; 
+                    // location.href = "<?= _ROUTE_ ?>"+urlHome; 
+                    // location.href = "<?= _ROUTE_ ?>"; 
+                  }
 
-                  location.href = "<?= _ROUTE_ ?>Preguntas"; 
+                  if(data.stat=="2"){
+                    location.href = "<?= _ROUTE_ ?>"+urlPreguntas; 
+                    // location.href = "<?= _ROUTE_ ?>Preguntas"; 
+                  }
 
                 }
 
@@ -306,9 +324,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 
       $("#enviarCorreo").click(function(){
+        var url = $("#url").val();
         let correo = $("#correo").val();
         $.ajax({
-          url: 'Login/enviarLink',    
+          url: url+'/enviarLink',    
           type: 'POST',   
           data: { 
             correo: correo,    

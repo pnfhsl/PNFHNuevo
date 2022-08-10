@@ -17,7 +17,7 @@
 	define("_URL_" , "http://localhost/PNFHNuevo/");					/* nombre del servidor */
 
 	define('_DB_MANAGER_', 	'mysql');						        /* manejador de base de datos */
-	define("_DB_WEB_" , "pnfhslt4");								/* nombre de la base de datos */
+	define("_DB_WEB_" , "pnfhsl");								/* nombre de la base de datos */
 	define('_HOST_', 		'localhost');							/* nombre del host */
 	define("_DB_USER_", "root");									/* nombre del usuario de la base de datos */
 	define("_DB_PASS_", "");										/* contraseña de la base de datos  */

@@ -54,11 +54,10 @@
 
 		public function Agregar(){
 			if($_POST){		
-				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['correo']) && !empty($_POST['telefono'])) {
+				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['telefono'])) {
 					$datos['cedula'] = $_POST['cedula'];
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
 					$datos['apellido'] = ucwords(mb_strtolower($_POST['apellido']));
-					$datos['correo'] = mb_strtolower($_POST['correo']);
 					$datos['telefono'] = $_POST['telefono'];
 					$buscar = $this->profesor->getOne($_POST['cedula']);
 					if($buscar['msj']=="Good"){
@@ -87,12 +86,11 @@
 
 		public function Modificar(){
 			if($_POST){		
-				if (!empty($_POST['cedula']) && !empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['correo']) && !empty($_POST['telefono'])) {
+				if (!empty($_POST['cedula']) && !empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['nombre']) && !empty($_POST['apellido']) && !empty($_POST['telefono'])) {
 					$datos['id'] = $_POST['codigo'];
 					$datos['cedula'] = $_POST['cedula'];
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
 					$datos['apellido'] = ucwords(mb_strtolower($_POST['apellido']));
-					$datos['correo'] = mb_strtolower($_POST['correo']);
 					$datos['telefono'] = $_POST['telefono'];
 					$buscar = $this->profesor->getOne($_POST['cedula']);
 					if($buscar['msj']=="Good"){

@@ -37,10 +37,14 @@
 			}
 		}
 
-		public function ConsultarGrupos(){
+		public function ConsultarGrupos($cod_seccion=""){
 			
 			try {
-				$query = parent::prepare("SELECT * FROM proyectos, grupos, seccion_alumno, alumnos WHERE proyectos.cod_proyecto = grupos.cod_proyecto and grupos.id_SA = seccion_alumno.id_SA and seccion_alumno.cedula_alumno = alumnos.cedula_alumno and proyectos.estatus = 1 and grupos.estatus = 1 and alumnos.estatus = 1");
+				if($cod_seccion==""){
+					$query = parent::prepare("SELECT * FROM proyectos, grupos, seccion_alumno, alumnos WHERE proyectos.cod_proyecto = grupos.cod_proyecto and grupos.id_SA = seccion_alumno.id_SA and seccion_alumno.cedula_alumno = alumnos.cedula_alumno and proyectos.estatus = 1 and grupos.estatus = 1 and alumnos.estatus = 1");
+				}else{
+					$query = parent::prepare("SELECT * FROM proyectos, grupos, seccion_alumno, alumnos WHERE proyectos.cod_proyecto = grupos.cod_proyecto and grupos.id_SA = seccion_alumno.id_SA and seccion_alumno.cedula_alumno = alumnos.cedula_alumno and proyectos.estatus = 1 and grupos.estatus = 1 and alumnos.estatus = 1 and seccion_alumno.cod_seccion = '{$cod_seccion}'");
+				}
 				$respuestaArreglo = '';
 				$query->execute();
 				$query->setFetchMode(parent::FETCH_ASSOC);
@@ -53,10 +57,14 @@
 			}
 		}
 
-		public function ConsultarGrupos2(){
+		public function ConsultarGrupos2($cod_seccion=""){
 			
 			try {
-				$query = parent::prepare("SELECT DISTINCT proyectos.cod_proyecto, seccion_alumno.cod_seccion FROM proyectos, grupos, seccion_alumno, alumnos WHERE proyectos.cod_proyecto = grupos.cod_proyecto and grupos.id_SA = seccion_alumno.id_SA and seccion_alumno.cedula_alumno = alumnos.cedula_alumno and proyectos.estatus = 1 and grupos.estatus = 1 and alumnos.estatus = 1");
+				if($cod_seccion==""){
+					$query = parent::prepare("SELECT DISTINCT proyectos.cod_proyecto, seccion_alumno.cod_seccion FROM proyectos, grupos, seccion_alumno, alumnos WHERE proyectos.cod_proyecto = grupos.cod_proyecto and grupos.id_SA = seccion_alumno.id_SA and seccion_alumno.cedula_alumno = alumnos.cedula_alumno and proyectos.estatus = 1 and grupos.estatus = 1 and alumnos.estatus = 1");
+				}else{
+					$query = parent::prepare("SELECT DISTINCT proyectos.cod_proyecto, seccion_alumno.cod_seccion FROM proyectos, grupos, seccion_alumno, alumnos WHERE proyectos.cod_proyecto = grupos.cod_proyecto and grupos.id_SA = seccion_alumno.id_SA and seccion_alumno.cedula_alumno = alumnos.cedula_alumno and proyectos.estatus = 1 and grupos.estatus = 1 and alumnos.estatus = 1 and seccion_alumno.cod_seccion = '{$cod_seccion}'");
+				}
 				$respuestaArreglo = '';
 				$query->execute();
 				$query->setFetchMode(parent::FETCH_ASSOC);
