@@ -544,13 +544,13 @@ $(".confirmarPassword").keyup(function(){
 
           let rol = $("#rol").val();     
           let cedula = $("#cedula").val();     //Se capturan la informacion en las variables user y password 
-          let user = $("#user").val();
+          let user = $("#nombre").val();
           let pass = $("#pass").val();
-
+          //alert(rol + ' ' + cedula + ' ' + user + ' ' + pass);
+          //alert(url);
         
-        ajax({
-            url: url+
-            '/Agregar',    
+        $.ajax({
+            url: url + '/Agregar',    
             type: 'POST',   
             data: {
               Agregar: true,   
@@ -562,8 +562,9 @@ $(".confirmarPassword").keyup(function(){
             success: function(respuesta){       
               var data = JSON.parse(respuesta);    
                // window.alert(respuesta);
-              // alert("Hola");
-              // alert(data);   
+              //  alert('hola');   
+              //  alert(respuesta);
+              //  alert('adios');   
                if (data.msj === "Good") {   
                  Swal.fire({
                   type: 'success',

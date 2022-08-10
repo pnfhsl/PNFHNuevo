@@ -14,6 +14,7 @@
 
 	class loginController{
 		use Utility;
+		
 
 		private $url;
 		private $login;
@@ -32,8 +33,10 @@
 		public function Consultar(){
 			if($_POST){		
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
-					$resp = $this->login->loginSistema($_POST['username'], $_POST['password']); //pasa el user y pass
+					// var_dump($this->encriptar($_POST['password']));
+					$resp = $this->login->loginSistema($_POST['username'], $this->encriptar($_POST['password'])); //pasa el user y pass
 					 // var_dump($resp);
+					//  var_dump($resp['msj']);
 					if($resp['msj'] == "Good"){
 						$intentos = $this->usuario->Intentos($_POST['username']);
 						$int = 0;

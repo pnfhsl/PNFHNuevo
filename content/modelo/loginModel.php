@@ -36,21 +36,24 @@
 		public function loginSistema($user, $passw){		//Se hace una consulta de los usuarios recibidos
 			$this->user = $user;
 			$this->passw = $passw;
-			$this->password = md5($this->passw);
-			
+			//$this->password = md5($this->passw);
+			// var_dump($this->user);
+			// var_dump($this->passw);
 			$sql = ('SELECT * FROM usuarios WHERE nombre_usuario = :user AND password_usuario = :password AND estatus = 1');
 			$new = parent::prepare($sql);
 			$new->bindValue(':user', $this->user);
-			$new->bindValue(':password', $this->password);
+			$new->bindValue(':password', $this->passw);
 			$new->execute();
 			$user = $new->fetchAll();
-			// var_dump($this->password);
-			// var_dump($user);
+			
 			foreach ($user as $currentUser) {
 				$this->usuario = $currentUser['nombre_usuario'];
 				$this->cont = $currentUser['password_usuario'];
+				// var_dump($this->usuario);
+				// var_dump($this->cont);
 			}
-				if ($this->user == $this->usuario AND $this->password == $this->cont) {
+				if ($this->user == $this->usuario AND $this->passw == $this->cont) {
+					// var_dump('hola');
 					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
 					$Result['data'] = $user;
 					// echo json_encode($Result);
