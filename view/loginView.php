@@ -92,7 +92,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                   <div class="form-group">
 
-                    <label for="">¿Cuál es su año de nacimiento?</label>
+                    <label for="" id="preg_uno"></label>
                     <div class="input-group">
 
                       <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -101,7 +101,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                     </div>
                     <br>
-                    <label for="">¿Cuál es el nombre se primer perro?</label>
+                    <label for="" id="preg_dos"></label>
                     <div class="input-group">
 
                       <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -110,7 +110,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                     </div>
                     <br>
-                    <label for="">¿Cuál es la profesión de su madre?</label>
+                    <label for="" id="preg_tres"></label>
                     <div class="input-group">
 
                       <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -245,16 +245,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
               },
               success: function(respuesta) {
                 //  alert(respuesta);
+                //  console.log(respuesta);
                 var data = JSON.parse(respuesta); 
                 console.log(data);
+                console.log(data.preguntas);
+                // console.log(data.preguntas[0].pregunta);
+                // console.log(data.preguntas[0].respuesta);
+                // console.log(data.preguntas[1].pregunta);
+                // console.log(data.preguntas[1].respuesta);
+                // console.log(data.preguntas[2].pregunta);
+                // console.log(data.preguntas[2].respuesta);
 
                 if (data.access === "Acceder") { 
-                  Swal.fire({
-                    type: 'success',
-                    title: '¡Ingreso exitoso!',
-                    text: 'El nombre de usuario y la contraseña no coinciden',
-                    footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
-                  }); 
+                  // Swal.fire({
+                  //   type: 'success',
+                  //   title: '¡Ingreso exitoso!',
+                  //   text: 'El nombre de usuario y la contraseña coinciden',
+                  //   footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
+                  // }); 
                   $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
                   $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw");
                   
@@ -292,6 +300,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                 if (data.look === "Bloqueo") {
                   $("#preguntas").click(); 
+                  $("#preg_uno").html(data.preguntas[0].pregunta); 
+                  $("#preg_dos").html(data.preguntas[1].pregunta); 
+                  $("#preg_tres").html(data.preguntas[2].pregunta); 
                   // Swal.fire({
                   //   type: 'warning',
                   //   title: '¡Usuario bloqueado!',

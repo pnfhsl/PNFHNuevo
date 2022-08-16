@@ -100,11 +100,12 @@
 				$query = parent::prepare($sql);
 				$query->execute();          
 				$respuestaArreglo = $query->fetchAll();
-				if ($respuestaArreglo += ['estatus' => true]) {
-					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-					// var_dump($Result);
-					return $Result;
-				}
+				//if ($respuestaArreglo += ['estatus' => true]) {
+				//	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+				//	// var_dump($Result);
+				//	return $Result;
+				//}
+				return $respuestaArreglo;
 
 			} catch (PDOException $e) {
 		        $errorReturn = ['estatus' => false];

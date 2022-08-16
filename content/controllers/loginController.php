@@ -77,13 +77,16 @@
 								$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
 							}
 							if($intentos[0]["intentos"] >= 3){
-								$resp = array('look' => "Bloqueo");
 								$cedula = $this->login->busquedaCedula($_POST['username']);
+								//var_dump($cedula);
 								$preguntas = $this->login->Consultar($cedula[0]['cedula_usuario']);
-								var_dump($preguntas);
+								//var_dump($cedula[0]['cedula_usuario']);
+								$preg = array('look' => "Bloqueo", 'preguntas' => $preguntas);
+								// $resp = array('look' => "Bloqueo");
 							}
 						}
-						echo json_encode($resp);
+						// echo json_encode($resp);
+						echo json_encode($preg);
 					}
 					// if($resp['msj'] == "Good"){
 					// 	$intentos = $this->usuario->Intentos($_POST['username']);
