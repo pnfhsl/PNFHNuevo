@@ -78,6 +78,9 @@
 							}
 							if($intentos[0]["intentos"] >= 3){
 								$resp = array('look' => "Bloqueo");
+								$cedula = $this->login->busquedaCedula($_POST['username']);
+								$preguntas = $this->login->Consultar($cedula[0]['cedula_usuario']);
+								var_dump($preguntas);
 							}
 						}
 						echo json_encode($resp);
@@ -235,22 +238,6 @@
 
 		}
 
-		// public function RecuperarPass($numero){
-		// 	echo "asdasd ". $numero;
-		// }
-		// public function Recuperar(){
-		// 	echo "Llamando al metodo recuperar";
-		// 	if($_POST){
-		// 		if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
-		// 			var_dump($_SESSION['RC']['cedula_recuperacion']);
-		// 			$exec = $this->login->recuperarPass($_SESSION['RC']['cedula_recuperacion'], $_POST['pass']);
-		// 			var_dump($exec);
-		// 			echo json_encode($exec);					
-		// 		}
-
-		// 	}
-
-		// }
 }
 	
 		

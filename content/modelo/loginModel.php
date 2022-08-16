@@ -93,6 +93,28 @@
 
 		}
 
+		public function Consultar($user){		//Se hace una consulta de los usuarios recibidos
+			
+			try{
+				$sql = "SELECT * FROM respuestas, preguntas WHERE respuestas.id_pregunta = preguntas.id AND cedula_usuario = '{$user}'";
+				$query = parent::prepare($sql);
+				$query->execute();          
+				$respuestaArreglo = $query->fetchAll();
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					// var_dump($Result);
+					return $Result;
+				}
+
+			} catch (PDOException $e) {
+		        $errorReturn = ['estatus' => false];
+		        $errorReturn += ['info' => "error sql:{$e}"];
+		        return $errorReturn;
+		    }
+			
+
+		}
+
 		public function busquedaCorreo($correo){
 			try {
 				$query = parent::prepare('SELECT cedula_usuario AS cedula, correo AS correo, nombre_usuario AS nombre 
@@ -116,6 +138,21 @@
 				// 	$respuestaArreglo['role'] = 'Estudiante';
 				// }
 				// var_dump($respuestaArreglo);
+				return $respuestaArreglo;
+				
+		      } catch (PDOException $e) {
+		        $errorReturn = ['estatus' => false];
+		        $errorReturn += ['info' => "error sql:{$e}"];
+		        return $errorReturn;
+		      }
+		}
+
+		public function busquedaCedula($user){
+			try {
+				$query = parent::prepare('SELECT cedula_usuario FROM usuarios WHERE nombre_usuario  = :user');
+				$respuestaArreglo = '';
+				$query->execute(['user'=>$user]);
+				$respuestaArreglo = $query->fetchAll();
 				return $respuestaArreglo;
 				
 		      } catch (PDOException $e) {
