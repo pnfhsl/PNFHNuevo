@@ -369,7 +369,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             correo: correo,
           },
           success: function(resp) {
-            // alert(resp);
+            alert(resp);
             console.log(resp);
             var datos = JSON.parse(resp);
             if (datos.msj === "Good") {
@@ -386,7 +386,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             if (datos.msj === "Vacio") {
               Swal.fire({
                 type: 'warning',
-                title: '¡Correo no coinciden!',
+                title: '¡Correo no coincide!',
                 text: 'El correo electronico ' + correo + ' no fue encontrado',
                 footer: 'SCHSL',
                 timer: 3000,
