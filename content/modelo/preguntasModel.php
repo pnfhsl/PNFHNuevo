@@ -1,19 +1,21 @@
 <?php
 
-	namespace content\modelo;
+namespace content\modelo;
 
-	use content\config\conection\database as database;
-	use PDOException;
+use content\config\conection\database as database;
+use PDOException;
 
-	class preguntasModel extends database{
+class preguntasModel extends database
+{
 
-		private $con;
+	private $con;
 
-		public function __construct(){
-			$this->con = parent::__construct();
-		}
+	public function __construct()
+	{
+		$this->con = parent::__construct();
+	}
 
-		public function Consultar()
+	public function Consultar()
 	{
 
 		try {
@@ -31,33 +33,46 @@
 		}
 	}
 
-		// public function Agregar($datos){
+	public function Agregar($datos)
+	{
 
-		// 	try{
-		// 	$query = parent::prepare('INSERT INTO preguntas (cedula, pregunta_uno, respuesta_uno,pregunta_dos,respuesta_dos, pregunta_tres, respuesta_tres) VALUES (:cedula, :pregunta_uno, :respuesta_uno,:pregunta_dos, :respuesta_dos, :pregunta_tres, :respuesta_tres)');
-		// 	$query->bindValue(':cedula', $datos['cedula']);
-		// 	$query->bindValue(':pregunta_uno', $datos['nombre']);
-		// 	$query->bindValue(':respuesta_uno', $datos['apellido']);
-		// 	$query->bindValue(':pregunta_dos', $datos['correo']);
-		// 	$query->bindValue(':respuesta_dos', $datos['telefono']);
-		// 	$query->bindValue(':pregunta_tres', $datos['trayecto']);
-		// 	$query->bindValue(':respuesta_tres', $datos['trayecto']);
-		// 	$query->execute();
-		// 	$respuestaArreglo = $query->fetchAll();
-		// 	// print_r($respuestaArreglo);
-		// 	if ($respuestaArreglo += ['estatus' => true]) {
-		// 		$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-		// 		return $Result;
-		// 	}
-		// } catch(PDOException $e){
-		// 	// print_r($e);
-		// 		$errorReturn = ['estatus' => false];
-		// 		$errorReturn['msj'] = "Error";
-		// 		$errorReturn += ['info' => "Error sql:{$e}"];
-		// 		return $errorReturn; 
-		// }
-		// }
-
+		try {
+			$query = parent::prepare('INSERT INTO respuestas (id_respuesta, cedula_usuario, id_pregunta, respuesta, llaves) VALUES (DEFAULT, "27828164", :id_pregunta, :respuesta, "public")');
+			// $query->bindValue(':cedula_usuario', $datos['cedula']);
+			foreach ($datos as $key) {
+				// var_dump($datos);
+				// var_dump($key);
+				// var_dump($key['preg']);
+				// var_dump($datos['resp']);
+				// var_dump($key['preg_dos']);
+				// var_dump($key['resp_dos']);
+				// var_dump($key['preg_tres']);
+				// var_dump($key['resp_tres']);
+			}
+			for ($i = 0; $i < 3; $i++) {
+				# code...
+				var_dump($datos['preg'][$i] . ' ' . $datos['resp'][$i]);
+				// var_dump($datos['resp'][$i]);
+				$query->bindValue(':id_pregunta', $datos['preg'][$i]);
+				$query->bindValue(':respuesta', $datos['resp'][$i]);
+				$query->execute();
+			}
+			// $query->bindValue(':id_pregunta', $datos['preg_dos']);
+			// $query->bindValue(':respuesta', $datos['resp_dos']);
+			// $query->bindValue(':id_pregunta', $datos['preg_tres']);
+			// $query->bindValue(':respuesta', $datos['resp_tres']);
+			$respuestaArreglo = $query->fetchAll();
+			// print_r($respuestaArreglo);
+			if ($respuestaArreglo += ['estatus' => true]) {
+				$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+				return $Result;
+			}
+		} catch (PDOException $e) {
+			// print_r($e);
+			$errorReturn = ['estatus' => false];
+			$errorReturn['msj'] = "Error";
+			$errorReturn += ['info' => "Error sql:{$e}"];
+			return $errorReturn;
+		}
 	}
-
-?>
+}
