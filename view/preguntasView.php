@@ -24,11 +24,12 @@
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
+            <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
               <h3 class="box-title" style="margin-top:10px; margin-bottom:10px;">Preguntas de Seguridad</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form">
+            <!-- <form role="form"> -->
               <div class="box-body">
                   <div class="form-group">
                     <label>Pregunta #1</label>
@@ -87,7 +88,7 @@
               </div>
               <!-- /.box-body -->
               
-            </form>
+            <!-- </form> -->
             <div class="box-footer">
               <button type="submit" class="btn btn-primary" id="guardar">Guardar</button>
             </div>
@@ -117,7 +118,7 @@
     // console.clear();
 
     $("#guardar").click(function(){
-
+      var url = $("#url").val();
       swal.fire({ 
             title: "¿Desea guardar los datos?",
             text: "Se guardaran los datos, ¿desea continuar?",
@@ -137,21 +138,22 @@
             let resp_uno = $("#resp_uno").val();     
             let resp_dos = $("#resp_dos").val();     
             let resp_tres = $("#resp_tres").val();
-
+            // alert(preg_uno + ' ' + preg_dos + ' ' + preg_tres);
+            // alert(resp_uno + ' ' + resp_dos + ' ' + resp_tres);
               $.ajax({
-                url: 'Preguntas/Agregar',    
+                url: url + '/Agregar',    
                 type: 'POST',   
                 data: {
                   Agregar: true,   
-                  resp_uno: resp_uno,       
-                  resp_dos: resp_dos,       
-                  resp_tres: resp_tres,
+                  preg_uno: preg_uno,       
+                  preg_dos: preg_dos,       
+                  preg_tres: preg_tres,
                   resp_uno: resp_uno,       
                   resp_dos: resp_dos,       
                   resp_tres: resp_tres,
                 },
                 success: function(resp){
-                  // alert(resp);
+                  alert(resp);
                   var datos = JSON.parse(resp);     
                     if (datos.msj === "Good") {   
                       Swal.fire({
@@ -167,14 +169,14 @@
                       Swal.fire({
                         type: 'warning',
                         title: '¡Registro repetido!',
-                        text: 'El alumno ' + nombre + ' ' + apellido + ' ya esta agregado al sistema',
+                        text: 'El usuario ya tiene las preguntas de seguridad agregadas al sistema',
                         footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                       });
                     }
                     if (datos.msj === "Error") {   
                       Swal.fire({
                         type: 'error',
-                        title: '¡Error la guardar los cambio!',
+                        title: '¡Error al guardar los cambio!',
                         text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                         footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                       });

@@ -499,7 +499,7 @@ $(document).ready(function(){
                       },
 
                 success: function(resp){
-                   alert(resp);
+                   // alert(resp);
                 /*window.alert("Hola mundo");   
                 console.log(resp); 
                   window.alert(resp);*/
