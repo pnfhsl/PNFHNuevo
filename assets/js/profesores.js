@@ -280,6 +280,7 @@ $(document).ready(function () {
 
 
     $(".modificarBtn").click(function () {
+        // alert('kashnjdnajsd');
         let url = $("#url").val();
         swal.fire({
             title: "¿Desea modificar los datos?",

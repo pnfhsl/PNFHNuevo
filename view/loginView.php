@@ -8,220 +8,221 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html lang="en">
 
 <head>
-    <title>Login </title>
-    <!-- meta tags -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="Art Sign Up Form Responsive Widget, Audio and Video players, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, 
-		Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design"
-    />
-    <!-- /meta tags -->
-    <!-- custom style sheet -->
-    <link href="<?=_THEME_?>/css/style.css" rel="stylesheet" type="text/css" />
-    <!-- /custom style sheet -->
-    <!-- fontawesome css -->
-    <link href="<?=_THEME_?>/css/fontawesome-all.css" rel="stylesheet" />
-    <!-- /fontawesome css -->
-    <!-- google fonts-->
-    <link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-    <!-- /google fonts-->
+  <title>Login </title>
+  <!-- meta tags -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Art Sign Up Form Responsive Widget, Audio and Video players, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, 
+		Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design" />
+  <!-- /meta tags -->
+  <!-- custom style sheet -->
+  <link href="<?= _THEME_ ?>/css/style.css" rel="stylesheet" type="text/css" />
+  <!-- /custom style sheet -->
+  <!-- fontawesome css -->
+  <link href="<?= _THEME_ ?>/css/fontawesome-all.css" rel="stylesheet" />
+  <!-- /fontawesome css -->
+  <!-- google fonts-->
+  <link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <!-- /google fonts-->
 
 </head>
 
 
 <body>
 
-                  <!-- <input type="hidden" id="url" value="<?=$this->url; ?>"> -->
-                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-                  <input type="hidden" id="urlPreguntas" value="<?= $this->encriptar("Preguntas"); ?>">
-                  <input type="hidden" id="urlHome" value="<?= $this->encriptar("Home"); ?>">
-    <h1>Iniciar Sesión</h1>
-    <div class=" w3l-login-form">
-        <!-- <h2>Inicio de Sesión</h2> -->
-        <form action="#" method="POST">
+  <!-- <input type="hidden" id="url" value="<?= $this->url; ?>"> -->
+  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
+  <input type="hidden" id="urlPreguntas" value="<?= $this->encriptar("Preguntas"); ?>">
+  <input type="hidden" id="urlHome" value="<?= $this->encriptar("Home"); ?>">
+  <h1>Iniciar Sesión</h1>
+  <div class=" w3l-login-form">
+    <!-- <h2>Inicio de Sesión</h2> -->
+    <form action="#" method="POST">
 
-            <div class=" w3l-form-group">
-                <label>Username:</label>
-                <div class="group">
-                    <i class="fas fa-user" style="margin-top: 5px;"></i>
-                    <input type="text" class="form-control" id="usuario" placeholder="Username" required="required" />
-                </div>
-                    <div class="content-input user" style="color:white"><p></p></div>
-            </div>
-            <div class=" w3l-form-group">
-                <label>Password:</label>
-                <div class="group">
-                    <i class="fas fa-unlock" style="margin-top:5px;"></i>
-                    <input type="password" class="form-control" id="password" placeholder="Password" required="required" />
-                </div>
-                    <div class="content-input pass" style="color:white"><p></p></div>
-            </div>
-            <div class="forgot">
-                <a href="#" data-toggle="modal" data-target="#modalAgregarArchivo">¿Deseas modificar la contraseña?</a>
-                <!-- <p><input type="checkbox">Recordar</p> -->
-            </div>
-            <button type="submit" id="loginBtn">Login</button>
-          </form>
-          <!-- <p class=" w3l-register-p">¿No tienes cuenta?<a href="#" class="register"> Regístrate</a></p> -->
+      <div class=" w3l-form-group">
+        <label>Username:</label>
+        <div class="group">
+          <i class="fas fa-user" style="margin-top: 5px;"></i>
+          <input type="text" class="form-control" id="usuario" placeholder="Username" required="required" />
         </div>
-        <button type="submit" id="preguntas" data-toggle="modal" data-target="#modalPreguntas" style="display:none;">Preguntas</button>
-    
+        <div class="content-input user" style="color:white">
+          <p></p>
+        </div>
+      </div>
+      <div class=" w3l-form-group">
+        <label>Password:</label>
+        <div class="group">
+          <i class="fas fa-unlock" style="margin-top:5px;"></i>
+          <input type="password" class="form-control" id="password" placeholder="Password" required="required" />
+        </div>
+        <div class="content-input pass" style="color:white">
+          <p></p>
+        </div>
+      </div>
+      <div class="forgot">
+        <a href="#" data-toggle="modal" data-target="#modaEnviarCorreo" id="modificarPass">¿Deseas modificar la contraseña?</a>
+        <!-- <p><input type="checkbox">Recordar</p> -->
+      </div>
+      <button type="submit" id="loginBtn">Login</button>
+    </form>
+    <!-- <p class=" w3l-register-p">¿No tienes cuenta?<a href="#" class="register"> Regístrate</a></p> -->
+  </div>
+  <button type="submit" id="preguntas" data-toggle="modal" data-target="#modalPreguntas" style="display:none;">Preguntas</button>
 
 
-    <div id="modalPreguntas" class="#modalPreguntas modal fade" role="dialog">
 
-        <div class="modal-dialog">
+  <div id="modalPreguntas" class="#modalPreguntas modal fade" role="dialog">
 
-          <div class="modal-content">
+    <div class="modal-dialog">
 
-            <form role="form" method="post" enctype="multipart/form-data" id="form_data">
+      <div class="modal-content">
 
-              <div class="modal-header" style="background:#3c8dbc; color:white">
+        <form role="form" method="post" enctype="multipart/form-data" id="form_data">
 
-                
-
-                <h4 class="modal-title" style="text-align: left;">Seguridad</h4>
-
-              </div>
-
-              <div class="modal-body">
-
-                <div class="box-body">
+          <div class="modal-header" style="background:#3c8dbc; color:white">
 
 
-                  <div class="form-group">
 
-                    <label for="">¿Cuál es su año de nacimiento?</label>
-                    <div class="input-group">
-
-                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
-
-                      <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="nuevoCorreo" id="respuesta_uno" placeholder="Ingresar su respuesta" required>
-
-                    </div>
-                    <br>
-                    <label for="">¿Cuál es el nombre se primer perro?</label>
-                    <div class="input-group">
-
-                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
-
-                      <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="nuevoCorreo" id="respuesta_dos" placeholder="Ingresar su respuesta" required>
-
-                    </div>
-                    <br>
-                    <label for="">¿Cuál es la profesión de su madre?</label>
-                    <div class="input-group">
-
-                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
-
-                      <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="nuevoCorreo" id="respuesta_tres" placeholder="Ingresar su respuesta" required>
-
-                    </div>
-
-
-                  </div>
-
-
-                </div>
-
-              </div>
-
-              <div class="modal-footer">
-
-                <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                <span type="submit" class="btn btn-primary subir" id="enviarPregunta">Enviar</span>
-
-              </div>
-
-
-            </form>
+            <h4 class="modal-title" style="text-align: left;">Seguridad</h4>
 
           </div>
 
-        </div>
+          <div class="modal-body">
+
+            <div class="box-body">
+
+
+              <div class="form-group">
+
+                <label for="" id="preg_uno"></label>
+                <div class="input-group">
+
+                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                  <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="" id="respuesta_uno" placeholder="Ingresar su respuesta" required>
+
+                </div>
+                <br>
+                <label for="" id="preg_dos"></label>
+                <div class="input-group">
+
+                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                  <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="" id="respuesta_dos" placeholder="Ingresar su respuesta" required>
+
+                </div>
+                <br>
+                <label for="" id="preg_tres"></label>
+                <div class="input-group">
+
+                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+
+                  <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="" id="respuesta_tres" placeholder="Ingresar su respuesta" required>
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+
+            <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+            <span type="submit" class="btn btn-primary subir" id="enviarPregunta">Enviar</span>
+
+          </div>
+
+
+        </form>
+
+      </div>
 
     </div>
 
-    <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
+  </div>
 
-        <div class="modal-dialog">
+  <div id="modaEnviarCorreo" class="#modaEnviarCorreo modal fade" role="dialog">
 
-          <div class="modal-content">
+    <div class="modal-dialog">
 
-            <!-- <form role="form" method="post" enctype="multipart/form-data" id="form_data"> -->
+      <div class="modal-content">
 
-              <!--=====================================
+        <!-- <form role="form" method="post" enctype="multipart/form-data" id="form_data"> -->
+
+        <!--=====================================
               CABEZA DEL MODAL
               ======================================-->
 
-              <div class="modal-header" style="background:#3c8dbc; color:white">
+        <div class="modal-header" style="background:#3c8dbc; color:white">
 
-                <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
 
-                <h4 class="modal-title" style="text-align: left;">Enviar correo</h4>
+          <h4 class="modal-title" style="text-align: left;">Modificar Contraseña</h4>
 
-              </div>
+        </div>
 
-              <!--=====================================
+        <!--=====================================
                   CUERPO DEL MODAL
               ======================================-->
 
-              <div class="modal-body">
+        <div class="modal-body">
 
-                <div class="box-body">
+          <div class="box-body">
 
-                  <!--ENTRADA CORREO -->
+            <!--ENTRADA CORREO -->
 
-                  <div class="form-group">
+            <div class="form-group">
 
-                    <div class="input-group">
+              <label for="">Ingrese su correo para modificar su contraseña</label>
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
 
-                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
-
-                      <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="nuevoCorreo" id="correo" placeholder="Ingresar Correo" required>
-
-                    </div>
-
-
-                  </div>
-
-
-                </div>
-
-              </div>
-
-            <!--=====================================
-                      PIE DEL MODAL
-            ======================================-->
-
-              <div class="modal-footer">
-
-                <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                <span type="submit" class="btn btn-primary subir" id="enviarCorreo">Enviar</span>
+                <input type="text" class="form-control input-lg" style="border: 1px solid #d2d6de !important;" name="nuevoCorreo" id="correo" placeholder="Ingresar Correo" required>
 
               </div>
 
 
-            <!-- </form> -->
+            </div>
+
 
           </div>
 
         </div>
 
-    </div>
-    <footer>
-        <p class="copyright-agileinfo"> &copy; 2022 Todos los Derechos Reservados | <a href="#">SCHSL</a></p>
-    </footer>
+        <!--=====================================
+                      PIE DEL MODAL
+            ======================================-->
 
-    <script type="text/javascript">
-        
-  $(document).ready(function() { //Al Cargar la paginaZ
-    
-    console.clear();
-      $('#loginBtn').click(function(e) { 
+        <div class="modal-footer">
+
+          <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+          <span type="submit" class="btn btn-primary subir" id="enviarCorreo">Enviar</span>
+
+        </div>
+
+
+        <!-- </form> -->
+
+      </div>
+
+    </div>
+
+  </div>
+  <footer>
+    <p class="copyright-agileinfo"> &copy; 2022 Todos los Derechos Reservados | <a href="#">SCHSL</a></p>
+  </footer>
+
+  <script type="text/javascript">
+    $(document).ready(function() { //Al Cargar la paginaZ
+
+      console.clear();
+      $('#loginBtn').click(function(e) {
 
         var url = $("#url").val();
         var urlPreguntas = $("#urlPreguntas").val();
@@ -229,43 +230,51 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         e.preventDefault();
 
         if ($("#usuario").val().length > 3) {
-          $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw"); 
-          if ($("#password").val().length > 3) { 
+          $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw");
+          if ($("#password").val().length > 3) {
             $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
-            let user = $("#usuario").val(); 
+            let user = $("#usuario").val();
             let pass = $("#password").val();
 
             $.ajax({
-              url: '', 
-              type: 'POST', 
+              url: '',
+              type: 'POST',
               data: {
-                loginSistema: true, 
-                username: user, 
+                loginSistema: true,
+                username: user,
                 password: pass,
               },
               success: function(respuesta) {
-                // alert(respuesta);
-                var data = JSON.parse(respuesta); 
+                //  alert(respuesta);
+                //  console.log(respuesta);
+                var data = JSON.parse(respuesta);
                 console.log(data);
+                console.log(data.preguntas);
+                // console.log(data.preguntas[0].pregunta);
+                // console.log(data.preguntas[0].respuesta);
+                // console.log(data.preguntas[1].pregunta);
+                // console.log(data.preguntas[1].respuesta);
+                // console.log(data.preguntas[2].pregunta);
+                // console.log(data.preguntas[2].respuesta);
 
-                if (data.access === "Acceder") { 
-                  Swal.fire({
-                    type: 'success',
-                    title: '¡Ingreso exitoso!',
-                    text: 'El nombre de usuario y la contraseña no coinciden',
-                    footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
-                  }); 
+                if (data.access === "Acceder") {
+                  // Swal.fire({
+                  //   type: 'success',
+                  //   title: '¡Ingreso exitoso!',
+                  //   text: 'El nombre de usuario y la contraseña coinciden',
+                  //   footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
+                  // }); 
                   $(".content-input.pass p").attr("style", "visibility:hidden;margin-top:.2vw");
                   $(".content-input.user p").attr("style", "visibility:hidden;margin-top:.2vw");
-                  
-                  if(data.stat=="1"){
-                    location.href = "<?= _ROUTE_ ?>"; 
+
+                  if (data.stat == "1") {
+                    location.href = "<?= _ROUTE_ ?>";
                     // location.href = "<?= _ROUTE_ ?>"+urlHome; 
                     // location.href = "<?= _ROUTE_ ?>"; 
                   }
 
-                  if(data.stat=="2"){
-                    location.href = "<?= _ROUTE_ ?>"+urlPreguntas; 
+                  if (data.stat == "2") {
+                    location.href = "<?= _ROUTE_ ?>" + urlPreguntas;
                     // location.href = "<?= _ROUTE_ ?>Preguntas"; 
                   }
 
@@ -286,21 +295,48 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     type: 'warning',
                     title: '¡Usuario o contraseña inválido',
                     text: 'El nombre de usuario y la contraseña no coinciden',
-                    footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
+                    footer: 'SCHSL',
+                    timer: 2000,
+                    showCloseButton: false,
+                    showConfirmButton: false,
                   });
                 }
 
                 if (data.look === "Bloqueo") {
-                  $("#preguntas").click(); 
+                  $("#preguntas").click();
+                  $("#preg_uno").html(data.preguntas[0].pregunta);
+                  $("#preg_dos").html(data.preguntas[1].pregunta);
+                  $("#preg_tres").html(data.preguntas[2].pregunta);
                   // Swal.fire({
                   //   type: 'warning',
                   //   title: '¡Usuario bloqueado!',
                   //   text: 'El usuario ' + user + ' ha sido bloqueado',
                   //   footer: 'SCHSL', timer: 2000, showCloseButton: false, showConfirmButton: false,
                   // });
-                
+
                 }
 
+                // var pregunta = $("#enviarPregunta").click();
+                $('#enviarPregunta').on('click', function() {
+                  // alert('hizo click sobre el boton');
+                  let respuesta_uno = $("#respuesta_uno").val();
+                  let respuesta_dos = $("#respuesta_dos").val();
+                  let respuesta_tres = $("#respuesta_tres").val();
+                  // alert(respuesta_uno + ' ' + respuesta_dos + ' ' + respuesta_tres);
+                  if ((respuesta_uno == data.preguntas[0].respuesta) && (respuesta_dos == data.preguntas[1].respuesta) && (respuesta_tres == data.preguntas[2].respuesta)) {
+                    $("#modificarPass").click();
+                  } else {
+                    Swal.fire({
+                      type: 'warning',
+                      title: '¡Usuario bloqueado!',
+                      text: 'El usuario ' + user + ' ha sido bloqueado. Contacte al administrador para su desbloqueo',
+                      footer: 'SCHSL',
+                      timer: 3000,
+                      showCloseButton: false,
+                      showConfirmButton: false,
+                    });
+                  }
+                });
 
               },
               error: function(respuesta) {
@@ -323,55 +359,63 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       })
 
 
-      $("#enviarCorreo").click(function(){
+      $("#enviarCorreo").click(function() {
         var url = $("#url").val();
         let correo = $("#correo").val();
         $.ajax({
-          url: url+'/enviarLink',    
-          type: 'POST',   
-          data: { 
-            correo: correo,    
+          url: url + '/enviarLink',
+          type: 'POST',
+          data: {
+            correo: correo,
           },
-          success: function(resp){
-            // alert(resp);
+          success: function(resp) {
+            alert(resp);
             console.log(resp);
-            var datos = JSON.parse(resp);     
-              if (datos.msj === "Good") {  
-                Swal.fire({
-                  type: 'success',
-                  title: '¡Correo enviado!',
-                  text: 'El link para el cambio de contraseña se ha enviado exitosamente al correo ' + correo,
-                  footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
-                });
-              } 
-              if (datos.msj === "Vacio") {  
-                Swal.fire({
-                  type: 'warning',
-                  title: '¡Correo no coinciden!',
-                  text: 'El correo electronico '+correo+' no fue encontrado',
-                  footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
-                });
-              }
-              if (datos.msj === "error") {  
-                Swal.fire({
-                  type: 'warning',
-                  title: '¡Correo no enviado!',
-                  text: 'No se pudo enviar el correo electronico',
-                  footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
-                });
-              }
-            },
-            error: function(respuesta){       
-              var datos = JSON.parse(respuesta);
-              console.log(datos);
+            var datos = JSON.parse(resp);
+            if (datos.msj === "Good") {
+              Swal.fire({
+                type: 'success',
+                title: '¡Correo enviado!',
+                text: 'El link para el cambio de contraseña se ha enviado exitosamente al correo ' + correo,
+                footer: 'SCHSL',
+                timer: 3000,
+                showCloseButton: false,
+                showConfirmButton: false,
+              });
+            }
+            if (datos.msj === "Vacio") {
+              Swal.fire({
+                type: 'warning',
+                title: '¡Correo no coincide!',
+                text: 'El correo electronico ' + correo + ' no fue encontrado',
+                footer: 'SCHSL',
+                timer: 3000,
+                showCloseButton: false,
+                showConfirmButton: false,
+              });
+            }
+            if (datos.msj === "error") {
+              Swal.fire({
+                type: 'warning',
+                title: '¡Correo no enviado!',
+                text: 'No se pudo enviar el correo electronico',
+                footer: 'SCHSL',
+                timer: 3000,
+                showCloseButton: false,
+                showConfirmButton: false,
+              });
+            }
+          },
+          error: function(respuesta) {
+            var datos = JSON.parse(respuesta);
+            console.log(datos);
 
           }
-        });  
+        });
       });
-  });
-</script>
+    });
+  </script>
 
 </body>
+
 </html>
-
-

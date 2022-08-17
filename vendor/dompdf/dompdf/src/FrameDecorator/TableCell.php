@@ -32,7 +32,7 @@ class TableCell extends BlockFrameDecorator
     function __construct(Frame $frame, Dompdf $dompdf)
     {
         parent::__construct($frame, $dompdf);
-        $this->_resolved_borders = array();
+        $this->_resolved_borders = [];
         $this->_content_height = 0;
     }
 
@@ -41,7 +41,7 @@ class TableCell extends BlockFrameDecorator
     function reset()
     {
         parent::reset();
-        $this->_resolved_borders = array();
+        $this->_resolved_borders = [];
         $this->_content_height = 0;
         $this->_frame->reset();
     }
@@ -69,19 +69,19 @@ class TableCell extends BlockFrameDecorator
     {
         $style = $this->get_style();
         $v_space = (float)$style->length_in_pt(
-            array(
+            [
                 $style->margin_top,
                 $style->padding_top,
                 $style->border_top_width,
                 $style->border_bottom_width,
                 $style->padding_bottom,
                 $style->margin_bottom
-            ),
+            ],
             (float)$style->length_in_pt($style->height)
         );
 
         $new_height = $height - $v_space;
-        $style->height = $new_height;
+        $style->set_used("height", $new_height);
 
         if ($new_height > $this->_content_height) {
             $y_offset = 0;

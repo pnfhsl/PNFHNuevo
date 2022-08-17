@@ -3,7 +3,8 @@
 	namespace content\modelo;
 
 	use content\config\conection\database as database;
-
+	use PDOException;
+	
 	class usuariosModel extends database{
 
 		private $cedula;
@@ -34,7 +35,8 @@
 		public function Agregar($datos){
 
 			try{
-	        $query = parent::prepare("INSERT INTO usuarios (cedula_usuario, nombre_usuario, password_usuario, id_rol, estatus) VALUES (:cedula_usuario, :nombre_usuario, md5(:password_usuario), :id_rol, 1)");
+	        $query = parent::prepare("INSERT INTO usuarios (cedula_usuario, nombre_usuario, password_usuario, id_rol, estatus) 
+			VALUES (:cedula_usuario, :nombre_usuario, :password_usuario, :id_rol, 1)");
 	        $query->bindValue(':cedula_usuario', $datos['cedula']);
 	        $query->bindValue(':nombre_usuario', $datos['user']);
 	        $query->bindValue(':password_usuario', $datos['pass']);
@@ -61,7 +63,7 @@
 
 			try{
 				if (isset($datos['nuevoPassword']) && $datos['nuevoPassword'] != "") {
-					$query = parent::prepare('UPDATE usuarios SET cedula_usuario=:cedula_usuario, nombre_usuario = :nombre_usuario, password_usuario = md5(:password_usuario), id_rol = :id_rol, estatus=1 WHERE cedula_usuario = :cedula_usuario2');
+					$query = parent::prepare('UPDATE usuarios SET cedula_usuario=:cedula_usuario, nombre_usuario = :nombre_usuario, password_usuario = :password_usuario, id_rol = :id_rol, estatus=1 WHERE cedula_usuario = :cedula_usuario2');
 					$query->bindValue(':password_usuario', $datos['nuevoPassword']);
 				}else{
 			        $query = parent::prepare('UPDATE usuarios SET cedula_usuario=:cedula_usuario, nombre_usuario = :nombre_usuario, id_rol = :id_rol, estatus=1 WHERE cedula_usuario = :cedula_usuario2');

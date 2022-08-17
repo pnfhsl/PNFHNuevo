@@ -111,15 +111,46 @@
 		// }
 
 
+		public function getOneId($datos){
+			// echo $datos['saber']." - ";
+			// echo $datos['seccion']." - ";
+			// echo $datos['profesor']. " ";
+			// echo "SELECT * FROM clases WHERE id_SC={$datos['saber']} and cod_seccion='{$datos['seccion']}' and cedula_profesor = '{$datos['profesor']}'";
+		      try {
+		    	$query = parent::prepare("SELECT * FROM clases WHERE id_SC={$datos['saber']} and cod_seccion='{$datos['seccion']}'");
+		    	$respuestaArreglo = '';
+		        $query->execute();
+		        $respuestaArreglo = $query->fetchAll();
+		        if ($respuestaArreglo += ['estatus' => true]) {
+		        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+		        	$Result['data'] = ['ejecucion'=>true];
+		        	if(count($respuestaArreglo)>1){
+		        		$Result['data'] = $respuestaArreglo;
+		        	}
+					// echo json_encode($Result);
+					return $Result;
+		        }
+		       //return $respuestaArreglo;
+		      //require_once 'Vista/usuarios.php';
+		      } catch (PDOException $e) {
+		        $errorReturn = ['estatus' => false];
+		        $errorReturn += ['info' => "error sql:{$e}"];
+		        return $errorReturn;
+		      }
+	    }
 
-
+		
 		public function getOne($datos){
 			// echo $datos['saber']." - ";
 			// echo $datos['seccion']." - ";
 			// echo $datos['profesor']. " ";
 			// echo "SELECT * FROM clases WHERE id_SC={$datos['saber']} and cod_seccion='{$datos['seccion']}' and cedula_profesor = '{$datos['profesor']}'";
 		      try {
-		    	$query = parent::prepare("SELECT * FROM clases WHERE id_SC={$datos['saber']} and cod_seccion='{$datos['seccion']}' and cedula_profesor = '{$datos['profesor']}'");
+		      	if(!empty($datos['profesor'])){
+		    		$query = parent::prepare("SELECT * FROM clases WHERE id_SC={$datos['saber']} and cod_seccion='{$datos['seccion']}' and cedula_profesor = '{$datos['profesor']}' and estatus = 1");
+		      	}else{
+		    		$query = parent::prepare("SELECT * FROM clases WHERE id_SC={$datos['saber']} and cod_seccion='{$datos['seccion']}' and estatus = 1");
+		      	}
 		    	$respuestaArreglo = '';
 		        $query->execute();
 		        $respuestaArreglo = $query->fetchAll();

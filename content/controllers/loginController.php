@@ -14,6 +14,7 @@
 
 	class loginController{
 		use Utility;
+		
 
 		private $url;
 		private $login;
@@ -32,8 +33,10 @@
 		public function Consultar(){
 			if($_POST){		
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
-					$resp = $this->login->loginSistema($_POST['username'], $_POST['password']); //pasa el user y pass
+					// var_dump($this->encriptar($_POST['password']));
+					$resp = $this->login->loginSistema($_POST['username'], $this->encriptar($_POST['password'])); //pasa el user y pass
 					 // var_dump($resp);
+					//  var_dump($resp['msj']);
 					if($resp['msj'] == "Good"){
 						$intentos = $this->usuario->Intentos($_POST['username']);
 						$int = 0;
@@ -74,10 +77,16 @@
 								$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
 							}
 							if($intentos[0]["intentos"] >= 3){
-								$resp = array('look' => "Bloqueo");
+								$cedula = $this->login->busquedaCedula($_POST['username']);
+								//var_dump($cedula);
+								$preguntas = $this->login->Consultar($cedula[0]['cedula_usuario']);
+								//var_dump($cedula[0]['cedula_usuario']);
+								$preg = array('look' => "Bloqueo", 'preguntas' => $preguntas);
+								// $resp = array('look' => "Bloqueo");
 							}
 						}
-						echo json_encode($resp);
+						// echo json_encode($resp);
+						echo json_encode($preg);
 					}
 					// if($resp['msj'] == "Good"){
 					// 	$intentos = $this->usuario->Intentos($_POST['username']);
@@ -232,22 +241,6 @@
 
 		}
 
-		// public function RecuperarPass($numero){
-		// 	echo "asdasd ". $numero;
-		// }
-		// public function Recuperar(){
-		// 	echo "Llamando al metodo recuperar";
-		// 	if($_POST){
-		// 		if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
-		// 			var_dump($_SESSION['RC']['cedula_recuperacion']);
-		// 			$exec = $this->login->recuperarPass($_SESSION['RC']['cedula_recuperacion'], $_POST['pass']);
-		// 			var_dump($exec);
-		// 			echo json_encode($exec);					
-		// 		}
-
-		// 	}
-
-		// }
 }
 	
 		

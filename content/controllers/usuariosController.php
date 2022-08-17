@@ -32,11 +32,11 @@
 				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['user']) && !empty($_POST['pass']) && !empty($_POST['rol'])) {
 					$datos['cedula'] = $_POST['cedula'];
 					$datos['user'] = $_POST['user'];
-					$datos['pass'] = $_POST['pass'];
+					$datos['pass'] = $this->encriptar($_POST['pass']);
 					$datos['rol'] = $_POST['rol'];
 					$buscar = $this->usuario->getOne($_POST['cedula']);
 
-						// print_r($buscar);
+						//print_r($buscar);
 					if($buscar['msj']=="Good"){
 						if(count($buscar['data'])>1){
 						// 	// print_r($buscar['data'][0]['estatus']);
@@ -71,7 +71,7 @@
 					$datos['cedula'] = $_POST['cedula'];
 					$datos['nombre'] =$_POST['nombre'];
 					$datos['rol'] = $_POST['rol'];
-					$datos['nuevoPassword'] = $_POST['nuevoPassword'];
+					$datos['nuevoPassword'] = $this->encriptar($_POST['nuevoPassword']);
 					$buscar = $this->usuario->getOne($_POST['cedula']);
 					// var_dump($datos['nuevoPassword']);
 					if($buscar['msj']=="Good"){
