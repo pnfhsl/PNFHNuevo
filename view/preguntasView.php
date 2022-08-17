@@ -138,8 +138,8 @@
             let resp_uno = $("#resp_uno").val();     
             let resp_dos = $("#resp_dos").val();     
             let resp_tres = $("#resp_tres").val();
-            alert(preg_uno + ' ' + preg_dos + ' ' + preg_tres);
-            alert(resp_uno + ' ' + resp_dos + ' ' + resp_tres);
+            // alert(preg_uno + ' ' + preg_dos + ' ' + preg_tres);
+            // alert(resp_uno + ' ' + resp_dos + ' ' + resp_tres);
               $.ajax({
                 url: url + '/Agregar',    
                 type: 'POST',   
@@ -169,7 +169,7 @@
                       Swal.fire({
                         type: 'warning',
                         title: '¡Registro repetido!',
-                        text: 'El alumno ' + nombre + ' ' + apellido + ' ya esta agregado al sistema',
+                        text: 'El usuario ya tiene las preguntas de seguridad agregadas al sistema',
                         footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                       });
                     }

@@ -40,27 +40,29 @@
 				if (!empty(!empty($_POST['Agregar']) && $_POST['resp_uno']) && !empty($_POST['resp_dos']) && !empty($_POST['resp_tres']) ) {
 					$datos['preg'] = array($_POST['preg_uno'], $_POST['preg_dos'], $_POST['preg_tres']);
 					$datos['resp'] = array($_POST['resp_uno'], $_POST['resp_dos'], $_POST['resp_tres']);
-					// $datos['cedula'] = $_SESSION[''];
-					$exec = $this->preg->Agregar($datos); 
-					echo json_encode($exec);
-					// $buscar = $this->preg->getOne($_POST['cedula']);
-					// if($buscar['msj']=="Good"){
-					// 	if(count($buscar['data'])>1){
-					// 		// print_r($buscar['data'][0]['estatus']);
-					// 		if($buscar['data'][0]['estatus']==0){
-					// 			$datos['id'] = $datos['cedula'];
-					// 			$exec = $this->alumno->Modificar($datos); 
-					// 			echo json_encode($exec);
-					// 		}else{
-					// 			echo json_encode(['msj'=>"Repetido"]);
-					// 		}
-					// 	}else{
-					// 		$exec = $this->preg->Agregar($datos); 
-					// 		echo json_encode($exec);
-					// 	}
-					// }else{
-					// 	echo json_encode(['msj'=>"Error"]);
-					// }
+					$datos['llaves'] = array('public','private','');
+					$datos['cedula'] = '27828164';
+					// $exec = $this->preg->Agregar($datos); 
+					// echo json_encode($exec);
+					$buscar = $this->preg->getOne('27828164');
+					if($buscar['msj']=="Good"){
+						if(count($buscar['data'])>1){
+							//  print_r($buscar['data']['estatus']);
+							//  print_r($buscar['data'][0]['estatus']);
+							if($buscar['data']['estatus']==0){
+								$datos['id'] = $datos['cedula'];
+								$exec = $this->preg->Modificar($datos); 
+								echo json_encode($exec);
+							}else{
+								echo json_encode(['msj'=>"Repetido"]);
+							}
+						}else{
+							$exec = $this->preg->Agregar($datos); 
+							echo json_encode($exec);
+						}
+					}else{
+						echo json_encode(['msj'=>"Error"]);
+					}
 				}else{
 					echo json_encode(['msj'=>"Vacio"]);
 				}
