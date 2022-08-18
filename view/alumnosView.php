@@ -154,7 +154,7 @@
 
                   <div id="modalAgregarAlum" class="modalAgregarAlum modal fade" role="dialog">
 
-                    <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;">
+                    <div class="modal-dialog tamModals" style="text-align:left;">
 
                       <div class="modal-content">
 
@@ -353,7 +353,7 @@
 
                             <div id="modalModificarAlum<?= $data['cedula_alumno'] ?>" class="modalModificarAlum modal fade modalModificarAlum<?= $data['cedula_alumno'] ?>" role="dialog">
 
-                              <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;">
+                              <div class="modal-dialog tamModals" style="text-align:left;">
                                 <div class="modal-content">
 
                                   <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
@@ -524,5 +524,4 @@
   <?php endif; ?>
   <script src="<?=_THEME_?>/js/alumnos.js"></script>
 </body>
-
 </html>

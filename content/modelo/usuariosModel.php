@@ -16,10 +16,10 @@
 			// $this->con = parent::__construct();
 			parent::__construct();
 		}
-		public function Consultar(){
-			
+		public function Consultar($string=""){
 			try {
-				$query = parent::prepare('SELECT * FROM usuarios WHERE estatus = 1');
+				$query = parent::prepare('SELECT * FROM usuarios, roles WHERE roles.id_rol = usuarios.id_rol and usuarios.estatus = 1 and roles.estatus = 1');
+
 				$respuestaArreglo = '';
 				$query->execute();
 				$query->setFetchMode(parent::FETCH_ASSOC);
@@ -126,6 +126,20 @@
 					return $Result;
 		        }
 		       //return $respuestaArreglo;
+		      //require_once 'Vista/usuarios.php';
+		      } catch (PDOException $e) {
+		        $errorReturn = ['estatus' => false];
+		        $errorReturn += ['info' => "error sql:{$e}"];
+		        return $errorReturn;
+			}
+		}
+		public function getOneRolId($id){
+	    	try {
+		    	$query = parent::prepare("SELECT * FROM usuarios WHERE id_rol = :id");
+		    	$respuestaArreglo = '';
+		        $query->execute(['id'=>$id]);
+		        $respuestaArreglo = $query->fetchAll();
+		        return $respuestaArreglo;
 		      //require_once 'Vista/usuarios.php';
 		      } catch (PDOException $e) {
 		        $errorReturn = ['estatus' => false];

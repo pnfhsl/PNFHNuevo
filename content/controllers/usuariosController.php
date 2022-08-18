@@ -6,15 +6,25 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\usuariosModel as usuariosModel;
+	use content\modelo\rolesModel as rolesModel;
+	use content\modelo\alumnosModel as alumnosModel;
+	use content\modelo\profesoresModel as profesoresModel;
 	use content\traits\Utility;
+
 	class usuariosController{
 		use Utility;
 		private $url;
 		private $usuario;
+		private $rol;
+		private $alumno;
+		private $profesor;
 		function __construct($url){
 			
 			$this->url = $url;
 			$this->usuario = new usuariosModel();
+			$this->rol = new rolesModel();
+			$this->alumno = new alumnosModel();
+			$this->profesor = new profesoresModel();
 		}
 
 		public function Consultar(){
@@ -22,7 +32,10 @@
 				$objModel = new homeModel;
 				$_css = new headElement;
 				$_css->Heading();
-				$usuarios = $this->usuario->Consultar();			
+				$usuarios = $this->usuario->Consultar();
+				$usuariosAlumnos = $this->alumno->Consultar();
+				$usuariosProfesores = $this->profesor->Consultar();
+				$roles = $this->rol->Consultar();
 				$url = $this->url;
 				require_once("view/usuariosView.php");
 		}
@@ -124,7 +137,63 @@
 					$resultado = $this->usuario->getOne($_POST['userModif']);
 					echo json_encode($resultado);
 				}
-
+				if(isset($_POST['BuscarSegunRol']) && isset($_POST['id_rol'])){
+					$id_rol = $_POST['id_rol'];
+					// echo $id_rol;
+					$roles = $this->rol->getOneId($id_rol);
+					if($roles['msj']=="Good"){
+						if(count($roles['data'])>1){
+							$data = $roles['data'][0];
+							$response = [];
+							$usuarios = [];
+							$buscar = [];
+							if($data['nombre_rol']=="Alumnos"){
+								$usuarios = $this->alumno->Consultar();
+								$nAlum = 0;
+								foreach ($usuarios as $key) {
+									$buscar[$nAlum]['codigo'] = $key['cedula_alumno'];
+									$buscar[$nAlum]['cedula'] = number_format($key['cedula_alumno'],0,',','.');
+									$buscar[$nAlum]['nombre'] = $key['nombre_alumno'];
+									$buscar[$nAlum]['apellido'] = $key['apellido_alumno'];
+									$buscar[$nAlum]['telefono'] = $key['telefono_alumno'];
+									// $buscar[$nAlum]['trayecto'] = $key['trayecto_alumno'];
+									$nAlum++;
+								}
+							}
+							if( ($data['nombre_rol']=="Profesores") || ($data['nombre_rol']=="Administrador") || $data['nombre_rol']=="Superusuario" ){
+								$usuarios = $this->profesor->Consultar();
+								$nProf = 0;
+								foreach ($usuarios as $key) {
+									$buscar[$nProf]['codigo'] = $key['cedula_profesor'];
+									$buscar[$nProf]['cedula'] = number_format($key['cedula_profesor'],0,',','.');
+									$buscar[$nProf]['nombre'] = $key['nombre_profesor'];
+									$buscar[$nProf]['apellido'] = $key['apellido_profesor'];
+									$buscar[$nProf]['telefono'] = $key['telefono_profesor'];
+									$nProf++;
+								}
+							}
+							if(count($buscar)>0){
+								$response['msj'] = "Good";
+								$response['data'] = $buscar;
+								$buscar2 = $this->usuario->getOneRolId($id_rol);
+								if(count($buscar2)>0){
+									$response['msjUsuario'] = "Good";
+									$response['dataUsuario'] = $buscar2;
+								}else{
+									$response['msjUsuario'] = "Vacio";
+								}
+							}else{
+								$response['msj'] = "Vacio";
+							}
+							
+						}else{
+							$response['msj'] = "Error";
+						}
+					}else{
+						$response['msj'] = "Error";
+					}
+					echo json_encode($response);
+				}
 			}
 		}
 

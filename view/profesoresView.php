@@ -90,11 +90,11 @@
 
                   <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
 
-                    <div class="modal-dialog">
+                    <div class="modal-dialog tamModals">
 
                       <div class="modal-content">
 
-                        <form role="form" method="post" enctype="multipart/form-data" id="form_data">
+                        <!-- <form role="form" method="post" enctype="multipart/form-data" id="form_data"> -->
 
 
                           <div class="modal-header" style="background:#3c8dbc; color:white">
@@ -137,7 +137,7 @@
                           </div>
 
 
-                        </form>
+                        <!-- </form> -->
 
                       </div>
 
@@ -151,7 +151,7 @@
 
                   <div id="modalAgregarProf" class="#modalAgregarProf modal fade" role="dialog">
 
-                    <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;">
+                    <div class="modal-dialog tamModals" style="text-align:left;">
 
                       <div class="modal-content">
 
@@ -339,7 +339,7 @@
 
                             <div id="modalModificarProf<?= $data['cedula_profesor'] ?>" class="modalModificarProf modal fade modalModificarProf<?=$data['cedula_profesor'] ?>" role="dialog">
 
-                              <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;">
+                              <div class="modal-dialog tamModals" style="text-align:left;">
                                 <div class="modal-content">
 
                                   <!-- <form role="form" method="post" enctype="multipart/form-data"> -->

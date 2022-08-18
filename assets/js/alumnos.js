@@ -1,7 +1,31 @@
 $(document).ready(function () {
-
+    if($(window).width() < 768){ // XS
+        $(".tamModals").attr("style","width:95%;margin-left:auto;margin-right:auto;text-align:left !important;");
+    }
+    if($(window).width() >= 768 && $(window).width() < 992){ // SM
+        $(".tamModals").attr("style","width:85%;margin-left:auto;margin-right:auto;text-align:left !important;");
+    }
+    if($(window).width() >= 992 && $(window).width() < 1200){ // MD
+        $(".tamModals").attr("style","width:70%;margin-left:auto;margin-right:auto;text-align:left !important;");
+    }
+    if($(window).width() >= 1200){ // MD
+        $(".tamModals").attr("style","width:60%;margin-left:auto;margin-right:auto;text-align:left !important;");
+    }
+    $(window).resize(function(){
+        if($(window).width() < 768){ // XS
+            $(".tamModals").attr("style","width:95%;margin-left:auto;margin-right:auto;text-align:left !important;");
+        }
+        if($(window).width() >= 768 && $(window).width() < 992){ // SM
+            $(".tamModals").attr("style","width:85%;margin-left:auto;margin-right:auto;text-align:left !important;");
+        }
+        if($(window).width() >= 992 && $(window).width() < 1200){ // MD
+            $(".tamModals").attr("style","width:70%;margin-left:auto;margin-right:auto;text-align:left !important;");
+        }
+        if($(window).width() >= 1200){ // MD
+            $(".tamModals").attr("style","width:60%;margin-left:auto;margin-right:auto;text-align:left !important;");
+        }
+    });
     console.clear();
-
 
     $("#subir").click(function (e) {
         e.preventDefault();

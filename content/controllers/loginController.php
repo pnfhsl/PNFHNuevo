@@ -31,6 +31,7 @@
 		}
 
 		public function Consultar(){
+			// echo $this->encriptar('admin');
 			if($_POST){		
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
 					// var_dump($this->encriptar($_POST['password']));
@@ -81,12 +82,13 @@
 								//var_dump($cedula);
 								$preguntas = $this->login->Consultar($cedula[0]['cedula_usuario']);
 								//var_dump($cedula[0]['cedula_usuario']);
-								$preg = array('look' => "Bloqueo", 'preguntas' => $preguntas);
+								// $preg = array('look' => "Bloqueo", 'preguntas' => $preguntas);
+								$resp = array('look' => "Bloqueo", 'preguntas' => $preguntas);
 								// $resp = array('look' => "Bloqueo");
 							}
 						}
-						// echo json_encode($resp);
-						echo json_encode($preg);
+						// echo json_encode($preg);
+						echo json_encode($resp);
 					}
 					// if($resp['msj'] == "Good"){
 					// 	$intentos = $this->usuario->Intentos($_POST['username']);
@@ -215,29 +217,29 @@
 			// echo $token."<br/>";
 			// var_dump($_SESSION['RC']['cedula_recuperacion']);//Esto es lo que se encuntra en la variable SESSION 
 
-			if($token == $_SESSION['RC']['token']){
-				// echo "<br/><br/> Token es correcto <br/><br/>";
-				// Obtener datos del usuario usando cedula_recuperacion que esta en sesión. Debería ser con id en realidad
+			// if($token == $_SESSION['RC']['token']){
+			// 	// echo "<br/><br/> Token es correcto <br/><br/>";
+			// 	// Obtener datos del usuario usando cedula_recuperacion que esta en sesión. Debería ser con id en realidad
 
-				//Luego importar la vista para cambio de contraseña
-				$objModel = new homeModel;
-				$_css = new headElement;
-				$_css->Heading();
-				$url = $this->url;
-				require_once("view/recuperarView.php");
-			} else {
-				if($_POST){
-					if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
-						// var_dump($_SESSION['RC']['cedula_recuperacion']);
-						$exec = $this->login->recuperarPass($_SESSION['RC']['cedula_recuperacion'], $_POST['pass']);
-						// var_dump($exec);
-						echo json_encode($exec);					
-					}
-				}else{
-					//Mostrar vista de error (Homero dice: D'oh!)
-					require_once("errorController.php");
-				}
-			}
+			// 	//Luego importar la vista para cambio de contraseña
+			// 	$objModel = new homeModel;
+			// 	$_css = new headElement;
+			// 	$_css->Heading();
+			// 	$url = $this->url;
+			// 	require_once("view/recuperarView.php");
+			// } else {
+			// 	if($_POST){
+			// 		if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
+			// 			// var_dump($_SESSION['RC']['cedula_recuperacion']);
+			// 			$exec = $this->login->recuperarPass($_SESSION['RC']['cedula_recuperacion'], $_POST['pass']);
+			// 			// var_dump($exec);
+			// 			echo json_encode($exec);					
+			// 		}
+			// 	}else{
+			// 		//Mostrar vista de error (Homero dice: D'oh!)
+			// 		require_once("errorController.php");
+			// 	}
+			// }
 
 		}
 
