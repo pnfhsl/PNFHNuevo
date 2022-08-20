@@ -245,7 +245,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 password: pass,
               },
               success: function(respuesta) {
-                //  alert(respuesta);
+                 // alert(respuesta);
                 //  console.log(respuesta);
                 var data = JSON.parse(respuesta);
                 console.log(data);

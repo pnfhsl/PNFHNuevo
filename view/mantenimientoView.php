@@ -99,73 +99,94 @@
 <?php endif; ?>
 <script type="text/javascript">
 $(document).ready(function(){
+
+
   $("#respaldar").click(function(){
     var url = $("#url").val();
     // var ruta = $(this).attr("name");
-    $.ajax({
-      url: url+'/Respaldar',    
-      type: 'POST',  
-      data: {
-        Buscar: true,     
-      },
-      success: function(respuesta){       
-        // alert(respuesta);
-        var resp = JSON.parse(respuesta);
-        // console.log(resp);
-        if (resp.msj == "Good") {
-          var file = resp.rutaFile;
-          // alert(file);
-          open(file);
-          $.ajax({
-            url: url+'/Borrarfile',    
-            type: 'POST',  
-            data: {
-              Buscar: true,
-              file, file, 
-            },
-            success: function(respuesta){       
-              // alert(respuesta);
-              var resp = JSON.parse(respuesta);
-              // console.log(resp);
-              if (resp.msj == "Good") {
-                Swal.fire({
-                  type: 'success',
-                  title: '¡Respaldo de la Base de datos descargado con exito.!', 
-                  text: 'Se ha respaldado la base de datos del el sistema', 
-                  footer: 'SCHSL', showCloseButton: false, showConfirmButton: true,
-                });
-              }
-              if(resp.msj == "Vacio"){
-              }
-              if(resp.msj == "Error"){
-                Swal.fire({
-                  type: 'success',
-                  title: '¡Respaldo de la Base de datos descargado con exito.!', 
-                  text: 'Se ha respaldado la base de datos del el sistema', 
-                  footer: 'SCHSL', showCloseButton: false, showConfirmButton: true,
-                });
-              }
-            },
-            error: function(respuesta){       
-              // alert(respuesta);
-              // var resp = JSON.parse(respuesta);
-              // console.log(resp);
+    swal.fire({ 
+      title: "¿Desea Crear un Respaldo de la Base de datos?",
+      text: "Se descargará una copia de la base de datos, ¿desea continuar?",
+      type: "question",
+      showCancelButton: true,
+      confirmButtonText: "¡Guardar!",
+      cancelButtonText: "No", 
+      closeOnConfirm: false,
+      closeOnCancel: false 
+    }).then((isConfirm) => {
+      if (isConfirm.value){
+        $.ajax({
+          url: url+'/Respaldar',    
+          type: 'POST',  
+          data: {
+            Buscar: true,     
+          },
+          success: function(respuesta){       
+            // alert(respuesta);
+            var resp = JSON.parse(respuesta);
+            // console.log(resp);
+            if (resp.msj == "Good") {
+              var file = resp.rutaFile;
+              // alert(file);
+              open(file);
+              $.ajax({
+                url: url+'/Borrarfile',    
+                type: 'POST',  
+                data: {
+                  Buscar: true,
+                  file, file, 
+                },
+                success: function(respuesta){       
+                  // alert(respuesta);
+                  var resp = JSON.parse(respuesta);
+                  // console.log(resp);
+                  if (resp.msj == "Good") {
+                    Swal.fire({
+                      type: 'success',
+                      title: '¡Respaldo de la Base de datos descargado con exito.!', 
+                      text: 'Se ha respaldado la base de datos del el sistema', 
+                      footer: 'SCHSL', showCloseButton: false, showConfirmButton: true,
+                    });
+                  }
+                  if(resp.msj == "Vacio"){
+                  }
+                  if(resp.msj == "Error"){
+                    Swal.fire({
+                      type: 'success',
+                      title: '¡Respaldo de la Base de datos descargado con exito.!', 
+                      text: 'Se ha respaldado la base de datos del el sistema', 
+                      footer: 'SCHSL', showCloseButton: false, showConfirmButton: true,
+                    });
+                  }
+                },
+                error: function(respuesta){       
+                  // alert(respuesta);
+                  // var resp = JSON.parse(respuesta);
+                  // console.log(resp);
+                }
+              });
             }
-          });
-        }
-        if(resp.msj == "Vacio"){
-        }
-        if(resp.msj == "Error"){
-        }
-      },
-      error: function(respuesta){       
-        // alert(respuesta);
-        var resp = JSON.parse(respuesta);
-        console.log(resp);
+            if(resp.msj == "Vacio"){
+            }
+            if(resp.msj == "Error"){
+            }
+          },
+          error: function(respuesta){       
+            // alert(respuesta);
+            var resp = JSON.parse(respuesta);
+            console.log(resp);
+          }
+        });
+      }else { 
+        swal.fire({
+          type: 'error',
+          title: '¡Proceso cancelado!',
+        });
       }
     });
-
   });
+
+
 });
 </script>
 </body>
