@@ -7,6 +7,9 @@
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\loginModel as loginModel;
 	use content\modelo\usuariosModel as usuariosModel;
+	use content\modelo\alumnosModel as alumnosModel;
+	use content\modelo\profesoresModel as profesoresModel;
+	use content\modelo\rolesModel as rolesModel;
 	use content\traits\Utility;
 	use PHPMailer\PHPMailer\PHPMailer;
 	use PHPMailer\PHPMailer\SMTP;
@@ -15,97 +18,169 @@
 	class loginController{
 		use Utility;
 		
-
 		private $url;
 		private $login;
-		private $user;
+		private $usuario;
+		
+		private $alumno;
+		private $profesor;
+		private $rol;
+
 		function __construct($url){
 
 				// $objModel = new homeModel;
 				// $_css = new headElement;
 				// $_css->Heading();
 
-				$this->url = $url;
+			$this->url = $url;
 			$this->login = new loginModel();		
 			$this->usuario = new usuariosModel();		
+			$this->alumno = new alumnosModel();
+			$this->profesor = new profesoresModel();
+			$this->rol = new rolesModel();
 		}
 
 		public function Consultar(){
 			// echo $this->encriptar('admin');
+
+			
 			if($_POST){		
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
-					// var_dump($this->encriptar($_POST['password']));
 					$resp = $this->login->loginSistema($_POST['username'], $this->encriptar($_POST['password'])); //pasa el user y pass
-					 // var_dump($resp);
-					//  var_dump($resp['msj']);
-					if($resp['msj'] == "Good"){
-						$intentos = $this->usuario->Intentos($_POST['username']);
-						$int = 0;
-						$estatus = -1;
-						if(!empty($resp['data']) && count($resp['data'])>0){
-							// print_r($resp['data'][0]);
-							$estatus = $resp['data'][0]['estatus'];
-						}
-						if(count($intentos)>0){
-							$int = $intentos[0]["intentos"];
-						}
-						if($resp['msj'] === 'Good' && $int < 3){
-							$resp = array('access' => "Acceder");
-							if($estatus=="1"){
-								$resp['stat'] = "1";
-							}
-							if($estatus=="2"){
-								$resp['stat'] = "2";
-							}
-							$this->usuario->Bloqueo($_POST['username'], 0);
-						}
-
-						if($intentos[0]["intentos"] >= 3){
-							$resp = array('look' => "Bloqueo");
-						}
-						echo json_encode($resp);
+					if($resp['msj'] == "Good" && !empty($resp['data']) && count($resp['data'])>0 && $resp['data'][0]['estatus']==0 && $resp['data'][0]['cedula_usuario'] == "00000000"){
+						$permitirContinuar = "1";
+					}else if($resp['msj'] == "Good" && !empty($resp['data']) && count($resp['data'])>0 && $resp['data'][0]['estatus']>0){
+						$permitirContinuar = "1";
 					}else{
-						$intentos = $this->usuario->Intentos($_POST['username']);
-						$int = 0;
-						if(count($intentos)>0){
-							$int = $intentos[0]["intentos"];
-							if($resp['msj'] === 'Usuario o contraseña invalido!'){
-								// echo $intentos[0]["intentos"];
-								if(isset($intentos[0]["intentos"])){
-									$intentos[0]["intentos"] += 1;
-								}
-								$fallos = $intentos[0]["intentos"];
-								$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
-							}
-							if($intentos[0]["intentos"] >= 3){
-								$cedula = $this->login->busquedaCedula($_POST['username']);
-								//var_dump($cedula);
-								$preguntas = $this->login->Consultar($cedula[0]['cedula_usuario']);
-								//var_dump($cedula[0]['cedula_usuario']);
-								// $preg = array('look' => "Bloqueo", 'preguntas' => $preguntas);
-								$resp = array('look' => "Bloqueo", 'preguntas' => $preguntas);
-								// $resp = array('look' => "Bloqueo");
-							}
-						}
-						// echo json_encode($preg);
-						echo json_encode($resp);
+						$permitirContinuar = "0";
 					}
-					// if($resp['msj'] == "Good"){
-					// 	$intentos = $this->usuario->Intentos($_POST['username']);
-					// 	$int = $intentos[0]["intentos"];
-					// 	if($resp['msj'] === 'Good' && $int < 3){
-					// 		$resp = array('access' => "Acceder");
-					// 	}
-					// 	if($intentos[0]["intentos"] >= 3){
-					// 		$resp = array('look' => "Bloqueo");
-					// 	}
-					// } else if($resp['msj'] === 'Usuario o contraseña invalido!'){
-					// 	if(isset($intentos[0]["intentos"])){
-					// 		$intentos[0]["intentos"] += 1;
-					// 	}
-					// 	$fallos = $intentos[0]["intentos"];
-					// 	$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
-					// }
+					if($permitirContinuar=="1"){
+						if($resp['msj'] == "Good"){
+							$intentos = $this->usuario->Intentos($_POST['username']);
+							$int = 0;
+							$estatus = -1;
+							if(!empty($resp['data']) && count($resp['data'])>0){
+								$estatus = $resp['data'][0]['estatus'];
+							}
+							if(count($intentos)>0){
+								$int = $intentos[0]["intentos"];
+							}
+							if($resp['msj'] === 'Good' && $int < 3){
+								$dataTemp = $resp['data'][0];
+								// print_r($dataTemp);
+								$resp = array('access' => "Acceder");
+
+
+								$_SESSION['cuentaActiva'] = true;
+								$_SESSION['cuenta_usuario'] = $dataTemp;
+								// $_SESSION['id_rol'] = $dataTemp['id_rol'];
+								// $_SESSION['nombre_rol'] = $dataTemp['nombre_rol'];
+								// $_SESSION['cedula_usuario'] = $dataTemp['cedula_usuario'];
+								// $_SESSION['nombre_usuario'] = $dataTemp['nombre_usuario'];
+								// $_SESSION['correo'] = $dataTemp['correo'];
+								// $_SESSION['estatus'] = $dataTemp['estatus'];
+
+								$accesos = $this->rol->ConsultarAccesos($_SESSION['cuenta_usuario']['id_rol']);
+								$_SESSION['accesos_usuario'] = $accesos;
+
+								if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
+									$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+									if($alumnos['msj']=="Good"){
+										if(count($alumnos['data']) > 1){
+											$_SESSION['cuenta_persona'] = $alumnos['data'][0];
+											$_SESSION['cuenta_persona']['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+											$_SESSION['cuenta_persona']['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+											$_SESSION['cuenta_persona']['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+											$_SESSION['cuenta_persona']['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+											$_SESSION['cuenta_persona']['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];	
+
+											// $_SESSION['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+											// $_SESSION['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+											// $_SESSION['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+											// $_SESSION['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+											// $_SESSION['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];
+										}else{
+											session_destroy();
+											$resps['msj'] = "Usuario o contraseña invalido!";
+											echo json_encode($resps);
+											die();
+										}
+									}
+								}else{
+									$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+									if($profesores['msj']=="Good"){
+										if(count($profesores['data']) > 1){
+											$_SESSION['cuenta_persona'] = $profesores['data'][0];
+											$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_alumno'];
+											$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_alumno'];
+											$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_alumno'];
+											$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_alumno'];
+
+											// $_SESSION['cedula'] = $profesores['data'][0]['cedula_alumno'];
+											// $_SESSION['nombre'] = $profesores['data'][0]['nombre_alumno'];
+											// $_SESSION['apellido'] = $profesores['data'][0]['apellido_alumno'];
+											// $_SESSION['telefono'] = $profesores['data'][0]['telefono_alumno'];
+										}else if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario"){
+											$supersu = ['cedula'=>'00000000', 'nombre'=>'Usuario', 'apellido'=>'Sistema', 'telefono'=>'00000000000'];
+											$_SESSION['cuenta_persona']= $supersu;
+											// $_SESSION['cedula'] = $supersu['cedula'];
+											// $_SESSION['nombre'] = $supersu['nombre'];
+											// $_SESSION['apellido'] = $supersu['apellido'];
+											// $_SESSION['telefono'] = $supersu['telefono'];
+										}else{
+											session_destroy();
+											$resps['msj'] = "Usuario o contraseña invalido!";	
+											echo json_encode($resps);
+											die();
+										}
+									}
+								}
+
+
+								if($estatus=="1"){
+									$resp['stat'] = "1";
+								}
+								if($estatus=="2"){
+									$resp['stat'] = "2";
+								}
+								$this->usuario->Bloqueo($_POST['username'], 0);
+							}
+
+							if($intentos[0]["intentos"] >= 3){
+								$resp = array('look' => "Bloqueo");
+							}
+							// echo json_encode($_SESSION);
+							echo json_encode($resp);
+						}else{
+							$intentos = $this->usuario->Intentos($_POST['username']);
+							$int = 0;
+							if(count($intentos)>0){
+								$int = $intentos[0]["intentos"];
+								if($resp['msj'] === 'Usuario o contraseña invalido!'){
+									// echo $intentos[0]["intentos"];
+									if(isset($intentos[0]["intentos"])){
+										$intentos[0]["intentos"] += 1;
+									}
+									$fallos = $intentos[0]["intentos"];
+									$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
+								}
+								if($intentos[0]["intentos"] >= 3){
+									$cedula = $this->login->busquedaCedula($_POST['username']);
+									//var_dump($cedula);
+									$preguntas = $this->login->Consultar($cedula[0]['cedula_usuario']);
+									//var_dump($cedula[0]['cedula_usuario']);
+									// $preg = array('look' => "Bloqueo", 'preguntas' => $preguntas);
+									$resp = array('look' => "Bloqueo", 'preguntas' => $preguntas);
+									// $resp = array('look' => "Bloqueo");
+								}
+							}
+							// echo json_encode($preg);
+							echo json_encode($resp);
+						}
+					}else{
+						$resps['msj'] = "Usuario o contraseña invalido!";
+						echo json_encode($resps);
+					}
 				}
 
 				if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
@@ -134,7 +209,6 @@
 			$link = _URL_ . 'Login/recuperarAcceso/'.$token;
 			// $user = $this->login->busquedaUsuario($_POST['correo']);
 			// var_dump($user);
-			// var_dump($this->user['nombre']); 
 			// $usuario->email = $this->desencriptar($usuario->email);
 				try {
 					//Server settings

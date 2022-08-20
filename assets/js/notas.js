@@ -27,6 +27,9 @@ $(document).ready(function(){
     }
   });
 
+  console.clear();
+
+  
   $('#seccion').change(function(){
     var url = $("#url").val();
     var seccion = $(this).val();

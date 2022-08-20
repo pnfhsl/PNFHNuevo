@@ -170,7 +170,7 @@
 
 		public function getOne($cedula){
 		      try {
-		    	$query = parent::prepare('SELECT * FROM profesores WHERE cedula_profesor = :cedula');
+		    	$query = parent::prepare('SELECT * FROM profesores WHERE cedula_profesor = :cedula and estatus = 1');
 		    	$respuestaArreglo = '';
 		        $query->execute(['cedula'=>$cedula]);
 		        $respuestaArreglo = $query->fetchAll();

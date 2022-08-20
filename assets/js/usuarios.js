@@ -27,6 +27,8 @@ $(document).ready(function(){
     }
   });
 
+  console.clear();
+  
   $('#nombre').on('input', function () { 
     this.value = this.value.replace(/[^0-9 a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú ]/g,''); });
 
@@ -69,19 +71,19 @@ $(document).ready(function(){
         },
         success: function(respuesta){       
           // alert(respuesta);
-          console.log(respuesta);
+          // console.log(respuesta);
           var resp = JSON.parse(respuesta);
-          console.log(resp);
+          // console.log(resp);
           if (resp.msj == "Good") {
             var data = resp.data;
             var dataUsuario = "";
             if(resp.msjUsuario=="Good"){
               dataUsuario = resp.dataUsuario;
             }
-            console.log("DATA: ");
-            console.log(data);
-            console.log("USUARIOS: ");
-            console.log(dataUsuario);
+            // console.log("DATA: ");
+            // console.log(data);
+            // console.log("USUARIOS: ");
+            // console.log(dataUsuario);
             var html = '';
             html += '<option value="">Seleccionar usuario</option>';
             for (var i = 0; i < data.length; i++) {
@@ -132,7 +134,7 @@ $(document).ready(function(){
         },
         success: function(respuesta){       
           // alert(respuesta);
-          console.log(respuesta);
+          // console.log(respuesta);
           var resp = JSON.parse(respuesta);
           // console.log(resp);
           if (resp.msj == "Good") {

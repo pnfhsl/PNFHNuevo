@@ -34,10 +34,13 @@
 			}
 		}
 
-		public function ConsultarAccesos(){
-			
+		public function ConsultarAccesos($id_rol=""){
 			try {
-				$query = parent::prepare('SELECT * FROM accesos WHERE estatus = 1');
+				if($id_rol==""){
+					$query = parent::prepare("SELECT * FROM accesos WHERE estatus = 1");
+				}else{
+					$query = parent::prepare("SELECT * FROM accesos WHERE estatus = 1 and id_rol = {$id_rol}");
+				}
 				$respuestaArreglo = '';
 				$query->execute();
 				$query->setFetchMode(parent::FETCH_ASSOC);

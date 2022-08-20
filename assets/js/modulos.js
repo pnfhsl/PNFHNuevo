@@ -1,5 +1,5 @@
 $(document).ready(function(){ 
-  alert('asdaxdadasd')
+  
   if($(window).width() < 768){ // XS
         $(".tamModals").attr("style","width:95%;margin-left:auto;margin-right:auto;text-align:left !important;");
     }
