@@ -26,6 +26,9 @@ $(document).ready(function(){
     }
   });
 
+  console.clear();
+
+  
   $('#nombre').on('input', function () {      
     this.value = this.value.replace(/[^0-9 H S h s]/g,''); });
     // this.value = this.value.replace(/[^0-9- H h S s ]/g,''); });

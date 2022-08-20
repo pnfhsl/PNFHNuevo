@@ -47,13 +47,21 @@
 			$this->controlador = _CONTROLLER_;  /* asignamos el contenido de la constante definida en  sysConfig*/
 		}
 		public function Controller(){
+
 			// $control = $this->url[0];
 			$control = $this->desencriptar($this->url[0]);
 			// echo $control;
-			if(!empty($_SESSION['cuentaActiva']) && $_SESSION['cuentaActiva']==true){
+			if(!empty($_SESSION['cuentaActiva']) && $_SESSION['cuentaActiva']==true && !empty($_SESSION['cuenta_usuario']) && !empty($_SESSION['cuenta_persona'])){
 				// $this->controller = $this->url[0] == '' ? 'Home' : $this->url[0];
-				$this->controller = $control == '' ? 'Home' : $control;
+				// session_destroy();
+				if(!empty($_SESSION['cuenta_usuario']) && $_SESSION['cuenta_usuario']['estatus']=="2"){
+					$this->controller = $control == '' ? 'Preguntas' : $control;
+				}
+				if(!empty($_SESSION['cuenta_usuario']) && $_SESSION['cuenta_usuario']['estatus']=="1"){
+					$this->controller = $control == '' ? 'Home' : $control;
+				}
 			}else{
+				// echo "SEguimos en Login";
 				$this->controller = $control == '' ? 'Login' : $control;
 				// $this->controller = $this->url[0] == '' ? 'login' : $this->url[0];
 			}

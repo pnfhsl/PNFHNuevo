@@ -39,7 +39,7 @@
 			//$this->password = md5($this->passw);
 			// var_dump($this->user);
 			// var_dump($this->passw);
-			$sql = ('SELECT * FROM usuarios WHERE nombre_usuario = :user AND password_usuario = :password AND (estatus = 1 OR estatus = 2)');
+			$sql = ('SELECT * FROM roles, usuarios WHERE usuarios.id_rol = roles.id_rol AND usuarios.nombre_usuario = :user AND usuarios.password_usuario = :password');
 			$new = parent::prepare($sql);
 			$new->bindValue(':user', $this->user);
 			$new->bindValue(':password', $this->passw);
@@ -57,7 +57,6 @@
 					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
 					$Result['data'] = $user;
 					// echo json_encode($Result);
-					$_SESSION['cuentaActiva'] = true;
 					// die();
 					return $Result;
 				}else{

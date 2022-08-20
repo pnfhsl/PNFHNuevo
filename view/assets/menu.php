@@ -8,7 +8,7 @@
         </div>
         <div class="pull-left info">
           <p>
-            Alexander Pierce
+            <?=$_SESSION['cuenta_persona']['nombre']?> <?=$_SESSION['cuenta_persona']['apellido']?>
           </p>
           <a href="#"><i class="fa fa-circle text-success"></i> En linea</a>
         </div>

@@ -245,11 +245,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 password: pass,
               },
               success: function(respuesta) {
-                 // alert(respuesta);
-                //  console.log(respuesta);
+                // alert(respuesta);
+                 // console.log(respuesta);
                 var data = JSON.parse(respuesta);
-                console.log(data);
-                console.log(data.preguntas);
+                // console.log(data);
+
+                // console.log(data.preguntas);
                 // console.log(data.preguntas[0].pregunta);
                 // console.log(data.preguntas[0].respuesta);
                 // console.log(data.preguntas[1].pregunta);
@@ -369,7 +370,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             correo: correo,
           },
           success: function(resp) {
-            alert(resp);
+            // alert(resp);
             console.log(resp);
             var datos = JSON.parse(resp);
             if (datos.msj === "Good") {

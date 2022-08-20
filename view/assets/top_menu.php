@@ -30,7 +30,8 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
 
-          
+          <?php if ($_SESSION['cuenta_usuario']['estatus']=="1"): ?>
+            
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle box_notificaciones" data-toggle="dropdown">
               <i class="fa fa-bell-o" style="font-size:1.2em"></i>
@@ -53,6 +54,7 @@
 
             </ul>
           </li>
+          <?php endif; ?>
 
 
           <li>
@@ -73,7 +75,7 @@
               ?>
               <img src="<?=_ROUTE_?>assets/img/user-3.png" style='background:#fff' class="user-image" alt="User Image">
               <span class="hidden-xs">
-                Alexander Pierce
+                <?=$_SESSION['cuenta_persona']['nombre']?> <?=$_SESSION['cuenta_persona']['apellido']?>
               </span>
             </a>
             <ul class="dropdown-menu" style="box-shadow:0px 0px 2px #000">
@@ -82,16 +84,18 @@
                     
                     <p style="color:#fff;text-shadow:0px 0px 3px #000">
                       Web Developer
-                      <small>Desarrollador SCHSL</small>
+                      <small><?=$_SESSION['cuenta_usuario']['nombre_rol']?> SCHSL</small>
                      
                     </p>
                   
               </li>
               
               <li class="user-footer">
+                <?php if ($_SESSION['cuenta_usuario']['estatus']=="1"): ?>
                 <div class="pull-left">
                   <a href="#" class="btn btn-default btn-flat">Perfil</a>
                 </div>
+                <?php endif; ?>
                 <div class="pull-right">
                   <a href="<?=_ROUTE_.$this->encriptar('Logout'); ?>" class="btn btn-default btn-flat">Cerrar Sesion</a>
                 </div>

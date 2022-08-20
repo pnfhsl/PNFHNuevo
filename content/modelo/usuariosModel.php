@@ -36,7 +36,7 @@
 
 			try{
 	        $query = parent::prepare("INSERT INTO usuarios (cedula_usuario, nombre_usuario, password_usuario, id_rol, estatus) 
-			VALUES (:cedula_usuario, :nombre_usuario, :password_usuario, :id_rol, 1)");
+			VALUES (:cedula_usuario, :nombre_usuario, :password_usuario, :id_rol, 2)");
 	        $query->bindValue(':cedula_usuario', $datos['cedula']);
 	        $query->bindValue(':nombre_usuario', $datos['user']);
 	        $query->bindValue(':password_usuario', $datos['pass']);

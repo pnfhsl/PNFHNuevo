@@ -144,98 +144,10 @@
 <?php endif; ?>
 <script>
 $(document).ready(function(){ 
-    var response = $(".responses").val();
-  if(response==undefined){
 
-  }else{
-    if(response == "1"){
-      swal.fire({
-          type: 'success',
-          title: '¡Datos borrados correctamente!',
-                  confirmButtonColor: "#ED2A77",
-      }).then(function(){
-        window.location = "?route=Campanas";
-      });
-    }
-    if(response == "2"){
-      swal.fire({
-          type: 'error',
-          title: '¡Error al realizar la operacion!',
-                  confirmButtonColor: "#ED2A77",
-      });
-    }
-    
-  }
-
-  $(".modificarBtn").click(function(){
-    swal.fire({ 
-          title: "¿Desea modificar los datos?",
-          text: "Se movera al formulario para modificar los datos, ¿desea continuar?",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#ED2A77",
-          confirmButtonText: "¡Si!",
-          cancelButtonText: "No", 
-          closeOnConfirm: false,
-          closeOnCancel: false 
-      }).then((isConfirm) => {
-          if (isConfirm.value){            
-            window.location = $(this).val();
-          }else { 
-              swal.fire({
-                  type: 'error',
-                  title: '¡Proceso cancelado!',
-                  confirmButtonColor: "#ED2A77",
-              });
-          } 
-      });
-  });
-
-  $(".eliminarBtn").click(function(){
-      swal.fire({ 
-          title: "¿Desea borrar los datos?",
-          text: "Se borraran los datos escogidos, ¿desea continuar?",
-          type: "error",
-          showCancelButton: true,
-                  confirmButtonColor: "#ED2A77",
-          confirmButtonText: "¡Si!",
-          cancelButtonText: "No", 
-          closeOnConfirm: false,
-          closeOnCancel: false 
-      }).then((isConfirm) => {
-          if (isConfirm.value){            
-      
-                swal.fire({ 
-                    title: "¿Esta seguro de borrar los datos?",
-                    text: "Se borraran los datos, esta opcion no se puede deshacer, ¿desea continuar?",
-                    type: "error",
-                    showCancelButton: true,
-                  confirmButtonColor: "#ED2A77",
-                    confirmButtonText: "¡Si!",
-                    cancelButtonText: "No", 
-                    closeOnConfirm: false,
-                    closeOnCancel: false 
-                }).then((isConfirm) => {
-                    if (isConfirm.value){                      
-                        window.location = $(this).val();
-                    }else { 
-                        swal.fire({
-                            type: 'error',
-                            title: '¡Proceso cancelado!',
-                            confirmButtonColor: "#ED2A77",
-                        });
-                    } 
-                });
-
-          }else { 
-              swal.fire({
-                  type: 'error',
-                  title: '¡Proceso cancelado!',
-                  confirmButtonColor: "#ED2A77",
-              });
-          } 
-      });
-  });
+  console.clear();
+  
+  console.log(<?=json_encode($_SESSION); ?>);
 });  
 </script>
 </body>
