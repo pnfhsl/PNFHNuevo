@@ -123,6 +123,8 @@
 										}else if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario"){
 											$supersu = ['cedula'=>'00000000', 'nombre'=>'Usuario', 'apellido'=>'Sistema', 'telefono'=>'00000000000'];
 											$_SESSION['cuenta_persona']= $supersu;
+											$_SESSION['cuenta_usuario']['estatus'] = "1";
+											$estatus = "1";
 											// $_SESSION['cedula'] = $supersu['cedula'];
 											// $_SESSION['nombre'] = $supersu['nombre'];
 											// $_SESSION['apellido'] = $supersu['apellido'];
