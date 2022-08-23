@@ -61,9 +61,13 @@
 				require_once("view/mantenimiento2View.php");
 			}
 		}
+
+
 		// public function Consultar(){
 		// 	$url = $this->url;
 		// }
+
+
 		public function Borrarfile(){
 			$resul = unlink($_POST['file']);
 			if($resul=="1"){
@@ -74,14 +78,34 @@
 			echo json_encode($result);
 		}
 		
-		public function Agregar(){
+		public function Restaurar(){
+			//echo 'holaaa';
+			$file = $_FILES['file'];
+			$name_file = $file['name'][0];
+			$tipo_file = $file['type'][0];
+			$ruta_file = $file['tmp_name'][0];
+			$error_file = $file['error'][0];
+			$size_file = $file['size'][0];
+
+			// echo "Name File: ".$name_file." \n ";
+			// echo "Type File: ".$tipo_file." \n ";
+			// echo "Ruta File: ".$ruta_file." \n ";
+			// echo "Error File: ".$error_file." \n ";
+			// echo "Size File: ".$size_file." \n ";
+			if($error_file==0){
+				$newRuta = "libs/restore/";
+				$newName = _DB_WEB_."_".date("Y-m-d__H-i-s");
+				copy($ruta_file, $newRuta.$newName);
+				$restauracion = $this->manteniment->Restaurar($newRuta.$newName);
+				unlink($newRuta.$newName);
+				
+				echo json_encode($restauracion);
+			}else{
+				echo json_encode(['stat'=>2, 'message'=>'Error en la subida del Archivo']);
+			}
+
 		}
 
-		public function Modificar(){
-		}
-
-		public function Eliminar(){
-		}
 
 	}
 		

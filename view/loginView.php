@@ -29,6 +29,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 
 <body>
+<div class="box-cargando" style="background:rgba(0,0,0,.8);position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100vh;z-index:1100;text-align:center;display:none;color:#767676;">
+<!-- <img src="assets/gifty/loading-11.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
+<!-- <img src="assets/gifty/loading-25.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
+<!-- <img src="assets/gifty/loading-22.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
+<!-- <img src="assets/gifty/loading-56.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
+<!-- <img src="assets/gifty/loading-102.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
+<!-- <img src="assets/gifty/loading-103.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
+
+<!-- <img src="assets/gifty/loading-14.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
+<!-- <img src="assets/gifty/loading-33.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
+
+<!-- <img src="assets/gifty/loading-4.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
+<img src="assets/gifty/loading-13.gif" alt="cargando" style="margin-top:15vh;max-height:100vh;max-width:100vh;width:30vh;">
+<h3>Cargando . . .</h3> 
+</div>
+
 
   <!-- <input type="hidden" id="url" value="<?= $this->url; ?>"> -->
   <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
@@ -200,7 +216,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
         <div class="modal-footer">
 
-          <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+          <span type="button" class="btn btn-default pull-left cerrarEnviarCorreo" data-dismiss="modal">Salir</span>
 
           <span type="submit" class="btn btn-primary subir" id="enviarCorreo">Enviar</span>
 
@@ -236,6 +252,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             let user = $("#usuario").val();
             let pass = $("#password").val();
 
+            $(".box-cargando").show();
             $.ajax({
               url: '',
               type: 'POST',
@@ -245,6 +262,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 password: pass,
               },
               success: function(respuesta) {
+                $(".box-cargando").hide();
+
                 // alert(respuesta);
                  // console.log(respuesta);
                 var data = JSON.parse(respuesta);
@@ -363,6 +382,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       $("#enviarCorreo").click(function() {
         var url = $("#url").val();
         let correo = $("#correo").val();
+
+        $(".box-cargando").show();
         $.ajax({
           url: url + '/enviarLink',
           type: 'POST',
@@ -370,6 +391,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             correo: correo,
           },
           success: function(resp) {
+            $(".box-cargando").hide();
             // alert(resp);
             console.log(resp);
             var datos = JSON.parse(resp);
@@ -383,6 +405,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 showCloseButton: false,
                 showConfirmButton: false,
               });
+              $(".cerrarEnviarCorreo").click();
+              $("#correo").val("");
+
             }
             if (datos.msj === "Vacio") {
               Swal.fire({
