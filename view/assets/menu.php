@@ -97,7 +97,7 @@
         <li class="">
                             <?php } ?>
           <a href="<?=_ROUTE_.$this->encriptar('Alumnos'); ?>">
-            <i class="fa fa-male"></i> <span>Alumnos</span>
+            <i class="fa fa-street-view"></i> <span>Alumnos</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
             </span>
@@ -138,7 +138,7 @@
         <li class="treeview">
                             <?php } ?>
           <a href="#">
-            <i class="fa fa-rocket"></i> <span>Config. SC</span>
+            <i class="fa fa-gears"></i> <span>Config. SC</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -151,7 +151,7 @@
             <li>
                             <?php } ?>
               <a href="<?=_ROUTE_.$this->encriptar('Periodos');?>">
-                <i class="fa fa-fighter-jet"></i> <span>Periodos</span>
+                <i class="fa fa-hourglass-2"></i> <span>Periodos</span>
               </a>
             </li>
                 <?php } ?>
@@ -165,7 +165,7 @@
             <li class="">
                             <?php } ?>
               <a href="<?=_ROUTE_.$this->encriptar('Saberes');?>">
-                <i class="fa fa-fighter-jet"></i> <span>Saberes</span>
+                <i class="fa fa-puzzle-piece"></i> <span>Saberes</span>
               </a>
             </li>
                 <?php } ?>
@@ -178,7 +178,7 @@
             <li class="">
                             <?php } ?>
               <a href="<?=_ROUTE_.$this->encriptar('Secciones');?>">
-                <i class="fa fa-fighter-jet"></i> <span>Secciones</span>
+                <i class="fa fa-tags"></i> <span>Secciones</span>
               </a>
             </li>
                 <?php } ?>
@@ -192,7 +192,7 @@
             <li class="">
                             <?php } ?>
               <a href="<?=_ROUTE_.$this->encriptar('Clases');?>">
-                <i class="fa fa-fighter-jet"></i> <span>Clases</span>
+                <i class="fa fa-book"></i> <span>Clases</span>
               </a>
             </li>
                 <?php } ?>
@@ -215,7 +215,7 @@
         <li class="">
                             <?php } ?>
           <a href="<?=_ROUTE_.$this->encriptar('Proyectos');?>">
-            <i class="fa fa-codepen"></i> <span>Proyectos</span>
+            <i class="fa fa-paper-plane-o"></i> <span>Proyectos</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
             </span>
@@ -236,7 +236,7 @@
         <li class="">
                             <?php } ?>
           <a href="<?=_ROUTE_.$this->encriptar('Notas');?>">
-            <i class="fa fa-tasks"></i> <span>Notas</span>
+            <i class="fa fa-mortar-board"></i> <span>Notas</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
             </span>
@@ -268,7 +268,7 @@
         <li class="">
                             <?php } ?>
           <a href="<?=_ROUTE_.$this->encriptar('Reportes');?>">
-            <i class="fa fa-user-circle-o"></i> <span>Reportes</span>
+            <i class="fa fa-download"></i> <span>Reportes</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
             </span>
@@ -290,7 +290,7 @@
         <li class="treeview">
                             <?php } ?>
           <a href="#">
-            <i class="fa fa-cogs"></i> <span>Seguridad</span>
+            <i class="fa fa-unlock-alt"></i> <span>Seguridad</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-ri"></i>
             </span>
@@ -305,7 +305,18 @@
             <li class="">
                             <?php } ?>
               <a href="<?=_ROUTE_.$this->encriptar('Bitacora');?>">
-                <i class="fa fa-cog"></i> <span>Bitacora</span>
+                <i class="fa fa-paperclip"></i> <span>Bitacora</span>
+              </a>
+            </li>
+                <?php } ?>
+
+                 <?php if($url=="Bloqueo"){ ?>
+            <li class="active">
+                            <?php }else{ ?>
+            <li class="">
+                            <?php } ?>
+              <a href="<?=_ROUTE_.$this->encriptar('Bloqueo');?>">
+                <i class="fa fa-unlock"></i> <span>Bloqueo de Usuario</span>
               </a>
             </li>
                 <?php } ?>
@@ -317,7 +328,7 @@
             <li class="">
                             <?php } ?>
               <a href="<?=_ROUTE_.$this->encriptar('Modulos');?>">
-                <i class="fa fa-cog"></i> <span>Modulos</span>
+                <i class="fa fa-list-alt"></i> <span>Módulos</span>
               </a>
             </li>
                 <?php } ?>
@@ -330,7 +341,7 @@
             <li>
                             <?php } ?>
               <a href="<?=_ROUTE_.$this->encriptar('Permisos');?>">
-                <i class="fa fa-cog"></i> <span>Permisos</span>
+                <i class="fa fa-chain-broken"></i> <span>Permisos</span>
               </a>
             </li>
                 <?php } ?>
@@ -343,14 +354,14 @@
             <li class="">
                             <?php } ?>
               <a href="<?=_ROUTE_.$this->encriptar('Roles');?>">
-                <i class="fa fa-cog"></i> <span>Roles</span>
+                <i class="fa fa-code-fork"></i> <span>Roles</span>
               </a>
             </li>
                <?php } ?>
                             
           </ul>
         </li>
-          <?php } ?>
+        
 
 <!-- ======================================================================================================================= -->
 
@@ -363,7 +374,7 @@
         <li class="">
                             <?php } ?>
           <a href="<?=_ROUTE_.$this->encriptar('Mantenimiento');?>">
-            <i class="fa fa-list"></i> <span>Mantenimiento</span>
+            <i class="fa fa-database"></i> <span>Mantenimiento</span>
             <span class="pull-right-container">
               <!-- <i class="fa fa-angle-left pull-right"></i> -->
             </span>

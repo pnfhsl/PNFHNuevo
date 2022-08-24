@@ -33,19 +33,18 @@ class preguntasModel extends database
 		}
 	}
 
-	public function Agregar($datos)
-	{
+	public function Agregar($datos){
 
 		try {
-			$query = parent::prepare('INSERT INTO respuestas (id_respuesta, cedula_usuario, id_pregunta, respuesta, llaves) VALUES (DEFAULT, "27828164", :id_pregunta, :respuesta, :llaves)');
+			$query = parent::prepare("INSERT INTO respuestas (id_respuesta, cedula_usuario, id_pregunta, respuesta, estatus) VALUES (DEFAULT, :cedula_usuario, :id_pregunta, :respuesta, 1)");
 			for ($i = 0; $i < 3; $i++) {
 				# code...
 				// var_dump($datos['preg'][$i] . ' ' . $datos['resp'][$i] . ' ' . $datos['llaves'][$i]);
 				// var_dump($datos['resp'][$i]);
-				// $query->bindValue(':cedula_usuario', $datos['cedula']);
+				$query->bindValue(':cedula_usuario', $datos['cedula']);
 				$query->bindValue(':id_pregunta', $datos['preg'][$i]);
 				$query->bindValue(':respuesta', $datos['resp'][$i]);
-				$query->bindValue(':llaves', $datos['llaves'][$i]);
+				// $query->bindValue(':llaves', $datos['llaves'][$i]);
 				$query->execute();
 			}
 			$respuestaArreglo = $query->fetchAll();

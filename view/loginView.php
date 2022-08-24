@@ -300,6 +300,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                 }
 
+                if (data.msj == "Cuenta Bloqueada") {
+                    $("#usuario").focus();
+                    $("#usuario").val("");
+                    $("#password").val("");
+                    Swal.fire({
+                      type: 'warning',
+                      title: '¡Usuario bloqueado',
+                      text: 'comuniquese con el soporte.',
+                      footer: 'SCHSL',
+                      timer: 2000,
+                      showCloseButton: false,
+                      showConfirmButton: false,
+                    });  
+                }
                 if (data.msj === "Usuario o contraseña invalido!") {
                   // alert('asd');
                   // Swal.fire({
@@ -324,6 +338,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
                 if (data.look === "Bloqueo") {
                   $("#preguntas").click();
+                  console.log(data);
                   $("#preg_uno").html(data.preguntas[0].pregunta);
                   $("#preg_dos").html(data.preguntas[1].pregunta);
                   $("#preg_tres").html(data.preguntas[2].pregunta);

@@ -7,9 +7,9 @@
   display:none;
 }
 </style>
-  <header class="main-header">
+  <header class="main-header" style="background:#135 !important;">
     <!-- Logo -->
-    <a href="<?=_ROUTE_?>" class="logo">
+    <a href="<?=_ROUTE_?>" class="logo" style="background:#135 !important;">
       <!-- <span class="logo-mini color-completo">
         <b class="color-corto">
           <img src="<?=_ROUTE_?>assets/img/libretita.png" style="width:100%">
