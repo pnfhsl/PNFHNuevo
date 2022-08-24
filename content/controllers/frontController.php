@@ -50,7 +50,6 @@
 
 			// $control = $this->url[0];
 			$control = $this->desencriptar($this->url[0]);
-			// echo $control;
 			if(!empty($_SESSION['cuentaActiva']) && $_SESSION['cuentaActiva']==true && !empty($_SESSION['cuenta_usuario']) && !empty($_SESSION['cuenta_persona'])){
 				// $this->controller = $this->url[0] == '' ? 'Home' : $this->url[0];
 				// session_destroy();
@@ -61,8 +60,9 @@
 					$this->controller = $control == '' ? 'Home' : $control;
 				}
 			}else{
-				// echo "SEguimos en Login";
-				$this->controller = $control == '' ? 'Login' : $control;
+				// echo "Seguimos en Login";
+				$this->controller = 'Login';
+				// $this->controller = $control == '' ? 'Login' : $control;
 				// $this->controller = $this->url[0] == '' ? 'login' : $this->url[0];
 			}
 			$this->url[0] = $this->controller;

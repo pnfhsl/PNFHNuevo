@@ -39,7 +39,7 @@
 				if($id_rol==""){
 					$query = parent::prepare("SELECT * FROM accesos WHERE estatus = 1");
 				}else{
-					$query = parent::prepare("SELECT * FROM accesos WHERE estatus = 1 and id_rol = {$id_rol}");
+					$query = parent::prepare("SELECT * FROM accesos, roles, permisos, modulos WHERE roles.id_rol = accesos.id_rol and permisos.id_permiso = accesos.id_permiso and modulos.id_modulo = accesos.id_modulo and roles.estatus = 1 and permisos.estatus = 1 and modulos.estatus = 1 and accesos.estatus = 1 and accesos.id_rol = {$id_rol}");
 				}
 				$respuestaArreglo = '';
 				$query->execute();

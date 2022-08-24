@@ -10,14 +10,19 @@
   <header class="main-header">
     <!-- Logo -->
     <a href="<?=_ROUTE_?>" class="logo">
-      <span class="logo-mini color-completo"><b class="color-corto"></b>
-        <img src="<?=_ROUTE_?>assets/img/libretita.png" style="width:100%">
-      </span>
+      <!-- <span class="logo-mini color-completo">
+        <b class="color-corto">
+          <img src="<?=_ROUTE_?>assets/img/libretita.png" style="width:100%">
+        </b>
+      </span> -->
       <span class="logo-lg color-completo">
-        <img src="<?=_ROUTE_?>assets/img/libretita.png" style="width:25%;">
+        <!-- <img src="<?=_ROUTE_?>assets/img/libretita.png" style="width:8vh;" class='xs-none sm-none'> -->
+        <img src="<?=_ROUTE_?>assets/img/libretita.png" style="width:5vh;" class='logoTopMenu'>
         <b class="color-corto"> </b><b><i>SCHSL</i></b>
       </span>
     </a>
+
+
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" style="background:#047 !important">
       

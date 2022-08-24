@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-08-2022 a las 17:52:04
+-- Tiempo de generación: 23-08-2022 a las 22:10:15
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.10
 
@@ -41,62 +41,6 @@ CREATE TABLE `accesos` (
 --
 
 INSERT INTO `accesos` (`id_accesos`, `id_rol`, `id_modulo`, `id_permiso`, `estatus`) VALUES
-(43, 1, 1, 1, 1),
-(44, 1, 1, 2, 1),
-(45, 1, 1, 4, 1),
-(46, 1, 1, 5, 1),
-(47, 1, 2, 1, 1),
-(48, 1, 2, 2, 1),
-(49, 1, 2, 4, 1),
-(50, 1, 2, 5, 1),
-(51, 1, 4, 1, 1),
-(52, 1, 4, 2, 1),
-(53, 1, 4, 4, 1),
-(54, 1, 4, 5, 1),
-(55, 1, 5, 1, 1),
-(56, 1, 5, 2, 1),
-(57, 1, 5, 4, 1),
-(58, 1, 5, 5, 1),
-(59, 1, 6, 1, 1),
-(60, 1, 6, 2, 1),
-(61, 1, 6, 4, 1),
-(62, 1, 6, 5, 1),
-(63, 1, 7, 1, 1),
-(64, 1, 7, 2, 1),
-(65, 1, 7, 4, 1),
-(66, 1, 7, 5, 1),
-(67, 1, 8, 1, 1),
-(68, 1, 8, 2, 1),
-(69, 1, 8, 4, 1),
-(70, 1, 8, 5, 1),
-(71, 1, 9, 1, 1),
-(72, 1, 9, 2, 1),
-(73, 1, 9, 4, 1),
-(74, 1, 9, 5, 1),
-(75, 1, 10, 1, 1),
-(76, 1, 10, 2, 1),
-(77, 1, 10, 4, 1),
-(78, 1, 10, 5, 1),
-(79, 1, 11, 1, 1),
-(80, 1, 11, 2, 1),
-(81, 1, 11, 4, 1),
-(82, 1, 11, 5, 1),
-(83, 1, 12, 1, 1),
-(84, 1, 12, 2, 1),
-(85, 1, 12, 4, 1),
-(86, 1, 12, 5, 1),
-(87, 1, 13, 1, 1),
-(88, 1, 13, 2, 1),
-(89, 1, 13, 4, 1),
-(90, 1, 13, 5, 1),
-(91, 1, 14, 1, 1),
-(92, 1, 14, 2, 1),
-(93, 1, 14, 4, 1),
-(94, 1, 14, 5, 1),
-(95, 1, 15, 1, 1),
-(96, 1, 15, 2, 1),
-(97, 1, 15, 4, 1),
-(98, 1, 15, 5, 1),
 (99, 2, 2, 5, 1),
 (100, 3, 2, 1, 1),
 (101, 3, 2, 2, 1),
@@ -109,7 +53,67 @@ INSERT INTO `accesos` (`id_accesos`, `id_rol`, `id_modulo`, `id_permiso`, `estat
 (108, 3, 7, 1, 1),
 (109, 3, 7, 2, 1),
 (110, 3, 7, 4, 1),
-(111, 3, 7, 5, 1);
+(111, 3, 7, 5, 1),
+(172, 1, 1, 1, 1),
+(173, 1, 1, 2, 1),
+(174, 1, 1, 4, 1),
+(175, 1, 1, 5, 1),
+(176, 1, 2, 1, 1),
+(177, 1, 2, 2, 1),
+(178, 1, 2, 4, 1),
+(179, 1, 2, 5, 1),
+(180, 1, 3, 1, 1),
+(181, 1, 3, 2, 1),
+(182, 1, 3, 4, 1),
+(183, 1, 3, 5, 1),
+(184, 1, 4, 1, 1),
+(185, 1, 4, 2, 1),
+(186, 1, 4, 4, 1),
+(187, 1, 4, 5, 1),
+(188, 1, 5, 1, 1),
+(189, 1, 5, 2, 1),
+(190, 1, 5, 4, 1),
+(191, 1, 5, 5, 1),
+(192, 1, 6, 1, 1),
+(193, 1, 6, 2, 1),
+(194, 1, 6, 4, 1),
+(195, 1, 6, 5, 1),
+(196, 1, 7, 1, 1),
+(197, 1, 7, 2, 1),
+(198, 1, 7, 4, 1),
+(199, 1, 7, 5, 1),
+(200, 1, 8, 1, 1),
+(201, 1, 8, 2, 1),
+(202, 1, 8, 4, 1),
+(203, 1, 8, 5, 1),
+(204, 1, 9, 1, 1),
+(205, 1, 9, 2, 1),
+(206, 1, 9, 4, 1),
+(207, 1, 9, 5, 1),
+(208, 1, 10, 1, 1),
+(209, 1, 10, 2, 1),
+(210, 1, 10, 4, 1),
+(211, 1, 10, 5, 1),
+(212, 1, 11, 1, 1),
+(213, 1, 11, 2, 1),
+(214, 1, 11, 4, 1),
+(215, 1, 11, 5, 1),
+(216, 1, 12, 1, 1),
+(217, 1, 12, 2, 1),
+(218, 1, 12, 4, 1),
+(219, 1, 12, 5, 1),
+(220, 1, 13, 1, 1),
+(221, 1, 13, 2, 1),
+(222, 1, 13, 4, 1),
+(223, 1, 13, 5, 1),
+(224, 1, 14, 1, 1),
+(225, 1, 14, 2, 1),
+(226, 1, 14, 4, 1),
+(227, 1, 14, 5, 1),
+(228, 1, 15, 1, 1),
+(229, 1, 15, 2, 1),
+(230, 1, 15, 4, 1),
+(231, 1, 15, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -250,20 +254,21 @@ CREATE TABLE `modulos` (
 --
 
 INSERT INTO `modulos` (`id_modulo`, `nombre_modulo`, `estatus`) VALUES
-(1, 'Usuarios', 1),
-(2, 'Notas', 1),
-(4, 'Mantenimiento', 1),
-(5, 'Bitácora', 1),
-(6, 'Alumnos', 1),
+(1, 'Alumnos', 1),
+(2, 'Profesores', 1),
+(3, 'Periodos', 1),
+(4, 'Saberes', 1),
+(5, 'Secciones', 1),
+(6, 'Clases', 1),
 (7, 'Proyectos', 1),
-(8, 'Profesores', 1),
-(9, 'Módulos', 1),
-(10, 'Permisos', 1),
-(11, 'Roles', 1),
-(12, 'Secciones', 1),
-(13, 'Clases', 1),
-(14, 'Periodos', 1),
-(15, 'Saberes', 1);
+(8, 'Notas', 1),
+(9, 'Usuarios', 1),
+(10, 'Reportes', 1),
+(11, 'Bitácora', 1),
+(12, 'Modulos', 1),
+(13, 'Permisos', 1),
+(14, 'Roles', 1),
+(15, 'Mantenimiento', 1);
 
 -- --------------------------------------------------------
 
@@ -336,10 +341,10 @@ CREATE TABLE `permisos` (
 
 INSERT INTO `permisos` (`id_permiso`, `nombre_permiso`, `estatus`) VALUES
 (1, 'Agregar', 1),
-(2, 'Modificar', 1),
+(2, 'Consultar', 1),
 (3, 'Eliminaaar', 0),
-(4, 'Eliminar', 1),
-(5, 'Consultar', 1);
+(4, 'Modificar', 1),
+(5, 'Eliminar', 1);
 
 -- --------------------------------------------------------
 
@@ -581,7 +586,7 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`cedula_usuario`, `id_rol`, `nombre_usuario`, `password_usuario`, `correo`, `estatus`, `intentos`) VALUES
 ('00000000', 1, 'superadmin', 'elNZQ1NnWUtiODdJaXhCa2VXeHhEUT09', 'pnfhsl10@gmail.com', 0, 0),
-('07326555', 2, '17326555', 'YUxHVmxWdkpFLzhQblgvQlh5N2dZZz09', NULL, 1, 0);
+('07326555', 2, '7326555', 'YUxHVmxWdkpFLzhQblgvQlh5N2dZZz09', NULL, 1, 0);
 
 --
 -- Índices para tablas volcadas
@@ -713,7 +718,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `accesos`
 --
 ALTER TABLE `accesos`
-  MODIFY `id_accesos` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id_accesos` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=232;
 
 --
 -- AUTO_INCREMENT de la tabla `bitacora`
@@ -731,7 +736,7 @@ ALTER TABLE `clases`
 -- AUTO_INCREMENT de la tabla `modulos`
 --
 ALTER TABLE `modulos`
-  MODIFY `id_modulo` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_modulo` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `notas`

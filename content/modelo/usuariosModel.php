@@ -18,7 +18,7 @@
 		}
 		public function Consultar($string=""){
 			try {
-				$query = parent::prepare('SELECT * FROM usuarios, roles WHERE roles.id_rol = usuarios.id_rol and usuarios.estatus = 1 and roles.estatus = 1');
+				$query = parent::prepare('SELECT * FROM usuarios, roles WHERE roles.id_rol = usuarios.id_rol and roles.estatus = 1 and usuarios.estatus != 0');
 
 				$respuestaArreglo = '';
 				$query->execute();

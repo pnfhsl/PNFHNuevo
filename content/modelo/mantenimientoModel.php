@@ -7,8 +7,9 @@
 
 	class mantenimientoModel extends database{
 
-		public $fecha;
-		public $mysqlImportFilename;
+		private $fecha;
+		private $mysqlImportFilename;
+		private $mysqlRestoreFilename;
 
 		public function __construct(){
 			// $this->con = parent::__construct();
@@ -20,6 +21,7 @@
 		    // $this->mysqlImportFilename = '../backup/'._DB_WEB_."_".$this->fecha.'.sql';
 		    // $this->mysqlImportFilename = ''._DB_WEB_."_".$this->fecha.'.sql';
 		    $this->mysqlImportFilename = 'libs/backup/'._DB_WEB_."_".$this->fecha.'.sql';
+		    // $this->mysqlRestoreFilename = 'libs/restore/'._DB_WEB_."_".$this->fecha.'.sql';
 		}
 		public function Consultar(){
 			
@@ -84,6 +86,54 @@
 			}
 			return $resul;
 		}
+
+
+		public function Restaurar($file){
+			$cnn = new mysqli(_HOST_,_DB_USER_,_DB_PASS_,_DB_WEB_);
+			$this->mysqlRestoreFilename = $file;
+			$sql = "";
+			$error = "";
+
+			$result = mysqli_query($cnn, "DROP DATABASE "._DB_WEB_);
+			// print_r($result);
+			// echo "  \n\n Borrar BD ".$result."  \n\n ";
+			if($result){
+				$result = mysqli_query($cnn, "CREATE DATABASE "._DB_WEB_);
+				// echo "  \n\n CREAR BD ".$result."  \n\n ";
+				if($result){
+					$cnn = new mysqli(_HOST_,_DB_USER_,_DB_PASS_,_DB_WEB_);
+					$lines = file($this->mysqlRestoreFilename);
+					foreach ($lines as $line) {
+						if(substr($line, 0, 2) == '--' || $line == ''){
+							continue;
+						}
+						$sql .= $line;
+						if(substr(trim($line), -1, 1)==';'){
+							$result = mysqli_query($cnn, $sql);
+							if(!$result){
+								$error .= mysqli_error($cnn)."\n";
+							}
+							$sql = '';
+						}
+					} // end foreach
+					if($error){
+						$response = array("type"=>"error", "message"=>$error, "stat"=>2);
+					}else{
+						$response = array("type"=>"success", "message"=>"Base de datos restaurada correctamente", "stat"=>1);
+					}
+				}else{
+					$response = array("type"=>"error", "message"=>"No se creo la base de datos", "stat"=>3);
+				}
+			}else{
+				$response = array("type"=>"error", "message"=>"No se elimino la base de datos actual", "stat"=>4);
+			}
+			
+			$response['exec'] = "restore";
+			
+			return $response;
+		}
+
+
 		public function BorrarFile($file){
 			// unset($file);
 			echo 'asd';
