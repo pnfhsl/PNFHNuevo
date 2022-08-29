@@ -90,6 +90,26 @@ class preguntasModel extends database
 	  }
 	} 
 
+	public function Eliminar($cedula){
+		try {
+		$query = parent::prepare('UPDATE respuestas SET estatus = 0 WHERE cedula_usuario = :cedula_usuario');
+		$query->execute(['cedula_usuario'=>$cedula]);
+		$query->setFetchMode(parent::FETCH_ASSOC);
+		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
+		if ($respuestaArreglo += ['estatus' => true]) {
+			$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+			return $Result;
+		}
+		}
+		catch (PDOException $e)
+		{
+			$errorReturn = ['estatus' => false];
+			  $errorReturn['msj'] = "Error";
+		$errorReturn += ['info' => "Error sql:{$e}"];
+		return $errorReturn; ;
+		}
+	}
+
 	public function getOne($cedula){
 		try {
 		  $query = parent::prepare('SELECT * FROM respuestas WHERE cedula_usuario = :cedula');

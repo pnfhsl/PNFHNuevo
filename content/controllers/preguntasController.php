@@ -78,8 +78,18 @@
 								// $dat['pass'] = $passw;
 								$_SESSION['cuenta_usuario']['estatus'] = "1";
 								$exec = $this->usuario->CompletarDatos($dat);
-								$exec = $this->usuario->GenerarLlaves($dat['cedula'], $this->encriptar($dat['cedula']));
+								$cedula = $dat['cedula'];
+								$firma = $this->encriptar($dat['cedula']);
+								$llaves = $this->usuario->GenerarLlaves();
+								$public_key = $this->encriptar($llaves['public']);
+								$private_key = $this->encriptar($llaves['private']);
+								// $exec = $this->usuario->GuardarLlaves($dat['cedula'], $this->encriptar($dat['cedula']), $generar['public'], $generar['private']);
+								$exec = $this->usuario->GuardarLlaves($cedula, $firma, $public_key, $private_key);
 							}	
+							// var_dump($cedula);
+							// var_dump($firma);
+							// var_dump($this->encriptar($llaves['public']));
+							// var_dump($this->encriptar($llaves['private']));
 							echo json_encode($exec);
 						}
 					}else{

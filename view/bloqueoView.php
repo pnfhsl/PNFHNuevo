@@ -72,10 +72,9 @@
                                             <tr>
                                                 <th>Nº</th>
                                                 <th>Cédula</th>
-                                                <th>Nombre</th>
-                                                <th>Apellido</th>
-
-                                                <!--  <?php  ?> -->
+                                                <th>User</th>
+                                                <th>Correo</th>
+                                                <th>Rol</th>
                                                 <th>Acciones</th>
                                                 <?php //endif 
                                                 ?>
@@ -84,290 +83,328 @@
                                         <tbody>
                                             <?php
                                             $num = 1;
-                                            //    foreach ($clases as $data):
-                                            //     if(!empty($data['id_clase'])):  
+                                            foreach ($bloqueos as $data) :
+                                                if (!empty($data['cedula_usuario'])) :
                                             ?>
-                                            <tr>
-                                                <td style="width:5%">
-                                                    <span class="contenido2">
-                                                        <?php echo $num++; ?>
-                                                    </span>
-                                                </td>
+                                                    <tr>
+                                                        <td style="width:5%">
+                                                            <span class="contenido2">
+                                                                <?php echo $num++; ?>
+                                                            </span>
+                                                        </td>
 
 
-                                                <td style="width:20%">
-                                                    <span class="contenido2">
-                                                        27828164
-                                                        <!-- <?php echo $data['nombreSC']; ?> -->
-                                                    </span>
-                                                </td>
-                                                <td style="width:20%">
-                                                    <span class="contenido2">
-                                                        Lynneth
-                                                        <!-- ?php echo $data['nombre_seccion']; ?> -->
-                                                    </span>
-                                                </td>
-                                                <td style="width:20%">
-                                                    <span class="contenido2">
-                                                        Pereira
-                                                        <!-- <?php echo $data['nombre_profesor'] . " " . $data['apellido_profesor']; ?> -->
-                                                    </span>
-                                                </td>
+                                                        <td style="width:20%">
+                                                            <span class="contenido2">
+                                                                <?php echo $data['cedula_usuario']; ?>
+                                                            </span>
+                                                        </td>
+                                                        <td style="width:20%">
+                                                            <span class="contenido2">
+                                                                <?php echo $data['nombre_usuario']; ?>
+                                                            </span>
+                                                        </td>
+                                                        <td style="width:20%">
+                                                            <span class="contenido2">
+                                                                <?php echo $data['correo']; ?>
+                                                            </span>
+                                                        </td>
+                                                        <td style="width:20%">
+                                                            <span class="contenido2">
+                                                                <?php echo $data['nombre_rol']; ?>
+                                                            </span>
+                                                        </td>
 
-                                                <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
-                                                ?>
-                                                <td style="width:10%">
-                                                    <!-- <table style="background:none;text-align:center;width:100%"> -->
-                                                    <!-- <tr> -->
-                                                    <?php //if ($amUsuariosB==1): 
-                                                    ?>
-                                                    <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" data-toggle="modal" data-target="#modalAdmin" value="<?php echo $data['id_clase'] ?>">
-                                                        <span class="fa fa-link" title="Generar ">
+                                                        <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
+                                                        ?>
+                                                        <td style="width:10%">
+                                                            <!-- <table style="background:none;text-align:center;width:100%"> -->
+                                                            <!-- <tr> -->
+                                                            <?php //if ($amUsuariosB==1): 
+                                                            ?>
+                                                            <button class="btn generar" id="usuarioG" style="border:0;background:none;color:#04a7c9" data-toggle="modal" data-target="#modalAdmin" value="<?php echo $data['cedula_usuario']; ?>">
+                                                                <span class="fa fa-link" title="Generar ">
 
-                                                        </span>
-                                                    </button>
-                                                    <div id="modalAdmin" class="modalAdmin modal fade" role="dialog">
+                                                                </span>
+                                                            </button>
+                                                            <div id="modalAdmin" class="modalAdmin modal fade" role="dialog">
 
-                                                        <div class="modal-dialog tamModals tamModals" style="text-align:left;">
+                                                                <div class="modal-dialog tamModals" style="text-align:left;">
 
-                                                            <div class="modal-content">
+                                                                    <div class="modal-content">
 
-                                                                <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-
-                                                                <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                                                                    <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
-
-                                                                    <h4 class="modal-title" style="text-align: left;">Agregar Clase</h4>
-
-                                                                </div>
+                                                                        <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
 
 
-                                                                <div class="modal-body" style="max-height:70vh;overflow:auto">
 
-                                                                    <div class="box-body">
+                                                                        <div class="modal-header" style="background:#3c8dbc;color:white">
 
-                                                                        <div class="row">
+                                                                            <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
 
-                                                                            <!-- ENTRADA PARA SELECCIONAR SECCIONES-->
-                                                                            <div class="form-group col-xs-12 col-sm-12">
-                                                                                <label for="seccion">Seccion</label>
-                                                                                <div class="input-group" style="width:100%;">
-                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span>
-                                                                                    <select class="form-control select2 input-lg" style="width:100%;" name="seccion" id="seccion">
-                                                                                        <option value="">Sección</option>
-                                                                                        <?php foreach ($secciones as $date) : if (!empty($date['cod_seccion'])) :  ?>
-                                                                                                <option value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
-                                                                                        <?php endif;
-                                                                                        endforeach; ?>
-                                                                                    </select>
+                                                                            <h4 class="modal-title" style="text-align: left;">Generar Código</h4>
+
+                                                                        </div>
+
+
+                                                                        <div class="modal-body" style="max-height:70vh;overflow:auto;">
+
+                                                                            <div class="box-body">
+
+                                                                                <!-- ENTRADA PARA EL USUARIO -->
+                                                                                <div class="row">
+
+                                                                                    <div class="form-group col-xs-12 col-sm-12">
+                                                                                        <label for="cedula">Firma Digital</label>
+                                                                                        <div class="input-group" style="width:100%;">
+                                                                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                                                            <input type="text" class="form-control input-lg" name="firma" id="firmaAdmin" placeholder="Firma digital del operador" required>
+                                                                                            <span class="input-group-addon cont" id="verifyAdmin" style="width:5%;"><a href="#"><i class="fa fa-check-circle" style="color:#04a7c9"></i></a></span>
+                                                                                        </div>
+                                                                                        <div style="width:100%;text-align:right;">
+                                                                                            <span id="cedulaS" class="mensajeError"></span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!-- <input type="hidden" id="cedulaH" value="<?php echo $_SESSION['cuenta_persona']['cedula']; ?>"> -->
+                                                                                    <!-- <input type="text" id="cedulaH"  value="<?php echo $data['nombre_usuario']; ?>">   -->
+
+
+                                                                                    <!-- <button class="btn btn-primary cont" style="width:90%;margin-left:5%;margin-right:5%;" id="cont" value=""><span class="text-center">Contraseña</span></button> -->
+                                                                                    <button class="btn btn-primary contadorBoxPassword" style="width:90%;margin-left:5%;margin-right:5%;display:none" id="cont" value="" data-toggle="collapse" data-target="#collapseOneAdmin" aria-expanded="false" aria-controls="collapseOneAdmin"><span class="text-center">Contraseña</span></button>
+                                                                                    </br>
+                                                                                    </br>
+                                                                                    <input type="hidden" value="0" class="optpass">
+                                                                                    <div class="collapse" id="collapseOneAdmin" aria-labelledby="headingOne" data-parent="#accordion">
+                                                                                        <div>
+
+                                                                                            <div class="col-md-12">
+                                                                                                <div class="form-group col-sm-3"></div>
+                                                                                                <div class="form-group col-xs-12 col-sm-6">
+                                                                                                    <br>
+                                                                                                    <div>
+                                                                                                        <div class="col-sm-3"><b>Cédula:</b></div><span id="cedulaAdmin" class="col-sm-3"></span>
+                                                                                                    </div><br>
+                                                                                                    <div>
+                                                                                                        <div class="col-sm-3"><b>Nombre:</b></div><span id="nombreAdmin" class="col-sm-3"></span>
+                                                                                                    </div><br>
+                                                                                                    <div>
+                                                                                                        <div class="col-sm-3"><b>Apellido:</b></div><span id="apellidoAdmin" class="col-sm-3"></span>
+                                                                                                    </div><br>
+                                                                                                    <div>
+                                                                                                        <div class="col-sm-3"><b>Teléfono:</b></div><span id="telefAdmin" class="col-sm-3"></span>
+                                                                                                    </div><br>
+                                                                                                </div>
+                                                                                                <!-- <br><br><br><br><br><br><br><br> -->
+                                                                                                <span id="clave_public"></span>
+                                                                                                <br><br>
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="form-group col-sm-1"></div>
+                                                                                                    <div class="form-group col-xs-12 col-sm-10">
+                                                                                                        <label for="nombre">Clave Pública</label>
+                                                                                                        <div class="input-group" style="width:100%;">
+                                                                                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-key"></i></span>
+                                                                                                            <textarea class="form-control" rows="3" id="publicAdmin" style="min-width:100%;max-width:20vh;max-height:15vh;min-height:8vh;" placeholder="Ingresar clave pública"></textarea>
+                                                                                                            <span class="input-group-addon" id="comprobarAdmin" style="width:5%;"><a href="#"><i class="fa fa-undo" style="color:#04a7c9"></i></a></span>
+                                                                                                        </div>
+                                                                                                        <div style="width:100%;text-align:right;">
+                                                                                                            <span id="nombreS" class="mensajeError"></span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <!-- <textarea cols='80' rows='4' id="copiar">                                                                                                   
+                                                                                                    Texto a copiar
+                                                                                                </textarea><br>
+                                                                                                <button type="button" id="copyClip" data-clipboard-target="#copiar">Copiar texto</button> -->
+                                                                                                
+
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="form-group col-sm-1"></div>
+                                                                                                    <div class="form-group col-xs-12 col-sm-10">
+                                                                                                        <label for="nombre">Código</label>
+                                                                                                        <div class="input-group" style="width:100%;">
+                                                                                                            <!-- <textarea class="form-control" rows="3" id="privateAdmin" style="max-width: 100%;" placeholder="Ingresar clave privada"></textarea> -->
+
+                                                                                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                                                                            <input type="text" class="form-control input-lg" name="codigo" id="codigoAdmin" placeholder="Código generado" >
+                                                                                                            <span class="input-group-addon" id="copyClip" data-clipboard-target="#codigoAdmin" style="width:5%;"><a href="#"><i class="fa fa-clipboard" style="color:#04a7c9"></i></a></span>
+                                                                                                        </div>
+                                                                                                        <div style="width:100%;text-align:right;">
+                                                                                                            <span id="nombreS" class="mensajeError"></span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+
                                                                                 </div>
-                                                                                <div style="width:100%;text-align:right;">
-                                                                                    <span id="seccionS" class="mensajeError"></span>
-                                                                                </div>
-                                                                            </div>
 
 
-                                                                            <!-- ENTRADA PARA SELECCIONAR SABERES -->
-                                                                            <div class="form-group col-xs-12 col-sm-12">
-                                                                                <label for="saber">Saber complementario</label>
-                                                                                <div class="input-group" style="width:100%;">
-                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span>
-                                                                                    <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="saber">
-                                                                                        <option value="">Saber Complementario</option>
-                                                                                        <?php foreach ($saberes as $dateS) : if (!empty($dateS['id_SC'])) :  ?>
-                                                                                                <!-- <option value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option> -->
-                                                                                        <?php endif;
-                                                                                        endforeach; ?>
-                                                                                    </select>
+                                                                                <div class="modal-footer">
+
+                                                                                    <!-- <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+                                                                            <span type="submit" class="btn btn-primary" id="desbloquear">Desbloqueo</span> -->
+
                                                                                 </div>
-                                                                                <div style="width:100%;text-align:right;">
-                                                                                    <span id="saberS" class="mensajeError"></span>
-                                                                                </div>
-                                                                            </div>
 
 
-                                                                            <!-- ENTRADA PARA LOS ALUMNOS -->
-                                                                            <div class="form-group col-xs-12 col-sm-12">
-                                                                                <label for="profesor">Profesor</label>
-                                                                                <div class="input-group" style="width:100%;">
-                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span>
-                                                                                    <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="profesor">
-                                                                                        <option value="">Profesor</option>
-                                                                                        <?php foreach ($profesores as $dateP) : if (!empty($dateP['cedula_profesor'])) :  ?>
-                                                                                                <option value="<?php echo $dateP['cedula_profesor'] ?>"><?php echo $dateP['nombre_profesor'] . " " . $dateP['apellido_profesor'] ?></option>
-                                                                                        <?php endif;
-                                                                                        endforeach; ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div style="width:100%;text-align:right;">
-                                                                                    <span id="profesorS" class="mensajeError"></span>
-                                                                                </div>
+                                                                                <!-- </form> -->
+
                                                                             </div>
 
                                                                         </div>
 
                                                                     </div>
-
-
                                                                 </div>
-
-                                                                <div class="modal-footer">
-
-                                                                    <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                                                                    <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
-                                                                </div>
-
-
-                                                                <!-- </form> -->
-
                                                             </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                    <!-- <td style="width:50%"> -->
-                                                    <button class="btn eliminarBtn" style="border:0;background:none;color:red" data-toggle="modal" data-target="#modalOperador" value="<?php echo $data['id_clase'] ?>">
-                                                        <span class="fa fa-unlock" title="Desbloqueo"></span>
-                                                    </button>
-                                                    <!-- </td> -->
-                                                    <?php //endif; 
-                                                    ?>
-
-                                                    <div id="modalOperador" class="modalOperador modal fade" role="dialog">
-
-                                                        <div class="modal-dialog tamModals tamModals" style="text-align:left;">
-
-                                                            <div class="modal-content">
-
-                                                                <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+                                                            <!-- <td style="width:50%"> -->
+                                                            <button class="btn desbloq" id="usuarioD" style="border:0;background:none;color:red" data-toggle="modal" data-target="#modalOperador" value="<?php echo $data['cedula_usuario']; ?>">
+                                                                <span class="fa fa-unlock" title="Desbloqueo"></span>
+                                                            </button>
+                                                            <!-- </td> -->
+                                                            <?php //endif; 
+                                                            ?>
 
 
-                                                                <div class="modal-header" style="background:#3c8dbc; color:white">
+                                                            <!-- </td> -->
+                                                            <?php //endif; 
+                                                            ?>
+                                                            <!-- </tr> -->
+                                                            <!-- </table> -->
+                                                        </td>
+                                                        <?php //endif 
+                                                        ?>
 
-                                                                    <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+                                                        <button type="button" id="modificarButton<?= $data['id_clase'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarClase<?= $data['id_clase'] ?>" style="display: none">Modificar</button>
 
-                                                                    <h4 class="modal-title" style="text-align: left;">Agregar Clase</h4>
+                                                        <div id="modalOperador" class="modalOperador modal fade" role="dialog">
 
-                                                                </div>
+                                                            <div class="modal-dialog tamModals" style="text-align:left;">
+
+                                                                <div class="modal-content">
+
+                                                                    <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
 
 
-                                                                <div class="modal-body" style="max-height:70vh;overflow:auto">
 
-                                                                    <div class="box-body">
+                                                                    <div class="modal-header" style="background:#3c8dbc;color:white">
 
-                                                                        <div class="row">
+                                                                        <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
 
-                                                                            <!-- ENTRADA PARA SELECCIONAR SECCIONES-->
-                                                                            <div class="form-group col-xs-12 col-sm-12">
-                                                                                <label for="seccion">Seccion</label>
-                                                                                <div class="input-group" style="width:100%;">
-                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span>
-                                                                                    <select class="form-control select2 input-lg" style="width:100%;" name="seccion" id="seccion">
-                                                                                        <option value="">Sección</option>
-                                                                                        <?php foreach ($secciones as $date) : if (!empty($date['cod_seccion'])) :  ?>
-                                                                                                <option value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
-                                                                                        <?php endif;
-                                                                                        endforeach; ?>
-                                                                                    </select>
+                                                                        <h4 class="modal-title" style="text-align: left;">Desbloqueo</h4>
+
+                                                                    </div>
+
+
+                                                                    <div class="modal-body" style="max-height:70vh;overflow:auto;">
+
+                                                                        <div class="box-body">
+
+                                                                            <!-- ENTRADA PARA EL USUARIO -->
+                                                                            <div class="row">
+
+                                                                                <div class="form-group col-xs-12 col-sm-12">
+                                                                                    <label for="cedula">Firma Digital</label>
+                                                                                    <div class="input-group" style="width:100%;">
+                                                                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                                                        <input type="text" class="form-control input-lg" name="firma" id="firmaOperador" placeholder="Firma digital del administrador" required>
+                                                                                        <span class="input-group-addon cont" id="verifyOperador" style="width:5%;"><a href="#"><i class="fa fa-check-circle" style="color:#04a7c9"></i></a></span>
+                                                                                    </div>
+                                                                                    <!-- <div style="width:100%;text-align:right;">
+                                                                                <span id="cedulaS" class="mensajeError"></span>
+                                                                            </div> -->
                                                                                 </div>
-                                                                                <div style="width:100%;text-align:right;">
-                                                                                    <span id="seccionS" class="mensajeError"></span>
+                                                                                <!-- <button class="btn btn-primary cont" style="width:90%;margin-left:5%;margin-right:5%;" id="cont" value=""><span class="text-center">Contraseña</span></button> -->
+                                                                                <button class="btn btn-primary contadorBoxPassword" style="width:90%;margin-left:5%;margin-right:5%;display:none" id="" value="" data-toggle="collapse" data-target="#collapseOneOperador" aria-expanded="false" aria-controls="collapseOneOperador"><span class="text-center">Contraseña</span></button>
+                                                                                </br>
+                                                                                </br>
+                                                                                <input type="hidden" value="0" class="optpass">
+                                                                                <div class="collapse" id="collapseOneOperador" aria-labelledby="headingOne" data-parent="#accordion">
+                                                                                    <div>
+
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="form-group col-sm-3"></div>
+                                                                                            <div class="form-group col-xs-12 col-sm-6">
+                                                                                                <br>
+                                                                                                <div>
+                                                                                                    <div class="col-sm-3"><b>Cédula:</b></div><span id="cedulaOperador" class="col-sm-3"></span>
+                                                                                                </div><br>
+                                                                                                <div>
+                                                                                                    <div class="col-sm-3"><b>Nombre:</b></div><span id="nombreOperador" class="col-sm-3"></span>
+                                                                                                </div><br>
+                                                                                                <div>
+                                                                                                    <div class="col-sm-3"><b>Apellido:</b></div><span id="apellidoOperador" class="col-sm-3"></span>
+                                                                                                </div><br>
+                                                                                                <div>
+                                                                                                    <div class="col-sm-3"><b>Teléfono:</b></div><span id="telefOperador" class="col-sm-3"></span>
+                                                                                                </div><br>
+                                                                                            </div>
+                                                                                            <div class="col-md-12">
+                                                                                                <div class="form-group col-sm-1"></div>
+                                                                                                <div class="form-group col-xs-12 col-sm-10">
+                                                                                                    <label for="nombre">Código</label>
+                                                                                                    <div class="input-group" style="width:100%;">
+                                                                                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                                                                        <input type="text" class="form-control input-lg" name="codigo" id="codigoOperador" placeholder="Ingresar código" required>
+                                                                                                    </div>
+                                                                                                    <div style="width:100%;text-align:right;">
+                                                                                                        <!-- <span id="nombreS" class="mensajeError"></span> -->
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="col-md-12">
+                                                                                                <div class="form-group col-sm-1"></div>
+                                                                                                <div class="form-group col-xs-12 col-sm-10">
+                                                                                                    <label for="nombre">Clave Privada</label>
+                                                                                                    <div class="input-group" style="width:100%;">
+                                                                                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-key"></i></span>
+                                                                                                        <textarea class="form-control" rows="3" id="privateOperador" style="min-width:100%;max-width:20vh;max-height:15vh;min-height:8vh;" placeholder="Ingresar clave privada"></textarea>
+                                                                                                        <!-- <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>                                                                 -->
+                                                                                                        <!-- <input type="text" class="form-control input-lg" name="codigo" id="codigo" placeholder="Ingresar clave privada" required> -->
+                                                                                                    </div>
+                                                                                                    <div style="width:100%;text-align:right;">
+                                                                                                        <!-- <span id="nombreS" class="mensajeError"></span> -->
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+
+                                                                                    </div>
                                                                                 </div>
+
                                                                             </div>
 
 
-                                                                            <!-- ENTRADA PARA SELECCIONAR SABERES -->
-                                                                            <div class="form-group col-xs-12 col-sm-12">
-                                                                                <label for="saber">Saber complementario</label>
-                                                                                <div class="input-group" style="width:100%;">
-                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span>
-                                                                                    <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="saber">
-                                                                                        <option value="">Saber Complementario</option>
-                                                                                        <?php foreach ($saberes as $dateS) : if (!empty($dateS['id_SC'])) :  ?>
-                                                                                                <!-- <option value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option> -->
-                                                                                        <?php endif;
-                                                                                        endforeach; ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div style="width:100%;text-align:right;">
-                                                                                    <span id="saberS" class="mensajeError"></span>
-                                                                                </div>
+                                                                            <div class="modal-footer">
+
+                                                                                <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+                                                                                <span type="submit" class="btn btn-primary" id="desbloquear">Desbloqueo</span>
+
                                                                             </div>
 
 
-                                                                            <!-- ENTRADA PARA LOS ALUMNOS -->
-                                                                            <div class="form-group col-xs-12 col-sm-12">
-                                                                                <label for="profesor">Profesor</label>
-                                                                                <div class="input-group" style="width:100%;">
-                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span>
-                                                                                    <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="profesor">
-                                                                                        <option value="">Profesor</option>
-                                                                                        <?php foreach ($profesores as $dateP) : if (!empty($dateP['cedula_profesor'])) :  ?>
-                                                                                                <option value="<?php echo $dateP['cedula_profesor'] ?>"><?php echo $dateP['nombre_profesor'] . " " . $dateP['apellido_profesor'] ?></option>
-                                                                                        <?php endif;
-                                                                                        endforeach; ?>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div style="width:100%;text-align:right;">
-                                                                                    <span id="profesorS" class="mensajeError"></span>
-                                                                                </div>
-                                                                            </div>
+                                                                            <!-- </form> -->
 
                                                                         </div>
 
                                                                     </div>
 
-
                                                                 </div>
-
-                                                                <div class="modal-footer">
-
-                                                                    <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                                                                    <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
-                                                                </div>
-
-
-                                                                <!-- </form> -->
-
                                                             </div>
-
                                                         </div>
 
-                                                    </div>
-                                                    <!-- </td> -->
-                                                    <?php //endif; 
-                                                    ?>
-                                                    <!-- </tr> -->
-                                                    <!-- </table> -->
-                                                </td>
-                                                <?php //endif 
-                                                ?>
 
-                                                <button type="button" id="modificarButton<?= $data['id_clase'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarClase<?= $data['id_clase'] ?>" style="display: none">Modificar</button>
-
-
-                                            </tr>
+                                                    </tr>
                                             <?php
-                                            //    endif; endforeach;
+                                                endif;
+                                            endforeach;
                                             ?>
                                         </tbody>
-                                        <!--                 <tfoot>
-                <tr>
-                  <th>Nº</th>
-                  <th>Clases</th> -->
-                                        <!-- <th>Nombre de Usuario</th> -->
-                                        <!--   <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
-                                                ?>
-                  <th>---</th>
-                  <?php ?>
-                </tr>
-                </tfoot> -->
                                     </table>
 
                                 </div>
@@ -402,6 +439,7 @@
         <input type="hidden" class="responses" value="<?php echo $response ?>">
     <?php endif; ?>
     <script src="<?= _THEME_ ?>/js/bloqueo.js"></script>
+    <script src="<?= _THEME_ ?>/js/clipboard.min.js"></script>
 </body>
 
 </html>

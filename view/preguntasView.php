@@ -152,6 +152,7 @@ $(document).ready(function() { //Al Cargar la paginaZ
                 },
                 success: function(resp){
                   // alert(resp);
+                  console.log(resp);
                   var datos = JSON.parse(resp);     
                     if (datos.msj === "Good") {   
                       Swal.fire({
@@ -161,7 +162,7 @@ $(document).ready(function() { //Al Cargar la paginaZ
                         footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                       }).then((isConfirm) => {
                           // location.reload();
-                          location.href = "<?= _ROUTE_ ?>";
+                          // location.href = "<?= _ROUTE_ ?>";
                       } );
                     } 
                     if (datos.msj === "Repetido") {   

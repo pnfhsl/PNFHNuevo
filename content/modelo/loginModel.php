@@ -95,7 +95,7 @@
 		public function Consultar($user){		//Se hace una consulta de los usuarios recibidos
 			
 			try{
-				$sql = "SELECT * FROM respuestas, preguntas WHERE respuestas.id_pregunta = preguntas.id AND cedula_usuario = '{$user}'";
+				$sql = "SELECT * FROM respuestas, preguntas WHERE respuestas.id_pregunta = preguntas.id AND cedula_usuario = '{$user}' AND estatus = 1";
 				$query = parent::prepare($sql);
 				$query->execute();          
 				$respuestaArreglo = $query->fetchAll();

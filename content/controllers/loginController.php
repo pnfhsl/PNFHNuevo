@@ -113,10 +113,10 @@
 									if($profesores['msj']=="Good"){
 										if(count($profesores['data']) > 1){
 											$_SESSION['cuenta_persona'] = $profesores['data'][0];
-											$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_alumno'];
-											$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_alumno'];
-											$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_alumno'];
-											$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_alumno'];
+											$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_profesor'];
+											$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_profesor'];
+											$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_profesor'];
+											$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_profesor'];
 
 											// $_SESSION['cedula'] = $profesores['data'][0]['cedula_alumno'];
 											// $_SESSION['nombre'] = $profesores['data'][0]['nombre_alumno'];
