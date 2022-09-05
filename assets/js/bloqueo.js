@@ -28,6 +28,14 @@ $(document).ready(function () {
     console.clear();
 
 
+    var input= $("#myInput").val();
+    // $(".myInputDos").val(input);
+    // alert(input);
+    
+    if (input === 'Administrador') {        
+        $(".usuarioG").attr('style', 'display:none');
+    }
+
     $(".cont").click(function () {
         var id = $(this).val();
         // alert($(".optpass"+id).val());

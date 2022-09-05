@@ -80,7 +80,7 @@
               ?>
               <img src="<?=_ROUTE_?>assets/img/user-3.png" style='background:#fff' class="user-image" alt="User Image">
               <span class="hidden-xs">
-                <?=$_SESSION['cuenta_persona']['nombre']?> <?=$_SESSION['cuenta_persona']['apellido']?>
+              <?php echo $nombre . " " . $apellido; ?>
               </span>
             </a>
             <ul class="dropdown-menu" style="box-shadow:0px 0px 2px #000">
@@ -98,7 +98,7 @@
               <li class="user-footer">
                 <?php if ($_SESSION['cuenta_usuario']['estatus']=="1"): ?>
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                  <a href="<?=_ROUTE_.$this->encriptar('Perfil'); ?>" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <?php endif; ?>
                 <div class="pull-right">

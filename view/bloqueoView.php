@@ -122,11 +122,12 @@
                                                             <!-- <tr> -->
                                                             <?php //if ($amUsuariosB==1): 
                                                             ?>
-                                                            <button class="btn generar" id="usuarioG" style="border:0;background:none;color:#04a7c9" data-toggle="modal" data-target="#modalAdmin" value="<?php echo $data['cedula_usuario']; ?>">
-                                                                <span class="fa fa-link" title="Generar ">
-
-                                                                </span>
+                                                            <button class="btn generar usuarioG" id="usuarioG" style="border:0;background:none;color:#04a7c9;" data-toggle="modal" data-target="#modalAdmin" value="<?php echo $data['cedula_usuario']; ?>">
+                                                                <span class="fa fa-link" title="Generar "></span>
                                                             </button>
+                                                            <input type="hidden" id="myInput" value="<?php print_r($_SESSION['accesos_usuario'][0]['nombre_rol']); ?>">
+                                                            <!-- <input type="text" id="myInputDos" class="myInputDos"> -->
+                                                            
                                                             <div id="modalAdmin" class="modalAdmin modal fade" role="dialog">
 
                                                                 <div class="modal-dialog tamModals" style="text-align:left;">
@@ -201,7 +202,7 @@
                                                                                                     <div class="form-group col-xs-12 col-sm-10">
                                                                                                         <label for="nombre">Clave Pública</label>
                                                                                                         <div class="input-group" style="width:100%;">
-                                                                                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-key"></i></span>
+                                                                                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-key"></i></span>
                                                                                                             <textarea class="form-control" rows="3" id="publicAdmin" style="min-width:100%;max-width:20vh;max-height:15vh;min-height:8vh;" placeholder="Ingresar clave pública"></textarea>
                                                                                                             <span class="input-group-addon" id="comprobarAdmin" style="width:5%;"><a href="#"><i class="fa fa-undo" style="color:#04a7c9"></i></a></span>
                                                                                                         </div>
@@ -215,7 +216,7 @@
                                                                                                     Texto a copiar
                                                                                                 </textarea><br>
                                                                                                 <button type="button" id="copyClip" data-clipboard-target="#copiar">Copiar texto</button> -->
-                                                                                                
+
 
                                                                                                 <div class="col-md-12">
                                                                                                     <div class="form-group col-sm-1"></div>
@@ -225,7 +226,7 @@
                                                                                                             <!-- <textarea class="form-control" rows="3" id="privateAdmin" style="max-width: 100%;" placeholder="Ingresar clave privada"></textarea> -->
 
                                                                                                             <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                                                                                            <input type="text" class="form-control input-lg" name="codigo" id="codigoAdmin" placeholder="Código generado" >
+                                                                                                            <input type="text" class="form-control input-lg" name="codigo" id="codigoAdmin" placeholder="Código generado">
                                                                                                             <span class="input-group-addon" id="copyClip" data-clipboard-target="#codigoAdmin" style="width:5%;"><a href="#"><i class="fa fa-clipboard" style="color:#04a7c9"></i></a></span>
                                                                                                         </div>
                                                                                                         <div style="width:100%;text-align:right;">
@@ -261,7 +262,7 @@
                                                                 </div>
                                                             </div>
                                                             <!-- <td style="width:50%"> -->
-                                                            <button class="btn desbloq" id="usuarioD" style="border:0;background:none;color:red" data-toggle="modal" data-target="#modalOperador" value="<?php echo $data['cedula_usuario']; ?>">
+                                                            <button class="btn desbloq" id="usuarioD" style="border:0;background:none;color:red;" data-toggle="modal" data-target="#modalOperador" value="<?php echo $data['cedula_usuario']; ?>">
                                                                 <span class="fa fa-unlock" title="Desbloqueo"></span>
                                                             </button>
                                                             <!-- </td> -->
@@ -278,7 +279,7 @@
                                                         <?php //endif 
                                                         ?>
 
-                                                        <button type="button" id="modificarButton<?= $data['id_clase'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarClase<?= $data['id_clase'] ?>" style="display: none">Modificar</button>
+
 
                                                         <div id="modalOperador" class="modalOperador modal fade" role="dialog">
 
