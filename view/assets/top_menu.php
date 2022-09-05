@@ -7,9 +7,9 @@
   display:none;
 }
 </style>
-  <header class="main-header">
+  <header class="main-header" style="background:#135 !important;">
     <!-- Logo -->
-    <a href="<?=_ROUTE_?>" class="logo">
+    <a href="<?=_ROUTE_?>" class="logo" style="background:#135 !important;">
       <!-- <span class="logo-mini color-completo">
         <b class="color-corto">
           <img src="<?=_ROUTE_?>assets/img/libretita.png" style="width:100%">
@@ -80,7 +80,7 @@
               ?>
               <img src="<?=_ROUTE_?>assets/img/user-3.png" style='background:#fff' class="user-image" alt="User Image">
               <span class="hidden-xs">
-                <?=$_SESSION['cuenta_persona']['nombre']?> <?=$_SESSION['cuenta_persona']['apellido']?>
+              <?php echo $nombre . " " . $apellido; ?>
               </span>
             </a>
             <ul class="dropdown-menu" style="box-shadow:0px 0px 2px #000">
@@ -98,7 +98,7 @@
               <li class="user-footer">
                 <?php if ($_SESSION['cuenta_usuario']['estatus']=="1"): ?>
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                  <a href="<?=_ROUTE_.$this->encriptar('Perfil'); ?>" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <?php endif; ?>
                 <div class="pull-right">

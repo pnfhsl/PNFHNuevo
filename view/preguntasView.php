@@ -151,7 +151,8 @@ $(document).ready(function() { //Al Cargar la paginaZ
                   resp_tres: resp_tres,
                 },
                 success: function(resp){
-                  alert(resp);
+                  // alert(resp);
+                  console.log(resp);
                   var datos = JSON.parse(resp);     
                     if (datos.msj === "Good") {   
                       Swal.fire({
@@ -160,7 +161,8 @@ $(document).ready(function() { //Al Cargar la paginaZ
                         text: 'Se han agregado las preguntas exitosamente',
                         footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                       }).then((isConfirm) => {
-                          location.reload();
+                          // location.reload();
+                          // location.href = "<?= _ROUTE_ ?>";
                       } );
                     } 
                     if (datos.msj === "Repetido") {   
