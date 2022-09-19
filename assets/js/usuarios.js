@@ -442,7 +442,7 @@ $(document).ready(function(){
               correo: correo,
             },
             success: function(respuesta){       
-              alert(respuesta);
+              // alert(respuesta);
               var data = JSON.parse(respuesta);    
               if (data.msj === "Good") {   
                 Swal.fire({
