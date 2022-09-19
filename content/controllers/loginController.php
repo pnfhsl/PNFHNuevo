@@ -10,6 +10,7 @@
 	use content\modelo\alumnosModel as alumnosModel;
 	use content\modelo\profesoresModel as profesoresModel;
 	use content\modelo\rolesModel as rolesModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\traits\Utility;
 	use PHPMailer\PHPMailer\PHPMailer;
 	use PHPMailer\PHPMailer\SMTP;
@@ -21,6 +22,7 @@
 		private $url;
 		private $login;
 		private $usuario;
+		private $bitacora;
 		
 		private $alumno;
 		private $profesor;
@@ -38,15 +40,17 @@
 			$this->alumno = new alumnosModel();
 			$this->profesor = new profesoresModel();
 			$this->rol = new rolesModel();
+			$this->bitacora = new bitacoraModel();
 		}
 
 		public function Consultar(){
 			// echo $this->encriptar('admin');
 
 			
-			if($_POST){		
+			if($_POST){
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
-					$resp = $this->login->loginSistema($_POST['username'], $this->encriptar($_POST['password'])); //pasa el user y pass
+					$resp = $this->login->loginSistema(ucwords(mb_strtolower($_POST['username'])), $this->encriptar($_POST['password'])); //pasa el user y pass
+
 					if($resp['msj'] == "Good" && !empty($resp['data']) && count($resp['data'])>0 && $resp['data'][0]['estatus']==0 && $resp['data'][0]['cedula_usuario'] == "00000000"){
 						$permitirContinuar = "1";
 					}else if($resp['msj'] == "Good" && !empty($resp['data']) && count($resp['data'])>0 && $resp['data'][0]['estatus']>0){
@@ -54,9 +58,10 @@
 					}else{
 						$permitirContinuar = "0";
 					}
-					if($permitirContinuar=="1"){
-						if($resp['msj'] == "Good"){
-							$intentos = $this->usuario->Intentos($_POST['username']);
+						
+					if($resp['msj'] == "Good"){
+						if($permitirContinuar=="1"){
+							$intentos = $this->usuario->Intentos(ucwords(mb_strtolower($_POST['username'])));
 							$int = 0;
 							$estatus = -1;
 							if(!empty($resp['data']) && count($resp['data'])>0){
@@ -111,10 +116,10 @@
 									if($profesores['msj']=="Good"){
 										if(count($profesores['data']) > 1){
 											$_SESSION['cuenta_persona'] = $profesores['data'][0];
-											$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_alumno'];
-											$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_alumno'];
-											$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_alumno'];
-											$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_alumno'];
+											$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_profesor'];
+											$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_profesor'];
+											$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_profesor'];
+											$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_profesor'];
 
 											// $_SESSION['cedula'] = $profesores['data'][0]['cedula_alumno'];
 											// $_SESSION['nombre'] = $profesores['data'][0]['nombre_alumno'];
@@ -140,51 +145,66 @@
 									}
 								}
 
-
+								
+								$this->bitacora->monitorear($this->url);
 								if($estatus=="1"){
 									$resp['stat'] = "1";
 								}
 								if($estatus=="2"){
 									$resp['stat'] = "2";
 								}
-								$this->usuario->Bloqueo($_POST['username'], 0);
+								$this->usuario->Bloqueo(ucwords(mb_strtolower($_POST['username'])), 0);
 							}
 
 							if($intentos[0]["intentos"] >= 3){
 								$resp = array('look' => "Bloqueo");
 							}
+							if($intentos[0]["estatus"] > 2){
+								$resp = [];
+								$resp['msj']="Cuenta Bloqueada";
+								$resp['stat']=3;
+							}
 							// echo json_encode($_SESSION);
 							echo json_encode($resp);
 						}else{
-							$intentos = $this->usuario->Intentos($_POST['username']);
-							$int = 0;
-							if(count($intentos)>0){
-								$int = $intentos[0]["intentos"];
-								if($resp['msj'] === 'Usuario o contraseña invalido!'){
-									// echo $intentos[0]["intentos"];
-									if(isset($intentos[0]["intentos"])){
-										$intentos[0]["intentos"] += 1;
-									}
-									$fallos = $intentos[0]["intentos"];
-									$respuest = $this->usuario->Bloqueo($_POST['username'],$fallos);
-								}
-								if($intentos[0]["intentos"] >= 3){
-									$cedula = $this->login->busquedaCedula($_POST['username']);
-									//var_dump($cedula);
-									$preguntas = $this->login->Consultar($cedula[0]['cedula_usuario']);
-									//var_dump($cedula[0]['cedula_usuario']);
-									// $preg = array('look' => "Bloqueo", 'preguntas' => $preguntas);
-									$resp = array('look' => "Bloqueo", 'preguntas' => $preguntas);
-									// $resp = array('look' => "Bloqueo");
-								}
-							}
-							// echo json_encode($preg);
-							echo json_encode($resp);
+							$resps['msj'] = "Usuario o contraseña invalido!";
+							echo json_encode($resps);
 						}
 					}else{
-						$resps['msj'] = "Usuario o contraseña invalido!";
-						echo json_encode($resps);
+						$intentos = $this->usuario->Intentos(ucwords(mb_strtolower($_POST['username'])));
+						$int = 0;
+						if(count($intentos)>0){
+							$int = $intentos[0]["intentos"];
+							$estat = $intentos[0]["estatus"];
+
+							if($estat > 2){
+								$resp = [];
+								$resp['msj']="Cuenta Bloqueada";
+								$resp['stat']=3;
+							}
+
+							if($resp['msj'] === 'Usuario o contraseña invalido!'){
+								// echo $intentos[0]["intentos"];
+								if(isset($intentos[0]["intentos"])){
+									$intentos[0]["intentos"] += 1;
+								}
+								$fallos = $intentos[0]["intentos"];
+								$respuest = $this->usuario->Bloqueo(ucwords(mb_strtolower($_POST['username'])),$fallos);
+							}
+							if($estat <= 2 && $intentos[0]["intentos"] >= 3){
+								$cedula = $this->login->busquedaCedula(ucwords(mb_strtolower($_POST['username'])));
+								//var_dump($cedula);
+								$preguntas = $this->login->Consultar($cedula[0]['cedula_usuario']);
+								//var_dump($cedula[0]['cedula_usuario']);
+								// $preg = array('look' => "Bloqueo", 'preguntas' => $preguntas);
+								$resp = array('look' => "Bloqueo", 'preguntas' => $preguntas);
+								// $resp = array('look' => "Bloqueo");
+							}
+						}
+						// echo json_encode($preg);
+						echo json_encode($resp);
 					}
+					
 				}
 
 				if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {

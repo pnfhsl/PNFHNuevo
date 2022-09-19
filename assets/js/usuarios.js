@@ -1,5 +1,4 @@
-$(document).ready(function(){ 
-
+$(document).ready(function(){
   if($(window).width() < 768){ // XS
     $(".tamModals").attr("style","width:95%;margin-left:auto;margin-right:auto;text-align:left !important;");
   }
@@ -37,6 +36,172 @@ $(document).ready(function(){
 
   $('#pass').on('input', function () {      
     this.value = this.value.replace(/^[a-z0-9_-]{$/,''); });
+
+  $('#correo').on('input', function () {      
+    this.value = this.value.replace(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{4,6}))$/,'');
+    let pos1 = this.value.indexOf("@");
+    let pos = this.value.indexOf(".com");
+    if((pos > 1) && (pos1 > 1) && (pos > pos1)){
+      let maxleng = this.value.length;
+      $(this).attr("maxlength",maxleng);
+      $("#correoS").html("");
+    }else{
+      $("#correoS").html("Ingresar una dirección de correo electronico válida");
+      $(this).attr("maxlength","");
+    }
+  });
+
+  $('.correoModificar').on('input', function () {      
+    var id = $(this).attr("name");
+    // var ids = $(this).attr("id");
+    // var index = ids.indexOf(" ");
+    // var id = ids.substring(index+1);
+    this.value = this.value.replace(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{4,6}))$/,'');
+    let pos1 = this.value.indexOf("@");
+    let pos = this.value.indexOf(".com");
+    if((pos > 1) && (pos1 > 1) && (pos > pos1)){
+      let maxleng = this.value.length;
+      $(this).attr("maxlength",maxleng);
+      $("#correoS"+id).html("");
+    }else{
+      $("#correoS"+id).html("Ingresar una dirección de correo electronico valida");
+      $(this).attr("maxlength","");
+    }
+  });
+
+  $("#nombre").blur(function(){
+    var url = $("#url").val();
+    var id = "";
+    var username = $(this).val().trim();
+    $.ajax({
+      url: url+'/Buscar',    
+      type: 'POST',  
+      data: {
+        VerificarUnicoUsername: true,
+        username: username,
+        id: id,
+      },
+      success: function(respuesta){
+        // alert(respuesta); 
+        var resp = JSON.parse(respuesta);
+        // console.log(resp);
+        if (resp.msj == "Good") {
+          var valido = resp.valido;
+          $("#valnombre"+id).val(valido);
+          if(valido=="1"){
+            $("#nombreM"+id).html("");
+          }
+          if(valido=="0"){
+            $("#nombreM"+id).html("Nombre de usuario ya esta siendo utilizado");
+          }
+        }
+      },
+      error: function(respuesta){       
+        var resp = JSON.parse(respuesta);
+        console.log(resp);
+      }
+    });
+  });
+
+  $(".nombreModificar").blur(function(){
+    var url = $("#url").val();
+    var id = $(this).attr("name");
+    var username = $(this).val().trim();
+    $.ajax({
+      url: url+'/Buscar',    
+      type: 'POST',  
+      data: {
+        VerificarUnicoUsername: true,
+        username: username,
+        id: id,
+      },
+      success: function(respuesta){
+        // alert(respuesta); 
+        var resp = JSON.parse(respuesta);
+        // console.log(resp);
+        if (resp.msj == "Good") {
+          var valido = resp.valido;
+          $("#valnombre"+id).val(valido);
+          if(valido=="1"){
+            $("#nombreM"+id).html("");
+          }
+          if(valido=="0"){
+            $("#nombreM"+id).html("Nombre de usuario ya esta siendo utilizado");
+          }
+        }
+      },
+      error: function(respuesta){       
+        var resp = JSON.parse(respuesta);
+        console.log(resp);
+      }
+    });
+  });
+
+  $("#correo").blur(function(){
+    var url = $("#url").val();
+    var id = "";
+    var correo = $(this).val().trim();
+    $.ajax({
+      url: url+'/Buscar',    
+      type: 'POST',  
+      data: {
+        VerificarUnicoCorreo: true,
+        correo: correo,
+        id: id,
+      },
+      success: function(respuesta){
+        // alert(respuesta);
+        var resp = JSON.parse(respuesta);
+        if (resp.msj == "Good") {
+          var valido = resp.valido;
+          $("#valcorreo"+id).val(valido);
+          if(valido=="1"){
+            $("#correoS"+id).html("");
+          }
+          if(valido=="0"){
+            $("#correoS"+id).html("Correo electrónico ya esta siendo utilizado");
+          }
+        }
+      },
+      error: function(respuesta){       
+        var resp = JSON.parse(respuesta);
+        console.log(resp);
+      }
+    });
+  });
+
+  $(".correoModificar").blur(function(){
+    var url = $("#url").val();
+    var id = $(this).attr("name");
+    var correo = $(this).val().trim();
+    $.ajax({
+      url: url+'/Buscar',    
+      type: 'POST',  
+      data: {
+        VerificarUnicoCorreo: true,
+        correo: correo,
+        id: id,
+      },
+      success: function(respuesta){
+        // alert(respuesta); 
+        var resp = JSON.parse(respuesta);
+        if (resp.msj == "Good") {
+          var valido = resp.valido;
+          $("#valcorreo"+id).val(valido);
+          if(valido=="1"){
+            $("#correoS"+id).html("");
+          }
+          if(valido=="0"){
+            $("#correoS"+id).html("Correo electrónico ya esta siendo utilizado");
+          }
+        }
+      },
+      error: function(respuesta){       
+        var resp = JSON.parse(respuesta);
+        console.log(resp);
+      }
+    });
+  });
 
   $(".cont").click(function(){
     var id = $(this).val();
@@ -261,6 +426,7 @@ $(document).ready(function(){
           let cedula = $("#cedula").val();     //Se capturan la informacion en las variables user y password 
           let user = $("#nombre").val();
           let pass = $("#nuevoPassword").val();
+          let correo = $("#correo").val();
           // alert(rol + ' ' + cedula + ' ' + user + ' ' + pass);
           //alert(url);
         
@@ -273,9 +439,10 @@ $(document).ready(function(){
               cedula: cedula,       
               user: user,       
               pass: pass,
+              correo: correo,
             },
             success: function(respuesta){       
-              // alert(respuesta);
+              alert(respuesta);
               var data = JSON.parse(respuesta);    
               if (data.msj === "Good") {   
                 Swal.fire({
@@ -409,10 +576,11 @@ $(document).ready(function(){
       }).then((isConfirm) => {
           if (isConfirm.value){ 
             // alert('Hello');
-            let rol = $("#rol"+id).val();     
-            let cedula = $("#cedula"+id).val();     
-            let nombre = $("#nombre"+id).val();     
-            let nuevoPassword = $("#nuevoPassword"+id).val();     
+            let rol = $("#rol"+id).val();
+            let cedula = $("#cedula"+id).val();
+            let nombre = $("#nombre"+id).val();
+            let correo = $("#correo"+id).val();
+            let nuevoPassword = $("#nuevoPassword"+id).val();
             let confirmarPassword = $("#confirmarPassword"+id).val();     
             // alert( rol + ' ' + cedula + ' ' + nombre);
             // alert( nuevoPassword + ' ' + confirmarPassword);
@@ -426,10 +594,11 @@ $(document).ready(function(){
               url: url+'/Modificar',    
               type: 'POST',   
               data: {
-                Editar: true,   
-                codigo: id,   
-                cedula: cedula, 
-                nombre: nombre,   
+                Editar: true,
+                codigo: id,
+                cedula: cedula,
+                nombre: nombre,
+                correo: correo,
                 rol: rol,
                 nuevoPassword: nuevoPassword,
 
@@ -629,6 +798,23 @@ function validar(modificar = false, id=""){
       $(form+" #cedulaS"+id).html("");
     }
 
+
+    var correo = $(form+" #correo"+id).val();
+    var rcorreo = false;
+    var pos1 = correo.indexOf("@");
+    var pos = correo.indexOf(".com");
+    if((pos > 1) && (pos1 > 1) && (pos > pos1)){
+      var maxleng = correo.length;
+      $(this).attr("maxlength",maxleng);
+      $(form+" #correoS"+id).html("");
+      rcorreo = true;
+    }else{
+      $(form+" #correoS"+id).html("Ingresar una direccion de correo electronico valida");
+      $(this).attr("maxlength","");
+    }
+
+
+
     var optionPass = $(".optpass"+id).val();
     if (optionPass==1) {
 
@@ -659,11 +845,31 @@ function validar(modificar = false, id=""){
     // $("#cont").click(function(){
       
     // });
- 
+
+    var valnombre = $(".valnombre"+id).val();
+    if(nombre.trim().length>0){
+      if(valnombre=="1"){
+        $("#nombreM").html("");
+      }
+      if(valnombre=="0"){
+        $("#nombreM").html("Nombre de usuario ya esta siendo utilizado");
+      }
+    }
+
+    var valcorreo = $(".valcorreo"+id).val();
+    if(nombre.trim().length>0){
+      if(valcorreo=="1"){
+        $("#correoS").html("");
+      }
+      if(valcorreo=="0"){
+        $("#correoS").html("Correo electrónico ya esta siendo utilizado");
+      }
+    }
+
 
 
     var validado = false;
-    if(rnombre==true && rpass==true && rrol==true && rcedula==true && rpass==true){
+    if(rnombre==true && rcorreo && rpass==true && rrol==true && rcedula==true && rpass==true && valnombre == "1" && valcorreo == "1"){
       validado=true;
     }else{
       validado=false;

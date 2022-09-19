@@ -5,6 +5,7 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\periodosModel as periodosModel;
 	use content\modelo\alumnosModel as alumnosModel;
@@ -16,9 +17,12 @@
 		private $seccion;
 		private $periodo;
 		private $alumno;
+		private $bitacora;
+
 		function __construct($url){
 
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 
 			$this->seccion = new seccionesModel();
 			$this->periodo = new periodosModel();
@@ -29,6 +33,7 @@
 			$objModel = new homeModel;
 			$_css = new headElement;
 			$_css->Heading();
+			$this->bitacora->monitorear($this->url);
 
 			$secciones = $this->seccion->Consultar();
 			$seccionAlumnos = $this->seccion->ConsultarSeccionAlumnos();
@@ -85,6 +90,7 @@
 					$buscar = $this->seccion->getOneData($datos);
 					// print_r($buscar);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($buscar['data'][0]['estatus']==0){
 								$datos['id'] = $buscar['data'][0]['cod_seccion'];
@@ -156,6 +162,7 @@
 					// echo json_encode($datos['alumnos']);	
 					$buscar = $this->seccion->getOneData($datos);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$buscar['data'][0]['cod_seccion']){
 								$datos['id'] = $buscar['data'][0]['cod_seccion'];
@@ -217,6 +224,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['cod_seccion'])) {
 					$buscar = $this->seccion->getOne($_POST['cod_seccion']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->seccion->Eliminar($_POST['cod_seccion']);

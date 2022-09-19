@@ -5,6 +5,7 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\proyectosModel as proyectosModel;
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\alumnosModel as alumnosModel;
@@ -17,10 +18,12 @@
 		private $proyecto;
 		private $seccion;
 		private $alumno;
+		private $bitacora;
 
 		function __construct($url){
 
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->seccion = new seccionesModel();
 			$this->proyecto = new proyectosModel();
 			$this->alumno = new alumnosModel();
@@ -30,6 +33,8 @@
 			$objModel = new homeModel;
 			$_css = new headElement;
 			$_css->Heading();
+
+			$this->bitacora->monitorear($this->url);
 
 			$proyectos = $this->proyecto->Consultar();
 
@@ -111,6 +116,7 @@
 
 					$buscar = $this->proyecto->getOneData($datos);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($buscar['data'][0]['estatus']==0){
 								$datos['id'] = $buscar['data'][0]['cod_proyecto'];
@@ -185,6 +191,7 @@
 
 					$buscar = $this->proyecto->getOneData($datos);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo'] == $buscar['data'][0]['cod_proyecto']){
 								$datos['id'] = $buscar['data'][0]['cod_proyecto'];
@@ -246,6 +253,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['cod_proyecto'])) {
 					$buscar = $this->proyecto->getOne($_POST['cod_proyecto']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->proyecto->Eliminar($_POST['cod_proyecto']);

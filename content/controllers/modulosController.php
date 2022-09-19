@@ -5,15 +5,18 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\modulosModel as modulosModel;
 	use content\traits\Utility;
 	class modulosController{
 		use Utility;
 		private $url;
 		private $modulo;
+		private $bitacora;
 
 		function __construct($url){			
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->modulo = new modulosModel();
 		}
 
@@ -21,6 +24,7 @@
 			$objModel = new homeModel;
 			$_css = new headElement;
 			$_css->Heading();
+			$this->bitacora->monitorear($this->url);
 			$modulos = $this->modulo->Consultar();
 			$url = $this->url;
 			require_once("view/modulosView.php");
@@ -41,6 +45,7 @@
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
 					$buscar = $this->modulo->getOneNombre($datos['nombre']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
@@ -71,6 +76,7 @@
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
 					$buscar = $this->modulo->getOneNombre($datos['nombre']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data']);
 							if($_POST['codigo']==$buscar['data'][0]['id_modulo']){
@@ -97,6 +103,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['modeloDelete'])) {
 					$buscar = $this->modulo->getOne($_POST['modeloDelete']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->modulo->Eliminar($_POST['modeloDelete']);

@@ -98,7 +98,7 @@
               <p>Respaldo de la <br> Base de Datos</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="fa fa-cloud-download" style="margin-top: 20px;"></i>
             </div>
             <a id="respaldar" class="small-box-footer clics">
               <i class="fa fa-arrow-circle-right" style="font-size:1.7em;margin-top:10px;margin-bottom:10px;"></i>
@@ -115,7 +115,7 @@
               <p>Restauración de <br> la Base de Datos</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fa fa-cloud-upload" style="margin-top: 20px;"></i>
             </div>
             <a class="small-box-footer clics" data-toggle="modal" data-target="#modalAgregarArchivo">
               <i class="fa fa-arrow-circle-right" style="font-size:1.7em;margin-top:10px;margin-bottom:10px;"></i>

@@ -31,6 +31,7 @@
 			$objModel = new homeModel;
 			$_css = new headElement;
 			$_css->Heading(); 
+			$this->bitacora->monitorear($this->url);
 
 			$clases = $this->clase->Consultar();
 			$secciones = $this->seccion->Consultar();			
@@ -118,6 +119,7 @@
 					$buscar = $this->clase->getOne($datos);
 					// print_r($buscar);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							 // print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
@@ -155,6 +157,7 @@
 
 					$buscar = $this->clase->getOne($datos);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$_POST['cedula']){
 								$exec = $this->clase->Modificar($datos); 
@@ -181,6 +184,7 @@
 					$buscar = $this->clase->getOneC($_POST['claseDelete']);
 					/*print_r($buscar);*/
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							 // print_r($buscar['data'][0]['estatus']);

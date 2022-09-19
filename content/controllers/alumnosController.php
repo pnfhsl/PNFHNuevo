@@ -5,6 +5,7 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\alumnosModel as alumnosModel;
 	use content\traits\Utility;
 
@@ -12,16 +13,20 @@
 		use Utility;
 		private $url;
 		private $alumno;
+		private $bitacora;
 
 		function __construct($url){			
 			$this->url = $url;
 			$this->alumno = new alumnosModel();
+			$this->bitacora = new bitacoraModel();
 		}
 
 		public function Consultar(){
 			$objModel = new homeModel;
 			$_css = new headElement;
 			$_css->Heading();
+			$this->bitacora->monitorear($this->url);
+
 			$alumnos = $this->alumno->Consultar();
 			$url = $this->url;
 			require_once("view/alumnosView.php");
@@ -62,6 +67,7 @@
 					$datos['trayecto'] = $_POST['trayecto'];
 					$buscar = $this->alumno->getOne($_POST['cedula']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
@@ -96,6 +102,7 @@
 					$datos['trayecto'] = $_POST['trayecto'];
 					$buscar = $this->alumno->getOne($_POST['cedula']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$_POST['cedula']){
 								$exec = $this->alumno->Modificar($datos); 
@@ -121,6 +128,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['userDelete'])) {
 					$buscar = $this->alumno->getOne($_POST['userDelete']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->alumno->Eliminar($_POST['userDelete']);

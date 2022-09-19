@@ -260,8 +260,7 @@
                       <tr>
                         <th>Nº</th>
                         <th>Cédula</th>
-                        <th>Nombre </th>
-                        <th>Apellido</th>
+                        <th>Nombre y Apellido</th>
                         <th>Teléfono</th>
                         <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
                         ?>
@@ -282,22 +281,17 @@
                                 <?php echo $num++; ?>
                               </span>
                             </td>
-                            <td style="width:20%">
+                            <td style="width:25%">
                               <span class="contenido2">
                                 <?php echo $data['cedula_profesor']; ?>
                               </span>
                             </td>
-                            <td style="width:20%">
+                            <td style="width:25%">
                               <span class="contenido2">
-                                <?php echo $data['nombre_profesor']; ?>
+                                <?php echo $data['nombre_profesor']." ".$data['apellido_profesor']; ?>
                               </span>
                             </td>
-                            <td style="width:20%">
-                              <span class="contenido2">
-                                <?php echo $data['apellido_profesor']; ?>
-                              </span>
-                            </td>
-                            <td style="width:20%">
+                            <td style="width:25%">
                               <span class="contenido2">
                                 <?php echo $data['telefono_profesor']; ?>
                               </span>
@@ -445,8 +439,7 @@
                       <tr>
                         <th>Nº</th>
                         <th>Cédula</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
+                        <th>Nombre y Apellido</th>
                         <th>Teléfono</th>
                         <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
                         ?>

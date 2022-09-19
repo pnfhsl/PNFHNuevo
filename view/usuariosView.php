@@ -92,7 +92,7 @@
                             </div>
 
                             <!-- ENTRADA PARA EL USUARIO -->
-                            <div class="form-group col-xs-12">
+                            <div class="form-group col-xs-12 col-sm-12">
                               <label for="cedula">Usuarios</label>
                               <div class="input-group" style="width:100%;">
                                 <span class="input-group-addon" style="width:5%"><i class="fa fa-indent"></i></span>
@@ -109,14 +109,29 @@
                             </div>
                           
                             <!-- ENTRADA PARA EL NOMBRE -->
-                            <div class="form-group col-xs-12">
+                            <div class="form-group col-xs-12 col-sm-12">
                               <label for="nombre">Nombre de usuario</label>
                               <div class="input-group" style="width:100%;">
                                 <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                <input type="text" class="form-control input-lg" style="width:100%;" name="nombre" id="nombre" placeholder="Ingresar user" maxlength="30" required>
+                                <input type="text" class="form-control input-lg" style="width:100%;" name="nombre" id="nombre" placeholder="Ingresar nombre de usuario" maxlength="30" required>
+                                <input type="hidden" id="valnombre" class="valnombre" value="0">
                               </div>
                               <div style="width:100%;text-align:right;">
                                 <span id="nombreM" class="mensajeError"></span>
+                              </div>
+                            </div>
+
+
+                            <!-- Entrada para el Correo -->
+                            <div class="form-group col-xs-12 col-sm-12">
+                              <label for="correo">Correo electrónico</label>
+                              <div class="input-group" style="width:100%;">
+                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
+                                <input type="text" class="form-control input-lg" name="correo" id="correo" placeholder="Ingresar correo electrónico" required>
+                                <input type="hidden" id="valcorreo" class="valcorreo" value="0">
+                              </div>
+                              <div style="width:100%;text-align:right;">
+                                <span id="correoS" class="mensajeError"></span>
                               </div>
                             </div>
 
@@ -180,7 +195,7 @@
                 <tr>
                   <th>Nº</th>
                   <th>Cédula</th>
-                  <th>User</th>
+                  <th>Nombre de Usuario</th>
                   <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
                   <th>Acciones</th>
                   <?php //endif ?>
@@ -303,7 +318,7 @@
                                     if($data['nombre_rol']=="Profesores" || $data['nombre_rol']=="Administrador" || $data['nombre_rol']=="Superusuario"){
                                       $numexd = 0;
                                       foreach ($usuariosProfesores as $key) {
-                                        if (!empty($key['cedula_alumno'])) {
+                                        if (!empty($key['cedula_profesor'])) {
                                           $usuariosSelect[$numexd]['codigo'] = $key['cedula_profesor'];
                                           $usuariosSelect[$numexd]['cedula'] = number_format($key['cedula_profesor'],0,',','.');
                                           $usuariosSelect[$numexd]['nombre'] = $key['nombre_profesor'];
@@ -336,11 +351,28 @@
                                   <div class="input-group" style="width:100%;">
                                     <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
                                     <input type="text" class="form-control input-lg nombreModificar" style="width:100%;"  maxlength="25" value="<?=$data['nombre_usuario']?>" name="<?=$data['cedula_usuario']?>" id="nombre<?=$data['cedula_usuario']?>" placeholder="Ingresar nombre" required>
+                                    <input type="hidden" id="valnombre<?=$data['cedula_usuario']?>" class="valnombre<?=$data['cedula_usuario']?>" value="1">
                                   </div>
                                   <div style="width:100%;text-align:right;">
                                     <span id="nombreM<?=$data['cedula_usuario']?>" class="mensajeError"></span>
                                   </div>
                                 </div>
+
+
+                                <!--ENTRADA CORREO -->
+                                <div class="form-group col-xs-12 col-sm-12">
+                                  <label for="correo<?=$data['cedula_usuario']?>">Correo electrónico</label>
+                                  <div class="input-group" style="width:100%;">
+                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
+                                    <input type="text" class="form-control input-lg correoModificar" value="<?=$data['correo']?>" name="<?=$data['cedula_usuario']?>" id="correo<?=$data['cedula_usuario']?>" placeholder="Ingresar correo electrónico" required>
+                                    <input type="hidden" id="valcorreo<?=$data['cedula_usuario']?>" class="valcorreo<?=$data['cedula_usuario']?>" value="1">
+                                  </div>
+                                  <div style="width:100%;text-align:right;">
+                                    <span id="correoS<?=$data['cedula_usuario']?>" class="mensajeError"></span>
+                                  </div>
+                                </div>
+
+
 
                                 <!-- ENTRADA PARA EL PASSWORD -->
                                 <button class="btn btn-primary cont" style="width:90%;margin-left:5%;margin-right:5%;" id="cont<?=$data['cedula_usuario']?>" value="<?=$data['cedula_usuario']?>"><span class="text-center">Contraseña</span></button>
@@ -411,7 +443,7 @@
                 <tr>
                   <th>Nº</th>
                   <th>Cédula</th>
-                  <th>User</th>
+                  <th>Nombre de Usuario</th>
                   <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
                   <th>Acciones</th>
                   <?php //endif ?>
