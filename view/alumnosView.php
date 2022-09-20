@@ -11,7 +11,7 @@
   ?>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" style="width:100% !important;min-padding-right:0 !important;max-padding-right:0 !important;width:100% !important;">
 <style type="text/css">
   .zmdi-upload {
     padding: 0px 10px 0px 0px;

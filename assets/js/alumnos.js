@@ -119,7 +119,6 @@ $(document).ready(function () {
             }
 
         });
-
     });
 
     $('#file-input').on('change', function () {
@@ -309,7 +308,7 @@ $(document).ready(function () {
                 }
             });
         }
-
+        $("body").attr("style","width:100%;");
     });
 
     $(".modificarBtn").click(function () {
@@ -466,7 +465,6 @@ $(document).ready(function () {
                 }
             });
         }
-
 
     });    
 

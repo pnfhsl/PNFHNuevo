@@ -55,6 +55,8 @@
 			if($_POST){
 				if( !empty($_POST['Agregar']) && !empty($_POST['numeroPr']) && !empty($_POST['yearPeriodo'])  && !empty($_POST['fechaAP']) && !empty($_POST['fechaAC'])){
 
+					// print_r($_POST);
+
 					$datos['numeroPr'] = mb_strtoupper($_POST['numeroPr']);
 					$datos['yearPeriodo'] = $_POST['yearPeriodo'];
 					$datos['fechaAP'] = $_POST['fechaAP'];
@@ -64,20 +66,18 @@
 					$buscar = $this->periodo->getOne($_POST['numeroPr'], $_POST['yearPeriodo']);
                     // print_r($datos);
 					if ($buscar['msj']=="Good") {
-						$this->bitacora->monitorear($this->url);
-					    if(count($buscar['data'])>1){
-					    	if($_POST['']==$_POST['numeroPr']){
+						// $this->bitacora->monitorear($this->url);
+						if(count($buscar['data'])>1){
+							// print_r($buscar['data'][0]['estatus']);
+							if($buscar['data'][0]['estatus']=="0"){
 								$exec = $this->periodo->Modificar($datos); 
 								echo json_encode($exec);
-
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
-
 						}else{
 							$exec = $this->periodo->Agregar($datos);
-							//print_r($exec);
-							echo json_encode($exec);
+						 	echo json_encode($exec);
 						}
 
 					}else{

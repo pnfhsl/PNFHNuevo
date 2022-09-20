@@ -26,6 +26,7 @@
 			$_css = new headElement;
 			$_css->Heading();
 			$this->bitacora->monitorear($this->url);
+
 			$profesores = $this->profesor->Consultar();
 			$url = $this->url;
 			require_once("view/profesoresView.php");
@@ -52,9 +53,7 @@
 				}else{
 					echo json_encode(['msj'=>"Error"]);
 				}
-
-			
-			
+			}
 		}
 
 		public function Agregar(){

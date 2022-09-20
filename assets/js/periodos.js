@@ -38,7 +38,7 @@ $(document).ready(function(){
       $("#fechaA").attr("min",val+"-01-01");
       $("#fechaA").attr("max",val+"-12-31");
       $("#fechaC").attr("min",val+"-01-01");
-      $("#fechaC").attr("max",val+"-12-31");
+      // $("#fechaC").attr("max",val+"-12-31");
     }
     $("#fechaA").val("");
     $("#fechaC").val("");
@@ -59,7 +59,7 @@ $(document).ready(function(){
       $("#fechaA"+id).attr("min",val+"-01-01");
       $("#fechaA"+id).attr("max",val+"-12-31");
       $("#fechaC"+id).attr("min",val+"-01-01");
-      $("#fechaC"+id).attr("max",val+"-12-31");
+      // $("#fechaC"+id).attr("max",val+"-12-31");
     }
     $("#fechaA"+id).val("");
     $("#fechaC"+id).val("");
@@ -301,6 +301,8 @@ $(document).ready(function(){
 
   $(".modificarButtonModal").click(function(){
     var url = $("#url").val();
+    var id = $(this).val();
+    // alert(id);
     var response = validar(true, id);
     if(response){
       swal.fire({ 
@@ -335,7 +337,7 @@ $(document).ready(function(){
                 
                 },
                 success: function(resp){
-                    // alert(resp);
+                    alert(resp);
                   var datos = JSON.parse(resp);   
                   if (datos.msj === "Good") {   
                       Swal.fire({
@@ -486,7 +488,6 @@ function validar(modificar = false, id=""){
     }else{
       form = "#modalModificarPeriodo"+id;
     }
-
     var year = $(form+" #year"+id).val();
     var ryear = false;
     if(year.length == 4){
@@ -543,6 +544,5 @@ function validar(modificar = false, id=""){
     }else{
       validado=false;
     }
-    // alert(validado);
     return validado;
 }

@@ -64,7 +64,16 @@
     <strong class="string">Copyright &copy; 2022-2023 <a>SCHSL</a>.</strong> <span class="string">Todos los derechos reservados.</span>
 
   </footer>
-
+  <style type="text/css">
+      body{
+        margin-right:0 !important;
+        width:100% !important;
+      }
+      .wrapper{
+        margin-right:0 !important;
+        width:100% !important;
+      }
+  </style>
 <script>
 $(document).ready(function(){
 
@@ -80,6 +89,8 @@ $(document).ready(function(){
     if($(window).width() >= 1200){ // MD
         $(".logoTopMenu").attr("style","width:8vh;");
     }
+    // $(".wrapper").attr("style","padding-right:0 !important;width:100% !important;");
+    // $("body").attr("style","padding-right:0 !important;width:100% !important;");
     $(window).resize(function(){
         if($(window).width() < 768){ // XS
 	        $(".logoTopMenu").attr("style","width:5vh;");
@@ -93,6 +104,16 @@ $(document).ready(function(){
         if($(window).width() >= 1200){ // MD
 	        $(".logoTopMenu").attr("style","width:8vh;");
         }
+        // $(".wrapper").attr("style","padding-right:0 !important;width:100% !important;");
+        // $("body").attr("style","padding-right:0 !important;width:100% !important;");
     });
+    // $(window).scroll(function(){
+    //     $(".wrapper").attr("style","padding-right:0 !important;width:100% !important;");
+    //     $("body").attr("style","padding-right:0 !important;width:100% !important;");
+    // });
+    // $(".closeModal").click(function(){
+    //     $(".wrapper").attr("style","padding-right:0 !important;width:100% !important;");
+    //     $("body").attr("style","padding-right:0 !important;width:100% !important;");
+    // });
 });
 </script>
