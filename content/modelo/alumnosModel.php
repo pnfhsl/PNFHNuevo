@@ -95,6 +95,7 @@
 				}
 			}
 			if (!$error) {
+				$this->bitacora->monitorear($this->url);
 				$Result = array('msj' => "Good");		//Si todo esta correcto 
 				return $Result;
 			}

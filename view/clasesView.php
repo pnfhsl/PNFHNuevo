@@ -38,160 +38,149 @@
           <!-- /.box -->
           <div class="box">
             <div class="box-header">
-               <div class="col-xs-12 col-sm-6">
+              <div class="col-xs-12 col-sm-6">
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
-               
-
-              <!--=====================================
-              MODAL MODIFICAR CLASES
-              ======================================-->
-
-              
-
-
+                <!--=====================================
+                MODAL MODIFICAR CLASES
+                ======================================-->
                 <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarClase">Agregar Nuevo</button>
-                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
+                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
-              <!--=====================================
-              MODAL AGREGAR PROF
-              ======================================-->
+                <!--=====================================
+                MODAL AGREGAR PROF
+                ======================================-->
+                <div id="modalAgregarClase" class="modalAgregarClase modal fade" role="dialog">
+                  
+                  <div class="modal-dialog tamModals tamModals" style="text-align:left;">
 
-              <div id="modalAgregarClase" class="modalAgregarClase modal fade" role="dialog">
-                
-                <div class="modal-dialog tamModals tamModals" style="text-align:left;">
+                    <div class="modal-content">
 
-                  <div class="modal-content">
+                      <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
 
-                    <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+                        <!--=====================================
+                        CABEZA DEL MODAL
+                        ======================================-->
 
-                      <!--=====================================
-                      CABEZA DEL MODAL
-                      ======================================-->
+                        <div class="modal-header" style="background:#3c8dbc; color:white">
 
-                      <div class="modal-header" style="background:#3c8dbc; color:white">
+                          <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
 
-                        <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+                          <h4 class="modal-title" style="text-align: left;">Agregar Clase</h4>
 
-                        <h4 class="modal-title" style="text-align: left;">Agregar Clase</h4>
+                        </div>
 
-                      </div>
+                        <!--=====================================
+                        CUERPO DEL MODAL
+                        ======================================-->
 
-                      <!--=====================================
-                      CUERPO DEL MODAL
-                      ======================================-->
+                        <div class="modal-body" style="max-height:70vh;overflow:auto">
 
-                      <div class="modal-body" style="max-height:70vh;overflow:auto">
+                          <div class="box-body">
 
-                        <div class="box-body">
+                            <div class="row">
 
-                          <div class="row">
-
-                            <!-- ENTRADA PARA SELECCIONAR SECCIONES-->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="seccion">Seccion</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="seccion" id="seccion">
-                                  <option value="">Sección</option>
-                                  <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])):  ?>
-                                  <option value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
-                                  <?php endif; endforeach; ?>
-                                </select>
+                              <!-- ENTRADA PARA SELECCIONAR SECCIONES-->
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="seccion">Seccion</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span> 
+                                  <select class="form-control select2 input-lg" style="width:100%;" name="seccion" id="seccion">
+                                    <option value="">Sección</option>
+                                    <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])):  ?>
+                                    <option value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
+                                    <?php endif; endforeach; ?>
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="seccionS" class="mensajeError" ></span>
+                                </div>
                               </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="seccionS" class="mensajeError" ></span>
-                              </div>
-                            </div>
 
 
-                            <!-- ENTRADA PARA SELECCIONAR SABERES -->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="saber">Saber complementario</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="saber">
-                                  <option value="">Saber Complementario</option>
-                                  <?php foreach ($saberes as $dateS): if(!empty($dateS['id_SC'])):  ?>
-                                  <!-- <option value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option> -->
-                                  <?php endif; endforeach; ?>
-                                </select>
+                              <!-- ENTRADA PARA SELECCIONAR SABERES -->
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="saber">Saber complementario</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
+                                  <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="saber">
+                                    <option value="">Saber Complementario</option>
+                                    <?php foreach ($saberes as $dateS): if(!empty($dateS['id_SC'])):  ?>
+                                    <!-- <option value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option> -->
+                                    <?php endif; endforeach; ?>
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="saberS" class="mensajeError" ></span>
+                                </div>
                               </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="saberS" class="mensajeError" ></span>
+                            
+                            
+                              <!-- ENTRADA PARA LOS ALUMNOS -->
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="profesor">Profesor</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
+                                  <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="profesor">
+                                    <option value="">Profesor</option>
+                                    <?php foreach ($profesores as $dateP): if(!empty($dateP['cedula_profesor'])):  ?>
+                                    <option value="<?php echo $dateP['cedula_profesor'] ?>"><?php echo $dateP['nombre_profesor']." ".$dateP['apellido_profesor'] ?></option>
+                                    <?php endif; endforeach; ?>
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="profesorS" class="mensajeError"></span>
+                                </div>
                               </div>
-                            </div>
-                          
-                          
-                            <!-- ENTRADA PARA LOS ALUMNOS -->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="profesor">Profesor</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="profesor">
-                                  <option value="">Profesor</option>
-                                  <?php foreach ($profesores as $dateP): if(!empty($dateP['cedula_profesor'])):  ?>
-                                  <option value="<?php echo $dateP['cedula_profesor'] ?>"><?php echo $dateP['nombre_profesor']." ".$dateP['apellido_profesor'] ?></option>
-                                  <?php endif; endforeach; ?>
-                                </select>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="profesorS" class="mensajeError"></span>
-                              </div>
+
                             </div>
 
                           </div>
 
+
+                        </div>  
+
+                        <!--=====================================
+                        PIE DEL MODAL
+                        ======================================-->
+
+                        <div class="modal-footer">
+
+                          <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+                          <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
+
                         </div>
 
 
-                      </div>  
+                      <!-- </form> -->
 
-                      <!--=====================================
-                      PIE DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-footer">
-
-                        <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                        <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
-                      </div>
-
-
-                    <!-- </form> -->
+                    </div>
 
                   </div>
-
                 </div>
 
               </div>
-</div>
-</div>
-
-
+            </div>
 
                
             <!-- /.box-header -->
 
             <div class="box-body ">
               <div class="table-responsive">
-                
               <table id="" class="datatable table table-striped text-center" style="text-align:center;width:100%;font-size:1em;">
                 <thead>
-                <tr>
-                  <th>Nº</th>
-                  <th>Saber Complementario</th>
-                  <th>Sección</th>
-                  <th>Profesor</th>
-                 
-                 <!--  <?php  ?> -->
-                  <th>Acciones</th>
-                  <?php //endif ?>
-                </tr>
+                  <tr>
+                    <th>Nº</th>
+                    <th>Saber Complementario</th>
+                    <th>Sección</th>
+                    <th>Profesor</th>
+                    <?php if($amClasesE==1||$amClasesB==1): ?>
+                    <th>Acciones</th>
+                    <?php endif; ?>
+                  </tr>
                 </thead>
                 <tbody>
                 <?php 
@@ -222,165 +211,151 @@
                       <?php echo $data['nombre_profesor']." ".$data['apellido_profesor']; ?>
                     </span>
                   </td>
-                  <!-- <td style="width:20%">
-                    <span class="contenido2">
-                      <?php echo $data['nombreUsuario']; ?>
-                    </span>
-                  </td> --> 
                  
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
+                  <?php if ($amClasesE==1||$amClasesB==1): ?>
                   <td style="width:10%">
-                    <!-- <table style="background:none;text-align:center;width:100%"> -->
-                       <!-- <tr> -->
-                        <?php //if ($amUsuariosE==1): ?>
-                        <!-- <td style="width:50%"> -->
-                          <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9"value="<?php echo $data['id_clase'] ?>">
-                            <span class="fa fa-pencil">
-                              
-                            </span>
-                          </button>
-                        <!-- </td> --> 
-                        <?php //endif; ?>
-                        <?php //if ($amUsuariosB==1): ?>
-                        <!-- <td style="width:50%"> -->
-                          <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['id_clase'] ?>">
-                            <span class="fa fa-trash"></span>
-                          </button>
-                        <!-- </td> -->
-                        <?php //endif; ?>
-                      <!-- </tr> -->
-                    <!-- </table> -->
-                  </td>
-                  <?php //endif ?> 
-                      
-                  <button type="button" id="modificarButton<?=$data['id_clase']?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarClase<?=$data['id_clase']?>" style="display: none">Modificar</button>
+                    <?php if ($amClasesE==1): ?>
+                      <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9"value="<?php echo $data['id_clase'] ?>">
+                        <span class="fa fa-pencil">
+                          
+                        </span>
+                      </button>
 
-                  <div id="modalModificarClase<?=$data['id_clase']?>" class="modalModificarClase modal fade modalModificarClase<?=$data['id_clase']?>" role="dialog">
-                    
-                    <div class="modal-dialog tamModals" style="text-align:left;">
-                      <div class="modal-content">
+                      <!-- Modificar -->
+                      <button type="button" id="modificarButton<?=$data['id_clase']?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarClase<?=$data['id_clase']?>" style="display: none">Modificar</button>
+                      <div id="modalModificarClase<?=$data['id_clase']?>" class="modalModificarClase modal fade modalModificarClase<?=$data['id_clase']?>" role="dialog">
+                        <div class="modal-dialog tamModals" style="text-align:left;">
+                        
+                          <div class="modal-content">
 
-                        <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+                            <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
 
-                          <!--=====================================
-                          CABEZA DEL MODAL
-                          ======================================-->
+                              <!--=====================================
+                              CABEZA DEL MODAL
+                              ======================================-->
 
-                          <div class="modal-header" style="background:#3c8dbc; color:white">
+                              <div class="modal-header" style="background:#3c8dbc; color:white">
 
-                            <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
 
-                            <h4 class="modal-title" style="text-align: left;">Modificar Clase</h4>
-
-                          </div>
-
-                          <!--=====================================
-                          CUERPO DEL MODAL
-                          ======================================-->
-
-                          <div class="modal-body" style="max-height:70vvh;overflow:auto;">
-
-                            <div class="box-body">
-
-                              <div class="row">
-
-
-                                <!-- ENTRADA PARA EL SECCION -->                              
-                                <div class="form-group col-xs-12 col-sm-12"> 
-                                  <label for="seccion<?=$data['id_clase'];?>">Seccion</label>                             
-                                  <div class="input-group" style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span> 
-                                    <select class="form-control select2 input-lg seccionModificar" style="width:100%;" name="<?=$data['id_clase'];?>" id="seccion<?=$data['id_clase'];?>">
-                                      <option value="">Sección</option>
-                                      <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])):   ?>
-                                      <option value="<?php echo $date['cod_seccion'] ?>" <?php if($date['cod_seccion']==$data['cod_seccion']){ echo "selected"; } ?> ><?php echo $date['nombre_seccion'] ?></option>
-                                      <?php endif; endforeach; ?>
-                                    </select>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="seccionS<?=$data['id_clase']?>" class="mensajeError"></span>
-                                  </div>
-                                </div>
-
-                                <!-- ENTRADA PARA EL SABER -->                              
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="saber<?=$data['id_clase'];?>">Saber complementario</label>
-                                  <div class="input-group" style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
-                                    <select class="form-control select2 input-lg saberModificar" style="width:100%;" name="nuevoPerfil" id="saber<?=$data['id_clase'];?>">
-                                      <option value="">Saber Complementario</option>
-                                      <?php foreach ($saberes as $dateS): if(!empty($dateS['id_SC'])): ?>
-                                        <?php if (($dateS['trayecto_SC']==$data['trayecto_SC'])&&($dateS['fase_SC']==$data['fase_SC'])): ?>
-                                          
-                                      <option value="<?php echo $dateS['id_SC'] ?>" <?php if($dateS['id_SC']==$data['id_SC']){ echo "selected"; } ?> ><?php echo $dateS['nombreSC'] ?></option>
-
-                                        <?php endif; ?>
-                                      <?php endif; endforeach; ?>
-                                    </select>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="saberS<?=$data['id_clase']?>" class="mensajeError"></span>
-                                  </div>
-                                </div>
-
-                                <!-- ENTRADA PARA EL PROFESOR -->
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="profesor<?=$data['id_clase'];?>">Profesor</label>
-                                  <div class="input-group" style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
-                                    <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="profesor<?=$data['id_clase'];?>">
-                                      <option value="">Profesor</option>
-                                      <?php foreach ($profesores as $dateP): if(!empty($dateP['cedula_profesor'])): ?>
-                                      <option value="<?php echo $dateP['cedula_profesor'] ?>" <?php if($dateP['cedula_profesor']==$data['cedula_profesor']){ echo "selected"; } ?> ><?php echo $dateP['nombre_profesor']." ".$dateP['apellido_profesor'] ?></option>
-                                      <?php endif; endforeach; ?>
-                                    </select>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="profesorS<?=$data['id_clase']?>" class="mensajeError"></span>
-                                  </div>
-                                </div>
-
+                                <h4 class="modal-title" style="text-align: left;">Modificar Clase</h4>
 
                               </div>
 
-                            </div>
+                              <!--=====================================
+                              CUERPO DEL MODAL
+                              ======================================-->
+
+                              <div class="modal-body" style="max-height:70vvh;overflow:auto;">
+
+                                <div class="box-body">
+
+                                  <div class="row">
+
+
+                                    <!-- ENTRADA PARA EL SECCION -->                              
+                                    <div class="form-group col-xs-12 col-sm-12"> 
+                                      <label for="seccion<?=$data['id_clase'];?>">Seccion</label>                             
+                                      <div class="input-group" style="width:100%;">
+                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span> 
+                                        <select class="form-control select2 input-lg seccionModificar" style="width:100%;" name="<?=$data['id_clase'];?>" id="seccion<?=$data['id_clase'];?>">
+                                          <option value="">Sección</option>
+                                          <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])):   ?>
+                                          <option value="<?php echo $date['cod_seccion'] ?>" <?php if($date['cod_seccion']==$data['cod_seccion']){ echo "selected"; } ?> ><?php echo $date['nombre_seccion'] ?></option>
+                                          <?php endif; endforeach; ?>
+                                        </select>
+                                      </div>
+                                      <div style="width:100%;text-align:right;">
+                                        <span id="seccionS<?=$data['id_clase']?>" class="mensajeError"></span>
+                                      </div>
+                                    </div>
+
+                                    <!-- ENTRADA PARA EL SABER -->                              
+                                    <div class="form-group col-xs-12 col-sm-12">
+                                      <label for="saber<?=$data['id_clase'];?>">Saber complementario</label>
+                                      <div class="input-group" style="width:100%;">
+                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
+                                        <select class="form-control select2 input-lg saberModificar" style="width:100%;" name="nuevoPerfil" id="saber<?=$data['id_clase'];?>">
+                                          <option value="">Saber Complementario</option>
+                                          <?php foreach ($saberes as $dateS): if(!empty($dateS['id_SC'])): ?>
+                                            <?php if (($dateS['trayecto_SC']==$data['trayecto_SC'])&&($dateS['fase_SC']==$data['fase_SC'])): ?>
+                                              
+                                          <option value="<?php echo $dateS['id_SC'] ?>" <?php if($dateS['id_SC']==$data['id_SC']){ echo "selected"; } ?> ><?php echo $dateS['nombreSC'] ?></option>
+
+                                            <?php endif; ?>
+                                          <?php endif; endforeach; ?>
+                                        </select>
+                                      </div>
+                                      <div style="width:100%;text-align:right;">
+                                        <span id="saberS<?=$data['id_clase']?>" class="mensajeError"></span>
+                                      </div>
+                                    </div>
+
+                                    <!-- ENTRADA PARA EL PROFESOR -->
+                                    <div class="form-group col-xs-12 col-sm-12">
+                                      <label for="profesor<?=$data['id_clase'];?>">Profesor</label>
+                                      <div class="input-group" style="width:100%;">
+                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
+                                        <select class="form-control select2 input-lg" style="width:100%;" name="nuevoPerfil" id="profesor<?=$data['id_clase'];?>">
+                                          <option value="">Profesor</option>
+                                          <?php foreach ($profesores as $dateP): if(!empty($dateP['cedula_profesor'])): ?>
+                                          <option value="<?php echo $dateP['cedula_profesor'] ?>" <?php if($dateP['cedula_profesor']==$data['cedula_profesor']){ echo "selected"; } ?> ><?php echo $dateP['nombre_profesor']." ".$dateP['apellido_profesor'] ?></option>
+                                          <?php endif; endforeach; ?>
+                                        </select>
+                                      </div>
+                                      <div style="width:100%;text-align:right;">
+                                        <span id="profesorS<?=$data['id_clase']?>" class="mensajeError"></span>
+                                      </div>
+                                    </div>
+
+
+                                  </div>
+
+                                </div>
+
+                              </div>
+                                  
+                                   
+
+
+                                  
+
+
+
+                              
+
+
+                              <!--=====================================
+                              PIE DEL MODAL
+                              ======================================-->
+
+                              <div class="modal-footer">
+
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+
+                                <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$data['id_clase']?>" id="modificar">Modificar</button>
+
+                              </div>
+
+
+                            <!-- </form> -->
 
                           </div>
-                              
-                               
 
-
-                              
-
-
-
-                          
-
-
-                          <!--=====================================
-                          PIE DEL MODAL
-                          ======================================-->
-
-                          <div class="modal-footer">
-
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
-                            <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$data['id_clase']?>" id="modificar">Modificar</button>
-
-                          </div>
-
-
-                        <!-- </form> -->
-
+                        </div>
                       </div>
+                      <!-- Modificar -->
 
-                    </div>
+                    <?php endif; ?>
 
-                  </div>
-
-
-
-
+                    <?php if ($amClasesB==1): ?>
+                      <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['id_clase'] ?>">
+                        <span class="fa fa-trash"></span>
+                      </button>
+                    <?php endif; ?>
+                  </td>
+                  <?php endif; ?> 
+                      
 
                       
                 </tr>
@@ -388,16 +363,17 @@
                endif; endforeach;
                 ?>
                 </tbody>
-<!--                 <tfoot>
-                <tr>
-                  <th>Nº</th>
-                  <th>Clases</th> -->
-                  <!-- <th>Nombre de Usuario</th> -->
-                <!--   <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
-                  <th>---</th>
-                  <?php ?>
-                </tr>
-                </tfoot> -->
+                <tfoot>
+                  <tr>
+                    <th>Nº</th>
+                    <th>Saber Complementario</th>
+                    <th>Sección</th>
+                    <th>Profesor</th>
+                    <?php if($amClasesE==1||$amClasesB==1): ?>
+                    <th>Acciones</th>
+                    <?php endif; ?>
+                  </tr>
+                </tfoot>
               </table>
 
               </div>

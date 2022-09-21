@@ -5,6 +5,7 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\preguntasModel as preguntasModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\usuariosModel as usuariosModel;
 	use content\traits\Utility;
 	class preguntasController{
@@ -12,9 +13,11 @@
 		private $url;
 		private $preg;
 		private $usuario; 
+		private $bitacora;
 
 		function __construct($url){
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->preg = new preguntasModel();
 			$this->usuario = new usuariosModel();
 		}
@@ -23,6 +26,7 @@
 			$objModel = new preguntasModel;
 			$_css = new headElement;
 			$_css->Heading();
+			$this->bitacora->monitorear($this->url);
 			
 			$url = $this->url;
 			$preguntas = $this->preg->Consultar();
@@ -54,24 +58,28 @@
 
 					$buscar = $this->preg->getOne($datos['cedula']);
 					if($buscar['msj']=="Good"){
-						if(count($buscar['data'])>1){
-							//  print_r($buscar['data']['estatus']);
-							//  print_r($buscar['data'][0]['estatus']);
-							if($buscar['data']['estatus']==0){
-								$datos['id'] = $datos['cedula'];
-								$exec = $this->preg->Modificar($datos); 
-								if($exec['msj']=="Good"){
-									$dat['cedula'] = $_SESSION['cuenta_usuario']['cedula_usuario'];
-									// $dat['pass'] = $passw;
-									$_SESSION['cuenta_usuario']['estatus'] = "1";
-									$exec = $this->usuario->CompletarDatos($dat);
-									$exec = $this->usuario->GenerarLlaves($dat['cedula'], $this->encriptar($dat['cedula']));
-								}
-								echo json_encode($exec);
-							}else{
-								echo json_encode(['msj'=>"Repetido"]);
-							}
-						}else{
+						$this->bitacora->monitorear($this->url);
+						$exec2 = $this->preg->Eliminar($datos['cedula']);
+						if($exec2['msj']=="Good"){
+						// if(count($buscar['data'])>1){
+						// 	//  print_r($buscar['data']['estatus']);
+						// 	//  print_r($buscar['data'][0]['estatus']);
+						// 	if($buscar['data']['estatus']==0){
+						// 		$datos['id'] = $datos['cedula'];
+						// 		$exec = $this->preg->Modificar($datos); 
+						// 		if($exec['msj']=="Good"){
+						// 			$dat['cedula'] = $_SESSION['cuenta_usuario']['cedula_usuario'];
+						// 			// $dat['pass'] = $passw;
+						// 			$_SESSION['cuenta_usuario']['estatus'] = "1";
+						// 			$exec = $this->usuario->CompletarDatos($dat);
+						// 			$exec = $this->usuario->GenerarLlaves($dat['cedula'], $this->encriptar($dat['cedula']));
+						// 		}
+						// 		echo json_encode($exec);
+						// 	}else{
+						// 		echo json_encode(['msj'=>"Repetido"]);
+						// 	}
+						// }else{
+
 							$exec = $this->preg->Agregar($datos);
 							if($exec['msj']=="Good"){
 								$dat['cedula'] = $_SESSION['cuenta_usuario']['cedula_usuario'];
@@ -84,14 +92,19 @@
 								$public_key = $this->encriptar($llaves['public']);
 								$private_key = $this->encriptar($llaves['private']);
 								// $exec = $this->usuario->GuardarLlaves($dat['cedula'], $this->encriptar($dat['cedula']), $generar['public'], $generar['private']);
-								$exec = $this->usuario->GuardarLlaves($cedula, $firma, $public_key, $private_key);
+								$exec3 = $this->usuario->LimpiarLlaves($cedula);
+								if($exec3['msj']=="Good"){
+									$exec = $this->usuario->GuardarLlaves($cedula, $firma, $public_key, $private_key);
+								}
 							}	
 							// var_dump($cedula);
 							// var_dump($firma);
 							// var_dump($this->encriptar($llaves['public']));
 							// var_dump($this->encriptar($llaves['private']));
 							echo json_encode($exec);
+						// }
 						}
+
 					}else{
 						echo json_encode(['msj'=>"Error"]);
 					}

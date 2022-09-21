@@ -92,7 +92,8 @@ class preguntasModel extends database
 
 	public function Eliminar($cedula){
 		try {
-		$query = parent::prepare('UPDATE respuestas SET estatus = 0 WHERE cedula_usuario = :cedula_usuario');
+		// $query = parent::prepare('UPDATE respuestas SET estatus = 0 WHERE cedula_usuario = :cedula_usuario');
+		$query = parent::prepare("DELETE FROM respuestas WHERE cedula_usuario = :cedula_usuario");
 		$query->execute(['cedula_usuario'=>$cedula]);
 		$query->setFetchMode(parent::FETCH_ASSOC);
 		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);

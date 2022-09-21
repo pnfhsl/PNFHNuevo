@@ -199,6 +199,24 @@
   }
 
 
+  $amBloqueados = 0;
+  $amBloqueadosR = 0;
+  $amBloqueadosC = 0;
+  $amBloqueadosE = 0;
+  $amBloqueadosB = 0;
+  foreach ($_SESSION['accesos_usuario'] as $access) {
+    if(!empty($access['id_accesos'])){
+      if($access['nombre_modulo'] == "Usuario Bloqueado"){
+        $amBloqueados = 1;
+        if($access['nombre_permiso'] == "Agregar"){$amBloqueadosR = 1;}
+        if($access['nombre_permiso'] == "Consultar"){$amBloqueadosC = 1;}
+        if($access['nombre_permiso'] == "Modificar"){$amBloqueadosE = 1;}
+        if($access['nombre_permiso'] == "Eliminar"){$amBloqueadosB = 1;}
+      }
+    }
+  }
+
+
   $amModulos = 0;
   $amModulosR = 0;
   $amModulosC = 0;

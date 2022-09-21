@@ -5,6 +5,7 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\periodosModel as periodosModel;
 	use content\traits\Utility;
 
@@ -13,11 +14,13 @@
 
 		private $url;
 		private $periodo;
+		private $bitacora;
 
 		function __construct($url){
 			
 
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 
 			$this->periodo = new periodosModel();
 		}
@@ -41,6 +44,7 @@
 			$objModel = new homeModel;
 			$_css = new headElement;
 			$_css->Heading();
+			$this->bitacora->monitorear($this->url);
 			$periodos = $this->periodo->Consultar();
 			$url = $this->url;
 			require_once("view/periodosView.php");
@@ -51,6 +55,8 @@
 			if($_POST){
 				if( !empty($_POST['Agregar']) && !empty($_POST['numeroPr']) && !empty($_POST['yearPeriodo'])  && !empty($_POST['fechaAP']) && !empty($_POST['fechaAC'])){
 
+					// print_r($_POST);
+
 					$datos['numeroPr'] = mb_strtoupper($_POST['numeroPr']);
 					$datos['yearPeriodo'] = $_POST['yearPeriodo'];
 					$datos['fechaAP'] = $_POST['fechaAP'];
@@ -60,19 +66,18 @@
 					$buscar = $this->periodo->getOne($_POST['numeroPr'], $_POST['yearPeriodo']);
                     // print_r($datos);
 					if ($buscar['msj']=="Good") {
-					    if(count($buscar['data'])>1){
-					    	if($_POST['']==$_POST['numeroPr']){
+						// $this->bitacora->monitorear($this->url);
+						if(count($buscar['data'])>1){
+							// print_r($buscar['data'][0]['estatus']);
+							if($buscar['data'][0]['estatus']=="0"){
 								$exec = $this->periodo->Modificar($datos); 
 								echo json_encode($exec);
-
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
-
 						}else{
 							$exec = $this->periodo->Agregar($datos);
-							//print_r($exec);
-							echo json_encode($exec);
+						 	echo json_encode($exec);
 						}
 
 					}else{
@@ -101,6 +106,7 @@
 
 
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$busq = $buscar['data'][0];
 							if($datos['id_periodo']==$busq['id_periodo']){
@@ -129,6 +135,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['userDelete'])) {
 					$buscar = $this->periodo->getOneId($_POST['userDelete']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->periodo->Eliminar($_POST['userDelete']);

@@ -30,7 +30,7 @@
       <div class="row">
         
 
-
+        <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
         <div class="col-xs-12">
           <!-- /.box -->
           <div class="col-lg-3 col-md-6">
@@ -148,6 +148,7 @@ $(document).ready(function(){
   console.clear();
   
   console.log(<?=json_encode($_SESSION); ?>);
+  var url = $("#url").val();
 });  
 </script>
 </body>

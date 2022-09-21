@@ -9,6 +9,7 @@
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\saberesModel as saberesModel;
 	use content\modelo\clasesModel as clasesModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\traits\Utility;
 	class notasController{
 		use Utility;
@@ -17,11 +18,13 @@
 		private $seccion;
 		private $saber;
 		private $clase;
+		private $bitacora;
 
 		private $idNota;
 		function __construct($url){
 			
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->nota = new notasModel();
 			$this->seccion = new seccionesModel();
 			$this->saber = new saberesModel();
@@ -32,6 +35,7 @@
 				$objModel = new homeModel;
 				$_css = new headElement;
 				$_css->Heading();
+				$this->bitacora->monitorear($this->url);
 				$alumnos = $this->nota->ConsultarNotasAlumnos();
 				$notas = $this->nota->Consultar();
 
@@ -113,6 +117,7 @@
 					}
 
 					if($suma == count($_POST['notas'])){
+						$this->bitacora->monitorear($this->url);
 						echo json_encode(['msj'=>"Good"]);
 					}else{
 						echo json_encode(['msj'=>"Error"]);
@@ -197,6 +202,7 @@
 
 						}
 						if($suma == count($_POST['notas'])){
+							$this->bitacora->monitorear($this->url);
 							echo json_encode(['msj'=>"Good"]);
 						}else{
 							echo json_encode(['msj'=>"Error"]);
@@ -219,6 +225,7 @@
 					list($cod_seccion, $id_SC, $id_clase) =explode('-', $_POST['notaDelete']);
 					$buscar = $this->nota->getOne($id_clase);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->nota->Eliminar($id_clase);

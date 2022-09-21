@@ -5,6 +5,7 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\saberesModel as saberesModel;
 	use content\traits\Utility;
 
@@ -12,9 +13,11 @@
 		use Utility;
 		private $url;
 		private $saber;
+		private $bitacora;
 
 		function __construct($url){			
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->saber = new saberesModel();
 		}
 
@@ -22,6 +25,7 @@
 			$objModel = new homeModel;
 			$_css = new headElement;
 			$_css->Heading();
+			$this->bitacora->monitorear($this->url);
 			$saberes = $this->saber->Consultar();
 			$url = $this->url;
 			require_once("view/saberesView.php");
@@ -46,6 +50,7 @@
 					$datos['faseSC'] = $_POST['faseSC'];
 					$buscar = $this->saber->getOne($_POST['nombreSC']);
 					if ($buscar['msj']=="Good") {
+						$this->bitacora->monitorear($this->url);
 					    if(count($buscar['data'])>1){
 					    	if($_POST['']==$_POST['nombreSC']){
 								$exec = $this->saber->Modificar($datos); 
@@ -82,6 +87,7 @@
 					$buscar = $this->saber->getOne($_POST['nombreSC']);
 
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$busq = $buscar['data'][0];
 							if($datos['id_SC']==$busq['id_SC']){
@@ -111,6 +117,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['userDelete'])) {
 					$buscar = $this->saber->getOneId($_POST['userDelete']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->saber->Eliminar($_POST['userDelete']);

@@ -85,54 +85,51 @@
                 <div class="col-md-12">
                  
 
-                <!-- Small boxes (Stat box) -->
-      <div class="row">
-        <!-- <div class="col-lg-3 col-xs-6"></div> -->
+                  <div class="row">
+                    <!-- <div class="col-lg-3 col-xs-6"></div> -->
 
-        <div class="col-xs-12 col-sm-6 col-lg-3 col-lg-offset-3">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3 style="font-size: 26px;">Respaldar<sup style="font-size: 20px"></sup></h3>
+                    <div class="col-xs-12 col-sm-6 col-lg-3 col-lg-offset-3">
+                      <div class="small-box bg-green">
+                        <div class="inner">
+                          <h3 style="font-size: 26px;">Respaldar<sup style="font-size: 20px"></sup></h3>
 
-              <p>Respaldo de la <br> Base de Datos</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-cloud-download" style="margin-top: 20px;"></i>
-            </div>
-            <a id="respaldar" class="small-box-footer clics">
-              <i class="fa fa-arrow-circle-right" style="font-size:1.7em;margin-top:10px;margin-bottom:10px;"></i>
-            </a>
-          </div>
-        </div>
+                          <p>Respaldo de la <br> Base de Datos</p>
+                        </div>
+                        <div class="icon">
+                          <i class="fa fa-cloud-download" style="margin-top: 20px;"></i>
+                        </div>
+                        <a id="respaldar" class="small-box-footer clics">
+                          <i class="fa fa-arrow-circle-right" style="font-size:1.7em;margin-top:10px;margin-bottom:10px;"></i>
+                        </a>
+                      </div>
+                    </div>
 
-        <div class="col-xs-12 col-sm-6 col-lg-3">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3 style="font-size: 26px;">Restaurar</h3>
+                    <div class="col-xs-12 col-sm-6 col-lg-3">
+                      <div class="small-box bg-red">
+                        <div class="inner">
+                          <h3 style="font-size: 26px;">Restaurar</h3>
 
-              <p>Restauración de <br> la Base de Datos</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-cloud-upload" style="margin-top: 20px;"></i>
-            </div>
-            <a class="small-box-footer clics" data-toggle="modal" data-target="#modalAgregarArchivo">
-              <i class="fa fa-arrow-circle-right" style="font-size:1.7em;margin-top:10px;margin-bottom:10px;"></i>
-            </a>
-          </div>
-        </div>
+                          <p>Restauración de <br> la Base de Datos</p>
+                        </div>
+                        <div class="icon">
+                          <i class="fa fa-cloud-upload" style="margin-top: 20px;"></i>
+                        </div>
+                        <a class="small-box-footer clics" data-toggle="modal" data-target="#modalAgregarArchivo">
+                          <i class="fa fa-arrow-circle-right" style="font-size:1.7em;margin-top:10px;margin-bottom:10px;"></i>
+                        </a>
+                      </div>
+                    </div>
 
-      </div>
+                  </div>
 
                 </div>
+
                 <br><br><br><br>
                 <br><br><br><br>
                 <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
+                
 
                 <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
-
                   <div class="modal-dialog">
 
                     <div class="modal-content">
@@ -187,8 +184,8 @@
                     </div>
 
                   </div>
-
                 </div>
+
               </div>
               <!-- /.box-header -->
 

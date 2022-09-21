@@ -376,7 +376,7 @@ $(document).ready(function(){
                           html += "<span>"+data[i]["apellido_alumno"]+"</span>";
                         html += "</td>";
                         html += "<td>";
-                          html += "<span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' value='0' max='1' min='0' step='0.1' id='nota"+data[i]['cedula_alumno']+"' style='width:100%;' required oninput='this.value=this.value.replace(/[^0-9 .]/g,"+","+"); alert(this.value)'></span>";
+                          html += "<span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' value='0' max='1' min='0' step='0.1' id='nota"+data[i]['cedula_alumno']+"' style='width:100%;' required oninput='this.value=this.value.replace(/[^0-9 .]/g,"+","+");'></span>";
                         html += "</td>";
                       html += "</tr>";
                       html += "<tr style='padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;'>";
@@ -688,7 +688,7 @@ $(document).ready(function(){
                 notas: notas,     
               },
               success: function(resp){
-                alert(resp);
+                // alert(resp);
                 var datos = JSON.parse(resp);   
                 if (datos.msj === "Good") {   
                   // alert("asdasd");
