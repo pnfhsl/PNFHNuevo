@@ -103,7 +103,7 @@ $(document).ready(function () {
                         location.reload();
                     });
                 } else {
-                    alert('probando');
+                    // alert('probando');
                     Swal.fire({
                         position: 'center',
                         type: 'danger',

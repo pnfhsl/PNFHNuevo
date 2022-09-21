@@ -337,7 +337,7 @@ $(document).ready(function(){
                 
                 },
                 success: function(resp){
-                    alert(resp);
+                    // alert(resp);
                   var datos = JSON.parse(resp);   
                   if (datos.msj === "Good") {   
                       Swal.fire({
