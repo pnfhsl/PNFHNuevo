@@ -53,116 +53,112 @@ $(document).ready(function () {
   $(".modificarButtonModal").click(function () {
     var url = $("#url").val();
     var id = $(this).val();
-    // alert(id);
-    // var response = validar(true, id);
-    /*console.log(response);
-    window.alert(response);*/
-    // alert(response);
-    // if(response){
-    swal.fire({
-      title: "¿Desea guardar los datos?",
-      text: "Se guardaran los datos, ¿desea continuar?",
-      type: "question",
-      showCancelButton: true,
-      confirmButtonText: "¡Guardar!",
-      cancelButtonText: "No",
-      closeOnConfirm: false,
-      closeOnCancel: false
-    }).then((isConfirm) => {
-      if (isConfirm.value) {
-        // alert('Hello');     
-        let cedula = $("#cedula" + id).val();
-        let nombre = $("#nombre" + id).val();
-        let apellido = $("#apellido" + id).val();
-        let telefono = $("#telefono" + id).val();
-        let correo = $("#correo" + id).val();
-        let trayecto = $("#trayecto").val();
-        // let rol = $("#rol").val();
-        // alert(correo);
-        // alert(cedula + ' ' + nombre + ' ' + apellido + ' ' +telefono);
+    var response = validarModificarPerfil(id);
+    if(response){
+      swal.fire({
+        title: "¿Desea guardar los datos?",
+        text: "Se guardaran los datos, ¿desea continuar?",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonText: "¡Guardar!",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: false
+      }).then((isConfirm) => {
+        if (isConfirm.value) {
+          // alert('Hello');     
+          let cedula = $("#cedula" + id).val();
+          let nombre = $("#nombre" + id).val();
+          let apellido = $("#apellido" + id).val();
+          let telefono = $("#telefono" + id).val();
+          let correo = $("#correo" + id).val();
+          let trayecto = $("#trayecto").val();
+          // let rol = $("#rol").val();
+          // alert(correo);
+          // alert(cedula + ' ' + nombre + ' ' + apellido + ' ' +telefono);
 
-        $.ajax({
-          url: url + '/Modificar',
-          type: 'POST',
-          data: {
-            Editar: true,
-            codigo: id,
-            cedula: cedula,
-            nombre: nombre,
-            apellido: apellido,
-            telefono: telefono,
-            correo: correo,
-            trayecto: trayecto,
+          $.ajax({
+            url: url + '/Modificar',
+            type: 'POST',
+            data: {
+              Editar: true,
+              codigo: id,
+              cedula: cedula,
+              nombre: nombre,
+              apellido: apellido,
+              telefono: telefono,
+              correo: correo,
+              trayecto: trayecto,
 
-          },
-          success: function (resp) {
-            // alert(resp);
-            console.log(resp);
-            var datos = JSON.parse(resp);
-            console.log(datos.exec.msj);
-            console.log(datos.email.msj);
-            // alert(datos);
-            if (datos.exec.msj === "Good" && datos.email.msj === "Good") {
-              Swal.fire({
-                type: 'success',
-                title: '¡Modificacion Exitosa!',
-                text: 'Se ha modificado el usuario ' + nombre + ' ' + apellido + ' en el sistema',
-                footer: 'SCHSL',
-                timer: 3000,
-                showCloseButton: false,
-                showConfirmButton: false,
-              }).then((isConfirm) => {
-                location.reload();
-              });
-            }
-            if (datos.msj === "Repetido") {
-              Swal.fire({
-                type: 'warning',
-                title: '¡Registro repetido!',
-                text: 'El usuario ' + nombre + ' ' + apellido + ' ya esta agregado al sistema con la cedula ' + cedula,
-                footer: 'SCHSL',
-                timer: 3000,
-                showCloseButton: false,
-                showConfirmButton: false,
-              });
-            }
-            if (datos.msj === "Error") {
-              Swal.fire({
-                type: 'error',
-                title: '¡Error la guardar los cambio!',
-                text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
-                footer: 'SCHSL',
-                timer: 3000,
-                showCloseButton: false,
-                showConfirmButton: false,
-              });
-            }
-            if (datos.msj === "Vacio") {
-              Swal.fire({
-                type: 'warning',
-                title: '¡Debe rellenar todos los campos!',
-                footer: 'SCHSL',
-                timer: 3000,
-                showCloseButton: false,
-                showConfirmButton: false,
-              });
-            }
-          },
-          error: function (respuesta) {
-            var datos = JSON.parse(respuesta);
-            console.log(datos);
+            },
+            success: function (resp) {
+              // alert(resp);
+              // console.log(resp);
+              var datos = JSON.parse(resp);
+              // console.log(datos.exec.msj);
+              // console.log(datos.email.msj);
+              // alert(datos);
+              if (datos.exec.msj === "Good" && datos.email.msj === "Good") {
+                Swal.fire({
+                  type: 'success',
+                  title: '¡Modificacion Exitosa!',
+                  text: 'Se ha modificado el usuario ' + nombre + ' ' + apellido + ' en el sistema',
+                  footer: 'SCHSL',
+                  timer: 3000,
+                  showCloseButton: false,
+                  showConfirmButton: false,
+                }).then((isConfirm) => {
+                  location.reload();
+                });
+              }
+              if (datos.msj === "Repetido") {
+                Swal.fire({
+                  type: 'warning',
+                  title: '¡Registro repetido!',
+                  text: 'El usuario ' + nombre + ' ' + apellido + ' ya esta agregado al sistema con la cedula ' + cedula,
+                  footer: 'SCHSL',
+                  timer: 3000,
+                  showCloseButton: false,
+                  showConfirmButton: false,
+                });
+              }
+              if (datos.msj === "Error") {
+                Swal.fire({
+                  type: 'error',
+                  title: '¡Error la guardar los cambio!',
+                  text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
+                  footer: 'SCHSL',
+                  timer: 3000,
+                  showCloseButton: false,
+                  showConfirmButton: false,
+                });
+              }
+              if (datos.msj === "Vacio") {
+                Swal.fire({
+                  type: 'warning',
+                  title: '¡Debe rellenar todos los campos!',
+                  footer: 'SCHSL',
+                  timer: 3000,
+                  showCloseButton: false,
+                  showConfirmButton: false,
+                });
+              }
+            },
+            error: function (respuesta) {
+              var datos = JSON.parse(respuesta);
+              console.log(datos);
 
-          }
+            }
 
-        });
-      } else {
-        swal.fire({
-          type: 'error',
-          title: '¡Proceso cancelado!',
-        });
-      }
-    });
-    // }
+          });
+        } else {
+          swal.fire({
+            type: 'error',
+            title: '¡Proceso cancelado!',
+          });
+        }
+      });
+    }
   });
 
 
@@ -181,9 +177,9 @@ $(document).ready(function () {
       closeOnCancel: false
     }).then((isConfirm) => {
       if (isConfirm.value) {
-        // alert('xd');
+
+        // let userMofif = $(this).val();
         let userMofif = $(this).attr("id");
-        // alert(userMofif);
         $("#modificarButtonC" + userMofif).click();
 
 
@@ -211,22 +207,18 @@ $(document).ready(function () {
       },
       success: function (respuesta) {
         // alert(respuesta);
-        // console.log(respuesta);
+        console.log(respuesta);
         var data = JSON.parse(respuesta);
+        // console.log(data);
         // alert(data.msj);
 
         if (data.msj === "Good") {
-          // console.log(data.data[0].cedula_usuario);
           // alert("hola");
           // let userModif = $(this).val();
-          let cedula = data.data[0].cedula_usuario;
-
-          $(".closemodificarButtonC"+cedula).click();
-          $("#modificarButtonContraseña"+cedula).click();
-
-          // $("#modificarButtonContraseña" + userModif).click();
-          // $("#modalModificarPerfilContraseñaLista").click();
-          // console.log("entre aquí");
+        $("#modificarButtonContraseña").click();
+        // $("#modificarButtonContraseña" + userModif).click();
+        // $("#modalModificarPerfilContraseñaLista").click();
+        console.log("entre aquí");
 
 
         }
@@ -247,10 +239,116 @@ $(document).ready(function () {
 
       },
     });
-
-
   });
 
+
+  $(".modificarButtonModalContraseñaLista").click(function(){
+    var url = $("#url").val();
+    var id = $(this).val();
+    // alert(id);
+    
+    var response = validarContras(id);
+    /*console.log(response);
+    window.alert(response);*/
+    // alert(response);
+    if(response){
+      swal.fire({ 
+          title: "¿Desea guardar los datos?",
+          text: "Se guardaran los datos, ¿desea continuar?",
+          type: "question",
+          showCancelButton: true,
+          confirmButtonText: "¡Guardar!",
+          cancelButtonText: "No", 
+          closeOnConfirm: false,
+          closeOnCancel: false 
+      }).then((isConfirm) => {
+          if (isConfirm.value){ 
+            // alert('Hello');
+            let rol = $("#rol").val();     
+            let cedula = $("#cedula"+id).val();     
+            let nombre = $("#usuario").val();     
+            let nuevoPassword = $("#nuevoPassword").val();     
+            let confirmarPassword = $("#confirmarPassword").val(); 
+            let correo = $("#correoHiddenContras").val();
+            // let pass = $("#password").val();    
+            // alert( cedula + ' ' + nombre + ' ' + rol );
+            // alert( nuevoPassword + ' ' + confirmarPassword);
+
+            // if (nuevoPassword == confirmarPassword) {
+            //   let password = nuevoPassword;
+            //   alert(password + 'hola');
+            // }
+            
+            $.ajax({
+              url: url+'/ModificarUsuario',    
+              type: 'POST',   
+              data: {
+                Editar: true,   
+                codigo: id,   
+                cedula: cedula, 
+                nombre: nombre, 
+                correo: correo,
+                // password: pass,  
+                rol: rol,
+                nuevoPassword: nuevoPassword,
+
+              },
+              success: function(resp){
+              // alert(resp);
+              // window.alert("Hola mundo");   
+              // console.log(resp); 
+                // window.alert(resp);
+                var datos = JSON.parse(resp);   
+                if (datos.msj === "Good") {   
+                    Swal.fire({
+                        type: 'success',
+                        title: '¡Registro Exitoso!',
+                        text: 'Se ha modificado el usuario ' + nombre + ' en el sistema',
+                        footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                      }).then((isConfirm) => {
+                          location.reload();
+                      } );
+                  } 
+                  if (datos.msj === "Repetido") {   
+                    Swal.fire({
+                      type: 'warning',
+                      title: '¡Registro repetido!',
+                      text: 'El usuaro ' + nombre + ' ya esta agregado al sistema con la cedula '+cedula,
+                      footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                    });
+                  }
+                  if (datos.msj === "Error") {   
+                    Swal.fire({
+                      type: 'error',
+                      title: '¡Error la guardar los cambio!',
+                      text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
+                      footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                    });
+                  }   
+                  if (datos.msj === "Vacio") {   
+                    Swal.fire({
+                      type: 'warning',
+                      title: '¡Debe rellenar todos los campos!',
+                      footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                    });
+                  }   
+              },
+              error: function(respuesta){       
+                var datos = JSON.parse(respuesta);
+                console.log(datos);
+
+              }
+
+            });
+          }else { 
+              swal.fire({
+                  type: 'error',
+                  title: '¡Proceso cancelado!',
+              });
+          } 
+      });
+    }
+  });
 
 
   $(".modificarFotoBtn").click(function () {
@@ -275,6 +373,7 @@ $(document).ready(function () {
 
     });
   });
+
   $(".modificarButtonFoto").click(function () {
 
 
@@ -367,10 +466,279 @@ $(document).ready(function () {
           }
 
         });
-    
-    
+  });
+
+
+  $('.telefonoModificar').on('input', function () {
+        var id = $(this).attr("name");
+        // var ids = $(this).attr("id");
+        // var index = ids.indexOf(" ");
+        // var id = ids.substring(index+1);
+        this.value = this.value.replace(/[^0-9+ ]/g, '');
+        if (this.value.length >= 11 && this.value.length <= 11) {
+            $("#telefonoS" + id).html("");
+        } else {
+            $("#telefonoS" + id).html("El número de celular debe contener 11 caracteres");
+        }
+  });
+
+
+  $('.correoModificar').on('input', function () {      
+    var id = $(this).attr("name");
+    // var ids = $(this).attr("id");
+    // var index = ids.indexOf(" ");
+    // var id = ids.substring(index+1);
+    this.value = this.value.replace(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{4,6}))$/,'');
+    let pos1 = this.value.indexOf("@");
+    let pos = this.value.indexOf(".com");
+    if((pos > 1) && (pos1 > 1) && (pos > pos1)){
+      let maxleng = this.value.length;
+      $(this).attr("maxlength",maxleng);
+      $("#correoS"+id).html("");
+    }else{
+      $("#correoS"+id).html("Ingresar una dirección de correo electronico valida");
+      $(this).attr("maxlength","");
+    }
+  });
+
+
+  $(".correoModificar").blur(function(){
+    var url = $("#url").val();
+    var id = $(this).attr("name");
+    var correo = $(this).val().trim();
+    $.ajax({
+      url: url+'/Verificar',    
+      type: 'POST',  
+      data: {
+        VerificarUnicoCorreo: true,
+        correo: correo,
+        id: id,
+      },
+      success: function(respuesta){
+        // alert(respuesta); 
+        var resp = JSON.parse(respuesta);
+        if (resp.msj == "Good") {
+          var valido = resp.valido;
+          $("#valcorreo"+id).val(valido);
+          if(valido=="1"){
+            $("#correoS"+id).html("");
+          }
+          if(valido=="0"){
+            $("#correoS"+id).html("Correo electrónico ya esta siendo utilizado");
+          }
+        }
+      },
+      error: function(respuesta){       
+        var resp = JSON.parse(respuesta);
+        console.log(resp);
+      }
+    });
   });
 
 
 
+  $(".nuevoPassword").keyup(function(){
+    // var id = $(this).attr("name");
+    var pass1 = $("#nuevoPassword").val();
+    var pass2 = $("#confirmarPassword").val();
+    // alert(id);
+    // alert(pass1);
+    // alert(pass2);
+    if(pass1.trim()!=""){
+      $("#nombreP").html("");
+    }
+    if(pass1 == pass2){
+      $("#nombrePC").html("Las contraseñas coinciden");
+      $("#nombrePC").attr("style","color:green !important");
+    }else{
+      $("#nombrePC").html("Las contraseñas no coinciden");
+      $("#nombrePC").removeAttr("style");
+    }
+  });
+  $(".confirmarPassword").keyup(function(){
+    // var id = $(this).attr("name");
+    var pass1 = $("#nuevoPassword").val();
+    var pass2 = $("#confirmarPassword").val();
+    if(pass2.trim()!=""){
+      $("#nombrePC").html("");
+      $("#nombrePC").removeAttr("style");
+    }
+    if(pass1 == pass2){
+      $("#nombrePC").html("Las contraseñas coinciden");
+      $("#nombrePC").attr("style","color:green !important");
+    }else{
+      $("#nombrePC").html("Las contraseñas no coinciden");
+      $("#nombrePC").removeAttr("style");
+    }
+  });
+
+  $("#username").blur(function(){
+    var url = $("#url").val();
+    var id = $(this).attr("name");
+    var username = $(this).val().trim();
+    // alert(username);
+    $.ajax({
+      url: url+'/Verificar',    
+      type: 'POST',  
+      data: {
+        VerificarUnicoUsername: true,
+        username: username,
+        id: id,
+      },
+      success: function(respuesta){
+        // alert(respuesta); 
+        var resp = JSON.parse(respuesta);
+        // console.log(resp);
+        if (resp.msj == "Good") {
+          var valido = resp.valido;
+          $("#valusuario").val(valido);
+          if(valido=="1"){
+            $("#usuarioS").html("");
+          }
+          if(valido=="0"){
+            $("#usuarioS").html("Nombre de usuario ya esta siendo utilizado");
+          }
+        }
+      },
+      error: function(respuesta){       
+        var resp = JSON.parse(respuesta);
+        console.log(resp);
+      }
+    });
+  });
+
 });
+
+
+
+function validarModificarPerfil(id = "") {
+    var form = "#modalModificarPerfil" + id;
+
+    var cedula = $(form + " #cedula" + id).val();
+    var rcedula = false;
+    if (cedula.length >= 8 && cedula.length <= 8) {
+        $(form + " #cedulaS" + id).html("");
+        rcedula = true;
+    } else {
+        $(form + " #cedulaS" + id).html("La cedula debe contener 8 caracteres");
+    }
+
+    var nombre = $(form + " #nombre" + id).val();
+    var rnombre = false;
+    if (nombre.length > 2) {
+        rnombre = true;
+        $(form + " #nombreS" + id).html("");
+    } else {
+        $(form + " #nombreS" + id).html("Debe ingresar el nombre del alumno");
+    }
+
+    var apellido = $(form + " #apellido" + id).val();
+    var rapellido = false;
+    if (apellido.length > 2) {
+        rapellido = true;
+        $(form + " #apellidoS" + id).html("");
+    } else {
+        $(form + " #apellidoS" + id).html("Debe ingresar el apellido del alumno");
+    }
+
+    var telefono = $(form + " #telefono" + id).val();
+    var rtelefono = false;
+    // alert(telefono);
+    if (telefono.length >= 11 && telefono.length <= 11) {
+        $(form + " #telefonoS" + id).html("");
+        rtelefono = true;
+    } else {
+        $(form + " #telefonoS" + id).html("La telefono debe contener 11 caracteres");
+    }
+
+    var correo = $(form+" #correo"+id).val();
+    var rcorreo = false;
+    var pos1 = correo.indexOf("@");
+    var pos = correo.indexOf(".com");
+    if((pos > 1) && (pos1 > 1) && (pos > pos1)){
+      var maxleng = correo.length;
+      $(this).attr("maxlength",maxleng);
+      $(form+" #correoS"+id).html("");
+      rcorreo = true;
+    }else{
+      $(form+" #correoS"+id).html("Ingresar una direccion de correo electronico valida");
+      $(this).attr("maxlength","");
+    }
+
+    var valcorreo = $(".valcorreo"+id).val();
+    if(nombre.trim().length>0){
+      if(valcorreo=="1"){
+        $("#correoS").html("");
+      }
+      if(valcorreo=="0"){
+        $("#correoS").html("Correo electrónico ya esta siendo utilizado");
+      }
+    }
+
+    var validado = false;
+    if (rcedula == true && rnombre == true && rapellido == true && rtelefono == true && rcorreo == true && valcorreo=="1") {
+        validado = true;
+    } else {
+        validado = false;
+    }
+
+    return validado;
+}
+
+function validarContras(id=""){
+    var form = "#modalModificarPerfilContraseñaLista"+id;
+
+
+    var nombre = $(form+" #username").val();
+    // alert(nombre);
+    var rnombre = false;
+    if(nombre.length > 2){ 
+      rnombre = true;
+      $(form+" #usuarioS").html("");
+    }else{
+      $(form+" #usuarioS").html("Debe ingresar el nombre del usuario");
+    }
+
+    var pass = $(form+" #nuevoPassword").val();
+    var passConfirm = $(form+" #confirmarPassword").val();
+    var rpass = false;
+    if (pass.trim() != "" && passConfirm.trim() != "") {
+      if(pass == passConfirm){ 
+        $(form+" #nombrePC").html("");  
+          rpass = true;
+      }else{
+        $(form+" #nombrePC").html("Las contraseñas deben ser iguales");
+         rpass = false;
+      }   
+    }else{
+      if(pass.trim()==""){
+        $(form+" #nombreP").html("Debe ingresar su nueva contraseña");
+      }
+      if(passConfirm.trim()==""){
+        $(form+" #nombrePC").html("Debe ingresar y confirmar su nueva contraseña");
+      }
+      rpass = false;
+    }
+    var valnombre = $(".valusuario").val();
+    if(nombre.trim().length>0){
+      if(valnombre=="1"){
+        $("#usuarioS").html("");
+      }
+      if(valnombre=="0"){
+        $("#usuarioS").html("Nombre de usuario ya esta siendo utilizado");
+      }
+    }
+
+    // alert("DAta: "+nombre+ " | "+rnombre);
+    // alert("DAta: "+pass+ " | "+rpass);
+    // alert("DAta: "+valnombre);
+
+    var validado = false;
+    if(rnombre==true && rpass==true && rpass==true && valnombre == "1"){
+      validado=true;
+    }else{
+      validado=false;
+    }
+    // alert(validado);
+    return validado;
+}

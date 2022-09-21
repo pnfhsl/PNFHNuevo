@@ -54,6 +54,7 @@ class perfilController
 			$nombre = $resp[0]['nombre_profesor'];
 			$apellido = $resp[0]['apellido_profesor'];
 			$telef = $resp[0]['telefono_profesor'];
+			$trayecto = "";
 		} else if ($_SESSION['cuenta_usuario']['nombre_rol'] === "Alumnos") {
 			$resp = $this->perfil->ConsultarAlumno($_SESSION['cuenta_usuario']['cedula_usuario']);
 			$ci = $resp[0]['cedula_alumno'];
@@ -65,6 +66,8 @@ class perfilController
 		$usuarios = $this->perfil->ConsultarUsuario($_SESSION['cuenta_usuario']['cedula_usuario']);
 		$correo = $usuarios[0]['correo'];
 		$usuario = $usuarios[0]['nombre_usuario'];
+		$password = $usuarios[0]['password_usuario'];
+		$rol = $usuarios[0]['id_rol'];
 		$alumnos = $this->alumno->Consultar();
 		$url = $this->url;
 		require_once("view/perfilView.php");
@@ -98,7 +101,73 @@ class perfilController
 								$exec = $this->alumno->Modificar($datos);
 								$modif = $this->perfil->ModificarCorreo($datos); 
 								$Result = array('exec' => $exec, 'email' => $modif);
+								
+								// OPEN ACTUALIZANDO VARIABLES SESSION
+								$resp = $this->usuario->getOne($datos['cedula'], true);
+								if($resp['msj']=="Good"){
+									$dataTemp = $resp['data'][0];
+									$_SESSION['cuenta_usuario'] = $dataTemp;
+									if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
+										$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+										if($alumnos['msj']=="Good"){
+											if(count($alumnos['data']) > 1){
+												$_SESSION['cuenta_persona'] = $alumnos['data'][0];
+												$_SESSION['cuenta_persona']['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+												$_SESSION['cuenta_persona']['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+												$_SESSION['cuenta_persona']['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+												$_SESSION['cuenta_persona']['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+												$_SESSION['cuenta_persona']['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];	
+
+												// $_SESSION['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+												// $_SESSION['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+												// $_SESSION['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+												// $_SESSION['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+												// $_SESSION['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];
+											}else{
+												session_destroy();
+												$resps['msj'] = "Usuario o contraseña invalido!";
+												echo json_encode($resps);
+												die();
+											}
+										}
+									}else{
+										$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+										if($profesores['msj']=="Good"){
+											if(count($profesores['data']) > 1){
+												$_SESSION['cuenta_persona'] = $profesores['data'][0];
+												$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_profesor'];
+												$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_profesor'];
+												$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_profesor'];
+												$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_profesor'];
+
+												// $_SESSION['cedula'] = $profesores['data'][0]['cedula_alumno'];
+												// $_SESSION['nombre'] = $profesores['data'][0]['nombre_alumno'];
+												// $_SESSION['apellido'] = $profesores['data'][0]['apellido_alumno'];
+												// $_SESSION['telefono'] = $profesores['data'][0]['telefono_alumno'];
+											}else if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario"){
+												$supersu = ['cedula'=>'00000000', 'nombre'=>'Usuario', 'apellido'=>'Sistema', 'telefono'=>'00000000000'];
+												$_SESSION['cuenta_persona']= $supersu;
+												if($_SESSION['cuenta_usuario']['estatus']=="0"){
+													$_SESSION['cuenta_usuario']['estatus'] = "1";
+													$estatus = "1";
+												}
+												// $_SESSION['cedula'] = $supersu['cedula'];
+												// $_SESSION['nombre'] = $supersu['nombre'];
+												// $_SESSION['apellido'] = $supersu['apellido'];
+												// $_SESSION['telefono'] = $supersu['telefono'];
+											}else{
+												session_destroy();
+												$resps['msj'] = "Usuario o contraseña invalido!";	
+												echo json_encode($resps);
+												die();
+											}
+										}
+									}
+								}
+								// CLOSE ACTUALIZANDO VARIABLES SESSION
+
 								echo json_encode($Result);
+
 								// echo json_encode(['exec'=>$exec, 'modif'=>$modif]);
 							} else {
 								echo json_encode(['msj' => "Repetido"]);
@@ -136,6 +205,72 @@ class perfilController
 								// echo json_encode($exec);
 								// echo json_encode($modif);
 								$Result = array('exec' => $exec, 'email' => $modif);
+
+								// OPEN ACTUALIZANDO VARIABLES SESSION
+								$resp = $this->usuario->getOne($datos['cedula'], true);
+								if($resp['msj']=="Good"){
+									$dataTemp = $resp['data'][0];
+									$_SESSION['cuenta_usuario'] = $dataTemp;
+									if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
+										$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+										if($alumnos['msj']=="Good"){
+											if(count($alumnos['data']) > 1){
+												$_SESSION['cuenta_persona'] = $alumnos['data'][0];
+												$_SESSION['cuenta_persona']['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+												$_SESSION['cuenta_persona']['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+												$_SESSION['cuenta_persona']['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+												$_SESSION['cuenta_persona']['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+												$_SESSION['cuenta_persona']['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];	
+
+												// $_SESSION['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+												// $_SESSION['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+												// $_SESSION['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+												// $_SESSION['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+												// $_SESSION['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];
+											}else{
+												session_destroy();
+												$resps['msj'] = "Usuario o contraseña invalido!";
+												echo json_encode($resps);
+												die();
+											}
+										}
+									}else{
+										$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+										if($profesores['msj']=="Good"){
+											if(count($profesores['data']) > 1){
+												$_SESSION['cuenta_persona'] = $profesores['data'][0];
+												$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_profesor'];
+												$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_profesor'];
+												$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_profesor'];
+												$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_profesor'];
+
+												// $_SESSION['cedula'] = $profesores['data'][0]['cedula_alumno'];
+												// $_SESSION['nombre'] = $profesores['data'][0]['nombre_alumno'];
+												// $_SESSION['apellido'] = $profesores['data'][0]['apellido_alumno'];
+												// $_SESSION['telefono'] = $profesores['data'][0]['telefono_alumno'];
+											}else if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario"){
+												$supersu = ['cedula'=>'00000000', 'nombre'=>'Usuario', 'apellido'=>'Sistema', 'telefono'=>'00000000000'];
+												$_SESSION['cuenta_persona']= $supersu;
+												if($_SESSION['cuenta_usuario']['estatus']=="0"){
+													$_SESSION['cuenta_usuario']['estatus'] = "1";
+													$estatus = "1";
+												}
+												// $_SESSION['cedula'] = $supersu['cedula'];
+												// $_SESSION['nombre'] = $supersu['nombre'];
+												// $_SESSION['apellido'] = $supersu['apellido'];
+												// $_SESSION['telefono'] = $supersu['telefono'];
+											}else{
+												session_destroy();
+												$resps['msj'] = "Usuario o contraseña invalido!";	
+												echo json_encode($resps);
+												die();
+											}
+										}
+									}
+								}
+								// CLOSE ACTUALIZANDO VARIABLES SESSION
+
+
 								echo json_encode($Result);
 							} else {
 								echo json_encode(['msj' => "Repetido"]);
@@ -167,10 +302,149 @@ class perfilController
 				echo json_encode($resp);
 			}
 		}
+		if(isset($_POST['VerificarUnicoUsername']) && isset($_POST['username']) && isset($_POST['id'])){
+			$user = ucwords(mb_strtolower($_POST['username']));
+			$id = $_POST['id'];
+			$buscar = $this->usuario->Buscar("username", $user);
+			if(count($buscar)>0){
+				// print_r($buscar);
+				if($id==""){
+					echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
+				}
+				if($id!=""){
+					if($buscar[0]['cedula_usuario']==$id){
+						echo json_encode(['msj'=>"Good", 'valido'=>"1"]);
+					}else{
+						echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
+					}
+				}
+			}else{
+				echo json_encode(['msj'=>"Good", 'valido'=>"1"]);
+			}
+		}
+		if(isset($_POST['VerificarUnicoCorreo']) && isset($_POST['correo'])){
+			$correo = mb_strtolower($_POST['correo']);
+			$id = $_POST['id'];
+			$buscar = $this->usuario->Buscar("correo", $correo);
+			if(count($buscar)>0){
+				if($id==""){
+					echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
+				}
+				if($id!=""){
+					if($buscar[0]['cedula_usuario']==$id){
+						echo json_encode(['msj'=>"Good", 'valido'=>"1"]);
+					}else{
+						echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
+					}
+				}
+			}else{
+				echo json_encode(['msj'=>"Good", 'valido'=>"1"]);
+			}
+		}
+	}
 
+
+
+	public function ModificarUsuario(){
+		if($_POST){		
+			if (!empty($_POST['cedula']) && !empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['correo']) && !empty($_POST['nombre']) && !empty($_POST['rol']) && isset($_POST['nuevoPassword'])) {
+				$datos['id'] = $_POST['codigo'];
+				$datos['cedula'] = $_POST['cedula'];
+				$datos['correo'] = $_POST['correo'];
+				$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
+				$datos['rol'] = $_POST['rol'];
+				$datos['nuevoPassword'] = $this->encriptar($_POST['nuevoPassword']);
+				$buscar = $this->usuario->getOne($_POST['cedula']);
+				// var_dump($datos['nuevoPassword']);
+				if($buscar['msj']=="Good"){
+					if(count($buscar['data'])>1){
+						if($_POST['codigo']==$_POST['cedula']){
+							$exec = $this->usuario->Modificar($datos);
+
+							// OPEN ACTUALIZANDO VARIABLES SESSION
+							$resp = $this->usuario->getOne($datos['cedula'], true);
+							if($resp['msj']=="Good"){
+								$dataTemp = $resp['data'][0];
+								$_SESSION['cuenta_usuario'] = $dataTemp;
+								if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
+									$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+									if($alumnos['msj']=="Good"){
+										if(count($alumnos['data']) > 1){
+											$_SESSION['cuenta_persona'] = $alumnos['data'][0];
+											$_SESSION['cuenta_persona']['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+											$_SESSION['cuenta_persona']['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+											$_SESSION['cuenta_persona']['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+											$_SESSION['cuenta_persona']['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+											$_SESSION['cuenta_persona']['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];	
+
+											// $_SESSION['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+											// $_SESSION['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+											// $_SESSION['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+											// $_SESSION['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+											// $_SESSION['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];
+										}else{
+											session_destroy();
+											$resps['msj'] = "Usuario o contraseña invalido!";
+											echo json_encode($resps);
+											die();
+										}
+									}
+								}else{
+									$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+									if($profesores['msj']=="Good"){
+										if(count($profesores['data']) > 1){
+											$_SESSION['cuenta_persona'] = $profesores['data'][0];
+											$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_profesor'];
+											$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_profesor'];
+											$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_profesor'];
+											$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_profesor'];
+
+											// $_SESSION['cedula'] = $profesores['data'][0]['cedula_alumno'];
+											// $_SESSION['nombre'] = $profesores['data'][0]['nombre_alumno'];
+											// $_SESSION['apellido'] = $profesores['data'][0]['apellido_alumno'];
+											// $_SESSION['telefono'] = $profesores['data'][0]['telefono_alumno'];
+										}else if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario"){
+											$supersu = ['cedula'=>'00000000', 'nombre'=>'Usuario', 'apellido'=>'Sistema', 'telefono'=>'00000000000'];
+											$_SESSION['cuenta_persona']= $supersu;
+											if($_SESSION['cuenta_usuario']['estatus']=="0"){
+												$_SESSION['cuenta_usuario']['estatus'] = "1";
+												$estatus = "1";
+											}
+											// $_SESSION['cedula'] = $supersu['cedula'];
+											// $_SESSION['nombre'] = $supersu['nombre'];
+											// $_SESSION['apellido'] = $supersu['apellido'];
+											// $_SESSION['telefono'] = $supersu['telefono'];
+										}else{
+											session_destroy();
+											$resps['msj'] = "Usuario o contraseña invalido!";	
+											echo json_encode($resps);
+											die();
+										}
+									}
+								}
+							}
+							// CLOSE ACTUALIZANDO VARIABLES SESSION
+
+							echo json_encode($exec);
+						}else{
+							echo json_encode(['msj'=>"Repetido"]);
+						}
+					}else{
+						$exec = $this->usuario->Modificar($datos);
+						/*var_dump($datos); */
+						echo json_encode($exec);
+					}
+				}else{
+					echo json_encode(['msj'=>"Error"]);
+				}
+			}else{
+				echo json_encode(['msj'=>"Vacio"]);
+			}
+		}
 	}
 
 }
+
 
 	
 		

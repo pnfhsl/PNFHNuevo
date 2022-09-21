@@ -8,6 +8,7 @@
 	use content\modelo\clasesModel as clasesModel;
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\saberesModel as saberesModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\profesoresModel as profesoresModel;
 	use content\traits\Utility;
 
@@ -18,6 +19,7 @@
 		private $seccion;
 		private $saber;
 		private $profesor;
+		private $bitacora;
 		private $idClase;
 		function __construct($url){
 			$this->url = $url;
@@ -25,6 +27,7 @@
 			$this->seccion = new seccionesModel();
 			$this->saber = new saberesModel();
 			$this->profesor = new profesoresModel();
+			$this->bitacora = new bitacoraModel();
 		} 
 
 		public function Consultar(){

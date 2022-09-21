@@ -190,9 +190,14 @@ class usuariosModel extends database
 		}
 	}
 
-	public function getOne($cedula){
+	public function getOne($cedula, $rol=false){
 		try {
-			$query = parent::prepare('SELECT * FROM usuarios WHERE cedula_usuario = :cedula');
+			if($rol==true){
+				$sql = "SELECT * FROM usuarios, roles WHERE usuarios.id_rol = roles.id_rol and usuarios.cedula_usuario = :cedula";
+			}else{
+				$sql = "SELECT * FROM usuarios WHERE cedula_usuario = :cedula";
+			}
+			$query = parent::prepare($sql);
 			$respuestaArreglo = '';
 			$query->execute(['cedula' => $cedula]);
 			$respuestaArreglo = $query->fetchAll();

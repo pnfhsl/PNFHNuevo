@@ -127,7 +127,7 @@
                               <label for="correo">Correo electrónico</label>
                               <div class="input-group" style="width:100%;">
                                 <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
-                                <input type="text" class="form-control input-lg" name="correo" id="correo" placeholder="Ingresar correo electrónico" required>
+                                <input type="text" class="form-control input-lg" name="correo" id="correo" maxlength="45" placeholder="Ingresar correo electrónico" required>
                                 <input type="hidden" id="valcorreo" class="valcorreo" value="0">
                               </div>
                               <div style="width:100%;text-align:right;">
@@ -274,7 +274,7 @@
                           CUERPO DEL MODAL
                           ======================================-->
 
-                          <div class="modal-body"  style="max-height:70vh;overflow:auto;">
+                          <div class="modal-body" style="max-height:70vh;overflow:auto;">
 
                             <div class="box-body">
 

@@ -28,216 +28,387 @@ $(document).ready(function () {
     console.clear();
 
 
-    var input= $("#myInput").val();
+    var input = $("#myInput").val();
     // $(".myInputDos").val(input);
     // alert(input);
-    
-    if (input === 'Administrador') {        
+
+    if (input === 'Administrador') {
         $(".usuarioG").attr('style', 'display:none');
     }
+    if (input === 'Superusuario') {
+        $(".usuarioD").attr('style', 'display:none');
+    }
 
-    $(".cont").click(function () {
+
+
+    $(".usuarioG").click(function () {
         var id = $(this).val();
-        // alert($(".optpass"+id).val());
-        $(".contadorBoxPassword").click();
-    });
+        // alert('verifyAdmin' + id);
+        $("#verifyAdmin" + id).click(function () {
+            let url = $("#url").val();
+            let firma = $("#firmaAdmin" + id).val();
+            // console.log(firma.length);
+            var response = validar(id);
+            if (response) {
+                $.ajax({
+                    url: url + '/Buscar',
+                    type: 'POST',
+                    data: {
+                        Buscar: true,
+                        firma: firma,
+                    },
+                    success: function (resp) {
+                        var datos = JSON.parse(resp);
+                        console.log(datos);
+                        // alert(id);
+                        if (datos.datos && datos.datos != "" && datos.datos[0].nombre_rol == "Administrador") {
+                            $(".contadorBoxPassword" + id).click();
 
-    $(".contadorBoxPassword").click(function () {
-        var id = $(this).val();
-        if ($(".optpass" + id).val() == 1) {
-            $(".optpass" + id).val(0);
-        } else if ($(".optpass" + id).val() == 0) {
-            $(".optpass" + id).val(1);
-        }
-    });
+                            $("#cedulaAdmin" + id).html(datos.datos[0].cedula_profesor);
+                            $("#nombreAdmin" + id).html(datos.datos[0].nombre_profesor);
+                            $("#apellidoAdmin" + id).html(datos.datos[0].apellido_profesor);
+                            $("#telefAdmin" + id).html(datos.datos[0].telefono_profesor);
+                            // alert('Asina nona');
+                            $("#comprobarAdmin" + id).click(function () {
+                                var public = $("#publicAdmin" + id).val();
+                                // console.log(public);
+                                // console.log(datos.datos[0].llave_publica);
+                                var valid = validarLlave(id);
+                                if (valid) {
+                                    if (public == datos.datos[0].llave_publica) {
+                                        $.ajax({
+                                            url: url + '/Generar',
+                                            type: 'POST',
+                                            data: {
+                                                Generar: true,
+                                                public: public,
+                                                usuarioG: id,
+                                            },
+                                            success: function (resp) {
+                                                console.log(resp);
+                                                var data = JSON.parse(resp);
+                                                if (data.result.msj === "Good") {
+                                                    $("#codigoAdmin" + id).val(data.encrypt);
+                                                    Swal.fire({
+                                                        type: 'success',
+                                                        title: '¡Código Generado!',
+                                                        text: 'Se ha generado el código exitosamente',
+                                                        footer: 'SCHSL',
+                                                        timer: 3000,
+                                                        showCloseButton: false,
+                                                        showConfirmButton: false,
+                                                    })
+                                                }
+                                                $("#copyClip" + id).click();
+
+                                            },
+                                            error: function (respuesta) {
+                                                var datos = JSON.parse(respuesta);
+                                                console.log(datos);
+                                            }
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            type: 'warning',
+                                            title: '¡Sin coincidencias!',
+                                            text: 'La clave pública no pertenece al Administrador',
+                                            footer: 'SCHSL',
+                                            timer: 3000,
+                                            showCloseButton: false,
+                                            showConfirmButton: false,
+                                        })
+                                    }
 
 
-    $("#verifyAdmin").click(function () {
-        // alert('hola');
-        let url = $("#url").val();
-        // alert(url);
-        let firma = $("#firmaAdmin").val();
-        // alert(firma); 
-        console.log(firma);
-        $.ajax({
-            url: url + '/Buscar',
-            type: 'POST',
-            data: {
-                Buscar: true,
-                firma: firma,
-            },
-            success: function (resp) {
-                // console.log(resp); 
-                // alert(resp);
-                var datos = JSON.parse(resp);
-                console.log(datos); 
-                var usuarioG = $("#usuarioG").val();
-                console.log(usuarioG);
-                if (datos.datos) {
-                    // alert('aqui');
-                    // var cedula = datos.datos[0].cedula_profesor;
-                    // var cedula = '15432287';
-                    
-                    $("#cedulaAdmin").html(datos.datos[0].cedula_profesor);
-                    $("#nombreAdmin").html(datos.datos[0].nombre_profesor);
-                    $("#apellidoAdmin").html(datos.datos[0].apellido_profesor);
-                    $("#telefAdmin").html(datos.datos[0].telefono_profesor);
-
-                    $("#comprobarAdmin").click(function () {
-                        var public = $("#publicAdmin").val();
-                        // alert(public);
-                        $.ajax({
-                            url: url + '/Generar',
-                            type: 'POST',
-                            data: {
-                                Generar: true,
-                                public: public,
-                                usuarioG: usuarioG,
-                            },
-                            success: function (resp) {
-                                console.log(resp);
-                                var data = JSON.parse(resp);
-                                // console.log(data);
-                                // console.log(data.result.msj);
-                                // $("#clave_public").html(data.encrypt); 
-
-                                if (data.result.msj === "Good") {
-                                    $("#codigoAdmin").val(data.encrypt);
-                                    Swal.fire({
-                                        type: 'success',
-                                        title: '¡Códifgo Generado!',
-                                        text: 'Se ha generado el código exitosamente',
-                                        footer: 'SCHSL',
-                                        timer: 3000,
-                                        showCloseButton: false,
-                                        showConfirmButton: false,
-                                    })
                                 }
-                                $("#copyClip").click(function () {
-                                    /* Get the text field */
-                                    // var copyText = document.getElementById("codigoAdmin");
-                                    // var copyText =  $("#codigoAdmin").val();
-                                    // console.log(copyText);
-                                    /* Select the text field */
-                                    // copyText.select();
-                                    /* Copy the text inside the text field */
-                                    // document.execCommand("copy");
-                                    // console.log(document.execCommand("copy"));
-                                    console.log('hola');
+                            });
 
-                                });
+                        } else {
+                            Swal.fire({
+                                type: 'warning',
+                                title: '¡Sin coincidencias!',
+                                text: 'La firma digital no coincide con nigún Administrador del Sistema',
+                                footer: 'SCHSL',
+                                timer: 3000,
+                                showCloseButton: false,
+                                showConfirmButton: false,
+                            })
+                        }
+                    },
+                    error: function (respuesta) {
+                        var datos = JSON.parse(respuesta);
+                        console.log(datos);
 
-                            },
-                            error: function (respuesta) {
-                                var datos = JSON.parse(respuesta);
-                                console.log(datos);
+                    }
 
-                            }
-
-                        });
-
-                    });
-
-                }
-            },
-            error: function (respuesta) {
-                var datos = JSON.parse(respuesta);
-                console.log(datos);
-
+                });
             }
-
         });
     });
 
-    $("#verifyOperador").click(function () {
-        // alert('hola');
-        let url = $("#url").val();
-        let firma = $("#firmaOperador").val();
-        // alert(firma);
-        console.log(firma);
-        $.ajax({
-            url: url + '/Buscar',
-            type: 'POST',
-            data: {
-                Buscar: true,
-                firma: firma,
-            },
-            success: function (resp) {
-                // console.log(resp); 
-                // alert(resp);
-                var datos = JSON.parse(resp);
-                console.log(datos);
-                if (datos.datos) {
-                    // alert('aqui');
-                    $("#cedulaOperador").html(datos.datos[0].cedula_profesor);
-                    $("#nombreOperador").html(datos.datos[0].nombre_profesor);
-                    $("#apellidoOperador").html(datos.datos[0].apellido_profesor);
-                    $("#telefOperador").html(datos.datos[0].telefono_profesor);
 
-                    $("#desbloquear").click(function () {
-                        let codigo = $("#codigoOperador").val();
-                        let private = $("#privateOperador").val();
-                        let cedula = $("#usuarioD").val();
-                        // alert(cedula);
-                        console.log(cedula);
-                        $.ajax({
-                            url: url + '/Desbloquear',
-                            type: 'POST',
-                            data: {
-                                Desbloquear: true,
-                                codigo: codigo,
-                                private: private,
-                                firma: firma,
-                                cedula: cedula,
-                            },
-                            success: function (resp) {
-                                console.log(resp);
-                                // alert(resp);
-                                var data = JSON.parse(resp);
-                                console.log(data);
-                                console.log(data.look.msj);
-                                // console.log(data.result.msj);
-                                // $("#clave_public").html(data.encrypt); 
+    $(".usuarioD").click(function () {
+        var id = $(this).val();
+        // alert('verifyOperador' + id);
+        $("#verifyOperador" + id).click(function () {
+            let url = $("#url").val();
+            let firma = $("#firmaOperador" + id).val();
+            console.log(firma);
+            var response = validar(id);
+            // alert(response);
+            if (response) {
+                $.ajax({
+                    url: url + '/Buscar',
+                    type: 'POST',
+                    data: {
+                        Buscar: true,
+                        firma: firma,
+                    },
+                    success: function (resp) {
+                        // console.log(resp); 
+                        // alert(resp);
+                        var datos = JSON.parse(resp);
+                        console.log(datos);
+                        if (datos.datos && datos.datos != "" && datos.datos[0].nombre_rol == "Superusuario") {
+                            // alert('aqui');
+                            $(".contadorBoxPassword" + id).click();
+                            $("#cedulaOperador" + id).html(datos.datos[0].cedula_profesor);
+                            $("#nombreOperador" + id).html(datos.datos[0].nombre_profesor);
+                            $("#apellidoOperador" + id).html(datos.datos[0].apellido_profesor);
+                            $("#telefOperador" + id).html(datos.datos[0].telefono_profesor);
 
-                                if (data.look.msj === "Good") {
-                                    // alert('ciao');
-                                    Swal.fire({
-                                        type: 'success',
-                                        title: '¡Usuario Desbloqueado!',
-                                        text: 'Se ha desbloqueado al usuario exitosamente',
-                                        footer: 'SCHSL',
-                                        timer: 3000,
-                                        showCloseButton: false,
-                                        showConfirmButton: false,
-                                    }).then((isConfirm) => {
-                                        location.reload();
+                            $("#desbloquear" + id).click(function () {
+                                let codigo = $("#codigoOperador" + id).val();
+                                let private = $("#privateOperador" + id).val();
+
+                                var valid = validarOperador(id);
+                                // alert(valid);
+                                if (valid) {
+                                    // alert(id);
+                                    $.ajax({
+                                        url: url + '/VerificarCodigo',
+                                        type: 'POST',
+                                        data: {
+                                            Verificar: true,
+                                            usuarioD: id,
+                                        },
+                                        success: function (resp) {
+                                            // console.log(resp);
+                                            var data = JSON.parse(resp);
+                                            console.log(data);
+                                            if (codigo === data.datos[0].codigo_desbloqueo) {
+                                                let admin = $("#admin").val();
+                                                // alert(admin);
+                                                $.ajax({
+                                                    url: url + '/VerificarClave',
+                                                    type: 'POST',
+                                                    data: {
+                                                        Verificar: true,
+                                                        cedula: admin,
+                                                    },
+                                                    success: function (resp) {
+                                                        console.log(resp);
+                                                        // alert(resp);
+                                                        var data = JSON.parse(resp);
+                                                        console.log(data);
+                                                        // alert(data.date[0].llave_privada);
+                                                        console.log(data.date[0].llave_privada);
+                                                        if (private == data.date[0].llave_privada) {
+                                                            // alert('ciao');
+                                                            $.ajax({
+                                                                url: url + '/Desbloquear',
+                                                                type: 'POST',
+                                                                data: {
+                                                                    Desbloquear: true,
+                                                                    codigo: codigo,
+                                                                    private: private,
+                                                                    firma: firma,
+                                                                    cedula: id,
+                                                                },
+                                                                success: function (resp) {
+                                                                    console.log(resp);
+                                                                    // alert(resp);
+                                                                    var data = JSON.parse(resp);
+                                                                    console.log(data);
+                                                                    console.log(data.look.msj);
+                                                                    if (data.look.msj === "Good") {
+                                                                        Swal.fire({
+                                                                            type: 'success',
+                                                                            title: '¡Usuario Desbloqueado!',
+                                                                            text: 'Se ha desbloqueado al usuario exitosamente',
+                                                                            footer: 'SCHSL',
+                                                                            timer: 3000,
+                                                                            showCloseButton: false,
+                                                                            showConfirmButton: false,
+                                                                        }).then((isConfirm) => {
+                                                                            location.reload();
+                                                                        })
+                                                                    } else {
+                                                                        Swal.fire({
+                                                                            type: 'warning',
+                                                                            title: '¡Error!',
+                                                                            text: 'No se ha podido desbloquear al usuario',
+                                                                            footer: 'SCHSL',
+                                                                            timer: 3000,
+                                                                            showCloseButton: false,
+                                                                            showConfirmButton: false,
+                                                                        })
+                                                                    }
+
+                                                                },
+                                                                error: function (resp) {
+                                                                    var datos = JSON.parse(resp);
+                                                                    console.log(datos);
+
+                                                                }
+
+                                                            });
+                                                        } else {
+                                                            Swal.fire({
+                                                                type: 'warning',
+                                                                title: '¡Sin coincidencias!',
+                                                                text: 'La clave privada es incorrecta',
+                                                                footer: 'SCHSL',
+                                                                timer: 3000,
+                                                                showCloseButton: false,
+                                                                showConfirmButton: false,
+                                                            })
+                                                        }
+
+                                                    },
+                                                    error: function (resp) {
+                                                        var datos = JSON.parse(resp);
+                                                        console.log(datos);
+
+                                                    }
+
+                                                });
+
+
+                                            } else {
+                                                Swal.fire({
+                                                    type: 'warning',
+                                                    title: '¡Sin coincidencias!',
+                                                    text: 'El código de desbloqueo del usuario no coincide',
+                                                    footer: 'SCHSL',
+                                                    timer: 3000,
+                                                    showCloseButton: false,
+                                                    showConfirmButton: false,
+                                                })
+                                            }
+
+
+                                        },
+                                        error: function (resp) {
+                                            var datos = JSON.parse(resp);
+                                            console.log(datos);
+
+                                        }
+
                                     });
+
+
                                 }
 
-                            },
-                            error: function (resp) {
-                                var datos = JSON.parse(resp);
-                                console.log(datos);
+                            });
+                        } else {
+                            Swal.fire({
+                                type: 'warning',
+                                title: '¡Sin coincidencias!',
+                                text: 'La firma digital no coincide con nigún Super Usuario del Sistema',
+                                footer: 'SCHSL',
+                                timer: 3000,
+                                showCloseButton: false,
+                                showConfirmButton: false,
+                            })
+                        }
 
-                            }
+                    },
+                    error: function (respuesta) {
+                        var datos = JSON.parse(respuesta);
+                        console.log(datos);
 
-                        });
+                    }
 
-                    });
-                }
-
-            },
-            error: function (respuesta) {
-                var datos = JSON.parse(respuesta);
-                console.log(datos);
-
+                });
             }
 
         });
+
     });
 
 
 
+})
 
+function validar(id = "") {
 
-});
+    var firmaAdmin = $("#firmaAdmin" + id).val();
+    var rfirmaAdmin = false;
+    if (firmaAdmin.length >= 32) {
+        rfirmaAdmin = true;
+        $("#nombreF" + id).html("");
+    } else {
+        $("#nombreF" + id).html("Debe ingresar la firma digital");
+    }
+    var firmaOperador = $("#firmaOperador" + id).val();
+    var rfirmaOperador = false;
+    if (firmaOperador.length >= 32) {
+        rfirmaOperador = true;
+        $("#nombreO" + id).html("");
+    } else {
+        $("#nombreO" + id).html("Debe ingresar la firma digital");
+    }
+    var validado = false;
+    if (rfirmaAdmin == true || rfirmaOperador == true) {
+        // if (rfirmaAdmin == true) {
+        validado = true;
+    } else {
+        validado = false;
+    }
+    // alert(validado);
+    return validado;
+}
+
+function validarLlave(id = "") {
+    var public = $("#publicAdmin" + id).val();
+    // alert(public);
+    if (public.length >= 828) {
+        rpublic = true;
+        $("#publicF" + id).html("");
+    } else {
+        $("#publicF" + id).html("Debe ingresar la llave pública");
+    }
+    var validado = false;
+    if (rpublic == true) {
+        validado = true;
+    } else {
+        validado = false;
+    }
+    return validado;
+}
+
+function validarOperador(id = "") {
+    var private = $("#privateOperador" + id).val();
+    if (private.length >= 3048) {
+        rprivate = true;
+        $("#privateF" + id).html("");
+    } else {
+        $("#privateF" + id).html("Debe ingresar la llave privada");
+    }
+    var codigo = $("#codigoOperador" + id).val();
+    if (codigo.length >= 344) {
+        rcodigo = true;
+        $("#codigoF" + id).html("");
+    } else {
+        $("#codigoF" + id).html("Debe ingresar el código");
+    }
+    var validado = false;
+    if (rprivate == true && rcodigo == true) {
+        validado = true;
+    } else {
+        validado = false;
+    }
+    // alert(validado);
+    return validado;
+};
