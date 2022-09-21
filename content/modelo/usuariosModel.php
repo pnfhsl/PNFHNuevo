@@ -15,14 +15,13 @@ class usuariosModel extends database
 	private $configargs;
 
 
-	public function __construct()
-	{
+	public function __construct(){
 		// $this->con = parent::__construct();
 		parent::__construct();
 		$this->configargs = array("config" => "C:\\xampp\php\\extras\openssl\\openssl.cnf", 'private_key_bits' => 2048, 'default_md' => "sha256");
 	}
-	public function Consultar($string = "")
-	{
+
+	public function Consultar($string = ""){
 		try {
 			$query = parent::prepare('SELECT * FROM usuarios, roles WHERE roles.id_rol = usuarios.id_rol and roles.estatus = 1 and usuarios.estatus != 0');
 
@@ -38,14 +37,14 @@ class usuariosModel extends database
 		}
 	}
 
-	public function Agregar($datos)
-	{
+	public function Agregar($datos){
 
 		try {
-			$query = parent::prepare("INSERT INTO usuarios (cedula_usuario, nombre_usuario, password_usuario, id_rol, estatus) 
-			VALUES (:cedula_usuario, :nombre_usuario, :password_usuario, :id_rol, 2)");
+			$query = parent::prepare("INSERT INTO usuarios (cedula_usuario, nombre_usuario, password_usuario, correo, id_rol, estatus, intentos) 
+			VALUES (:cedula_usuario, :nombre_usuario, :password_usuario, :correo, :id_rol, 2, 0)");
 			$query->bindValue(':cedula_usuario', $datos['cedula']);
 			$query->bindValue(':nombre_usuario', $datos['user']);
+			$query->bindValue(':correo', $datos['correo']);
 			$query->bindValue(':password_usuario', $datos['pass']);
 			$query->bindValue(':id_rol', $datos['rol']);
 			$query->execute();
@@ -65,8 +64,7 @@ class usuariosModel extends database
 		}
 	}
 
-	public function GenerarLlaves()
-	{
+	public function GenerarLlaves(){
 		try {
 			$generar = openssl_pkey_new($this->configargs);
 			$keypub = openssl_pkey_get_details($generar);
@@ -81,8 +79,7 @@ class usuariosModel extends database
 		}
 	}
 
-	public function GuardarLlaves($cedula, $cedulaEncriptada, $public, $private)
-	{
+	public function GuardarLlaves($cedula, $cedulaEncriptada, $public, $private){
 		$dat['cedula_usuario'] = $cedula;
 		$dat['firma'] = $cedulaEncriptada;
 		$dat['public'] = $public;
@@ -109,9 +106,24 @@ class usuariosModel extends database
 			return $errorReturn;
 		}
 	}
+	public function LimpiarLlaves($cedula){
+		try {
+			$query = parent::prepare('DELETE FROM rsa WHERE cedula_usuario = :cedula');
+			$query->execute(['cedula' => $cedula]);
+			$query->setFetchMode(parent::FETCH_ASSOC);
+			$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
+			if ($respuestaArreglo += ['estatus' => true]) {
+				$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+				return $Result;
+			}
+		} catch (PDOException $e) {
+			$errorReturn = ['estatus' => false];
+			$errorReturn += ['info' => "Error sql:{$e}"];
+			return $errorReturn;;
+		}
+	}
 
-	public function CompletarDatos($datos)
-	{
+	public function CompletarDatos($datos){
 
 		try {
 			$query = parent::prepare('UPDATE usuarios SET estatus=1 WHERE cedula_usuario = :cedula_usuario');
@@ -131,13 +143,11 @@ class usuariosModel extends database
 		}
 	}
 
-
-	public function Modificar($datos)
-	{
+	public function Modificar($datos){
 
 		try {
 			if (isset($datos['nuevoPassword']) && $datos['nuevoPassword'] != "") {
-				$query = parent::prepare('UPDATE usuarios SET cedula_usuario=:cedula_usuario, nombre_usuario = :nombre_usuario, password_usuario = :password_usuario, id_rol = :id_rol, estatus=1 WHERE cedula_usuario = :cedula_usuario2');
+				$query = parent::prepare('UPDATE usuarios SET cedula_usuario=:cedula_usuario, nombre_usuario = :nombre_usuario, correo = :correo, password_usuario = :password_usuario, id_rol = :id_rol, estatus=1 WHERE cedula_usuario = :cedula_usuario2');
 				$query->bindValue(':password_usuario', $datos['nuevoPassword']);
 			} else {
 				$query = parent::prepare('UPDATE usuarios SET cedula_usuario=:cedula_usuario, nombre_usuario = :nombre_usuario, id_rol = :id_rol, estatus=1 WHERE cedula_usuario = :cedula_usuario2');
@@ -145,6 +155,7 @@ class usuariosModel extends database
 			$query->bindValue(':cedula_usuario2', $datos['id']);
 			$query->bindValue(':cedula_usuario', $datos['cedula']);
 			$query->bindValue(':nombre_usuario', $datos['nombre']);
+			$query->bindValue(':correo', $datos['correo']);
 			// $query->bindValue(':password_usuario', $datos['nuevoPassword']);
 			$query->bindValue(':id_rol', $datos['rol']);
 			$query->execute();
@@ -162,9 +173,7 @@ class usuariosModel extends database
 		}
 	}
 
-
-	public function Eliminar($cedula)
-	{
+	public function Eliminar($cedula){
 		try {
 			$query = parent::prepare('UPDATE usuarios SET estatus = 0 WHERE cedula_usuario = :cedula');
 			$query->execute(['cedula' => $cedula]);
@@ -181,12 +190,14 @@ class usuariosModel extends database
 		}
 	}
 
-
-
-	public function getOne($cedula)
-	{
+	public function getOne($cedula, $rol=false){
 		try {
-			$query = parent::prepare('SELECT * FROM usuarios WHERE cedula_usuario = :cedula');
+			if($rol==true){
+				$sql = "SELECT * FROM usuarios, roles WHERE usuarios.id_rol = roles.id_rol and usuarios.cedula_usuario = :cedula";
+			}else{
+				$sql = "SELECT * FROM usuarios WHERE cedula_usuario = :cedula";
+			}
+			$query = parent::prepare($sql);
 			$respuestaArreglo = '';
 			$query->execute(['cedula' => $cedula]);
 			$respuestaArreglo = $query->fetchAll();
@@ -207,8 +218,30 @@ class usuariosModel extends database
 			return $errorReturn;
 		}
 	}
-	public function getOneRolId($id)
-	{
+
+	public function Buscar($campo, $valor){
+		try {
+			if($campo=="username"){
+				$sql = "SELECT * FROM usuarios WHERE usuarios.estatus = 1 and usuarios.nombre_usuario = '{$valor}'";
+			}
+			if($campo=="correo"){
+				$sql = "SELECT * FROM usuarios WHERE usuarios.estatus = 1 and usuarios.correo = '{$valor}'";
+			}
+			$query = parent::prepare($sql);
+			$respuestaArreglo = '';
+			$query->execute();
+			$query->setFetchMode(parent::FETCH_ASSOC);
+			$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
+			// print_r($respuestaArreglo);
+			return $respuestaArreglo;
+		} catch (PDOException $e) {
+			$errorReturn = ['estatus' => false];
+			$errorReturn += ['info' => "error sql:{$e}"];
+			return $errorReturn;
+		}
+	}
+
+	public function getOneRolId($id){
 		try {
 			$query = parent::prepare("SELECT * FROM usuarios WHERE id_rol = :id");
 			$respuestaArreglo = '';
@@ -223,8 +256,7 @@ class usuariosModel extends database
 		}
 	}
 
-	public function Intentos($user)
-	{
+	public function Intentos($user){
 		try {
 			$query = parent::prepare('SELECT intentos, estatus FROM usuarios WHERE nombre_usuario = :user');
 			$respuestaArreglo = '';
@@ -238,8 +270,7 @@ class usuariosModel extends database
 		}
 	}
 
-	public function Bloqueo($user, $int)
-	{
+	public function Bloqueo($user, $int){
 
 		try {
 			if ($int > 2) {
@@ -263,4 +294,5 @@ class usuariosModel extends database
 			return $errorReturn;
 		}
 	}
+
 }

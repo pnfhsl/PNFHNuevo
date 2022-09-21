@@ -5,6 +5,7 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\profesoresModel as profesoresModel;
 	use content\traits\Utility;
 
@@ -12,9 +13,11 @@
 		use Utility;
 		private $url;
 		private $profesor;
+		private $bitacora;
 
 		function __construct($url){			
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->profesor = new profesoresModel();
 		}
 
@@ -22,6 +25,8 @@
 			$objModel = new homeModel;
 			$_css = new headElement;
 			$_css->Heading();
+			$this->bitacora->monitorear($this->url);
+
 			$profesores = $this->profesor->Consultar();
 			$url = $this->url;
 			require_once("view/profesoresView.php");
@@ -42,14 +47,13 @@
 			if (isset($_FILES)) {
 				$respuesta = $this->profesor->Cargar($_FILES["file"]["tmp_name"][0]);
 				// var_dump($respuesta);
-				if($respuesta['msj']=="Good")
+				if($respuesta['msj']=="Good"){
+					$this->bitacora->monitorear($this->url);
 					echo json_encode($respuesta);
 				}else{
 					echo json_encode(['msj'=>"Error"]);
 				}
-
-			
-			
+			}
 		}
 
 		public function Agregar(){
@@ -61,6 +65,7 @@
 					$datos['telefono'] = $_POST['telefono'];
 					$buscar = $this->profesor->getOne($_POST['cedula']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
@@ -94,6 +99,7 @@
 					$datos['telefono'] = $_POST['telefono'];
 					$buscar = $this->profesor->getOne($_POST['cedula']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$_POST['cedula']){
 								$exec = $this->profesor->Modificar($datos); 

@@ -11,7 +11,7 @@
   ?>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini" style="width:100% !important;min-padding-right:0 !important;max-padding-right:0 !important;width:100% !important;">
 <style type="text/css">
   .zmdi-upload {
     padding: 0px 10px 0px 0px;
@@ -282,11 +282,9 @@
                         <th>Cédula</th>
                         <th>Nombre y Apellido</th>
                         <th>Télefono</th>
-                        <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
-                        ?>
+                        <?php if ($amAlumnosE==1||$amAlumnosB==1): ?>
                         <th>Acciones</th>
-                        <?php //endif 
-                        ?>
+                        <?php endif; ?>
                       </tr>
                     </thead>
                     <tbody>
@@ -317,161 +315,134 @@
                               </span>
                             </td>
 
-                            <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
-                            ?>
+                            <?php if ($amAlumnosE==1||$amAlumnosB==1):  ?>
                             <td style="width:10%">
-                              <!-- <table style="background:none;text-align:center;width:100%"> -->
-                              <!-- <tr> -->
-                              <?php //if ($amUsuariosE==1): 
-                              ?>
-                              <!-- <td style="width:50%"> -->
-                              <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" value="<?php echo $data['cedula_alumno'] ?>">
-                                <span class="fa fa-pencil">
+                              <?php if ($amAlumnosE==1): ?>
+                                <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" value="<?php echo $data['cedula_alumno'] ?>">
+                                  <span class="fa fa-pencil"></span>
+                                </button>
 
-                                </span>
-                              </button>
-                              <!-- </td> -->
-                              <?php //endif; 
-                              ?>
-                              <?php //if ($amUsuariosB==1): 
-                              ?>
-                              <!-- <td style="width:50%"> -->
-                              <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['cedula_alumno'] ?>">
-                                <span class="fa fa-trash"></span>
-                              </button>
-                              <!-- </td> -->
-                              <?php //endif; 
-                              ?>
-                              <!-- </tr> -->
-                              <!-- </table> -->
-                            </td>
-                            <?php //endif 
-                            ?>
+                                <!-- Modificar -->
+                                <button type="button" id="modificarButton<?= $data['cedula_alumno'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarAlum<?= $data['cedula_alumno'] ?>" style="display: none">Modificar</button>
+                                <div id="modalModificarAlum<?= $data['cedula_alumno'] ?>" class="modalModificarAlum modal fade modalModificarAlum<?= $data['cedula_alumno'] ?>" role="dialog">
+                                  <div class="modal-dialog tamModals" style="text-align:left;">
+                                    <div class="modal-content">
 
+                                      <div class="modal-header" style="background:#3c8dbc; color:white">
+                                        <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+                                        <h4 class="modal-title" style="text-align: left;">Modificar Alumno</h4>
+                                      </div>
 
-                            <button type="button" id="modificarButton<?= $data['cedula_alumno'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarAlum<?= $data['cedula_alumno'] ?>" style="display: none">Modificar</button>
+                                      <div class="modal-body" style="max-height:70vh;overflow:auto;">
+                                        <div class="box-body">
+                                          <div class="row">
 
-                            <div id="modalModificarAlum<?= $data['cedula_alumno'] ?>" class="modalModificarAlum modal fade modalModificarAlum<?= $data['cedula_alumno'] ?>" role="dialog">
+                                            <!-- ENTRADA PARA EL USUARIO -->
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                              <label for="cedula<?= $data['cedula_alumno'] ?>">Cedula</label>
+                                              <div class="input-group" style="width:100%;">
+                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                <input type="text" class="form-control input-lg cedulaModificar" maxlength="8" value="<?= $data['cedula_alumno'] ?>" name="<?= $data['cedula_alumno'] ?>" placeholder="Ingresar cedula" id="cedula<?= $data['cedula_alumno'] ?>" required>
+                                              </div>
+                                              <div style="width:100%;text-align:right;">
+                                                <span id="cedulaS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
+                                              </div>
+                                            </div>
 
-                              <div class="modal-dialog tamModals" style="text-align:left;">
-                                <div class="modal-content">
-
-                                  <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-
-                                  <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                                    <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
-
-                                    <h4 class="modal-title" style="text-align: left;">Modificar Alumno</h4>
-
-                                  </div>
+                                            <!-- ENTRADA PARA EL NOMBRE -->
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                              <label for="nombre<?= $data['cedula_alumno'] ?>">Nombre</label>
+                                              <div class="input-group" style="width:100%;">
+                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                <input type="text" class="form-control input-lg nombreModificar" maxlength="25" value="<?= $data['nombre_alumno'] ?>" name="<?= $data['cedula_alumno'] ?>" id="nombre<?= $data['cedula_alumno'] ?>" placeholder="Ingresar nombre" required>
+                                              </div>
+                                              <div style="width:100%;text-align:right;">
+                                                <span id="nombreS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
+                                              </div>
+                                            </div>
 
 
-                                  <div class="modal-body" style="max-height:70vh;overflow:auto;">
+                                            <!-- ENTRADA PARA EL APELLIDO -->
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                              <label for="apellido<?= $data['cedula_alumno'] ?>">Apellido</label>
+                                              <div class="input-group" style="width:100%;">
+                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                <input type="text" class="form-control input-lg apellidoModificar" maxlength="25" value="<?= $data['apellido_alumno'] ?>" name="<?= $data['cedula_alumno'] ?>" id="apellido<?= $data['cedula_alumno'] ?>" placeholder="Ingresar apellido" required>
+                                              </div>
+                                              <div style="width:100%;text-align:right;">
+                                                <span id="apellidoS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
+                                              </div>
+                                            </div>
 
-                                    <div class="box-body">
+                                            <!--ENTRADA TELÉFONO -->
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                              <label for="telefono<?= $data['cedula_alumno'] ?>">Telefono</label>
+                                              <div class="input-group" style="width:100%;">
+                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                <input type="text" class="form-control input-lg telefonoModificar" maxlength="11" value="<?= $data['telefono_alumno'] ?>" name="<?= $data['cedula_alumno'] ?>" id="telefono<?= $data['cedula_alumno'] ?>" placeholder="Ingresar Nro Telefonico" required>
+                                              </div>
+                                              <div style="width:100%;text-align:right;">
+                                                <span id="telefonoS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
+                                              </div>
+                                            </div>
 
-                                      <div class="row">
+                                            <!-- ENTRADA TRAYECTO -->
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                              <label for="trayecto<?= $data['cedula_alumno'] ?>">Trayecto</label>
+                                              <div class="input-group" style="width:100%;">
+                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                <select class="form-control select2 input-lg trayectoModificar" style="width:100%;" name="<?= $data['cedula_alumno'] ?>" placeholder="Ingresar trayecto" id="trayecto<?= $data['cedula_alumno'] ?>" required>
+                                                  <option value="">Seleccione un trayecto</option>
+                                                  <option <?php if ($data['trayecto_alumno'] == "1") {
+                                                            echo "selected";
+                                                          } ?> value="1">Trayecto I</option>
+                                                  <option <?php if ($data['trayecto_alumno'] == "2") {
+                                                            echo "selected";
+                                                          } ?> value="2">Trayecto II</option>
+                                                  <option <?php if ($data['trayecto_alumno'] == "3") {
+                                                            echo "selected";
+                                                          } ?> value="3">Trayecto III</option>
+                                                  <option <?php if ($data['trayecto_alumno'] == "4") {
+                                                            echo "selected";
+                                                          } ?> value="4">Trayecto IV</option>
+                                                </select>
+                                              </div>
+                                              <div style="width:100%;text-align:right;">
+                                                <span id="trayectoS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
+                                              </div>
+                                            </div>
 
-                                        <!-- ENTRADA PARA EL USUARIO -->
-                                        <div class="form-group col-xs-12 col-sm-12">
-                                          <label for="cedula<?= $data['cedula_alumno'] ?>">Cedula</label>
-                                          <div class="input-group" style="width:100%;">
-                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
-                                            <input type="text" class="form-control input-lg cedulaModificar" maxlength="8" value="<?= $data['cedula_alumno'] ?>" name="<?= $data['cedula_alumno'] ?>" placeholder="Ingresar cedula" id="cedula<?= $data['cedula_alumno'] ?>" required>
                                           </div>
-                                          <div style="width:100%;text-align:right;">
-                                            <span id="cedulaS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
-                                          </div>
+
                                         </div>
 
-                                        <!-- ENTRADA PARA EL NOMBRE -->
-                                        <div class="form-group col-xs-12 col-sm-12">
-                                          <label for="nombre<?= $data['cedula_alumno'] ?>">Nombre</label>
-                                          <div class="input-group" style="width:100%;">
-                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg nombreModificar" maxlength="25" value="<?= $data['nombre_alumno'] ?>" name="<?= $data['cedula_alumno'] ?>" id="nombre<?= $data['cedula_alumno'] ?>" placeholder="Ingresar nombre" required>
-                                          </div>
-                                          <div style="width:100%;text-align:right;">
-                                            <span id="nombreS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
-                                          </div>
-                                        </div>
+                                      </div>
 
 
-                                        <!-- ENTRADA PARA EL APELLIDO -->
-                                        <div class="form-group col-xs-12 col-sm-12">
-                                          <label for="apellido<?= $data['cedula_alumno'] ?>">Apellido</label>
-                                          <div class="input-group" style="width:100%;">
-                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg apellidoModificar" maxlength="25" value="<?= $data['apellido_alumno'] ?>" name="<?= $data['cedula_alumno'] ?>" id="apellido<?= $data['cedula_alumno'] ?>" placeholder="Ingresar apellido" required>
-                                          </div>
-                                          <div style="width:100%;text-align:right;">
-                                            <span id="apellidoS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
-                                          </div>
-                                        </div>
-
-                                        <!--ENTRADA TELÉFONO -->
-                                        <div class="form-group col-xs-12 col-sm-12">
-                                          <label for="telefono<?= $data['cedula_alumno'] ?>">Telefono</label>
-                                          <div class="input-group" style="width:100%;">
-                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg telefonoModificar" maxlength="11" value="<?= $data['telefono_alumno'] ?>" name="<?= $data['cedula_alumno'] ?>" id="telefono<?= $data['cedula_alumno'] ?>" placeholder="Ingresar Nro Telefonico" required>
-                                          </div>
-                                          <div style="width:100%;text-align:right;">
-                                            <span id="telefonoS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
-                                          </div>
-                                        </div>
-
-                                        <!-- ENTRADA TRAYECTO -->
-                                        <div class="form-group col-xs-12 col-sm-12">
-                                          <label for="trayecto<?= $data['cedula_alumno'] ?>">Trayecto</label>
-                                          <div class="input-group" style="width:100%;">
-                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
-                                            <select class="form-control select2 input-lg trayectoModificar" style="width:100%;" name="<?= $data['cedula_alumno'] ?>" placeholder="Ingresar trayecto" id="trayecto<?= $data['cedula_alumno'] ?>" required>
-                                              <option value="">Seleccione un trayecto</option>
-                                              <option <?php if ($data['trayecto_alumno'] == "1") {
-                                                        echo "selected";
-                                                      } ?> value="1">Trayecto I</option>
-                                              <option <?php if ($data['trayecto_alumno'] == "2") {
-                                                        echo "selected";
-                                                      } ?> value="2">Trayecto II</option>
-                                              <option <?php if ($data['trayecto_alumno'] == "3") {
-                                                        echo "selected";
-                                                      } ?> value="3">Trayecto III</option>
-                                              <option <?php if ($data['trayecto_alumno'] == "4") {
-                                                        echo "selected";
-                                                      } ?> value="4">Trayecto IV</option>
-                                            </select>
-                                          </div>
-                                          <div style="width:100%;text-align:right;">
-                                            <span id="trayectoS<?= $data['cedula_alumno'] ?>" class="mensajeError"></span>
-                                          </div>
-                                        </div>
-
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+                                        <button type="submit" class="btn btn-primary modificarButtonModal" value="<?= $data['cedula_alumno'] ?>" id="modificar">Modificar</button>
                                       </div>
 
                                     </div>
 
                                   </div>
-
-
-                                  <div class="modal-footer">
-
-                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
-                                    <button type="submit" class="btn btn-primary modificarButtonModal" value="<?= $data['cedula_alumno'] ?>" id="modificar">Modificar</button>
-
-                                  </div>
-
-
-                                  <!-- </form> -->
-
                                 </div>
+                                <!-- Modificar -->
+                                
+                              <?php endif; ?>
 
-                              </div>
+                              <?php if ($amAlumnosB==1): ?>
+                                <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['cedula_alumno'] ?>">
+                                  <span class="fa fa-trash"></span>
+                                </button>
+                              <?php endif; ?>
+                            </td>
+                            <?php endif; ?>
 
-                            </div>
+                    
+
+
 
                           </tr>
                       <?php
@@ -479,18 +450,17 @@
                       endforeach;
                       ?>
                     </tbody>
-                    <!--  <tfoot>
-                <tr>
-                  <th>Nº</th>
-                  <th>Nombre y Apellido</th>
-                  <th>Especialidades</th>
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
-                  ?>
-                  <th> - </th>
-                  <?php //endif 
-                  ?>
-                </tr>
-                </tfoot> -->
+                     <tfoot>
+                      <tr>
+                        <th>Nº</th>
+                        <th>Cédula</th>
+                        <th>Nombre y Apellido</th>
+                        <th>Télefono</th>
+                        <?php if ($amAlumnosE==1||$amAlumnosB==1): ?>
+                        <th>Acciones</th>
+                        <?php endif; ?>
+                      </tr>
+                    </tfoot>
                   </table>
 
                 </div>

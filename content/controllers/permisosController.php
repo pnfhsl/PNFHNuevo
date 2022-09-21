@@ -5,15 +5,18 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\permisosModel as permisosModel;
 	use content\traits\Utility;
 	class permisosController{
 		use Utility;
 		private $url;
 		private $permiso;
+		private $bitacora;
 
 		function __construct($url){			
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->permiso = new permisosModel();
 		}
 
@@ -21,6 +24,7 @@
 			$objModel = new homeModel;
 			$_css = new headElement;
 			$_css->Heading();
+			$this->bitacora->monitorear($this->url);
 			$permisos = $this->permiso->Consultar();
 			$url = $this->url;
 			require_once("view/permisosView.php");
@@ -41,6 +45,7 @@
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
 					$buscar = $this->permiso->getOneNombre($datos['nombre']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
@@ -71,6 +76,7 @@
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
 					$buscar = $this->permiso->getOneNombre($datos['nombre']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$buscar['data'][0]['id_permiso']){
 								$exec = $this->permiso->Modificar($datos); 
@@ -96,6 +102,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['permisoDelete'])) {
 					$buscar = $this->permiso->getOne($_POST['permisoDelete']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->permiso->Eliminar($_POST['permisoDelete']);

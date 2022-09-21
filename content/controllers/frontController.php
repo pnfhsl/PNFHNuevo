@@ -2,7 +2,6 @@
 	/* utilizaremos namespace en la primera línea de código */
 	namespace content\controllers;
 	use content\traits\Utility as Utility;
-
 	use config\settings\sysConfig as sysConfig;  /* El as nos ayuda a renombrar el directorio sysConfig*/
 
 	/* Extender el sysConfig utilizando composer dentro de la clase frontController*/

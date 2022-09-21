@@ -87,7 +87,7 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function (respuesta) {
-                alert(respuesta);
+                // alert(respuesta);
                 console.log('hola');
                 var datos = JSON.parse(respuesta);
                 if (datos.msj === "Good") {
@@ -119,7 +119,6 @@ $(document).ready(function () {
             }
 
         });
-
     });
 
     $('#file-input').on('change', function () {
@@ -309,7 +308,7 @@ $(document).ready(function () {
                 }
             });
         }
-
+        $("body").attr("style","width:100%;");
     });
 
     $(".modificarBtn").click(function () {
@@ -467,7 +466,6 @@ $(document).ready(function () {
             });
         }
 
-
     });    
 
     $(".eliminarBtn").click(function () {
@@ -615,7 +613,7 @@ function validar(modificar = false, id = "") {
 
     var telefono = $(form + " #telefono" + id).val();
     var rtelefono = false;
-    alert(telefono);
+    // alert(telefono);
     if (telefono.length >= 11 && telefono.length <= 11) {
         $(form + " #telefonoS" + id).html("");
         rtelefono = true;

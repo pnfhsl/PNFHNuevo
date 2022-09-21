@@ -57,7 +57,98 @@
 
                                 <input type="hidden" id="url" value="<?= $this->encriptar('Perfil'); ?>">
                                 <input type="hidden" id="url" value="<?= $this->encriptar($url); ?>">
-                                <a href="#" class="btn btn-primary btn-block"><b>Cambiar</b></a>
+                                <button type="submit" class="btn modificarFotoBtn btn-primary btn-block" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>"><b>Cambiar</b></button>
+                                <!-- <button type="submit" class="btn modificarFotoBtn btn-primary pull-right btn-block btn-sm" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>">Editar</button> -->
+                                <button type="button" id="modificarFotoButton<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarFoto<?= $_SESSION['cuenta_persona']['cedula'] ?>" style="display: none">Editar</button>
+
+                                <div id="modalModificarFoto<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="modalModificarFoto modal fade modalModificarFoto<?= $_SESSION['cuenta_persona']['cedula'] ?>" role="dialog">
+
+                                    <div class="modal-dialog tamModals" style="text-align:left;">
+                                        <div class="modal-content">
+
+                                            <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+
+                                            <div class="modal-header" style="background:#3c8dbc; color:white">
+
+                                                <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+
+                                                <h4 class="modal-title" style="text-align: left;">Modificar Datos</h4>
+
+                                            </div>
+
+
+                                            <div class="modal-body" style="max-height:70vh;overflow:auto;">
+
+                                                <div class="box-body">
+
+                                                    <div class="row">
+                                                        <div class="col 16 offset-13 ">
+                                                            <form action="" method="POST" enctype="multipart/form-data" id="frm-registrar">
+                                                                <div class="file-field input-field">
+                                                                    <div class="btn-small amber darken-1">
+                                                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i>Elige una imagen</span>
+                                                                        <input type="file" name="foto" id="foto" onchange="vista_preliminar(event)">
+
+                                                                        <div class="file-path-wapper">
+                                                                            <input type="text" class="form-control input-lg file-path validate">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div><img src="" alt="" id="img-foto" width="250"> </div>
+                                                                    <div class="input-field">
+                                                                        <button type="submit" class="btn-small blue" name="btn-agregar" id="btn-agregar">Agregar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <!-- ENTRADA PARA EL USUARIO -->
+                                                        <!-- <div class="form-group col-xs-12 col-sm-12">
+                                                                           <label for="usuario<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>">Usuario</label>
+                                                                           <div class="input-group" style="width:100%;">
+                                                                               <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                                               <input type="text" class="form-control input-lg " placeholder="Ingrese su usuario actual" id="usuario" required>
+                                                                           </div> -->
+                                                        <!-- <div style="width:100%;text-align:right;">
+                                                                               <span id="usuarioS<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>" class="mensajeError"></span>
+                                                                           </div> -->
+                                                        <!-- </div> -->
+                                                        <!-- ENTRADA DE LA CONTRASEÑA-->
+                                                        <!-- <div class="form-group col-xs-12 col-sm-12">
+                                                                            <label for="password<?= $_SESSION['cuenta_usuario']['password_usuario'] ?>">Contraseña</label>
+                                                                            <div class="input-group" style="width:100%;">
+                                                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                                                <input type="password" class="form-control input-lg " placeholder="Ingrese su contraseña actual" id="password" required> -->
+                                                        <!-- <input type="password" class="form-control" id="password" placeholder="Password" required="required" /> -->
+                                                        <!-- </div>
+                                                                           
+                                                                        </div> -->
+
+
+
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="modal-footer">
+
+                                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+
+                                                <button type="submit" class="btn btn-primary modificarButtonFoto" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="modificar">Enviar</button>
+
+                                            </div>
+
+
+                                            <!-- </form> -->
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
                             <!-- /.box-body -->
                         </div>
@@ -68,7 +159,7 @@
 
 
                             <div class="box-header with-border">
-                                <h3 class="box-title">About Me</h3>
+                                <h3 class="box-title">Sobre mí</h3>
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
@@ -109,248 +200,382 @@
                     <!-- /.col -->
                     <div class="col-md-9">
                         <div class="nav-tabs-custom">
+                            <style>.modificarBtnContraseña:hover{cursor:pointer;border:1px solid #DDD;}</style>
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#activity" data-toggle="tab">Datos Personales</a></li>
                                 <li><a href="#timeline" data-toggle="tab">Preguntas de Seguridad</a></li>
-                                <li><a href="#settings" data-toggle="tab">Contraseña</a></li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="active tab-pane" id="activity">
+                                <li><a data-toggle="tab" class=" modificarBtnContraseña" style="padding:10px 15px;" id="<?= $_SESSION['cuenta_persona']['cedula'] ?>"> Contraseña</a></li>
+                                <!-- <li><button type="submit" class="btn modificarBtnContraseña btn-primary pull-right btn-block btn-sm" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>">Editar</button></li> -->
+                                <div class="col-sm-3">
+                                    <!-- <button type="submit" class="btn modificarBtnContraseña btn-primary pull-right btn-block btn-sm" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>">Editar</button> -->
+                                    <button type="button" id="modificarButtonC<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarPerfilContraseña<?= $_SESSION['cuenta_persona']['cedula'] ?>" style="display: none">Editar</button>
 
-                                    <?php
-                                    // if ($_SESSION['cuenta_usuario']['nombre_rol'] === "Superusuario" || $_SESSION['cuenta_usuario']['nombre_rol'] === "Profesor") {
-                                        // foreach ($resp as $data) :
-                                        //     if (!empty($data['cedula_profesor'])) :
+                                    <div id="modalModificarPerfilContraseña<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="modalModificarPerfilContraseña modal fade modalModificarPerfilContraseña<?= $_SESSION['cuenta_persona']['cedula'] ?>" role="dialog">
 
-                                    ?>
-                                                <!-- Post -->
-                                                <!-- <?php echo $data['cedula_profesor']; ?> -->
-                                                <div class="post">
-                                                    <div class="user-block">
-                                                        <!-- <img class="img-circle img-bordered-sm" src="<?= _ROUTE_ ?>assets/img/user-3.png" alt="user image"> -->
-                                                        <span class="form-horizontal">
+                                        <div class="modal-dialog tamModals" style="text-align:left;">
+                                            <div class="modal-content">
 
-                                                            <div class="form-group">
-                                                                <label for="inputName" class="col-sm-2 control-label"><i class="fa fa-address-card"></i> Cédula</label>
+                                                <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
 
-                                                                <div class="col-sm-10">
-                                                                    <ul class="list-group list-group-unbordered">
-                                                                        <li class="list-group-item">
+                                                <div class="modal-header" style="background:#3c8dbc; color:white">
+
+                                                    <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+
+                                                    <h4 class="modal-title" style="text-align: left;">Modificar Datos</h4>
+
+                                                </div>
 
 
-                                                                            <a class="pull "> <?php echo $ci; ?></a>
+                                                <div class="modal-body" style="max-height:70vh;overflow:auto;">
 
-                                                                    </ul>
+                                                    <div class="box-body">
+
+                                                        <div class="row">
+                                                            <!-- ENTRADA PARA EL USUARIO -->
+                                                            <div class="form-group col-xs-12 col-sm-12">
+                                                                <label for="usuario<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>">Usuario</label>
+                                                                <div class="input-group" style="width:100%;">
+                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                                    <input type="text" class="form-control input-lg " placeholder="Ingrese su usuario actual" id="usuario" required>
                                                                 </div>
+                                                                <!-- <div style="width:100%;text-align:right;">
+                                                                               <span id="usuarioS<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>" class="mensajeError"></span>
+                                                                           </div> -->
                                                             </div>
-                                                            <div class="form-group">
-
-                                                                <label for="inputName" class="col-sm-2 control-label " style="color: black;"><i class="fa fa-user"></i> Nombre</label>
-
-                                                                <div class="col-sm-10">
-                                                                    <ul class="list-group list-group-unbordered">
-                                                                        <li class="list-group-item">
-
-                                                                            <!-- <?php echo $data['nombre_profesor']; ?> -->
-                                                                            <a class="pull "><?php echo $nombre; ?></a>
-
-
-                                                                    </ul>
+                                                            <!-- ENTRADA DE LA CONTRASEÑA-->
+                                                            <div class="form-group col-xs-12 col-sm-12">
+                                                                <label for="password<?= $_SESSION['cuenta_usuario']['password_usuario'] ?>">Contraseña</label>
+                                                                <div class="input-group" style="width:100%;">
+                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                                    <input type="password" class="form-control input-lg " placeholder="Ingrese su contraseña actual" id="password" required>
+                                                                    <!-- <input type="password" class="form-control" id="password" placeholder="Password" required="required" /> -->
                                                                 </div>
+
                                                             </div>
-                                                            <div class="form-group">
-
-                                                                <label for="inputName" class="col-sm-2 control-label " style="color: black;"><i class="fa fa-user"></i> Apellido</label>
-
-                                                                <div class="col-sm-10">
-                                                                    <ul class="list-group list-group-unbordered">
-                                                                        <li class="list-group-item">
-
-                                                                            <!-- <?php echo $data['apellido_profesor']; ?> -->
-                                                                            <a class="pull "><?php echo $apellido; ?></a>
+                                                            <input type="hidden" id="cedula" value="<?php echo $ci;  ?>">
+                                                            <input type="hidden" id="rol" value="<?php echo $rol;  ?>">
 
 
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-
-                                                                <label for="inputName" class="col-sm-2 control-label " style="color: black;"><i class="fa fa-phone-square"></i> Teléfono</label>
-
-                                                                <div class="col-sm-10">
-                                                                    <ul class="list-group list-group-unbordered">
-                                                                        <li class="list-group-item">
-
-                                                                            <!-- <?php echo $data['telefono_profesor']; ?> -->
-                                                                            <a class="pull "><?php echo $telef; ?></a>
-
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <!-- <input type="text" id="rol" value="<?= $_SESSION['cuenta_usuario']['nombre_rol'] ?>"> -->
-                                                            
-                                                            
-                                                            <div class="form-group">
-
-                                                                <label for="inputName" class="col-sm-2 control-label " style="color: black;"><i class="fa  fa-envelope"></i> Correo</label>
-
-                                                                <div class="col-sm-10">
-                                                                    <ul class="list-group list-group-unbordered">
-                                                                        <li class="list-group-item">
 
 
-                                                                            <a class="pull "><?php echo $correo;  ?></a>
-
-
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <input type="hidden" id="trayecto" value="<?php echo $trayecto;  ?>">
-
+                                                        </div>
 
                                                     </div>
-                                                    <!-- /.post -->
 
-                                                    <!-- Post -->
-
-                                                    <!-- <?php echo $_SESSION['cuenta_persona']['cedula'] . ' ' . $_SESSION['cuenta_persona']['nombre'] . ' ' . $_SESSION['cuenta_persona']['apellido'] . ' ' . $_SESSION['cuenta_persona']['telefono'] . ' ' . $_SESSION['cuenta_usuario']['correo'] ?> -->
-
-                                                    <div class="form-horizontal">
-                                                        <div class="form-group margin-bottom-none">
-                                                            <div class="col-sm-9">
-
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <button type="submit" class="btn modificarBtn btn-primary pull-right btn-block btn-sm" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>">Editar</button>
-                                                                <button type="button" id="modificarButton<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarPerfil<?= $_SESSION['cuenta_persona']['cedula'] ?>" style="display: none">Editar</button>
-
-                                                                <div id="modalModificarPerfil<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="modalModificarPerfil modal fade modalModificarPerfil<?= $_SESSION['cuenta_persona']['cedula'] ?>" role="dialog">
-
-                                                                    <div class="modal-dialog tamModals" style="text-align:left;">
-                                                                        <div class="modal-content">
-
-                                                                            <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-                                                                            <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                                                                                <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
-
-                                                                                <h4 class="modal-title" style="text-align: left;">Modificar Perfil</h4>
-
-                                                                            </div>
+                                                </div>
 
 
-                                                                            <div class="modal-body" style="max-height:70vh;overflow:auto;">
+                                                <div class="modal-footer">
 
-                                                                                <div class="box-body">
+                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
 
-                                                                                    <div class="row">
+                                                    <button type="submit" class="btn btn-primary modificarButtonModalC" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="modificar">Enviar</button>
 
-                                                                                        <!-- ENTRADA PARA EL USUARIO -->
-                                                                                        <div class="form-group col-xs-12 col-sm-12">
-                                                                                            <label for="cedula<?= $_SESSION['cuenta_persona']['cedula'] ?>">Cedula</label>
-                                                                                            <div class="input-group" style="width:100%;">
-                                                                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
-                                                                                                <input type="text" class="form-control input-lg cedulaModificar" maxlength="8" value="<?php echo $ci; ?>" name="<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingresar cedula" id="cedula<?= $_SESSION['cuenta_persona']['cedula'] ?>" required>
-                                                                                            </div>
-                                                                                            <div style="width:100%;text-align:right;">
-                                                                                                <span id="cedulaS<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="mensajeError"></span>
-                                                                                            </div>
-                                                                                            <!-- <?php echo $_SESSION['cuenta_persona']['cedula']  ?> -->
-                                                                                        </div>
+                                                </div>
+
+
+                                                <!-- </form> -->
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
 
 
 
-                                                                                        <!-- ENTRADA PARA EL NOMBRE -->
-                                                                                        <div class="form-group col-xs-12 col-sm-12">
-                                                                                            <label for="nombre<?= $_SESSION['cuenta_persona']['nombre'] ?>">Nombre</label>
-                                                                                            <div class="input-group" style="width:100%;">
-                                                                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                                                                                <input type="text" class="form-control input-lg nombreModificar" maxlength="25" value="<?php echo $nombre; ?>" id="nombre<?= $_SESSION['cuenta_persona']['cedula'] ?>" name="<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingresar nombre" required>
-                                                                                            </div>
-
-                                                                                            <div style="width:100%;text-align:right;">
-                                                                                                <span id="nombreS<?= $_SESSION['cuenta_persona']['nombre'] ?>" class="mensajeError"></span>
-                                                                                            </div>
-                                                                                            <!-- <?php echo $_SESSION['cuenta_persona']['nombre']  ?> -->
-                                                                                        </div>
 
 
-                                                                                        <!-- ENTRADA PARA EL APELLIDO -->
-                                                                                        <div class="form-group col-xs-12 col-sm-12">
-                                                                                            <label for="apellido<?= $_SESSION['cuenta_persona']['apellido'] ?>">Apellido</label>
-                                                                                            <div class="input-group" style="width:100%;">
-                                                                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                                                                                <input type="text" class="form-control input-lg apellidoModificar apellidoModificar<?= $_SESSION['cuenta_persona']['apellido'] ?>" maxlength="25" value="<?php echo $apellido; ?>" name="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="apellido<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingresar apellido" required>
-                                                                                            </div>
-                                                                                            <div style="width:100%;text-align:right;">
-                                                                                                <span id="apellidoS<?= $_SESSION['cuenta_persona']['apellido'] ?>" class="mensajeError"></span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <!-- <?php echo $_SESSION['cuenta_persona']['apellido']  ?> -->
-
-                                                                                        <!--ENTRADA TELÉFONO -->
-                                                                                        <div class="form-group col-xs-12 col-sm-12">
-                                                                                            <label for="telefono<?= $_SESSION['cuenta_persona']['telefono'] ?>">Telefono</label>
-                                                                                            <div class="input-group" style="width:100%;">
-                                                                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                                                                                <input type="text" class="form-control input-lg telefonoModificar telefonoModificar<?= $_SESSION['cuenta_persona']['telefono'] ?>" maxlength="11" value="<?php echo $telef; ?>" name="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="telefono<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingresar Nro Telefonico" required>
-                                                                                            </div>
-                                                                                            <div style="width:100%;text-align:right;">
-                                                                                                <span id="telefonoS<?= $_SESSION['cuenta_persona']['telefono'] ?>" class="mensajeError"></span>
-                                                                                            </div>
-                                                                                            <!-- <?php echo $_SESSION['cuenta_persona']['telefono']  ?> -->
-
-                                                                                        </div>
-
-                                                                                        <!--ENTRADA DEL CORREO -->
-                                                                                        <div class="form-group col-xs-12 col-sm-12">
-                                                                                            <label for="correo<?= $_SESSION['cuenta_usuario']['correo'] ?>">Correo</label>
-                                                                                            <div class="input-group" style="width:100%;">
-                                                                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                                                                                <input type="text" class="form-control input-lg correoModificar correoModificar<?= $_SESSION['cuenta_usuario']['correo'] ?>" maxlength="11" value="<?php echo $correo; ?>" name="<?= $_SESSION['cuenta_usuario']['cedula'] ?>" id="correo<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingrese su correo" required>
-                                                                                            </div>
-                                                                                            <div style="width:100%;text-align:right;">
-                                                                                                <span id="correoS<?= $_SESSION['cuenta_usuario']['correo'] ?>" class="mensajeError"></span>
-                                                                                            </div>
-                                                                                            <!-- <?php echo $_SESSION['cuenta_usuario']['correo']  ?> -->
+                                </div>
 
 
-                                                                                        </div>
-
-                                                                                    </div>
 
 
-                                                                                </div>
 
-                                                                            </div>
+                                <div class="col-sm-3">
+                                    <!-- <button type="submit" class="btn modificarBtnContraseña btn-primary pull-right btn-block btn-sm" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>">Editar</button> -->
+                                    <button type="button" id="modificarButtonContraseña" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarPerfilContraseñaLista<?= $_SESSION['cuenta_persona']['cedula'] ?>" style="display: none">Editar</button>
+
+                                    <div id="modalModificarPerfilContraseñaLista<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="modalModificarPerfilContraseñaLista modal fade modalModificarPerfilContraseñaLista<?= $_SESSION['cuenta_persona']['cedula'] ?>" role="dialog">
+
+                                        <div class="modal-dialog tamModals" style="text-align:left;">
+                                            <div class="modal-content">
+
+                                                <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+
+                                                <div class="modal-header" style="background:#3c8dbc; color:white">
+
+                                                    <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+
+                                                    <h4 class="modal-title" style="text-align: left;">Modificar Datos</h4>
+
+                                                </div>
 
 
-                                                                            <div class="modal-footer">
+                                                <div class="modal-body" style="max-height:70vh;overflow:auto;">
 
-                                                                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+                                                    <div class="box-body">
 
-                                                                                <button type="submit" class="btn btn-primary modificarButtonModal" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="modificar">Modificar</button>
-
-                                                                            </div>
-
-
-                                                                            <!-- </form> -->
-
-                                                                        </div>
-
-                                                                    </div>
-
+                                                        <div class="row">
+                                                            <!-- ENTRADA PARA EL USUARIO -->
+                                                            <div class="form-group col-xs-12 col-sm-12">
+                                                                <label for="username">Usuario</label>
+                                                                <div class="input-group" style="width:100%;">
+                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                                    <input type="text" class="form-control input-lg " value="<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>" name="<?= $_SESSION['cuenta_usuario']['cedula_usuario'] ?>" placeholder="Ingresar cedula" id="username" required>
+                                                                    <input type="hidden" id="valusuario" class="valusuario" value="1">
+                                                                </div>
+                                                                <div style="width:100%;text-align:right;">
+                                                                    <span id="usuarioS" class="mensajeError"></span>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                          
+
+                                                            <!-- ENTRADA PARA EL PASSWORD -->
+                                                            <div class="form-group col-xs-12 col-sm-6">
+                                                                <label for="password">Contraseña</label>
+                                                                <div class="input-group" style="width:100%;">
+                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-key"></i></span>
+                                                        
+                                                                    <input type="password" class="form-control input-lg nuevoPassword" placeholder="Ingrese su contraseña actual" id="nuevoPassword" required>
+                                                                </div>
+                                                                <div style="width:100%;text-align:right;">
+                                                                    <span id="nombreP" class="mensajeError"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- ENTRADA PARA CONFIRMAR EL PASSWORD -->
+                                                            <div class="form-group col-xs-12 col-sm-6">
+                                                                <label for="confirmarPassword">Confirmar contraseña</label>
+                                                                <div class="input-group" style="width:100%;">
+                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-key"></i></span>
+                                                                    <input type="password" class="form-control input-lg confirmarPassword" placeholder="Ingrese su contraseña actual" id="confirmarPassword" required>
+                                                                </div>
+                                                                <div style="width:100%;text-align:right;">
+                                                                    <span id="nombrePC" class="mensajeError"></span>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <input type="hidden" id="correoHiddenContras" value="<?=$_SESSION['cuenta_usuario']['correo'];?>">
                                                     </div>
                                                 </div>
 
 
+
+
+
+
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+                                                    <button type="submit" class="btn btn-primary modificarButtonModalContraseñaLista" value="<?=$_SESSION['cuenta_persona']['cedula'] ?>" id="modificar">Enviar</button>
+                                                </div>
+                                                <!-- </form> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            </ul>
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="activity">
+                                    <div class="post">
+                                        <div class="user-block">
+                                            <!-- <img class="img-circle img-bordered-sm" src="<?= _ROUTE_ ?>assets/img/user-3.png" alt="user image"> -->
+                                            <span class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label for="inputName" class="col-sm-2 control-label"><span style="color:#444"><i class="fa fa-address-card"></i> Cédula</span></label>
+                                                    <div class="col-sm-10">
+                                                        <ul class="list-group list-group-unbordered">
+                                                            <li class="list-group-item">
+                                                                <a class="pull "> <?php echo $ci; ?></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputName" class="col-sm-2 control-label"><span style="color:#444"><i class="fa fa-user"></i> Nombre</span></label>
+                                                    <div class="col-sm-10">
+                                                        <ul class="list-group list-group-unbordered">
+                                                            <li class="list-group-item">
+                                                                <a class="pull "><?php echo $nombre; ?></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputName" class="col-sm-2 control-label"><span style="color:#444;"><i class="fa fa-user"></i> Apellido</span></label>
+                                                    <div class="col-sm-10">
+                                                        <ul class="list-group list-group-unbordered">
+                                                            <li class="list-group-item">
+                                                                <a class="pull "><?php echo $apellido; ?></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputName" class="col-sm-2 control-label"><span style="color:#444;"><i class="fa fa-phone-square"></i> Teléfono</span></label>
+                                                    <div class="col-sm-10">
+                                                        <ul class="list-group list-group-unbordered">
+                                                            <li class="list-group-item">
+                                                                <a class="pull "><?php echo $telef; ?></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputName" class="col-sm-2 control-label"><span style="color:#444"><i class="fa fa-envelope"></i> Correo</span></label>
+                                                    <div class="col-sm-10">
+                                                        <ul class="list-group list-group-unbordered">
+                                                            <li class="list-group-item">
+                                                                <a class="pull "><?php echo $correo;  ?></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" id="trayecto" value="<?php echo $trayecto;  ?>">
+                                        </div>
+                                        <!-- /.post -->
+
+                                        <div class="form row">
+                                            <div class="form-group margin-bottom-none">
+                                                <div class="col-sm-9">
+
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="submit" class="btn modificarBtn btn-primary pull-right btn-block btn-sm" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>">Editar</button>
+                                                    <button type="button" id="modificarButton<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarPerfil<?= $_SESSION['cuenta_persona']['cedula'] ?>" style="display: none">Editar</button>
+
+                                                    <div id="modalModificarPerfil<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="modalModificarPerfil modal fade modalModificarPerfil<?= $_SESSION['cuenta_persona']['cedula'] ?>" role="dialog">
+                                                        
+                                                        <div class="modal-dialog tamModals" style="text-align:left;">
+                                                            <div class="modal-content">
+                                                                <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+                                                                <div class="modal-header" style="background:#3c8dbc; color:white">
+                                                                    <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+                                                                    <h4 class="modal-title" style="text-align: left;">Modificar Perfil</h4>
+                                                                </div>
+
+                                                                <div class="modal-body" style="max-height:70vh;overflow:auto;">
+                                                                    <div class="box-body">
+                                                                        <div class="row">
+                                                                            <!-- ENTRADA PARA EL USUARIO -->
+                                                                            <div class="form-group col-xs-12 col-sm-12" >
+                                                                                <label for="cedula<?= $_SESSION['cuenta_persona']['cedula'] ?>"><span style='color:#444'>Cedula</span></label>
+                                                                                <div class="input-group" style="width:100%;">
+                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                                                    <input type="text" class="form-control input-lg cedulaModificar" maxlength="8" value="<?php echo $ci; ?>" name="<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingresar cedula" id="cedula<?= $_SESSION['cuenta_persona']['cedula'] ?>" required>
+                                                                                </div>
+                                                                                <div style="width:100%;text-align:right;">
+                                                                                    <span id="cedulaS<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="mensajeError"></span>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <!-- ENTRADA PARA EL NOMBRE -->
+                                                                            <div class="form-group col-xs-12 col-sm-12">
+                                                                                <label for="nombre<?=$_SESSION['cuenta_persona']['cedula'] ?>"><span style='color:#444'>Nombre</span></label>
+                                                                                <div class="input-group" style="width:100%;">
+                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                                                    <input type="text" class="form-control input-lg nombreModificar" maxlength="25" value="<?php echo $nombre; ?>" id="nombre<?= $_SESSION['cuenta_persona']['cedula'] ?>" name="<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingresar nombre" required>
+                                                                                </div>
+
+                                                                                <div style="width:100%;text-align:right;">
+                                                                                    <span id="nombreS<?=$_SESSION['cuenta_persona']['cedula'] ?>" class="mensajeError"></span>
+                                                                                </div>
+                                                                                <!-- <?php echo $_SESSION['cuenta_persona']['nombre']  ?> -->
+                                                                            </div>
+
+
+                                                                            <!-- ENTRADA PARA EL APELLIDO -->
+                                                                            <div class="form-group col-xs-12 col-sm-12">
+                                                                                <label for="apellido<?=$_SESSION['cuenta_persona']['cedula'] ?>"><span style="color:#444">Apellido</span></label>
+                                                                                <div class="input-group" style="width:100%;">
+                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                                                    <input type="text" class="form-control input-lg apellidoModificar apellidoModificar<?= $_SESSION['cuenta_persona']['apellido'] ?>" maxlength="25" value="<?php echo $apellido; ?>" name="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="apellido<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingresar apellido" required>
+                                                                                </div>
+                                                                                <div style="width:100%;text-align:right;">
+                                                                                    <span id="apellidoS<?=$_SESSION['cuenta_persona']['cedula'] ?>" class="mensajeError"></span>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <!--ENTRADA TELÉFONO -->
+                                                                            <div class="form-group col-xs-12 col-sm-12">
+                                                                                <label for="telefono<?=$_SESSION['cuenta_persona']['cedula'] ?>"><span style="color:#444">Telefono</span></label>
+                                                                                <div class="input-group" style="width:100%;">
+                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                                                    <input type="text" class="form-control input-lg telefonoModificar telefonoModificar<?= $_SESSION['cuenta_persona']['telefono'] ?>" maxlength="11" value="<?php echo $telef; ?>" name="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="telefono<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingresar Nro Telefonico" required>
+                                                                                </div>
+                                                                                <div style="width:100%;text-align:right;">
+                                                                                    <span id="telefonoS<?=$_SESSION['cuenta_persona']['cedula'] ?>" class="mensajeError"></span>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <!--ENTRADA DEL CORREO -->
+                                                                            <div class="form-group col-xs-12 col-sm-12">
+                                                                                <label for="correo<?=$_SESSION['cuenta_usuario']['cedula'] ?>"><span style="color:#444">Correo</span></label>
+                                                                                <div class="input-group" style="width:100%;">
+                                                                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                                                    <input type="text" class="form-control input-lg correoModificar correoModificar<?=$_SESSION['cuenta_persona']['cedula'] ?>" maxlength="45" value="<?php echo $correo; ?>" name="<?=$_SESSION['cuenta_persona']['cedula'] ?>" id="correo<?= $_SESSION['cuenta_persona']['cedula'] ?>" placeholder="Ingrese su correo" required>
+                                                                                    <input type="hidden" id="valcorreo<?=$_SESSION['cuenta_persona']['cedula']?>" class="valcorreo<?=$_SESSION['cuenta_persona']['cedula']?>" value="1">
+                                                                                </div>
+                                                                                <div style="width:100%;text-align:right;">
+                                                                                    <span id="correoS<?=$_SESSION['cuenta_persona']['cedula'] ?>" class="mensajeError"></span>
+                                                                                </div>
+                                                                            </div>
+
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <div class="modal-footer">
+
+                                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+
+                                                                    <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$_SESSION['cuenta_persona']['cedula'] ?>" id="modificar">Modificar</button>
+
+                                                                </div>
+
+
+                                                                <!-- </form> -->
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <?php
-                                        //     endif;
-                                        // endforeach;
+                                    //     endif;
+                                    // endforeach;
                                     // }
                                     ?>
 
@@ -490,131 +715,7 @@
                                 </div>
                                 <!-- /.tab-pane -->
 
-                                <div class="tab-pane" id="settings">
-                                    <div class="form-horizontal">
-                                        <div class="form-group">
-                                            <label for="inputName" class="col-sm-2 control-label "> <i class="fa fa-user"></i> Usuario </label>
 
-                                            <div class="col-sm-10">
-                                                <ul class="list-group list-group-unbordered">
-                                                    <li class="list-group-item">
-
-
-                                                        <a class="pull "><?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?></a>
-
-
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="inputName" class="col-sm-2 control-label " style="color: black;"><i class="fa fa-key"></i> Contraseña</label>
-
-                                            <div class="col-sm-10">
-                                                <ul class="list-group list-group-unbordered">
-                                                    <li class="list-group-item">
-
-                                                        <a class="pull " ?>**********</a>
-                                                        <!-- <a class="pull " type="password"><?= $_SESSION['cuenta_usuario']['password_usuario'] ?></a> -->
-
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <!-- <div class="col-sm-offset-2 col-sm-10">
-                                                <button type="submit" class="btn btn-danger">Submit</button>
-                                            </div> -->
-                                            <div class="col-sm-9">
-
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <button type="submit" class="btn modificarBtnContraseña btn-primary pull-right btn-block btn-sm" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>">Editar</button>
-                                                <button type="button" id="modificarButtonC<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarPerfilContraseña<?= $_SESSION['cuenta_persona']['cedula'] ?>" style="display: none">Editar</button>
-
-                                                <div id="modalModificarPerfilContraseña<?= $_SESSION['cuenta_persona']['cedula'] ?>" class="modalModificarPerfilContraseña modal fade modalModificarPerfilContraseña<?= $_SESSION['cuenta_persona']['cedula'] ?>" role="dialog">
-
-                                                    <div class="modal-dialog tamModals" style="text-align:left;">
-                                                        <div class="modal-content">
-
-                                                            <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-                                                            <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                                                                <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
-
-                                                                <h4 class="modal-title" style="text-align: left;">Modificar Datos</h4>
-
-                                                            </div>
-
-
-                                                            <div class="modal-body" style="max-height:70vh;overflow:auto;">
-
-                                                                <div class="box-body">
-
-                                                                    <div class="row">
-
-                                                                        <!-- ENTRADA PARA EL USUARIO -->
-                                                                        <div class="form-group col-xs-12 col-sm-12">
-                                                                            <label for="usuario<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>">Usuario</label>
-                                                                            <div class="input-group" style="width:100%;">
-                                                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
-                                                                                <input type="text" class="form-control input-lg cedulaModificar" maxlength="8" value="<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>" name="<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>" placeholder="Ingresar cedula" id="usuario<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>" required>
-                                                                            </div>
-                                                                            <div style="width:100%;text-align:right;">
-                                                                                <span id="usuarioS<?= $_SESSION['cuenta_usuario']['nombre_usuario'] ?>" class="mensajeError"></span>
-                                                                            </div>
-                                                                        </div>
-
-
-                                                                        <!-- ENTRADA PARA LA CONTRASEÑA -->
-                                                                        <div class="form-group col-xs-12 col-sm-12">
-                                                                            <label for="password<?= $_SESSION['cuenta_usuario']['password_usuario'] ?>">Contraseña</label>
-                                                                            <div class="input-group" style="width:100%;">
-                                                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                                                                <input type="password" class="form-control input-lg nombreModificar" maxlength="25" value="<?= $_SESSION['cuenta_usuario']['password_usuario'] ?>" name="<?= $_SESSION['cuenta_usuario']['password_usuario'] ?>" id="password<?= $_SESSION['cuenta_usuario']['password_usuario'] ?>" placeholder="Ingresar nueva contraseña" required>
-                                                                            </div>
-                                                                            <div style="width:100%;text-align:right;">
-                                                                                <span id="passwordS<?= $_SESSION['cuenta_usuario']['password_usuario'] ?>" class="mensajeError"></span>
-                                                                            </div>
-                                                                        </div>
-
-
-
-
-                                                                    </div>
-
-
-                                                                </div>
-
-                                                            </div>
-
-
-                                                            <div class="modal-footer">
-
-                                                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
-                                                                <button type="submit" class="btn btn-primary modificarButtonModalC" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="modificar">Modificar</button>
-
-                                                            </div>
-
-
-                                                            <!-- </form> -->
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-
-
-
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
                                 <!-- /.tab-pane -->
                             </div>
                             <!-- /.tab-content -->
@@ -634,7 +735,7 @@
 
 
 
-        <?php //require_once('assets/footered.php'); 
+        <?php require_once('assets/footer.php'); 
         ?>
         <?php if (!empty($response)) : ?>
             <input type="hidden" class="responses" value="<?php echo $response ?>">

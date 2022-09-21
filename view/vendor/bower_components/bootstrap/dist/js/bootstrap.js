@@ -1194,6 +1194,7 @@ if (typeof jQuery === 'undefined') {
   }
 
   Modal.prototype.setScrollbar = function () {
+    // alert("Al cerrar un modal");
     var bodyPad = parseInt((this.$body.css('padding-right') || 0), 10)
     this.originalBodyPad = document.body.style.paddingRight || ''
     var scrollbarWidth = this.scrollbarWidth
@@ -1210,12 +1211,18 @@ if (typeof jQuery === 'undefined') {
   }
 
   Modal.prototype.resetScrollbar = function () {
-    this.$body.css('padding-right', this.originalBodyPad)
+    // alert("Al cerrar");
+    // alert(this.originalBodyPad);
+    this.$body.css('padding-right', "0px")
+    // this.$body.css('padding-right', this.originalBodyPad)
     $(this.fixedContent).each(function (index, element) {
       var padding = $(element).data('padding-right')
+      alert(padding);
       $(element).removeData('padding-right')
       element.style.paddingRight = padding ? padding : ''
     })
+    // this.$body.css('padding-right', this.originalBodyPad)
+
   }
 
   Modal.prototype.measureScrollbar = function () { // thx walsh

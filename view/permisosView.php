@@ -43,94 +43,90 @@
               <div class="col-xs-12 col-sm-6" style="text-align:right">
 
 
-              <!--=====================================
-              MODAL MODIFICAR PROF
-              ======================================-->
-
-              
-
+                <!--=====================================
+                MODAL MODIFICAR PROF
+                ======================================-->
 
                 <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarPermiso">Agregar Nuevo</button>
-                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
+                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
-              <!--=====================================
-              MODAL AGREGAR PROF
-              ======================================-->
+                <!--=====================================
+                MODAL AGREGAR PROF
+                ======================================-->
 
-              <div id="modalAgregarPermiso" class="modal fade" role="dialog">
-                
-                <div class="modal-dialog tamModals" style="text-align:left;">
-
-                  <div class="modal-content">
-
-                    <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-                      <!--=====================================
-                      CABEZA DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                        <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
-                        <h4 class="modal-title" style="text-align: left;">Agregar Permiso</h4>
-
-                      </div>
-
-                      <!--=====================================
-                      CUERPO DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-body">
-
-                        <div class="box-body">
-
-                                                  
-                          <!-- ENTRADA PARA EL NOMBRE -->
-                          
-                          <div class="form-group">
-                            
-                            <div class="input-group">
-                            
-                              <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-
-                              <input type="text" class="form-control input-lg" name="nuevoNombre" id="nombre" placeholder="Ingresar nombre" maxlength="30" required>
-
-                            </div>
-
-                            <span id="nombreP" class="mensajeError"></span>
-
-                          </div>
-
+                <div id="modalAgregarPermiso" class="modal fade" role="dialog">
                   
+                  <div class="modal-dialog tamModals" style="text-align:left;">
+
+                    <div class="modal-content">
+
+                      <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+
+                        <!--=====================================
+                        CABEZA DEL MODAL
+                        ======================================-->
+
+                        <div class="modal-header" style="background:#3c8dbc; color:white">
+
+                          <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+
+                          <h4 class="modal-title" style="text-align: left;">Agregar Permiso</h4>
 
                         </div>
 
-                      </div>
+                        <!--=====================================
+                        CUERPO DEL MODAL
+                        ======================================-->
 
-                      <!--=====================================
-                      PIE DEL MODAL
-                      ======================================-->
+                        <div class="modal-body">
 
-                      <div class="modal-footer">
+                          <div class="box-body">
 
-                        <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+                                                    
+                            <!-- ENTRADA PARA EL NOMBRE -->
+                            
+                            <div class="form-group">
+                              
+                              <div class="input-group">
+                              
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span> 
 
-                        <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
+                                <input type="text" class="form-control input-lg" name="nuevoNombre" id="nombre" placeholder="Ingresar nombre" maxlength="30" required>
 
-                      </div>
+                              </div>
+
+                              <span id="nombreP" class="mensajeError"></span>
+
+                            </div>
+
+                    
+
+                          </div>
+
+                        </div>
+
+                        <!--=====================================
+                        PIE DEL MODAL
+                        ======================================-->
+
+                        <div class="modal-footer">
+
+                          <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+
+                          <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
+
+                        </div>
 
 
-                    <!-- </form> -->
+                      <!-- </form> -->
+
+                    </div>
 
                   </div>
-
                 </div>
 
               </div>
 
-
-              </div>
             </div>
             <!-- /.box-header -->
 
@@ -139,13 +135,13 @@
                 
               <table id="datatable" class="table table-striped text-center" style="text-align:center;width:100%;font-size:1em;">
                 <thead>
-                <tr>
-                  <th>Nº</th>
-                  <th>Nombre</th>
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
-                  <th>Acciones</th>
-                  <?php //endif ?>
-                </tr>
+                  <tr>
+                    <th>Nº</th>
+                    <th>Nombre</th>
+                    <?php if ($amPermisosE==1||$amPermisosB==1): ?>
+                    <th>Acciones</th>
+                    <?php endif; ?>
+                  </tr>
                 </thead>
                 <tbody>
                 <?php 
@@ -166,104 +162,94 @@
                   </td>
                                     
                   
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
+                  <?php if ($amPermisosE==1||$amPermisosB==1): ?>
                   <td style="width:10%">
-                    <!-- <table style="background:none;text-align:center;width:100%"> -->
-                      <!-- <tr> -->
-                        <?php //if ($amUsuariosE==1): ?>
-                        <!-- <td style="width:50%"> -->
-                          <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" value="<?php echo $data['id_permiso'] ?>">
-                            <span class="fa fa-pencil">
-                              
-                            </span>
-                          </button>
-                        <!-- </td> -->
-                        <?php //endif; ?>
-                        <?php //if ($amUsuariosB==1): ?>
-                        <!-- <td style="width:50%"> -->
-                          <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['id_permiso'] ?>">
-                            <span class="fa fa-trash"></span>
-                          </button>
-                        <!-- </td> -->
-                        <?php //endif; ?>
-                      <!-- </tr> -->
-                    <!-- </table> -->
-                  </td>
-                  <?php //endif ?>
-                  
+                    <?php if ($amUsuariosE==1): ?>
+                      <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" value="<?php echo $data['id_permiso'] ?>">
+                        <span class="fa fa-pencil"></span>
+                      </button>
 
-                  <button type="button" id="modificarButton<?=$data['id_permiso']?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarPermiso<?=$data['id_permiso']?>" style="display: none">Modificar</button>
+                      <!-- Modificar -->
+                      <button type="button" id="modificarButton<?=$data['id_permiso']?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarPermiso<?=$data['id_permiso']?>" style="display: none">Modificar</button>
+                      <div id="modalModificarPermiso<?=$data['id_permiso']?>" class="modal fade modalModificarPermiso<?=$data['id_permiso']?>" role="dialog">
+                        
+                        <div class="modal-dialog tamModals" style="text-align:left;">
+                          <div class="modal-content">
 
-                  <div id="modalModificarPermiso<?=$data['id_permiso']?>" class="modal fade modalModificarPermiso<?=$data['id_permiso']?>" role="dialog">
-                    
-                    <div class="modal-dialog tamModals" style="text-align:left;">
-                      <div class="modal-content">
+                            <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
 
-                        <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+                              <!--=====================================
+                              CABEZA DEL MODAL
+                              ======================================-->
 
-                          <!--=====================================
-                          CABEZA DEL MODAL
-                          ======================================-->
+                              <div class="modal-header" style="background:#3c8dbc; color:white">
 
-                          <div class="modal-header" style="background:#3c8dbc; color:white">
+                                <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
 
-                            <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+                                <h4 class="modal-title" style="text-align: left;">Modificar Permiso</h4>
 
-                            <h4 class="modal-title" style="text-align: left;">Modificar Permiso</h4>
+                              </div>
 
-                          </div>
+                              <!--=====================================
+                              CUERPO DEL MODAL
+                              ======================================-->
 
-                          <!--=====================================
-                          CUERPO DEL MODAL
-                          ======================================-->
+                              <div class="modal-body">
 
-                          <div class="modal-body">
-
-                            <div class="box-body">
+                                <div class="box-body">
 
 
-                              <!-- ENTRADA PARA EL NOMBRE -->
-                              
-                              <div class="form-group">
-                                
-                                <div class="input-group">
-                                
-                                  <span class="input-group-addon"><i class="fa fa-user"></i></span> 
+                                  <!-- ENTRADA PARA EL NOMBRE -->
+                                  
+                                  <div class="form-group">
+                                    
+                                    <div class="input-group">
+                                    
+                                      <span class="input-group-addon"><i class="fa fa-user"></i></span> 
 
-                                  <input type="text" class="form-control input-lg nombreModificar" value="<?=$data['nombre_permiso']?>" name="nuevoNombre" id="nombre<?=$data['id_permiso']?>" placeholder="Ingresar nombre" required>
-                                </div>
+                                      <input type="text" class="form-control input-lg nombreModificar" value="<?=$data['nombre_permiso']?>" name="nuevoNombre" id="nombre<?=$data['id_permiso']?>" placeholder="Ingresar nombre" required>
+                                    </div>
 
-                                <div style="width: 100%; text-align: right;">
-                                  <span id="nombreP<?=$data['id_permiso']?>" class="mensajeError"></span>                                  
+                                    <div style="width: 100%; text-align: right;">
+                                      <span id="nombreP<?=$data['id_permiso']?>" class="mensajeError"></span>                                  
+                                    </div>
+
+                                  </div>
+
+
                                 </div>
 
                               </div>
 
+                              <!--=====================================
+                              PIE DEL MODAL
+                              ======================================-->
 
-                            </div>
+                              <div class="modal-footer">
+
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+
+                                <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$data['id_permiso']?>" id="modificar">Modificar</button>
+
+                              </div>
+
+
+                            <!-- </form> -->
 
                           </div>
 
-                          <!--=====================================
-                          PIE DEL MODAL
-                          ======================================-->
-
-                          <div class="modal-footer">
-
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
-                            <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$data['id_permiso']?>" id="modificar">Modificar</button>
-
-                          </div>
-
-
-                        <!-- </form> -->
-
+                        </div>
                       </div>
-
-                    </div>
-
-                  </div>
+                      <!-- Modificar -->
+                    <?php endif; ?>
+                    <?php if ($amUsuariosB==1): ?>
+                      <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['id_permiso'] ?>">
+                        <span class="fa fa-trash"></span>
+                      </button>
+                    <?php endif; ?>
+                  </td>
+                  <?php endif; ?>
+                  
                       
                 </tr>
                 <?php
@@ -271,13 +257,13 @@
                 ?>
                 </tbody>
                 <tfoot>
-                <tr>
-                  <th>Nº</th>
-                  <th>Nombre</th>
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
-                  <th>Acciones</th>
-                  <?php //endif ?>
-                </tr>
+                  <tr>
+                    <th>Nº</th>
+                    <th>Nombre</th>
+                    <?php if ($amPermisosE==1||$amPermisosB==1): ?>
+                    <th>Acciones</th>
+                    <?php endif; ?>
+                  </tr>
                 </tfoot>
               </table>
 

@@ -5,6 +5,7 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\rolesModel as rolesModel;
 	use content\modelo\permisosModel as permisosModel;
 	use content\modelo\modulosModel as modulosModel;
@@ -15,9 +16,12 @@
 		private $rol;
 		private $modulo;
 		private $permisos;
+		private $bitacora;
+
 		function __construct($url){
 			
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->rol = new rolesModel();
 			$this->permiso = new permisosModel();
 			$this->modulo = new modulosModel();
@@ -27,6 +31,7 @@
 				$objModel = new homeModel;
 				$_css = new headElement;
 				$_css->Heading();
+				$this->bitacora->monitorear($this->url);
 				$roles = $this->rol->Consultar();	
 				$accesos = $this->rol->ConsultarAccesos();
 				$permisos = $this->permiso->Consultar();
@@ -57,6 +62,7 @@
 					$buscar = $this->rol->getOne($datos['nombre']);
 					// print_r($buscar);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($buscar['data'][0]['estatus']=="0"){
 								$datos['id_rol'] = $buscar['data'][0]['id_rol'];
@@ -142,6 +148,7 @@
 
 					$buscar = $this->rol->getOne($datos['nombre']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['id']==$buscar['data'][0]['id_rol']){
 								$datos['id_rol'] = $buscar['data'][0]['id_rol'];
@@ -201,6 +208,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['userDelete'])) {
 					$buscar = $this->rol->getOneId($_POST['userDelete']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$data['id_rol'] = $_POST['userDelete'];

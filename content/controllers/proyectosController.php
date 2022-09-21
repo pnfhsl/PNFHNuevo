@@ -5,6 +5,8 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\profesoresModel as profesoresModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\proyectosModel as proyectosModel;
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\alumnosModel as alumnosModel;
@@ -17,13 +19,16 @@
 		private $proyecto;
 		private $seccion;
 		private $alumno;
+		private $bitacora;
 
 		function __construct($url){
 
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->seccion = new seccionesModel();
 			$this->proyecto = new proyectosModel();
 			$this->alumno = new alumnosModel();
+			$this->profesor = new profesoresModel();
 		}
 
 		public function Consultar(){
@@ -31,7 +36,10 @@
 			$_css = new headElement;
 			$_css->Heading();
 
+			$this->bitacora->monitorear($this->url);
+
 			$proyectos = $this->proyecto->Consultar();
+			$profesores = $this->profesor->Consultar();
 
 			$gruposAlumnos = $this->proyecto->ConsultarGrupos();
 
@@ -99,7 +107,7 @@
 		
 		public function Agregar(){
 			if($_POST){		
-				if (!empty($_POST['Agregar']) && !empty($_POST['nombre']) && !empty($_POST['seccion']) && !empty($_POST['trayecto'])  && !empty($_POST['alumnos']) ) {
+				if (!empty($_POST['Agregar']) && !empty($_POST['nombre']) && !empty($_POST['seccion']) && !empty($_POST['trayecto']) && !empty($_POST['alumnos']) && !empty($_POST['tutor']) ) {
 
 					$codProyecto = "T".$_POST['trayecto']."S".$_POST['seccion']."P";
 					$codProyecto = $this->proyecto->ExtraerPK($codProyecto); // "C2Y2022LDR5PED83P327"	
@@ -108,9 +116,11 @@
 					$datos['trayecto'] = $_POST['trayecto'];
 					$datos['cod_seccion'] = $_POST['seccion'];
 					$datos['id_SA'] = $_POST['alumnos'];
+					$datos['cedula_tutor'] = $_POST['tutor'];
 
 					$buscar = $this->proyecto->getOneData($datos);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($buscar['data'][0]['estatus']==0){
 								$datos['id'] = $buscar['data'][0]['cod_proyecto'];
@@ -171,7 +181,7 @@
 		public function Modificar(){
 			if($_POST){		
 				// print_r($_POST);
-				if (!empty($_POST['Editar']) && !empty($_POST['nombre']) && !empty($_POST['seccion']) && !empty($_POST['trayecto'])  && !empty($_POST['alumnos']) ) {
+				if (!empty($_POST['Editar']) && !empty($_POST['nombre']) && !empty($_POST['seccion']) && !empty($_POST['trayecto'])  && !empty($_POST['alumnos']) && !empty($_POST['tutor']) ) {
 
 					// $codProyecto = "T".$_POST['trayecto']."S".$_POST['seccion']."P";
 					// $codProyecto = $this->proyecto->ExtraerPK($codProyecto); // "C2Y2022LDR5PED83P327"	
@@ -181,10 +191,12 @@
 					$datos['nombre'] = ucwords(mb_strtoupper($_POST['nombre']));
 					$datos['trayecto'] = $_POST['trayecto'];
 					$datos['cod_seccion'] = $_POST['seccion'];
+					$datos['cedula_tutor'] = $_POST['tutor'];
 					$datos['id_SA'] = $_POST['alumnos'];
 
 					$buscar = $this->proyecto->getOneData($datos);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo'] == $buscar['data'][0]['cod_proyecto']){
 								$datos['id'] = $buscar['data'][0]['cod_proyecto'];
@@ -246,6 +258,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['cod_proyecto'])) {
 					$buscar = $this->proyecto->getOne($_POST['cod_proyecto']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->proyecto->Eliminar($_POST['cod_proyecto']);

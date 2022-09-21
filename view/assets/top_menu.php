@@ -80,7 +80,7 @@
               ?>
               <img src="<?=_ROUTE_?>assets/img/user-3.png" style='background:#fff' class="user-image" alt="User Image">
               <span class="hidden-xs">
-              <?php echo $nombre . " " . $apellido; ?>
+              <?php echo $_SESSION['cuenta_persona']['nombre'] . " " . $_SESSION['cuenta_persona']['apellido']; ?>
               </span>
             </a>
             <ul class="dropdown-menu" style="box-shadow:0px 0px 2px #000">

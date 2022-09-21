@@ -79,11 +79,12 @@
 
 		public function Agregar($datos){
 			try{
-				$query = parent::prepare("INSERT INTO proyectos (cod_proyecto, titulo_proyecto, trayecto_proyecto, estatus) VALUES (:cod_proyecto, :titulo_proyecto, :trayecto_proyecto, 1)");
+				$query = parent::prepare("INSERT INTO proyectos (cod_proyecto, titulo_proyecto, trayecto_proyecto, cedula_profesor, estatus) VALUES (:cod_proyecto, :titulo_proyecto, :trayecto_proyecto, :cedula_tutor, 1)");
 
 				$query->bindValue(':cod_proyecto', $datos['id']);
 				$query->bindValue(':titulo_proyecto', $datos['nombre']);
 		    	$query->bindValue(':trayecto_proyecto', $datos['trayecto']);
+		    	$query->bindValue(':cedula_tutor', $datos['cedula_tutor']);
 		            
 				$query->execute();
 				$respuestasArreglo = $query->fetchAll();
@@ -126,9 +127,10 @@
 
 		public function Modificar($datos){
 			try{
-				$query = parent::prepare('UPDATE proyectos SET titulo_proyecto = :titulo_proyecto, trayecto_proyecto=:trayecto_proyecto, estatus=1 WHERE cod_proyecto = :cod_proyecto');
+				$query = parent::prepare('UPDATE proyectos SET titulo_proyecto = :titulo_proyecto, trayecto_proyecto=:trayecto_proyecto, cedula_profesor=:cedula_tutor, estatus=1 WHERE cod_proyecto = :cod_proyecto');
 				$query->bindValue(':titulo_proyecto', $datos['nombre']);
 				$query->bindValue(':trayecto_proyecto', $datos['trayecto']);
+		    	$query->bindValue(':cedula_tutor', $datos['cedula_tutor']);
 		    	$query->bindValue(':cod_proyecto', $datos['id']);
 				$query->execute();
 				$respuestaArreglo = $query->fetchAll();

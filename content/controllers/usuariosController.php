@@ -5,6 +5,7 @@
 	use config\settings\sysConfig as sysConfig;
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
+	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\usuariosModel as usuariosModel;
 	use content\modelo\rolesModel as rolesModel;
 	use content\modelo\alumnosModel as alumnosModel;
@@ -18,9 +19,12 @@
 		private $rol;
 		private $alumno;
 		private $profesor;
+		private $bitacora;
+
 		function __construct($url){
 			
 			$this->url = $url;
+			$this->bitacora = new bitacoraModel();
 			$this->usuario = new usuariosModel();
 			$this->rol = new rolesModel();
 			$this->alumno = new alumnosModel();
@@ -32,6 +36,7 @@
 				$objModel = new homeModel;
 				$_css = new headElement;
 				$_css->Heading();
+				$this->bitacora->monitorear($this->url);
 				$usuarios = $this->usuario->Consultar();
 				$usuariosAlumnos = $this->alumno->Consultar();
 				$usuariosProfesores = $this->profesor->Consultar();
@@ -41,16 +46,18 @@
 		}
 		
 		public function Agregar(){
-			if($_POST){		
-				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['user']) && !empty($_POST['pass']) && !empty($_POST['rol'])) {
+			if($_POST){
+				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['user']) && !empty($_POST['correo']) && !empty($_POST['pass']) && !empty($_POST['rol'])) {
 					$datos['cedula'] = $_POST['cedula'];
-					$datos['user'] = $_POST['user'];
+					$datos['user'] = ucwords(mb_strtolower($_POST['user']));
+					$datos['correo'] = mb_strtolower($_POST['correo']);
 					$datos['pass'] = $this->encriptar($_POST['pass']);
 					$datos['rol'] = $_POST['rol'];
 					$buscar = $this->usuario->getOne($_POST['cedula']);
 
 						//print_r($buscar);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 						// 	// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
@@ -79,15 +86,17 @@
 
 		public function Modificar(){
 			if($_POST){		
-				if (!empty($_POST['cedula']) && !empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['nombre']) && !empty($_POST['rol']) && isset($_POST['nuevoPassword'])) {
+				if (!empty($_POST['cedula']) && !empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['nombre']) && !empty($_POST['correo']) && !empty($_POST['rol']) && isset($_POST['nuevoPassword'])) {
 					$datos['id'] = $_POST['codigo'];
 					$datos['cedula'] = $_POST['cedula'];
-					$datos['nombre'] =$_POST['nombre'];
+					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
+					$datos['correo'] = mb_strtolower($_POST['correo']);
 					$datos['rol'] = $_POST['rol'];
 					$datos['nuevoPassword'] = $this->encriptar($_POST['nuevoPassword']);
 					$buscar = $this->usuario->getOne($_POST['cedula']);
 					// var_dump($datos['nuevoPassword']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$_POST['cedula']){
 								$exec = $this->usuario->Modificar($datos); 
@@ -115,6 +124,7 @@
 				if (isset($_POST['Eliminar']) && isset($_POST['userDelete'])) {
 					$buscar = $this->usuario->getOne($_POST['userDelete']);
 					if($buscar['msj']=="Good"){
+						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$exec = $this->usuario->Eliminar($_POST['userDelete']);
@@ -193,6 +203,44 @@
 						$response['msj'] = "Error";
 					}
 					echo json_encode($response);
+				}
+				if(isset($_POST['VerificarUnicoUsername']) && isset($_POST['username']) && isset($_POST['id'])){
+					$user = ucwords(mb_strtolower($_POST['username']));
+					$id = $_POST['id'];
+					$buscar = $this->usuario->Buscar("username", $user);
+					if(count($buscar)>0){
+						if($id==""){
+							echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
+						}
+						if($id!=""){
+							if($buscar[0]['cedula_usuario']==$id){
+								echo json_encode(['msj'=>"Good", 'valido'=>"1"]);
+							}else{
+								echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
+							}
+						}
+					}else{
+						echo json_encode(['msj'=>"Good", 'valido'=>"1"]);
+					}
+				}
+				if(isset($_POST['VerificarUnicoCorreo']) && isset($_POST['correo'])){
+					$correo = mb_strtolower($_POST['correo']);
+					$id = $_POST['id'];
+					$buscar = $this->usuario->Buscar("correo", $correo);
+					if(count($buscar)>0){
+						if($id==""){
+							echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
+						}
+						if($id!=""){
+							if($buscar[0]['cedula_usuario']==$id){
+								echo json_encode(['msj'=>"Good", 'valido'=>"1"]);
+							}else{
+								echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
+							}
+						}
+					}else{
+						echo json_encode(['msj'=>"Good", 'valido'=>"1"]);
+					}
 				}
 			}
 		}
