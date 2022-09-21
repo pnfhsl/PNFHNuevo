@@ -151,8 +151,8 @@ $(document).ready(function() { //Al Cargar la paginaZ
                   resp_tres: resp_tres,
                 },
                 success: function(resp){
-                  alert(resp);
-                  console.log(resp);
+                  // alert(resp);
+                  // console.log(resp);
                   var datos = JSON.parse(resp);     
                     if (datos.msj === "Good") {   
                       Swal.fire({

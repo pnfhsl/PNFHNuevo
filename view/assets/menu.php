@@ -362,7 +362,9 @@
                         <!--  CONFIG Seguridad   -->
                         <!-- ======================================================================================================================= -->
 
-                        <?php if ((!empty($amBitacora) && $amBitacora == 1) || (!empty($amModulos) && $amModulos == 1) || (!empty($amPermisos) && $amPermisos == 1) || (!empty($amRoles) && $amRoles == 1)) { ?>
+
+                        <?php if ((!empty($amBitacora) && $amBitacora == 1) || (!empty($amBloqueados) && $amBloqueados == 1) || (!empty($amModulos) && $amModulos == 1) || (!empty($amPermisos) && $amPermisos == 1) || (!empty($amRoles) && $amRoles == 1)) { ?>
+
                           <?php if ($url == "Modulos" || $url == "Permisos" || $url == "Roles" || $url == "Bitacora") { ?>
                             <li class="active treeview">
                             <?php } else { ?>
@@ -376,9 +378,8 @@
                             </a>
                             <ul class="treeview-menu">
 
-                              <?php if ((!empty($amBitacora) && $amBitacora == 1)) { ?>
-
-                                <?php if ($url == "Bitacora") { ?>
+                                <?php if ((!empty($amBitacora) && $amBitacora == 1)) { ?>
+                                  <?php if ($url == "Bitacora") { ?>
                                   <li class="active">
                                   <?php } else { ?>
                                   <li class="">
@@ -389,7 +390,8 @@
                                   </li>
                                 <?php } ?>
 
-                                <?php if ($url == "Bloqueo") { ?>
+                                <?php if ((!empty($amBloqueados) && $amBloqueados == 1)) { ?>
+                                  <?php if ($url == "Bloqueo") { ?>
                                   <li class="active">
                                   <?php } else { ?>
                                   <li class="">
@@ -402,45 +404,45 @@
 
                                 <?php if ((!empty($amModulos) && $amModulos == 1)) { ?>
                                   <?php if ($url == "Modulos") { ?>
-                                    <li class="active">
-                                    <?php } else { ?>
-                                    <li class="">
-                                    <?php } ?>
-                                    <a href="<?= _ROUTE_ . $this->encriptar('Modulos'); ?>">
-                                      <i class="fa fa-list-alt"></i> <span>Módulos</span>
-                                    </a>
-                                    </li>
+                                  <li class="active">
+                                  <?php } else { ?>
+                                  <li class="">
                                   <?php } ?>
+                                  <a href="<?= _ROUTE_ . $this->encriptar('Modulos'); ?>">
+                                    <i class="fa fa-list-alt"></i> <span>Módulos</span>
+                                  </a>
+                                  </li>
+                                <?php } ?>
 
 
-                                  <?php if ((!empty($amPermisos) && $amPermisos == 1)) { ?>
-                                    <?php if ($url == "Permisos") { ?>
-                                      <li class="active">
-                                      <?php } else { ?>
-                                      <li>
-                                      <?php } ?>
-                                      <a href="<?= _ROUTE_ . $this->encriptar('Permisos'); ?>">
-                                        <i class="fa fa-chain-broken"></i> <span>Permisos</span>
-                                      </a>
-                                      </li>
-                                    <?php } ?>
+                                <?php if ((!empty($amPermisos) && $amPermisos == 1)) { ?>
+                                  <?php if ($url == "Permisos") { ?>
+                                  <li class="active">
+                                  <?php } else { ?>
+                                  <li>
+                                  <?php } ?>
+                                  <a href="<?= _ROUTE_ . $this->encriptar('Permisos'); ?>">
+                                    <i class="fa fa-chain-broken"></i> <span>Permisos</span>
+                                  </a>
+                                  </li>
+                                <?php } ?>
 
 
-                                    <?php if ((!empty($amRoles) && $amRoles == 1)) { ?>
-                                      <?php if ($url == "Roles") { ?>
-                                        <li class="active">
-                                        <?php } else { ?>
-                                        <li class="">
-                                        <?php } ?>
-                                        <a href="<?= _ROUTE_ . $this->encriptar('Roles'); ?>">
-                                          <i class="fa fa-code-fork"></i> <span>Roles</span>
-                                        </a>
-                                        </li>
-                                      <?php } ?>
+                                <?php if ((!empty($amRoles) && $amRoles == 1)) { ?>
+                                  <?php if ($url == "Roles") { ?>
+                                  <li class="active">
+                                  <?php } else { ?>
+                                  <li class="">
+                                  <?php } ?>
+                                  <a href="<?= _ROUTE_ . $this->encriptar('Roles'); ?>">
+                                    <i class="fa fa-code-fork"></i> <span>Roles</span>
+                                  </a>
+                                  </li>
+                                <?php } ?>
 
                             </ul>
                             </li>
-
+                        <?php } ?>
 
                             <!-- ======================================================================================================================= -->
 
@@ -448,18 +450,18 @@
 
                             <?php if ((!empty($amMantenimiento) && $amMantenimiento == 1)) { ?>
                               <?php if ($url == "Mantenimiento") { ?>
-                                <li class="active ">
-                                <?php } else { ?>
-                                <li class="">
-                                <?php } ?>
-                                <a href="<?= _ROUTE_ . $this->encriptar('Mantenimiento'); ?>">
-                                  <i class="fa fa-database"></i> <span>Mantenimiento</span>
-                                  <span class="pull-right-container">
-                                    <!-- <i class="fa fa-angle-left pull-right"></i> -->
-                                  </span>
-                                </a>
-                                </li>
+                              <li class="active ">
+                              <?php } else { ?>
+                              <li class="">
                               <?php } ?>
+                              <a href="<?= _ROUTE_ . $this->encriptar('Mantenimiento'); ?>">
+                                <i class="fa fa-database"></i> <span>Mantenimiento</span>
+                                <span class="pull-right-container">
+                                  <!-- <i class="fa fa-angle-left pull-right"></i> -->
+                                </span>
+                              </a>
+                              </li>
+                            <?php } ?>
 
 
 

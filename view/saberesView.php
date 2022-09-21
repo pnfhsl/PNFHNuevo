@@ -44,10 +44,10 @@
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
 
-                    <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarSC">Agregar Nuevo</button>
-                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
+              <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarSC">Agregar Nuevo</button>
+              <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
-                <div id="modalAgregarSC" class="modalAgregarSC modal fade" role="dialog">
+              <div id="modalAgregarSC" class="modalAgregarSC modal fade" role="dialog">
                 
                 <div class="modal-dialog tamModals" style="text-align:left;">
 
@@ -156,17 +156,16 @@
 
             <div class="box-body ">
               <div class="table-responsive">
-                
-             <table id="datatable" class="table table-striped text-center" style="text-align:center;width:100%;font-size:1em;">
+              <table id="datatable" class="table table-striped text-center" style="text-align:center;width:100%;font-size:1em;">
                 <thead>
                 <tr>
                   <th>Nº</th>
                   <th>Saber Complementario</th>
                   <th>Trayecto</th>
                   <th>Fase</th>
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
+                  <?php if ($amSaberesE==1||$amSaberesB==1): ?>
                   <th>Acciones</th>
-                  <?php //endif ?>
+                  <?php endif; ?>
                 </tr>
                 </thead>
                 <tbody>
@@ -221,137 +220,133 @@
                  
                   
                  
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
+                  <?php if ($amSaberesE==1||$amSaberesB==1): ?>
                   <td style="width:10%">
-                    <!-- <table style="background:none;text-align:center;width:100%"> -->
-                      <!-- <tr> -->
-                        <?php //if ($amUsuariosE==1): ?>
-                        <!-- <td style="width:50%"> -->
+                        <?php if ($amSaberesE==1): ?>
                           <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" value="<?php echo $data['id_SC'] ?>">
                             <span class="fa fa-pencil">
                               
                             </span>
                           </button>
-                        <!-- </td> -->
-                        <?php //endif; ?>
-                        <?php //if ($amUsuariosB==1): ?>
-                        <!-- <td style="width:50%"> -->
-                          <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['id_SC'] ?>">
-                            <span class="fa fa-trash"></span>
-                          </button>
-                        <!-- </td> -->
-                        <?php //endif; ?>
-                      <!-- </tr> -->
-                    <!-- </table> -->
-                  </td>
-                  <?php //endif ?>
 
-                   <button type="button" id="modificarButton<?=$data['id_SC']?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalmodificarButtonsc<?=$data['id_SC']?>" style="display: none">Modificar</button>
 
-                  <div id="modalmodificarButtonsc<?=$data['id_SC']?>" class="modalmodificarButtonsc modal fade modificarButtonsc<?=$data['id_SC']?>" role="dialog">
-                    
-                    <div class="modal-dialog tamModals" style="text-align:left;">
-                      <div class="modal-content">
+                          <!-- Modificar -->
+                          <button type="button" id="modificarButton<?=$data['id_SC']?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalmodificarButtonsc<?=$data['id_SC']?>" style="display: none">Modificar</button>
+                          <div id="modalmodificarButtonsc<?=$data['id_SC']?>" class="modalmodificarButtonsc modal fade modificarButtonsc<?=$data['id_SC']?>" role="dialog">
+                            
+                            <div class="modal-dialog tamModals" style="text-align:left;">
+                              <div class="modal-content">
 
-                        <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+                                <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
 
-                          <!--=====================================
-                          CABEZA DEL MODAL
-                          ======================================-->
+                                  <!--=====================================
+                                  CABEZA DEL MODAL
+                                  ======================================-->
 
-                          <div class="modal-header" style="background:#3c8dbc; color:white">
+                                  <div class="modal-header" style="background:#3c8dbc; color:white">
 
-                            <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+                                    <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
 
-                            <h4 class="modal-title" style="text-align: left;">Modificar Saber Complementario</h4>
+                                    <h4 class="modal-title" style="text-align: left;">Modificar Saber Complementario</h4>
 
-                          </div>
-
-                          <!--=====================================
-                          CUERPO DEL MODAL
-                          ======================================-->
-
-                          <div class="modal-body" style="max-height:70vh;overflow:auto;">
-
-                            <div class="box-body">
-
-                              <div class="row">
-                              
-                                <!-- ENTRADA SABER COMPLEMENTARIO -->
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="nombreSC<?=$data['id_SC']?>">Nombre</label>
-                                  <div class="input-group" style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                    <input type="text" class="form-control input-lg" value="<?=$data['nombreSC']?>" name="nuevaNombreSC" placeholder="Ingresar Saber Complementario" id="nombreSC<?=$data['id_SC']?>" required>
                                   </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="nombreS<?=$data['id_SC']?>" class="mensajeError"></span>
-                                  </div>
-                                </div>
 
-                                
-                                <!-- ENTRADA PARA EL TRAYECTO-->
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="trayectoSC<?=$data['id_SC']?>">Trayecto</label>
-                                  <div class="input-group" style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                    <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayectoSC<?=$data['id_SC']?>" required>
-                                      <option value="">Seleccione un trayecto</option>
-                                      <option <?php if($data['trayecto_SC']=="1"){ echo "selected"; } ?> value="1">Trayecto I</option>
-                                      <option <?php if($data['trayecto_SC']=="2"){ echo "selected"; } ?> value="2">Trayecto II</option>
-                                      <option <?php if($data['trayecto_SC']=="3"){ echo "selected"; } ?> value="3">Trayecto III</option>
-                                      <option <?php if($data['trayecto_SC']=="4"){ echo "selected"; } ?> value="4">Trayecto IV</option>
-                                    </select>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="trayectoS<?=$data['id_SC']?>" class="mensajeError"></span>
-                                  </div>
-                                </div>
+                                  <!--=====================================
+                                  CUERPO DEL MODAL
+                                  ======================================-->
 
-                                
-                                <!-- ENTRADA PARA LA FASE -->
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="faseSC<?=$data['id_SC']?>">Fase</label>
-                                  <div class="input-group " style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                    <select class="form-control select2 input-lg" style="width:100%;" name="fase" placeholder="Ingresar trayecto" id="faseSC<?=$data['id_SC']?>" required>
-                                      <option value="">Seleccione un fase</option>
-                                      <option <?php if($data['fase_SC']=="1"){ echo "selected"; } ?> value="1">Fase I</option>
-                                      <option <?php if($data['fase_SC']=="2"){ echo "selected"; } ?> value="2">Fase II</option>
-                                    </select>
+                                  <div class="modal-body" style="max-height:70vh;overflow:auto;">
+
+                                    <div class="box-body">
+
+                                      <div class="row">
+                                      
+                                        <!-- ENTRADA SABER COMPLEMENTARIO -->
+                                        <div class="form-group col-xs-12 col-sm-12">
+                                          <label for="nombreSC<?=$data['id_SC']?>">Nombre</label>
+                                          <div class="input-group" style="width:100%;">
+                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                            <input type="text" class="form-control input-lg" value="<?=$data['nombreSC']?>" name="nuevaNombreSC" placeholder="Ingresar Saber Complementario" id="nombreSC<?=$data['id_SC']?>" required>
+                                          </div>
+                                          <div style="width:100%;text-align:right;">
+                                            <span id="nombreS<?=$data['id_SC']?>" class="mensajeError"></span>
+                                          </div>
+                                        </div>
+
+                                        
+                                        <!-- ENTRADA PARA EL TRAYECTO-->
+                                        <div class="form-group col-xs-12 col-sm-12">
+                                          <label for="trayectoSC<?=$data['id_SC']?>">Trayecto</label>
+                                          <div class="input-group" style="width:100%;">
+                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                            <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayectoSC<?=$data['id_SC']?>" required>
+                                              <option value="">Seleccione un trayecto</option>
+                                              <option <?php if($data['trayecto_SC']=="1"){ echo "selected"; } ?> value="1">Trayecto I</option>
+                                              <option <?php if($data['trayecto_SC']=="2"){ echo "selected"; } ?> value="2">Trayecto II</option>
+                                              <option <?php if($data['trayecto_SC']=="3"){ echo "selected"; } ?> value="3">Trayecto III</option>
+                                              <option <?php if($data['trayecto_SC']=="4"){ echo "selected"; } ?> value="4">Trayecto IV</option>
+                                            </select>
+                                          </div>
+                                          <div style="width:100%;text-align:right;">
+                                            <span id="trayectoS<?=$data['id_SC']?>" class="mensajeError"></span>
+                                          </div>
+                                        </div>
+
+                                        
+                                        <!-- ENTRADA PARA LA FASE -->
+                                        <div class="form-group col-xs-12 col-sm-12">
+                                          <label for="faseSC<?=$data['id_SC']?>">Fase</label>
+                                          <div class="input-group " style="width:100%;">
+                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                            <select class="form-control select2 input-lg" style="width:100%;" name="fase" placeholder="Ingresar trayecto" id="faseSC<?=$data['id_SC']?>" required>
+                                              <option value="">Seleccione un fase</option>
+                                              <option <?php if($data['fase_SC']=="1"){ echo "selected"; } ?> value="1">Fase I</option>
+                                              <option <?php if($data['fase_SC']=="2"){ echo "selected"; } ?> value="2">Fase II</option>
+                                            </select>
+                                          </div>
+                                          <div style="width:100%;text-align:right;">
+                                            <span id="faseS<?=$data['id_SC']?>" class="mensajeError"></span>
+                                          </div>
+                                        </div>
+
+                                      </div>
+
+                                    </div>
+
                                   </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="faseS<?=$data['id_SC']?>" class="mensajeError"></span>
+
+                                  <!--=====================================
+                                  PIE DEL MODAL
+                                  ======================================-->
+
+                                  <div class="modal-footer">
+
+                                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+
+                                   <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$data['id_SC']?>" id="modificar">Modificar</button>
+
                                   </div>
-                                </div>
+
+
+                                <!-- </form> -->
 
                               </div>
 
                             </div>
-
                           </div>
-
-                          <!--=====================================
-                          PIE DEL MODAL
-                          ======================================-->
-
-                          <div class="modal-footer">
-
-                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
-                           <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$data['id_SC']?>" id="modificar">Modificar</button>
-
-                          </div>
+                          <!-- Modificar -->
 
 
-                        <!-- </form> -->
+                        <?php endif; ?>
+                        <?php if ($amSaberesB==1): ?>
+                          <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['id_SC'] ?>">
+                            <span class="fa fa-trash"></span>
+                          </button>
+                        <?php endif; ?>
+                  </td>
+                  <?php endif; ?>
 
-                      </div>
 
-                    </div>
-
-                  </div>
-                      
                       
                 </tr>
                 <?php
@@ -364,9 +359,9 @@
                   <th>Saber Complementario</th>
                   <th>Trayecto</th>
                   <th>Fase</th>
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
+                  <?php if ($amSaberesE==1||$amSaberesB==1): ?>
                   <th>Acciones</th>
-                  <?php //endif ?>
+                  <?php endif; ?>
                 </tr>
                 </tfoot>
               </table>

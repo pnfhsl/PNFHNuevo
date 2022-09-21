@@ -338,6 +338,7 @@ $(document).ready(function(){
             let trayecto = $("#trayecto"+id).val();
             let seccion = $("#seccion"+id).val();     
             let alumnos = $("#alumnos"+id).val();   
+            let tutor = $("#tutor"+id).val();
 
            /* alert(id+" "+nombre+" "+trayecto+" "+seccion+" "+alumnos);
             console.log(alumnos);*/
@@ -351,6 +352,7 @@ $(document).ready(function(){
                 trayecto: trayecto,
                 seccion: seccion,
                 alumnos: alumnos,
+                tutor: tutor,
               },
               success: function(resp){
                 // alert(resp);
@@ -447,6 +449,32 @@ $(document).ready(function(){
               }
 
             });
+
+          }else { 
+              swal.fire({
+                  type: 'error',
+                  title: '¡Proceso cancelado!',
+              });
+          } 
+      });
+  });
+
+  $(".cargarBtn").click(function(){
+    var url = $("#url").val();
+    swal.fire({ 
+          title: "¿Desea listar los datos?",
+          text: "Se visualizaran los datos, ¿desea continuar?",
+          type: "question",
+          showCancelButton: true,
+          confirmButtonText: "¡Si!",
+          cancelButtonText: "No", 
+          closeOnConfirm: false,
+          closeOnCancel: false 
+      }).then((isConfirm) => {
+          if (isConfirm.value){            
+            let cod_proyecto = $(this).val();
+            $("#cargarButton"+cod_proyecto).click(); 
+         
 
           }else { 
               swal.fire({
@@ -565,19 +593,21 @@ $(document).ready(function(){
 
             let nombre = $("#nombre").val();     
             let trayecto = $("#trayecto").val();
-            let seccion = $("#seccion").val();     
-            let alumnos = $("#alumnos").val();     
+            let seccion = $("#seccion").val();
+            let alumnos = $("#alumnos").val();
+            let tutor = $("#tutor").val();
 
             // alert(nombre + ' ' + seccion + ' ' + trayecto+ ' ' + alumnos);
               $.ajax({
                 url: url+'/Agregar',
                 type: 'POST',   
                 data: {
-                  Agregar: true,   
-                  nombre: nombre,       
+                  Agregar: true,
+                  nombre: nombre,
                   trayecto: trayecto,
                   seccion: seccion,
-                  alumnos: alumnos       
+                  alumnos: alumnos,
+                  tutor: tutor,
                 },
                 success: function(resp){
                   // alert(resp);
@@ -691,9 +721,18 @@ function validar(modificar = false, id=""){
     }
   }
 
+  var tutor = $(form+" #tutor"+id).val();
+  var rtutor = false;
+  if(tutor == ""){
+    $(form+" #tutorS"+id).html("Seleccione un tutor para el proyecto");
+  }else{
+    rtutor = true;
+    $(form+" #tutorS"+id).html("");
+  }
+
 
   var validado = false;
-  if(rnombre==true && rtrayecto==true && rseccion==true && ralumno==true){
+  if(rnombre==true && rtrayecto==true && rseccion==true && ralumno==true && rtutor==true){
     validado=true;
   }else{
     validado=false;

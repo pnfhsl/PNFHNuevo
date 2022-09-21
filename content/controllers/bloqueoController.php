@@ -92,10 +92,11 @@ class bloqueoController
                 $code = $this->bloqueosU->Decrypt($busqueda[0]['codigo_desbloqueo'], $desencrypt);   //Encriptar codigo aleatorio mediante la llave publica
                 // $code = $this->bloqueosU->Decrypt($buscar[0]['codigo_desbloqueo'], $desencrypt);   //Encriptar codigo aleatorio mediante la llave publica
                 if ($decrypt != "" && $code != "" && $decrypt != NULL && $code != NULL && $decrypt === $code) {
-                    $unlook = $this->bloqueosU->Unlook($_POST['cedula'], 0);
+                    $unlook = $this->bloqueosU->Unlook($_POST['cedula'], 0, $this->encriptar($_POST['cedula']));
                     $preguntas = $this->preg->Eliminar($_POST['cedula']);
+                    $rsa = $this->bloqueosU->Eliminar($_POST['cedula']);
                 }
-                $resp = array('decrypt' =>  $decrypt, 'code' => $code, 'look' => $unlook, 'preg' => $preguntas);
+                $resp = array('decrypt' =>  $decrypt, 'code' => $code, 'look' => $unlook, 'preg' => $preguntas, 'rsa' => $rsa);
                 // $resp = array('decrypt' =>  $decrypt, 'code' => $code);
                 echo json_encode($resp);
             }

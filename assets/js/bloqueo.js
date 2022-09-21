@@ -43,12 +43,17 @@ $(document).ready(function () {
 
     $(".usuarioG").click(function () {
         var id = $(this).val();
-        // alert('verifyAdmin' + id);
+        if($(".collapseGenerar").val()=="1"){
+            $(".contadorGenerarBoxPassword" + id).click();
+            $("#firmaAdmin" + id).val("");
+            $(".collapseGenerar").val("0");
+        }
+
         $("#verifyAdmin" + id).click(function () {
             let url = $("#url").val();
             let firma = $("#firmaAdmin" + id).val();
             // console.log(firma.length);
-            var response = validar(id);
+            var response = validar(id, "Admin");
             if (response) {
                 $.ajax({
                     url: url + '/Buscar',
@@ -61,14 +66,17 @@ $(document).ready(function () {
                         var datos = JSON.parse(resp);
                         console.log(datos);
                         // alert(id);
-                        if (datos.datos && datos.datos != "" && datos.datos[0].nombre_rol == "Administrador") {
-                            $(".contadorBoxPassword" + id).click();
+                        if (datos.datos && datos.datos != "" && (datos.datos[0].nombre_rol == "Administrador" || datos.datos[0].nombre_rol == "Superusuario")) {
+
+                            $(".contadorGenerarBoxPassword" + id).click();
+                            $(".collapseGenerar").val("1");
 
                             $("#cedulaAdmin" + id).html(datos.datos[0].cedula_profesor);
                             $("#nombreAdmin" + id).html(datos.datos[0].nombre_profesor);
                             $("#apellidoAdmin" + id).html(datos.datos[0].apellido_profesor);
                             $("#telefAdmin" + id).html(datos.datos[0].telefono_profesor);
                             // alert('Asina nona');
+
                             $("#comprobarAdmin" + id).click(function () {
                                 var public = $("#publicAdmin" + id).val();
                                 // console.log(public);
@@ -149,12 +157,18 @@ $(document).ready(function () {
 
     $(".usuarioD").click(function () {
         var id = $(this).val();
+        if($(".collapseDesbloqueo").val()=="1"){
+            $(".contadorDesbloqueoBoxPassword" + id).click();
+            $("#firmaOperador" + id).val("");
+            $(".collapseDesbloqueo").val("0");
+        }
+        
         // alert('verifyOperador' + id);
         $("#verifyOperador" + id).click(function () {
             let url = $("#url").val();
             let firma = $("#firmaOperador" + id).val();
             console.log(firma);
-            var response = validar(id);
+            var response = validar(id, "Operador");
             // alert(response);
             if (response) {
                 $.ajax({
@@ -170,8 +184,10 @@ $(document).ready(function () {
                         var datos = JSON.parse(resp);
                         console.log(datos);
                         if (datos.datos && datos.datos != "" && datos.datos[0].nombre_rol == "Superusuario") {
-                            // alert('aqui');
-                            $(".contadorBoxPassword" + id).click();
+
+                            $(".contadorDesbloqueoBoxPassword" + id).click();
+                            $(".collapseDesbloqueo").val("1");
+
                             $("#cedulaOperador" + id).html(datos.datos[0].cedula_profesor);
                             $("#nombreOperador" + id).html(datos.datos[0].nombre_profesor);
                             $("#apellidoOperador" + id).html(datos.datos[0].apellido_profesor);
@@ -194,6 +210,7 @@ $(document).ready(function () {
                                         },
                                         success: function (resp) {
                                             // console.log(resp);
+                                            alert(resp);
                                             var data = JSON.parse(resp);
                                             console.log(data);
                                             if (codigo === data.datos[0].codigo_desbloqueo) {
@@ -341,26 +358,37 @@ $(document).ready(function () {
 
 })
 
-function validar(id = "") {
+function validar(id = "", acto) {
+    var rfirma = false;
+    if(acto=="Admin"){
+        var firmaAdmin = $("#firmaAdmin" + id).val();
+        // var rfirmaAdmin = false;
+        var rfirma = false;
+        if (firmaAdmin.length >= 32) {
+            // rfirmaAdmin = true;
+            rfirma = true;
+            $("#nombreF" + id).html("");
+        } else {
+            $("#nombreF" + id).html("Debe ingresar la firma digital");
+        }
+    }
+    if(acto=="Operador"){
+        var firmaOperador = $("#firmaOperador" + id).val();
+        // var rfirmaOperador = false;
+        var rfirma = false;
+        if (firmaOperador.length >= 32) {
+            // rfirmaOperador = true;
+            rfirma = true;
+            $("#nombreO" + id).html("");
+        } else {
+            $("#nombreO" + id).html("Debe ingresar la firma digital");
+        }
+    }
+        
 
-    var firmaAdmin = $("#firmaAdmin" + id).val();
-    var rfirmaAdmin = false;
-    if (firmaAdmin.length >= 32) {
-        rfirmaAdmin = true;
-        $("#nombreF" + id).html("");
-    } else {
-        $("#nombreF" + id).html("Debe ingresar la firma digital");
-    }
-    var firmaOperador = $("#firmaOperador" + id).val();
-    var rfirmaOperador = false;
-    if (firmaOperador.length >= 32) {
-        rfirmaOperador = true;
-        $("#nombreO" + id).html("");
-    } else {
-        $("#nombreO" + id).html("Debe ingresar la firma digital");
-    }
     var validado = false;
-    if (rfirmaAdmin == true || rfirmaOperador == true) {
+    // if (rfirmaAdmin == true || rfirmaOperador == true) {
+    if (rfirma == true) {
         // if (rfirmaAdmin == true) {
         validado = true;
     } else {

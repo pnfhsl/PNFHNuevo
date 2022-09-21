@@ -254,7 +254,6 @@
 
               <div class="box-body ">
                 <div class="table-responsive">
-
                   <table id="datatable" class="table table-striped text-center" style="text-align:center;width:100%;font-size:1em;">
                     <thead>
                       <tr>
@@ -262,18 +261,16 @@
                         <th>Cédula</th>
                         <th>Nombre y Apellido</th>
                         <th>Teléfono</th>
-                        <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
-                        ?>
+                        <?php if ($amProfesoresE==1 || $amProfesoresB==1): ?>
                         <th>Acciones</th>
-                        <?php //endif 
-                        ?>
+                        <?php endif; ?>
                       </tr>
                     </thead>
                     <tbody>
                       <?php
                       $num = 1;
                       foreach ($profesores as $data) :
-                        if (!empty($data['cedula_profesor'])) :
+                        if (!empty($data['cedula_profesor'])):
                       ?>
                           <tr>
                             <td style="width:5%">
@@ -297,137 +294,110 @@
                               </span>
                             </td>
 
-                            <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
+                            <?php if ($amProfesoresE==1 || $amProfesoresB==1):
                             ?>
                             <td style="width:10%">
-                              <!-- <table style="background:none;text-align:center;width:100%"> -->
-                              <!-- <tr> -->
-                              <?php //if ($amUsuariosE==1): 
-                              ?>
-                              <!-- <td style="width:50%"> -->
-                              <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" value="<?php echo $data['cedula_profesor'] ?>">
-                                <span class="fa fa-pencil">
+                              <?php if ($amProfesoresE==1): ?>
+                                <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" value="<?php echo $data['cedula_profesor'] ?>">
+                                  <span class="fa fa-pencil"></span>
+                                </button>
 
-                                </span>
-                              </button>
-                              <!-- </td> -->
-                              <?php //endif; 
-                              ?>
-                              <?php //if ($amUsuariosB==1): 
-                              ?>
-                              <!-- <td style="width:50%"> -->
-                              <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['cedula_profesor'] ?>">
-                                <span class="fa fa-trash"></span>
-                              </button>
-                              <!-- </td> -->
-                              <?php //endif; 
-                              ?>
-                              <!-- </tr> -->
-                              <!-- </table> -->
-                            </td>
-                            <?php //endif 
-                            ?>
+                                
+                                <!-- Modificar -->
+                                <button type="button" id="modificarButton<?= $data['cedula_profesor'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarProf<?= $data['cedula_profesor'] ?>" style="display: none">Modificar</button>
+                                <div id="modalModificarProf<?= $data['cedula_profesor'] ?>" class="modalModificarProf modal fade modalModificarProf<?=$data['cedula_profesor'] ?>" role="dialog">
+
+                                  <div class="modal-dialog tamModals" style="text-align:left;">
+                                    <div class="modal-content">
+
+                                      <div class="modal-header" style="background:#3c8dbc; color:white">
+                                        <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+                                        <h4 class="modal-title" style="text-align: left;">Modificar Profesor</h4>
+                                      </div>
 
 
-                            <button type="button" id="modificarButton<?= $data['cedula_profesor'] ?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarProf<?= $data['cedula_profesor'] ?>" style="display: none">Modificar</button>
+                                      <div class="modal-body" style="max-height:70vh;overflow:auto;">
 
-                            <div id="modalModificarProf<?= $data['cedula_profesor'] ?>" class="modalModificarProf modal fade modalModificarProf<?=$data['cedula_profesor'] ?>" role="dialog">
+                                        <div class="box-body">
 
-                              <div class="modal-dialog tamModals" style="text-align:left;">
-                                <div class="modal-content">
+                                          <div class="row">
 
-                                  <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-                                  <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                                    <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
-
-                                    <h4 class="modal-title" style="text-align: left;">Modificar Profesor</h4>
-
-                                  </div>
-
-
-                                  <div class="modal-body" style="max-height:70vh;overflow:auto;">
-
-                                    <div class="box-body">
-
-                                      <div class="row">
-
-                                        <!-- ENTRADA PARA EL USUARIO -->
-                                        <div class="form-group col-xs-12 col-sm-12">
-                                          <label for="cedula<?= $data['cedula_profesor'] ?>">Cedula</label>
-                                          <div class="input-group" style="width:100%;">
-                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
-                                            <input type="text" class="form-control input-lg cedulaModificar" maxlength="8" value="<?= $data['cedula_profesor'] ?>" name="<?= $data['cedula_profesor'] ?>" placeholder="Ingresar cedula" id="cedula<?= $data['cedula_profesor'] ?>" required>
-                                          </div>
-                                          <div style="width:100%;text-align:right;">
-                                            <span id="cedulaS<?= $data['cedula_profesor'] ?>" class="mensajeError"></span>
-                                          </div>
-                                        </div>
+                                            <!-- ENTRADA PARA EL USUARIO -->
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                              <label for="cedula<?= $data['cedula_profesor'] ?>">Cedula</label>
+                                              <div class="input-group" style="width:100%;">
+                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                                <input type="text" class="form-control input-lg cedulaModificar" maxlength="8" value="<?= $data['cedula_profesor'] ?>" name="<?= $data['cedula_profesor'] ?>" placeholder="Ingresar cedula" id="cedula<?= $data['cedula_profesor'] ?>" required>
+                                              </div>
+                                              <div style="width:100%;text-align:right;">
+                                                <span id="cedulaS<?= $data['cedula_profesor'] ?>" class="mensajeError"></span>
+                                              </div>
+                                            </div>
 
 
-                                        <!-- ENTRADA PARA EL NOMBRE -->
-                                        <div class="form-group col-xs-12 col-sm-12">
-                                          <label for="nombre<?= $data['cedula_profesor'] ?>">Nombre</label>
-                                          <div class="input-group" style="width:100%;">
-                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg nombreModificar" maxlength="25" value="<?= $data['nombre_profesor'] ?>" name="<?= $data['cedula_profesor'] ?>" id="nombre<?= $data['cedula_profesor'] ?>" placeholder="Ingresar nombre" required>
-                                          </div>
-                                          <div style="width:100%;text-align:right;">
-                                            <span id="nombreS<?= $data['cedula_profesor'] ?>" class="mensajeError"></span>
-                                          </div>
-                                        </div>
+                                            <!-- ENTRADA PARA EL NOMBRE -->
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                              <label for="nombre<?= $data['cedula_profesor'] ?>">Nombre</label>
+                                              <div class="input-group" style="width:100%;">
+                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                <input type="text" class="form-control input-lg nombreModificar" maxlength="25" value="<?= $data['nombre_profesor'] ?>" name="<?= $data['cedula_profesor'] ?>" id="nombre<?= $data['cedula_profesor'] ?>" placeholder="Ingresar nombre" required>
+                                              </div>
+                                              <div style="width:100%;text-align:right;">
+                                                <span id="nombreS<?= $data['cedula_profesor'] ?>" class="mensajeError"></span>
+                                              </div>
+                                            </div>
 
 
-                                        <!-- ENTRADA PARA EL APELLIDO -->
-                                        <div class="form-group col-xs-12 col-sm-12">
-                                          <label for="apellido<?= $data['cedula_profesor'] ?>">Apellido</label>
-                                          <div class="input-group" style="width:100%;">
-                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg apellidoModificar apellidoModificar<?= $data['cedula_profesor'] ?>" maxlength="25" value="<?= $data['apellido_profesor'] ?>" name="<?= $data['cedula_profesor'] ?>" id="apellido<?= $data['cedula_profesor'] ?>" placeholder="Ingresar apellido" required>
-                                          </div>
-                                          <div style="width:100%;text-align:right;">
-                                            <span id="apellidoS<?= $data['cedula_profesor'] ?>" class="mensajeError"></span>
+                                            <!-- ENTRADA PARA EL APELLIDO -->
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                              <label for="apellido<?= $data['cedula_profesor'] ?>">Apellido</label>
+                                              <div class="input-group" style="width:100%;">
+                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                <input type="text" class="form-control input-lg apellidoModificar apellidoModificar<?= $data['cedula_profesor'] ?>" maxlength="25" value="<?= $data['apellido_profesor'] ?>" name="<?= $data['cedula_profesor'] ?>" id="apellido<?= $data['cedula_profesor'] ?>" placeholder="Ingresar apellido" required>
+                                              </div>
+                                              <div style="width:100%;text-align:right;">
+                                                <span id="apellidoS<?= $data['cedula_profesor'] ?>" class="mensajeError"></span>
+                                              </div>
+                                            </div>
+
+                                            <!--ENTRADA TELÉFONO -->
+                                            <div class="form-group col-xs-12 col-sm-12">
+                                              <label for="telefono<?= $data['cedula_profesor'] ?>">Telefono</label>
+                                              <div class="input-group" style="width:100%;">
+                                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                                <input type="text" class="form-control input-lg telefonoModificar telefonoModificar<?= $data['cedula_profesor'] ?>" maxlength="11" value="<?= $data['telefono_profesor'] ?>" name="<?= $data['cedula_profesor'] ?>" id="telefono<?= $data['cedula_profesor'] ?>" placeholder="Ingresar Nro Telefonico" required>
+                                              </div>
+                                              <div style="width:100%;text-align:right;">
+                                                <span id="telefonoS<?= $data['cedula_profesor'] ?>" class="mensajeError"></span>
+                                              </div>
+                                            </div>
                                           </div>
                                         </div>
-
-                                        <!--ENTRADA TELÉFONO -->
-                                        <div class="form-group col-xs-12 col-sm-12">
-                                          <label for="telefono<?= $data['cedula_profesor'] ?>">Telefono</label>
-                                          <div class="input-group" style="width:100%;">
-                                            <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg telefonoModificar telefonoModificar<?= $data['cedula_profesor'] ?>" maxlength="11" value="<?= $data['telefono_profesor'] ?>" name="<?= $data['cedula_profesor'] ?>" id="telefono<?= $data['cedula_profesor'] ?>" placeholder="Ingresar Nro Telefonico" required>
-                                          </div>
-                                          <div style="width:100%;text-align:right;">
-                                            <span id="telefonoS<?= $data['cedula_profesor'] ?>" class="mensajeError"></span>
-                                          </div>
-                                        </div>
+                                      </div>
 
 
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+                                        <button type="submit" class="btn btn-primary modificarButtonModal" value="<?= $data['cedula_profesor'] ?>" id="modificar">Modificar</button>
                                       </div>
 
 
                                     </div>
 
                                   </div>
-
-
-                                  <div class="modal-footer">
-
-                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
-                                    <button type="submit" class="btn btn-primary modificarButtonModal" value="<?= $data['cedula_profesor'] ?>" id="modificar">Modificar</button>
-
-                                  </div>
-
-
-                                  <!-- </form> -->
-
                                 </div>
+                                <!-- Modificar -->
 
-                              </div>
+                              <?php endif; ?>
+                              <?php if ($amProfesoresB==1): ?>
+                                <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?php echo $data['cedula_profesor'] ?>">
+                                  <span class="fa fa-trash"></span>
+                                </button>
+                              <?php endif; ?>
+                            </td>
+                            <?php endif; ?>
 
-                            </div>
+
 
                           </tr>
                       <?php
@@ -441,11 +411,9 @@
                         <th>Cédula</th>
                         <th>Nombre y Apellido</th>
                         <th>Teléfono</th>
-                        <?php //if ($amUsuariosE==1||$amUsuariosB==1): 
-                        ?>
+                        <?php if ($amProfesoresE==1 || $amProfesoresB==1): ?>
                         <th>Acciones</th>
-                        <?php //endif 
-                        ?>
+                        <?php endif; ?>
                       </tr>
                     </tfoot>
                   </table>

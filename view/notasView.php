@@ -42,26 +42,20 @@
               </div>
               <div class="col-xs-12 col-sm-6" style="text-align:right">
 
-
-              <!--=====================================
-              MODAL MODIFICAR PROF
-              ======================================-->
-
-              
-
-
+                <!--=====================================
+                MODAL MODIFICAR PROF
+                ======================================-->
                 <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarNota">Agregar Nuevo</button>
-                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
+                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
 
                 <!--=====================================
-                MODAL AGREGAR PROF
+                  MODAL AGREGAR PROF
                 ======================================-->
-
-              <div id="modalAgregarNota" class="modalAgregarNota modal fade" role="dialog">
+                <div id="modalAgregarNota" class="modalAgregarNota modal fade" role="dialog">
                 
-                <div class="modal-dialog tamModals" style="text-align:left;">
+                  <div class="modal-dialog tamModals" style="text-align:left;">
 
-                  <div class="modal-content">
+                    <div class="modal-content">
                         <!--=====================================
                         CABEZA DEL MODAL
                         ======================================-->
@@ -147,68 +141,6 @@
 
                             
                             
-                            
-
-                          <?php 
-                            /*
-                            $num = 1;
-                            $alumnosJson = [];
-                            $i = 0;
-                            foreach ($alumnos as $datos): if(!empty($datos['cedula_alumno'])):  
-                            ?>
-                            <div class="form-group">
-                                
-                                <div class="input-group">
-                                
-                                  <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-
-                                                                       
-                                      <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
-                                      
-                                        
-                                            <?php //if ($amUsuariosE==1): ?>
-                                            
-
-                                              <input type="text" class="form-control input-lg" name="nuevoAl" id="alumno" placeholder="Alumno" value="<?php echo $datos['nombre_alumno'] . ' ' . $datos['apellido_alumno'] ?>" disabled required>
-                                              
-
-                                          
-                                            <?php //endif; ?>
-                                           
-                                          
-                                     
-                                      <?php //endif ?>
-                                      
-
-                                                                       
-                                    
-
-                                  <span class="input-group-addon"><i class="fa fa-key"></i></span> 
-                                  <input type="number" class="form-control input-lg" name="nuevoPass" value="0" max="1" min="0" step="0.1" placeholder="Nota" id="nota<?=$datos['cedula_alumno']?>" required>
-                                  <?php 
-                                        $alumnosJson[$i] = $datos['cedula_alumno'];
-                                        $i++;
-                                   ?>
-
-                                </div>
-
-                            </div>
-                            <?php
-                              endif; endforeach;
-                            ?>
-                            <span id="notaS" class="mensajeError"></span>
-                            <span class="json_alumnos" style="display:none"><?=json_encode($alumnosJson);?></span>
-                            <?php
-                              foreach ($sa as $dateSA):
-                                if(!empty($dateSA['id_SA'])):
-                            ?>
-                            <input type="hidden" name="" value="<?=$dateSA['id_SA']; ?>" id="idAlumno<?=$dateSA['cedula_alumno']?>">
-                            <?php
-                                endif;
-                              endforeach;
-                              */
-                          ?>
-
 
 
                              
@@ -230,27 +162,25 @@
                   </div>
                 </div>
 
-
               </div>
 
-
             </div>
+
             <!-- /.box-header -->
 
             <div class="box-body ">
               <div class="table-responsive">
               <table id="datatable" class="table table-striped text-center" style="text-align:center;width:100%;font-size:1em;">
                 <thead>
-                <tr>
-                  <th>Nº</th>
-                  <th>Sección</th>
-                  <th>Saber</th>
-                  <!-- <th>Alumno</th> -->
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
-                  <!-- <th>Nota</th> -->
-                  <th>Acciones</th>
-                  <?php //endif ?>
-                </tr>
+                  <tr>
+                    <th>Nº</th>
+                    <th>Sección</th>
+                    <th>Saber</th>
+                    <!-- <th>Alumno</th> -->
+                    <?php if ($amNotasC==1||$amNotasE==1||$amNotasB==1): ?>
+                    <th>Acciones</th>
+                    <?php endif; ?>
+                  </tr>
                 </thead>
                 <tbody>
                 <?php 
@@ -276,432 +206,401 @@
                       <?php echo $data['nombreSC']; ?>
                     </span>
                   </td>
-                  <!-- <td style="width:20%">
-                    <span class="contenido2">
-                      <?php 
-                        // echo number_format($data['cedula_alumno'],0,',','.')." ".$data['nombre_alumno']." ".$data['apellido_alumno'];
-                      ?>
-                    </span>
-                  </td>
-                  <td style="width:20%">
-                    <span class="contenido2">
-                      <?php 
-                        // echo number_format($data['nota'], 2, ',', '.');
-                      ?>
-                    </span>
-                  </td> -->
                  
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
+                  <?php if ($amNotasC==1||$amNotasE==1||$amNotasB==1): ?>
                   <td style="width:40%">
-                    <!-- <table style="background:none;text-align:center;width:100%"> -->
-                      <!-- <tr> -->
-                        <?php //if ($amUsuariosE==1): ?>
-                        <!-- <td style="width:50%"> -->
-                          <button class="btn visualizarBtn" style="border:0;background:none;color:green" value="<?=$codigoModal;?>">
-                            <span class="fa fa-list">
-                              
-                            </span>
-                          </button>
-                  <button type="button" id="visualizarButton<?=$codigoModal;?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalvisualizarNota<?=$codigoModal;?>" style="display:none;">visualizar</button>
+                    <?php if ($amNotasC==1): ?>
+                      <button class="btn visualizarBtn" style="border:0;background:none;color:green" value="<?=$codigoModal;?>">
+                        <span class="fa fa-list"></span>
+                      </button>
 
-                  <div id="modalvisualizarNota<?=$codigoModal;?>" class="modal fade modalvisualizarNota<?=$codigoModal;?>" role="dialog">
-                    
-                    <div class="modal-dialog tamModals" style="text-align:left;">
-                      <div class="modal-content">
-                          <!--=====================================
-                          CABEZA DEL MODAL
-                          ======================================-->
+                      <!-- Cargar -->
+                      <button type="button" id="visualizarButton<?=$codigoModal;?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalvisualizarNota<?=$codigoModal;?>" style="display:none;">visualizar</button>
+                      <div id="modalvisualizarNota<?=$codigoModal;?>" class="modal fade modalvisualizarNota<?=$codigoModal;?>" role="dialog">
+                        
+                        <div class="modal-dialog tamModals" style="text-align:left;">
+                          <div class="modal-content">
+                              <!--=====================================
+                              CABEZA DEL MODAL
+                              ======================================-->
 
-                          <div class="modal-header" style="background:#3c8dbc; color:white">
+                              <div class="modal-header" style="background:#3c8dbc; color:white">
 
-                            <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
 
-                            <h4 class="modal-title" style="text-align: left;">Ver Notas</h4>
-                            <?php //echo $codigoModal;?>
-                          </div>
+                                <h4 class="modal-title" style="text-align: left;">Ver Notas</h4>
+                                <?php //echo $codigoModal;?>
+                              </div>
 
-                          <!--=====================================
-                          CUERPO DEL MODAL
-                          ======================================-->
+                              <!--=====================================
+                              CUERPO DEL MODAL
+                              ======================================-->
 
-                          <div class="modal-body" style="max-height:70vh;overflow:auto">
-                          <div class="box-body">
-                            <div class="row" style="width:100%;">
-                              
-                              <!-- ENTRADA PARA LA SECCION -->
-                              <div class="form-group col-xs-12">
-                                <label style="font-size:1.5em;">Sección:
-                                    <?php 
-                                      foreach ($secciones as $date):
-                                        if(!empty($date['cod_seccion'])):
-                                          if($data['cod_seccion']==$date['cod_seccion']){
-                                            echo "<i>".$date['nombre_seccion']."</i>";
-                                          } 
-                                        endif;
-                                      endforeach;
-                                    ?>
-                                </label>
-                                <br>
-                              <!-- ENTRADA PARA EL SABER -->
-                                <label style="font-size:1.5em;">Saber complementario:
-                                  <?php
-                                    if($data['nombre_periodo']=="I"){ $faseData="1"; }
-                                    if($data['nombre_periodo']=="1"){ $faseData="1"; }
-                                    if($data['nombre_periodo']=="II"){ $faseData="2"; }
-                                    if($data['nombre_periodo']=="2"){ $faseData="2"; }
-                                    foreach ($saberes as $dateS):
-                                        if(!empty($dateS['id_SC'])):
-                                        if ($data['trayecto_seccion']==$dateS['trayecto_SC']):
-                                          if ($faseData==$dateS['fase_SC']):
-                                            if($data['id_SC']==$dateS['id_SC']){
-                                              echo "<i>".strtoupper($dateS['nombreSC'])."</i>";
-                                            }
+                              <div class="modal-body" style="max-height:70vh;overflow:auto">
+                              <div class="box-body">
+                                <div class="row" style="width:100%;">
+                                  
+                                  <!-- ENTRADA PARA LA SECCION -->
+                                  <div class="form-group col-xs-12">
+                                    <label style="font-size:1.5em;">Sección:
+                                        <?php 
+                                          foreach ($secciones as $date):
+                                            if(!empty($date['cod_seccion'])):
+                                              if($data['cod_seccion']==$date['cod_seccion']){
+                                                echo "<i>".$date['nombre_seccion']."</i>";
+                                              } 
+                                            endif;
+                                          endforeach;
+                                        ?>
+                                    </label>
+                                    <br>
+                                  <!-- ENTRADA PARA EL SABER -->
+                                    <label style="font-size:1.5em;">Saber complementario:
+                                      <?php
+                                        if($data['nombre_periodo']=="I"){ $faseData="1"; }
+                                        if($data['nombre_periodo']=="1"){ $faseData="1"; }
+                                        if($data['nombre_periodo']=="II"){ $faseData="2"; }
+                                        if($data['nombre_periodo']=="2"){ $faseData="2"; }
+                                        foreach ($saberes as $dateS):
+                                            if(!empty($dateS['id_SC'])):
+                                            if ($data['trayecto_seccion']==$dateS['trayecto_SC']):
+                                              if ($faseData==$dateS['fase_SC']):
+                                                if($data['id_SC']==$dateS['id_SC']){
+                                                  echo "<i>".strtoupper($dateS['nombreSC'])."</i>";
+                                                }
+                                              endif;
+                                            endif;
                                           endif;
-                                        endif;
-                                      endif;
-                                    endforeach;
+                                        endforeach;
+                                      ?>
+                                    </label>
+                                  </div>
+
+
+
+
+                                </div>
+                                
+                                <div class="row">
+                                  <hr>
+                                </div>
+
+
+
+                                <div class="row boxlist_alumnosnotas<?=$codigoModal;?>" style="display:;">
+                                  <?php 
+                                    $alumnosLength = 0;
+                                    $dataAlumnosJsonModif = [];
+                                    foreach ($alumnos as $alumnotas) {
+                                      if(!empty($alumnotas['cod_seccion']) && !empty($alumnotas['id_clase']) && !empty($alumnotas['id_nota'])){
+                                        if($data['cod_seccion']==$alumnotas['cod_seccion'] and $data['id_clase']==$alumnotas['id_clase']){
+                                          $dataAlumnosJsonModif[$alumnosLength] = $alumnotas;
+                                          $alumnosLength++;
+                                        }
+                                      }
+                                    }
                                   ?>
-                                </label>
-                              </div>
-
-
-
-
-                            </div>
-                            
-                            <div class="row">
-                              <hr>
-                            </div>
-
-
-
-                            <div class="row boxlist_alumnosnotas<?=$codigoModal;?>" style="display:;">
-                              <?php 
-                                $alumnosLength = 0;
-                                $dataAlumnosJsonModif = [];
-                                foreach ($alumnos as $alumnotas) {
-                                  if(!empty($alumnotas['cod_seccion']) && !empty($alumnotas['id_clase']) && !empty($alumnotas['id_nota'])){
-                                    if($data['cod_seccion']==$alumnotas['cod_seccion'] and $data['id_clase']==$alumnotas['id_clase']){
-                                      $dataAlumnosJsonModif[$alumnosLength] = $alumnotas;
-                                      $alumnosLength++;
-                                    }
-                                  }
-                                }
-                              ?>
-                              <div class="col-xs-12">
-                                <div class="table-responsive">
-                                  <table class="table datatable" style="text-align:left;width:100%;">
-                                    <thead>
-                                      <tr>
-                                        <th colspan='5' style='text-align:left;width:100%;'>Mostrando un total de <?=$alumnosLength;?> alumnos</th>
-                                      </tr>
-                                      <tr>
-                                        <th style='width:10% !important;'>
-                                          <span>N°</span>
-                                        </th>
-                                        <th style='width:20% !important;'>
-                                          <span>Cedula</span>
-                                        </th>
-                                        <th style='width:20% !important;'>
-                                          <span>Nombre</span>
-                                        </th>
-                                        <th style='width:20% !important;'>
-                                          <span>Apellido</span>
-                                        </th>
-                                        <th style='width:30% !important;'>
-                                          <span>Notas</span>
-                                        </th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <?php  
-                                        $numex = 1;
-                                        foreach ($alumnos as $alumnotas) {
-                                          if(!empty($alumnotas['cod_seccion']) && !empty($alumnotas['id_clase']) && !empty($alumnotas['id_nota'])){
-                                            if($data['cod_seccion']==$alumnotas['cod_seccion'] and $data['id_clase']==$alumnotas['id_clase']){
-                                      ?>
-                                        <tr>
-                                          <td><?=$numex++;?></td>
-                                          <td><?=$alumnotas['cedula_alumno'];?></td>
-                                          <td><?=$alumnotas['nombre_alumno'];?></td>
-                                          <td><?=$alumnotas['apellido_alumno'];?></td>
-                                          <td>
-                                            <span><?php if($alumnotas['nota']!=""){ echo number_format($alumnotas['nota'],1,',',''); }else{ echo "0"; } ?> </span>
-                                          </td>
-                                        </tr>
-                                      <?php
+                                  <div class="col-xs-12">
+                                    <div class="table-responsive">
+                                      <table class="table datatable" style="text-align:left;width:100%;">
+                                        <thead>
+                                          <tr>
+                                            <th colspan='5' style='text-align:left;width:100%;'>Mostrando un total de <?=$alumnosLength;?> alumnos</th>
+                                          </tr>
+                                          <tr>
+                                            <th style='width:10% !important;'>
+                                              <span>N°</span>
+                                            </th>
+                                            <th style='width:20% !important;'>
+                                              <span>Cedula</span>
+                                            </th>
+                                            <th style='width:20% !important;'>
+                                              <span>Nombre</span>
+                                            </th>
+                                            <th style='width:20% !important;'>
+                                              <span>Apellido</span>
+                                            </th>
+                                            <th style='width:30% !important;'>
+                                              <span>Notas</span>
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <?php  
+                                            $numex = 1;
+                                            foreach ($alumnos as $alumnotas) {
+                                              if(!empty($alumnotas['cod_seccion']) && !empty($alumnotas['id_clase']) && !empty($alumnotas['id_nota'])){
+                                                if($data['cod_seccion']==$alumnotas['cod_seccion'] and $data['id_clase']==$alumnotas['id_clase']){
+                                          ?>
+                                            <tr>
+                                              <td><?=$numex++;?></td>
+                                              <td><?=number_format($alumnotas['cedula_alumno'],0,'','.');?></td>
+                                              <td><?=$alumnotas['nombre_alumno'];?></td>
+                                              <td><?=$alumnotas['apellido_alumno'];?></td>
+                                              <td>
+                                                <span><?php if($alumnotas['nota']!=""){ echo number_format($alumnotas['nota'],1,',',''); }else{ echo "0"; } ?> </span>
+                                              </td>
+                                            </tr>
+                                          <?php
+                                                }
+                                              }
                                             }
-                                          }
-                                        }
-                                      ?>
-                                    </tbody>
-                                    <tfoot>
-                                      <tr>
-                                        <th style='width:10% !important;'>
-                                          <span>N°</span>
-                                        </th>
-                                        <th style='width:20% !important;'>
-                                          <span>Cedula</span>
-                                        </th>
-                                        <th style='width:20% !important;'>
-                                          <span>Nombre</span>
-                                        </th>
-                                        <th style='width:20% !important;'>
-                                          <span>Apellido</span>
-                                        </th>
-                                        <th style='width:30% !important;'>
-                                          <span>Notas</span>
-                                        </th>
-                                      </tr>
-                                    </tfoot>
-                                  </table>
+                                          ?>
+                                        </tbody>
+                                        <tfoot>
+                                          <tr>
+                                            <th style='width:10% !important;'>
+                                              <span>N°</span>
+                                            </th>
+                                            <th style='width:20% !important;'>
+                                              <span>Cedula</span>
+                                            </th>
+                                            <th style='width:20% !important;'>
+                                              <span>Nombre</span>
+                                            </th>
+                                            <th style='width:20% !important;'>
+                                              <span>Apellido</span>
+                                            </th>
+                                            <th style='width:30% !important;'>
+                                              <span>Notas</span>
+                                            </th>
+                                          </tr>
+                                        </tfoot>
+                                      </table>
+                                    </div>
+                                  </div>
+                
                                 </div>
+
                               </div>
-                              <!-- <div class="form-group col-xs-12">
-                                <div class="input-group" style="width:100%;">
-                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                  <input type="text" class="form-control input-lg" style="width:100%;" name="nuevoAl" id="alumno" placeholder="Alumno" value="<?php echo $datos['nombre_alumno'] . ' ' . $datos['apellido_alumno'] ?>" disabled required>
-                                  <span class="input-group-addon" style="width:5%"><i class="fa fa-key"></i></span> 
-                                  <input type="number" class="form-control input-lg" style="width:100%;" name="nuevoPass" value="0" max="1" min="0" step="0.1" placeholder="Nota" id="nota<?=$datos['cedula_alumno']?>" required>
-                                </div>
-                              </div> -->
 
                             </div>
+
+                              <!--=====================================
+                              PIE DEL MODAL
+                              ======================================-->
+
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+                                <!-- <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$codigoModal;?>" id="modificar">Modificar</button> -->
+                              </div>
+                              <span style="display:none;" class="alumnosJsonModif<?=$codigoModal;?>"><?php echo json_encode($dataAlumnosJsonModif); ?></span>
+
+                            <!-- </form> -->
 
                           </div>
 
                         </div>
-
-                          <!--=====================================
-                          PIE DEL MODAL
-                          ======================================-->
-
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-                            <!-- <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$codigoModal;?>" id="modificar">Modificar</button> -->
-                          </div>
-                          <span style="display:none;" class="alumnosJsonModif<?=$codigoModal;?>"><?php echo json_encode($dataAlumnosJsonModif); ?></span>
-
-                        <!-- </form> -->
-
                       </div>
+                      <!-- Cargar -->
+                    <?php endif; ?>
+                    <?php if ($amNotasE==1): ?>
+                      <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" value="<?=$codigoModal;?>">
+                        <span class="fa fa-pencil"></span>
+                      </button>
 
-                    </div>
+                      <!-- Modificar -->
+                      <button type="button" id="modificarButton<?=$codigoModal;?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarNota<?=$codigoModal;?>" style="display:none;">Modificar</button>
+                      <div id="modalModificarNota<?=$codigoModal;?>" class="modal fade modalModificarNota<?=$codigoModal;?>" role="dialog">
+                        
+                        <div class="modal-dialog tamModals" style="text-align:left;">
+                          <div class="modal-content">
+                              <!--=====================================
+                              CABEZA DEL MODAL
+                              ======================================-->
 
-                  </div>
+                              <div class="modal-header" style="background:#3c8dbc; color:white">
 
-                          <button class="btn modificarBtn" style="border:0;background:none;color:#04a7c9" value="<?=$codigoModal;?>">
-                            <span class="fa fa-pencil">
-                              
-                            </span>
-                          </button>
-                  <button type="button" id="modificarButton<?=$codigoModal;?>" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalModificarNota<?=$codigoModal;?>" style="display:none;">Modificar</button>
+                                <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
 
-                  <div id="modalModificarNota<?=$codigoModal;?>" class="modal fade modalModificarNota<?=$codigoModal;?>" role="dialog">
-                    
-                    <div class="modal-dialog tamModals" style="text-align:left;">
-                      <div class="modal-content">
-                          <!--=====================================
-                          CABEZA DEL MODAL
-                          ======================================-->
-
-                          <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                            <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
-                            <h4 class="modal-title" style="text-align: left;">Modificar Notas</h4>
-                            <?php //echo $codigoModal;?>
-                          </div>
-
-                          <!--=====================================
-                          CUERPO DEL MODAL
-                          ======================================-->
-
-                          <div class="modal-body" style="max-height:70vh;overflow:auto">
-                          <div class="box-body">
-                            <div class="row" style="width:100%;">
-                              
-                              <!-- ENTRADA PARA LA SECCION -->
-                              <div class="form-group col-xs-12 col-sm-6">
-                                <label for="seccion">Sección</label>
-                                <div class="input-group" style="width:100%;">
-                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span> 
-                                  <select class="form-control input-lg select2 seccionModificar" style="width:100%;" name="<?=$codigoModal;?>" id="seccion<?=$codigoModal;?>">
-                                    <!-- <option value="">Sección</option> -->
-                                    <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])): ?>
-                                      <?php if($data['cod_seccion']==$date['cod_seccion']){ ?>
-                                        <option selected="selected"  value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
-                                        <?php } ?>
-                                    <?php endif; endforeach; ?>
-                                  </select>
-                                </div>
-                                <div style="width:100%;text-align:right;">
-                                  <span id="error_seccion<?=$codigoModal;?>" class="mensajeError" ></span>
-                                </div>
+                                <h4 class="modal-title" style="text-align: left;">Modificar Notas</h4>
+                                <?php //echo $codigoModal;?>
                               </div>
 
-                              <!-- ENTRADA PARA EL SABER -->
-                              <div class="form-group col-xs-12 col-sm-6">
-                                <label for="saber">Saber complementario</label>
-                                <?php
-                                  if($data['nombre_periodo']=="I"){ $faseData="1"; }
-                                  if($data['nombre_periodo']=="1"){ $faseData="1"; }
-                                  if($data['nombre_periodo']=="II"){ $faseData="2"; }
-                                  if($data['nombre_periodo']=="2"){ $faseData="2"; }
-                                ?>
-                                <div class="input-group" style="width:100%;">
-                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
-                                  <select class="form-control input-lg select2 saberModificar" style="width:100% !important;" name="<?=$codigoModal;?>" id="saber<?=$codigoModal;?>">
-                                    <!-- <option value="">Saber Complementario</option> -->
-                                    <?php  ?>
-                                    <?php foreach ($saberes as $dateS): if(!empty($dateS['id_SC'])): ?>
-                                      <?php if ($data['trayecto_seccion']==$dateS['trayecto_SC']): ?>
-                                        <?php if ($faseData==$dateS['fase_SC']): ?>
-                                          <?php if($data['id_SC']==$dateS['id_SC']){ ?>
-                                      <option  selected="selected"  value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option>
-                                          <?php } ?>
-                                        <?php endif; ?>
-                                      <?php endif; ?>
-                                    <?php endif; endforeach; ?>
-                                    <?php  ?>
-                                  </select>
+                              <!--=====================================
+                              CUERPO DEL MODAL
+                              ======================================-->
+
+                              <div class="modal-body" style="max-height:70vh;overflow:auto">
+                              <div class="box-body">
+                                <div class="row" style="width:100%;">
+                                  
+                                  <!-- ENTRADA PARA LA SECCION -->
+                                  <div class="form-group col-xs-12 col-sm-6">
+                                    <label for="seccion">Sección</label>
+                                    <div class="input-group" style="width:100%;">
+                                      <span class="input-group-addon" style="width:5%;"><i class="fa fa-cogs"></i></span> 
+                                      <select class="form-control input-lg select2 seccionModificar" style="width:100%;" name="<?=$codigoModal;?>" id="seccion<?=$codigoModal;?>">
+                                        <!-- <option value="">Sección</option> -->
+                                        <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])): ?>
+                                          <?php if($data['cod_seccion']==$date['cod_seccion']){ ?>
+                                            <option selected="selected"  value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
+                                            <?php } ?>
+                                        <?php endif; endforeach; ?>
+                                      </select>
+                                    </div>
+                                    <div style="width:100%;text-align:right;">
+                                      <span id="error_seccion<?=$codigoModal;?>" class="mensajeError" ></span>
+                                    </div>
+                                  </div>
+
+                                  <!-- ENTRADA PARA EL SABER -->
+                                  <div class="form-group col-xs-12 col-sm-6">
+                                    <label for="saber">Saber complementario</label>
+                                    <?php
+                                      if($data['nombre_periodo']=="I"){ $faseData="1"; }
+                                      if($data['nombre_periodo']=="1"){ $faseData="1"; }
+                                      if($data['nombre_periodo']=="II"){ $faseData="2"; }
+                                      if($data['nombre_periodo']=="2"){ $faseData="2"; }
+                                    ?>
+                                    <div class="input-group" style="width:100%;">
+                                      <span class="input-group-addon" style="width:5%;"><i class="fa fa-indent"></i></span> 
+                                      <select class="form-control input-lg select2 saberModificar" style="width:100% !important;" name="<?=$codigoModal;?>" id="saber<?=$codigoModal;?>">
+                                        <!-- <option value="">Saber Complementario</option> -->
+                                        <?php  ?>
+                                        <?php foreach ($saberes as $dateS): if(!empty($dateS['id_SC'])): ?>
+                                          <?php if ($data['trayecto_seccion']==$dateS['trayecto_SC']): ?>
+                                            <?php if ($faseData==$dateS['fase_SC']): ?>
+                                              <?php if($data['id_SC']==$dateS['id_SC']){ ?>
+                                          <option  selected="selected"  value="<?php echo $dateS['id_SC'] ?>"><?php echo $dateS['nombreSC'] ?></option>
+                                              <?php } ?>
+                                            <?php endif; ?>
+                                          <?php endif; ?>
+                                        <?php endif; endforeach; ?>
+                                        <?php  ?>
+                                      </select>
+                                    </div>
+                                    <div style="width:100%;text-align:right;">
+                                      <span id="error_saber<?=$codigoModal;?>" class="mensajeError" ></span>
+                                    </div>
+                                  </div>
+
+
+
+
                                 </div>
-                                <div style="width:100%;text-align:right;">
-                                  <span id="error_saber<?=$codigoModal;?>" class="mensajeError" ></span>
+                                
+                                <!-- <div class="row">
+                                  <br>
+                                  <div class="col-xs-12" style="text-align:right;">
+                                    <button class="btn btn-primary cargarAlumnosNotasModif" name="<?=$codigoModal;?>" id="cargarAlumnosNotas">Cargar Alumnos</button>
+                                  </div>
+                                </div> -->
+
+                                <div class="row">
+                                  <hr>
                                 </div>
-                              </div>
 
 
 
-
-                            </div>
-                            
-                            <!-- <div class="row">
-                              <br>
-                              <div class="col-xs-12" style="text-align:right;">
-                                <button class="btn btn-primary cargarAlumnosNotasModif" name="<?=$codigoModal;?>" id="cargarAlumnosNotas">Cargar Alumnos</button>
-                              </div>
-                            </div> -->
-
-                            <div class="row">
-                              <hr>
-                            </div>
-
-
-
-                            <div class="row boxlist_alumnosnotas<?=$codigoModal;?>" style="display:;">
-                              <?php 
-                                $alumnosLength = 0;
-                                $dataAlumnosJsonModif = [];
-                                foreach ($alumnos as $alumnotas) {
-                                  if(!empty($alumnotas['cod_seccion']) && !empty($alumnotas['id_clase']) && !empty($alumnotas['id_nota'])){
-                                    if($data['cod_seccion']==$alumnotas['cod_seccion'] and $data['id_clase']==$alumnotas['id_clase']){
-                                      $dataAlumnosJsonModif[$alumnosLength] = $alumnotas;
-                                      $alumnosLength++;
-                                    }
-                                  }
-                                }
-                              ?>
-                              <div class="col-xs-12">
-                                <div class="table-responsive">
-                                  <table class="table" style="text-align:left;width:100%;">
-                                    <thead>
-                                      <tr>
-                                        <th colspan='5' style='font-size:.8em;text-align:left;width:100%;'>Mostrando un total de <?=$alumnosLength;?> alumnos</th>
-                                      </tr>
-                                      <tr>
-                                        <th style='width:10% !important;'>
-                                          <span>N°</span>
-                                        </th>
-                                        <th style='width:20% !important;'>
-                                          <span>Cedula</span>
-                                        </th>
-                                        <th style='width:20% !important;'>
-                                          <span>Nombre</span>
-                                        </th>
-                                        <th style='width:20% !important;'>
-                                          <span>Apellido</span>
-                                        </th>
-                                        <th style='width:30% !important;'>
-                                          <span>Notas</span>
-                                        </th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <?php  
-                                        $numex = 1;
-                                        foreach ($alumnos as $alumnotas) {
-                                          if(!empty($alumnotas['cod_seccion']) && !empty($alumnotas['id_clase']) && !empty($alumnotas['id_nota'])){
-                                            if($data['cod_seccion']==$alumnotas['cod_seccion'] and $data['id_clase']==$alumnotas['id_clase']){
-                                      ?>
-                                        <tr>
-                                          <td><?=$numex++;?></td>
-                                          <td><?=$alumnotas['cedula_alumno'];?></td>
-                                          <td><?=$alumnotas['nombre_alumno'];?></td>
-                                          <td><?=$alumnotas['apellido_alumno'];?></td>
-                                          <td>
-                                            <span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' <?php if($alumnotas['nota']!=""){ echo "value='".$alumnotas['nota']."'"; }else{ echo "value='0'"; } ?> max='1' min='0' style='width:100%;' step='0.1' id='nota<?=$alumnotas['cedula_alumno'];?>' required oninput="this.value=this.value.replace(/[^0-9 .]/g, '');" ></span>
-                                          </td>
-                                        </tr>
-                                        <tr style='padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;'>
-                                          <td colspan='5' style='padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;'>
-                                            <span style='width:100%;text-align:right;display:block;' class='mensajeError' id='notaS<?=$alumnotas['cedula_alumno'];?>'></span>
-                                          </td>
-                                        </tr>
-                                      <?php
-                                            }
-                                          }
+                                <div class="row boxlist_alumnosnotas<?=$codigoModal;?>" style="display:;">
+                                  <?php 
+                                    $alumnosLength = 0;
+                                    $dataAlumnosJsonModif = [];
+                                    foreach ($alumnos as $alumnotas) {
+                                      if(!empty($alumnotas['cod_seccion']) && !empty($alumnotas['id_clase']) && !empty($alumnotas['id_nota'])){
+                                        if($data['cod_seccion']==$alumnotas['cod_seccion'] and $data['id_clase']==$alumnotas['id_clase']){
+                                          $dataAlumnosJsonModif[$alumnosLength] = $alumnotas;
+                                          $alumnosLength++;
                                         }
-                                      ?>
-                                    </tbody>
-                                  </table>
+                                      }
+                                    }
+                                  ?>
+                                  <div class="col-xs-12">
+                                    <div class="table-responsive">
+                                      <table class="table" style="text-align:left;width:100%;">
+                                        <thead>
+                                          <tr>
+                                            <th colspan='5' style='font-size:.8em;text-align:left;width:100%;'>Mostrando un total de <?=$alumnosLength;?> alumnos</th>
+                                          </tr>
+                                          <tr>
+                                            <th style='width:10% !important;'>
+                                              <span>N°</span>
+                                            </th>
+                                            <th style='width:20% !important;'>
+                                              <span>Cedula</span>
+                                            </th>
+                                            <th style='width:20% !important;'>
+                                              <span>Nombre</span>
+                                            </th>
+                                            <th style='width:20% !important;'>
+                                              <span>Apellido</span>
+                                            </th>
+                                            <th style='width:30% !important;'>
+                                              <span>Notas</span>
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <?php  
+                                            $numex = 1;
+                                            foreach ($alumnos as $alumnotas) {
+                                              if(!empty($alumnotas['cod_seccion']) && !empty($alumnotas['id_clase']) && !empty($alumnotas['id_nota'])){
+                                                if($data['cod_seccion']==$alumnotas['cod_seccion'] and $data['id_clase']==$alumnotas['id_clase']){
+                                          ?>
+                                            <tr>
+                                              <td><?=$numex++;?></td>
+                                              <td><?=$alumnotas['cedula_alumno'];?></td>
+                                              <td><?=$alumnotas['nombre_alumno'];?></td>
+                                              <td><?=$alumnotas['apellido_alumno'];?></td>
+                                              <td>
+                                                <span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' <?php if($alumnotas['nota']!=""){ echo "value='".$alumnotas['nota']."'"; }else{ echo "value='0'"; } ?> max='1' min='0' style='width:100%;' step='0.1' id='nota<?=$alumnotas['cedula_alumno'];?>' required oninput="this.value=this.value.replace(/[^0-9 .]/g, '');" ></span>
+                                              </td>
+                                            </tr>
+                                            <tr style='padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;'>
+                                              <td colspan='5' style='padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;'>
+                                                <span style='width:100%;text-align:right;display:block;' class='mensajeError' id='notaS<?=$alumnotas['cedula_alumno'];?>'></span>
+                                              </td>
+                                            </tr>
+                                          <?php
+                                                }
+                                              }
+                                            }
+                                          ?>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                  <!-- <div class="form-group col-xs-12">
+                                    <div class="input-group" style="width:100%;">
+                                      <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                      <input type="text" class="form-control input-lg" style="width:100%;" name="nuevoAl" id="alumno" placeholder="Alumno" value="<?php echo $datos['nombre_alumno'] . ' ' . $datos['apellido_alumno'] ?>" disabled required>
+                                      <span class="input-group-addon" style="width:5%"><i class="fa fa-key"></i></span> 
+                                      <input type="number" class="form-control input-lg" style="width:100%;" name="nuevoPass" value="0" max="1" min="0" step="0.1" placeholder="Nota" id="nota<?=$datos['cedula_alumno']?>" required>
+                                    </div>
+                                  </div> -->
+
                                 </div>
+
                               </div>
-                              <!-- <div class="form-group col-xs-12">
-                                <div class="input-group" style="width:100%;">
-                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                  <input type="text" class="form-control input-lg" style="width:100%;" name="nuevoAl" id="alumno" placeholder="Alumno" value="<?php echo $datos['nombre_alumno'] . ' ' . $datos['apellido_alumno'] ?>" disabled required>
-                                  <span class="input-group-addon" style="width:5%"><i class="fa fa-key"></i></span> 
-                                  <input type="number" class="form-control input-lg" style="width:100%;" name="nuevoPass" value="0" max="1" min="0" step="0.1" placeholder="Nota" id="nota<?=$datos['cedula_alumno']?>" required>
-                                </div>
-                              </div> -->
 
                             </div>
+
+                              <!--=====================================
+                              PIE DEL MODAL
+                              ======================================-->
+
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+                                <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$codigoModal;?>" id="modificar">Modificar</button>
+                              </div>
+                              <span style="display:none;" class="alumnosJsonModif<?=$codigoModal;?>"><?php echo json_encode($dataAlumnosJsonModif); ?></span>
+
+                            <!-- </form> -->
 
                           </div>
 
                         </div>
-
-                          <!--=====================================
-                          PIE DEL MODAL
-                          ======================================-->
-
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-                            <button type="submit" class="btn btn-primary modificarButtonModal" value="<?=$codigoModal;?>" id="modificar">Modificar</button>
-                          </div>
-                          <span style="display:none;" class="alumnosJsonModif<?=$codigoModal;?>"><?php echo json_encode($dataAlumnosJsonModif); ?></span>
-
-                        <!-- </form> -->
-
                       </div>
-
-                    </div>
-
-                  </div>
-                        <!-- </td> -->
-                        <?php //endif; ?>
-                        <?php //if ($amUsuariosB==1): ?>
-                        <!-- <td style="width:50%"> -->
-                          <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?=$codigoModal; ?>">
-                            <span class="fa fa-trash"></span>
-                          </button>
-                        <!-- </td> -->
-                        <?php //endif; ?>
-                      <!-- </tr> -->
-                    <!-- </table> -->
+                      <!-- Modificar -->
+                    <?php endif; ?>
+                    <?php if ($amNotasB==1): ?>
+                      <button class="btn eliminarBtn" style="border:0;background:none;color:red" value="<?=$codigoModal; ?>">
+                        <span class="fa fa-trash"></span>
+                      </button>
+                    <?php endif; ?>
                   </td>
-                  <?php //endif ?>
+                  <?php endif ?>
                   
 
                       
@@ -711,16 +610,15 @@
                 ?>
                 </tbody>
                 <tfoot>
-                <tr>
-                  <th>Nº</th>
-                  <th>Código</th>
-                  <th>Clase</th>
-                  <!-- <th>Alumno</th> -->
-                  <?php //if ($amUsuariosE==1||$amUsuariosB==1): ?>
-                  <!-- <th>Nota</th> -->
-                  <th>Acciones</th>
-                  <?php //endif ?>
-                </tr>
+                  <tr>
+                    <th>Nº</th>
+                    <th>Sección</th>
+                    <th>Saber</th>
+                    <!-- <th>Alumno</th> -->
+                    <?php if ($amNotasC==1||$amNotasE==1||$amNotasB==1): ?>
+                    <th>Acciones</th>
+                    <?php endif; ?>
+                  </tr>
                 </tfoot>
               </table>
 
