@@ -78,9 +78,9 @@ $(document).ready(function () {
         console.log(formData);
         $("#subir").attr('disabled', true);
         // console.log($("#subir").attr('disabled', true));
-
+        var url = $(this).val();
         $.ajax({
-            url: 'Alumnos/Cargar',
+            url: url+'/Cargar',
             type: 'POST',
             data: formData,
             cache: false,

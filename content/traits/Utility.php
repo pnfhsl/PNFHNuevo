@@ -14,9 +14,7 @@ const CODIGO_VECTOR ='1997';
  */
 trait Utility
 {
-    /**
-     * ENCRIPTADO
-     */
+    /* ENCRIPTADO */
     public function encriptar($cadena)
     {
         $salida = FALSE;
@@ -34,11 +32,19 @@ trait Utility
         $salida = openssl_decrypt(base64_decode($cadena), METODO, $password, 0, $vectorInicializacion);
         return $salida;
     }
+
+
+
+
+
+
+
     public function encriptarContrasena($password)
     {
         $salida = password_hash($password, PASSWORD_DEFAULT, ['cost' => 8]);
         return $salida;
     }
+
     public function verificarContrasena($password_verificar, $password)
     {
         $salida = password_verify($password_verificar, $password);
@@ -72,8 +78,7 @@ trait Utility
         return $cadena;
     }
 
-    public function codigoAleatorio($letra, $logitud, $numero)
-    {
+    public function codigoAleatorio($letra, $logitud, $numero){
         $acum = NULL;
         for ($i = 0; $i < $logitud; $i++) {
             $num = rand(0, 9);

@@ -12,6 +12,7 @@ use content\modelo\usuariosModel as usuariosModel;
 use content\modelo\alumnosModel as alumnosModel;
 use content\modelo\profesoresModel as profesoresModel;
 use content\modelo\rolesModel as rolesModel;
+use content\modelo\notificacionesModel as notificacionesModel;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -23,6 +24,7 @@ class perfilController
 	private $perfil;
 	private $login;
 	private $usuario;
+	private $notificacion;
 
 	private $alumno;
 	private $profesor;
@@ -31,6 +33,7 @@ class perfilController
 	function __construct($url)
 	{
 		$this->url = $url;
+		$this->notificacion = new notificacionesModel();
 		$this->perfil = new perfilModel();
 		$this->url = $url;
 		$this->login = new loginModel();
@@ -46,6 +49,7 @@ class perfilController
 		$_css = new headElement;
 		$_css->Heading();
 		$perfiles = $this->perfil->Consultar();
+		// $imagen = $this->perfil->ConsultaImagen($_SESSION['cuenta_usuario']['cedula_usuario']);
 		if ($_SESSION['cuenta_usuario']['nombre_rol'] === "Superusuario" || $_SESSION['cuenta_usuario']['nombre_rol'] === "Administrador" || $_SESSION['cuenta_usuario']['nombre_rol'] === "Profesores") {
 			$resp = $this->perfil->ConsultarProfesor($_SESSION['cuenta_usuario']['cedula_usuario']);
 			// var_dump($resp);
@@ -299,7 +303,20 @@ class perfilController
 		if($_POST){
 			if (isset($_POST['username']) && isset($_POST['ValidarContraseña']) && isset($_POST['password'])) {
 				$resp = $this->login->loginSistema(ucwords(mb_strtolower($_POST['username'])), $this->encriptar($_POST['password']));
-				echo json_encode($resp);
+				if($resp['msj']=="Good"){
+					if(count($resp['data'])>0){
+						$respdata = $resp['data'][0];
+						if(($respdata['nombre_usuario']==$_SESSION['cuenta_usuario']['nombre_usuario']) && $respdata['password_usuario']==$_SESSION['cuenta_usuario']['password_usuario']){
+							echo json_encode($resp);
+						}else{
+							echo json_encode(["msj"=>"Usuario o contraseña invalido!"]);
+						}
+					}else{
+						echo json_encode($resp);
+					}
+				}else{
+					echo json_encode($resp);
+				}
 			}
 		}
 		if(isset($_POST['VerificarUnicoUsername']) && isset($_POST['username']) && isset($_POST['id'])){
@@ -341,6 +358,99 @@ class perfilController
 				echo json_encode(['msj'=>"Good", 'valido'=>"1"]);
 			}
 		}
+	}
+
+	public function Guardar(){
+
+			if (isset($_FILES)) {
+				$user = $_SESSION['cuenta_persona']['cedula'];
+				$type = $_FILES["file"]["type"][0];
+				$tmp_name = $_FILES["file"]["tmp_name"][0];
+				$file = $_FILES["file"]["name"][0];
+				// $directorio_destino2 = $_SERVER["DOCUMENT_ROOT"] . _IMG_;
+				$directorio_destino = ""._IMG_;
+				
+				if (strpos($type, 'gif') || strpos($type, 'jpeg') || strpos($type, 'jpg') || strpos($type, 'png')) {
+					if(strpos($type, 'gif')){ $typeTemp = 'gif'; }
+					if(strpos($type, 'png')){ $typeTemp = 'png'; }
+					if(strpos($type, 'jpeg')){ $typeTemp = 'jpeg'; }
+					if(strpos($type, 'jpg')){ $typeTemp = 'jpg'; }
+					// $destino = $directorio_destino . '/' . $file;
+					$destino = $directorio_destino . '/' . $user.".".$typeTemp;
+					unlink($destino);
+					// if(copy($tmp_name, $_SERVER["DOCUMENT_ROOT"].$destino)){
+					if(copy($tmp_name, $destino)){
+						$upd = $this->perfil->Img($destino, $user);
+					}
+				}
+				// OPEN ACTUALIZANDO VARIABLES SESSION
+				$cedularUser = $_SESSION['cuenta_usuario']['cedula_usuario'];
+				$resp = $this->usuario->getOne($cedularUser, true);
+				if($resp['msj']=="Good"){
+					$dataTemp = $resp['data'][0];
+					$_SESSION['cuenta_usuario'] = $dataTemp;
+					if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
+						$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+						if($alumnos['msj']=="Good"){
+							if(count($alumnos['data']) > 1){
+								$_SESSION['cuenta_persona'] = $alumnos['data'][0];
+								$_SESSION['cuenta_persona']['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+								$_SESSION['cuenta_persona']['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+								$_SESSION['cuenta_persona']['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+								$_SESSION['cuenta_persona']['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+								$_SESSION['cuenta_persona']['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];	
+
+								// $_SESSION['cedula'] = $alumnos['data'][0]['cedula_alumno'];
+								// $_SESSION['nombre'] = $alumnos['data'][0]['nombre_alumno'];
+								// $_SESSION['apellido'] = $alumnos['data'][0]['apellido_alumno'];
+								// $_SESSION['telefono'] = $alumnos['data'][0]['telefono_alumno'];
+								// $_SESSION['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];
+							}else{
+								session_destroy();
+								$resps['msj'] = "Usuario o contraseña invalido!";
+								echo json_encode($resps);
+								die();
+							}
+						}
+					}else{
+						$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+						if($profesores['msj']=="Good"){
+							if(count($profesores['data']) > 1){
+								$_SESSION['cuenta_persona'] = $profesores['data'][0];
+								$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_profesor'];
+								$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_profesor'];
+								$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_profesor'];
+								$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_profesor'];
+
+								// $_SESSION['cedula'] = $profesores['data'][0]['cedula_alumno'];
+								// $_SESSION['nombre'] = $profesores['data'][0]['nombre_alumno'];
+								// $_SESSION['apellido'] = $profesores['data'][0]['apellido_alumno'];
+								// $_SESSION['telefono'] = $profesores['data'][0]['telefono_alumno'];
+							}else if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario"){
+								$supersu = ['cedula'=>'00000000', 'nombre'=>'Usuario', 'apellido'=>'Sistema', 'telefono'=>'00000000000'];
+								$_SESSION['cuenta_persona']= $supersu;
+								if($_SESSION['cuenta_usuario']['estatus']=="0"){
+									$_SESSION['cuenta_usuario']['estatus'] = "1";
+									$estatus = "1";
+								}
+								// $_SESSION['cedula'] = $supersu['cedula'];
+								// $_SESSION['nombre'] = $supersu['nombre'];
+								// $_SESSION['apellido'] = $supersu['apellido'];
+								// $_SESSION['telefono'] = $supersu['telefono'];
+							}else{
+								session_destroy();
+								$resps['msj'] = "Usuario o contraseña invalido!";	
+								echo json_encode($resps);
+								die();
+							}
+						}
+					}
+				}
+				// CLOSE ACTUALIZANDO VARIABLES SESSION
+				echo json_encode($upd);
+			}
+		
+
 	}
 
 
@@ -447,270 +557,6 @@ class perfilController
 
 
 	
-		
-
-	// public function Funciones(){
-	// 	$nombre_imagen=$_FILES['foto']['name'];
-	// 	$temporal=$_FILES['foto']['tmp_name'];
-	// 	$carpeta='../img';
-	// 	$ruta=$carpeta.'/'.$nombre_imagen;
-
-	// }
-
-	// public function Probar(){
-
-	// 	if($_POST){		
-	// 			if (isset($_POST['username']) && isset($_POST['ValidarContraseña']) && isset($_POST['password'])) {
-	// 				$resp = $this->perfil->ValidarContraseña($_POST['username'], $this->encriptar($_POST['password'])); //pasa el user y pass
-
-	// 				if($resp['msj'] == "Good" && !empty($resp['data']) && count($resp['data'])>0 && $resp['data'][0]['estatus']==0 && $resp['data'][0]['cedula_usuario'] == "00000000"){
-	// 					$permitirContinuar = "1";
-	// 				}else if($resp['msj'] == "Good" && !empty($resp['data']) && count($resp['data'])>0 && $resp['data'][0]['estatus']>0){
-	// 					$permitirContinuar = "1";
-	// 				}else{
-	// 					$permitirContinuar = "0";
-	// 				}
-						
-	// 				if($resp['msj'] == "Good"){
-	// 					if($permitirContinuar=="1"){
-	// 						$intentos = $this->usuario->Intentos($_POST['username']);
-	// 						$int = 0;
-	// 						$estatus = -1;
-	// 						if(!empty($resp['data']) && count($resp['data'])>0){
-	// 							$estatus = $resp['data'][0]['estatus'];
-	// 						}
-	// 						if(count($intentos)>0){
-	// 							$int = $intentos[0]["intentos"];
-	// 						}
-	// 						if($resp['msj'] === 'Good' && $int < 3){
-	// 							$dataTemp = $resp['data'][0];
-	// 							// print_r($dataTemp);
-	// 							$resp = array('access' => "Acceder");
-
-
-	// 							$_SESSION['cuentaActiva'] = true;
-	// 							$_SESSION['cuenta_usuario'] = $dataTemp;
-	// 							// $_SESSION['id_rol'] = $dataTemp['id_rol'];
-	// 							// $_SESSION['nombre_rol'] = $dataTemp['nombre_rol'];
-	// 							// $_SESSION['cedula_usuario'] = $dataTemp['cedula_usuario'];
-	// 							// $_SESSION['nombre_usuario'] = $dataTemp['nombre_usuario'];
-	// 							// $_SESSION['correo'] = $dataTemp['correo'];
-	// 							// $_SESSION['estatus'] = $dataTemp['estatus'];
-
-	// 							$accesos = $this->rol->ConsultarAccesos($_SESSION['cuenta_usuario']['id_rol']);
-	// 							$_SESSION['accesos_usuario'] = $accesos;
-
-	// 							if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
-	// 								$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
-	// 								if($alumnos['msj']=="Good"){
-	// 									if(count($alumnos['data']) > 1){
-	// 										$_SESSION['cuenta_persona'] = $alumnos['data'][0];
-	// 										$_SESSION['cuenta_persona']['cedula'] = $alumnos['data'][0]['cedula_alumno'];
-	// 										$_SESSION['cuenta_persona']['nombre'] = $alumnos['data'][0]['nombre_alumno'];
-	// 										$_SESSION['cuenta_persona']['apellido'] = $alumnos['data'][0]['apellido_alumno'];
-	// 										$_SESSION['cuenta_persona']['telefono'] = $alumnos['data'][0]['telefono_alumno'];
-	// 										$_SESSION['cuenta_persona']['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];
-	// 										$_SESSION['cuenta_persona']['correos'] = $alumnos['data'][0]['correo'];	
-
-	// 										// $_SESSION['cedula'] = $alumnos['data'][0]['cedula_alumno'];
-	// 										// $_SESSION['nombre'] = $alumnos['data'][0]['nombre_alumno'];
-	// 										// $_SESSION['apellido'] = $alumnos['data'][0]['apellido_alumno'];
-	// 										// $_SESSION['telefono'] = $alumnos['data'][0]['telefono_alumno'];
-	// 										// $_SESSION['trayecto'] = $alumnos['data'][0]['trayecto_alumno'];
-	// 									}else{
-	// 										session_destroy();
-	// 										$resps['msj'] = "Usuario o contraseña invalido!";
-	// 										echo json_encode($resps);
-	// 										die();
-	// 									}
-	// 								}
-	// 							}else{
-	// 								$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
-	// 								if($profesores['msj']=="Good"){
-	// 									if(count($profesores['data']) > 1){
-	// 										$_SESSION['cuenta_persona'] = $profesores['data'][0];
-	// 										$_SESSION['cuenta_persona']['cedula'] = $profesores['data'][0]['cedula_profesor'];
-	// 										$_SESSION['cuenta_persona']['nombre'] = $profesores['data'][0]['nombre_profesor'];
-	// 										$_SESSION['cuenta_persona']['apellido'] = $profesores['data'][0]['apellido_profesor'];
-	// 										$_SESSION['cuenta_persona']['telefono'] = $profesores['data'][0]['telefono_profesor'];
-	// 										$_SESSION['cuenta_persona']['correos'] = $profesores['data'][0]['correo'];
-
-
-	// 										// $_SESSION['cedula'] = $profesores['data'][0]['cedula_alumno'];
-	// 										// $_SESSION['nombre'] = $profesores['data'][0]['nombre_alumno'];
-	// 										// $_SESSION['apellido'] = $profesores['data'][0]['apellido_alumno'];
-	// 										// $_SESSION['telefono'] = $profesores['data'][0]['telefono_alumno'];
-	// 									}else if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario"){
-	// 										$supersu = ['cedula'=>'00000000', 'nombre'=>'Usuario', 'apellido'=>'Sistema', 'telefono'=>'00000000000'];
-	// 										$_SESSION['cuenta_persona']= $supersu;
-	// 										if($_SESSION['cuenta_usuario']['estatus']=="0"){
-	// 											$_SESSION['cuenta_usuario']['estatus'] = "1";
-	// 											$estatus = "1";
-	// 										}
-	// 										// $_SESSION['cedula'] = $supersu['cedula'];
-	// 										// $_SESSION['nombre'] = $supersu['nombre'];
-	// 										// $_SESSION['apellido'] = $supersu['apellido'];
-	// 										// $_SESSION['telefono'] = $supersu['telefono'];
-	// 									}else{
-	// 										session_destroy();
-	// 										$resps['msj'] = "Usuario o contraseña invalido!";	
-	// 										echo json_encode($resps);
-	// 										die();
-	// 									}
-	// 								}
-	// 							}
-
-
-								
-	// 						}
-
-	// 					}else{
-	// 						$resps['msj'] = "Usuario o contraseña invalido!";
-	// 						echo json_encode($resps);
-	// 					}
-	// 				}
-					
-	// 			}
-
-				
-	// 		}else{
-	// 			$objModel = new homeModel;
-	// 			$_css = new headElement;
-	// 			$_css->Heading();
-
-	// 			$url = $this->url;
-	// 			require_once("view/loginView.php");
-
-	// 		}
-
-	// }
-
-
-
-
-		// public function Probar(){
-
-
-		// 	if($_POST){		//Se verifica que se hayan pasado datos mediante el metodo post
-		// 		// print_r($_POST);
-		// 		if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
-		// 			$this->login->getLoginSistema($_POST['username'], $_POST['password']); //pasa el user y pass
-		// 			$objModel = new homeModel;
-		// 			$_css = new headElement;
-		// 			$_css->Heading();
-
-		// 			$url = $this->url;
-		// 			require_once("view/homeView.php");
-		// 		}
-
-		// 		if (isset($_POST['recuperarSistema']) && isset($_POST['correo'])) {
-		// 			$objModel->getRecuperarSistema($_POST['correo']);
-		// 		}
-		// 	}else{
-		// 		$objModel = new homeModel;
-		// 		$_css = new headElement;
-		// 		$_css->Heading();
-
-		// 		$url = $this->url;
-		// 		require_once("view/loginView.php");
-
-		// 	}
-
-		// }
-		
-	
-
-
-		// 	
-
-
-		// public function Buscar(){
-		// 	if($_POST){		
-		// 		if (isset($_POST['Buscar']) && isset($_POST['moduloM'])) {
-		// 			$buscar = $this->modulo->getOne($_POST['moduloM']);
-		// 			echo json_encode($buscar);
-		// 		}
-
-		// 	}
-		// }
-
-		// public function Agregar(){
-		// 	if($_POST){		
-		// 		if (!empty($_POST['Agregar']) && !empty($_POST['nombre']) ) {
-		// 			$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
-		// 			$buscar = $this->modulo->getOneNombre($datos['nombre']);
-		// 			if($buscar['msj']=="Good"){
-		// 				if(count($buscar['data'])>1){
-		// 					// print_r($buscar['data'][0]['estatus']);
-		// 					if($buscar['data'][0]['estatus']==0){
-		// 						$datos['id'] = $datos['cedula'];
-		// 						$exec = $this->modulo->Modificar($datos); 
-		// 						echo json_encode($exec);
-		// 					}else{
-		// 						echo json_encode(['msj'=>"Repetido"]);
-		// 					}
-		// 				}else{
-		// 					$exec = $this->modulo->Agregar($datos); 
-		// 					echo json_encode($exec);
-		// 				}
-		// 			}else{
-		// 				echo json_encode(['msj'=>"Error"]);
-		// 			}
-		// 		}else{
-		// 			echo json_encode(['msj'=>"Vacio"]);
-		// 		}
-
-		// 	}
-		// }
-
-		// public function Modificar(){
-		// 	if($_POST){		
-		// 		if (!empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['nombre'])) {
-		// 			$datos['id'] = $_POST['codigo'];
-		// 			$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
-		// 			$buscar = $this->modulo->getOneNombre($datos['nombre']);
-		// 			if($buscar['msj']=="Good"){
-		// 				if(count($buscar['data'])>1){
-		// 					// print_r($buscar['data']);
-		// 					if($_POST['codigo']==$buscar['data'][0]['id_modulo']){
-		// 						$exec = $this->modulo->Modificar($datos); 
-		// 						echo json_encode($exec);
-		// 					}else{
-		// 						echo json_encode(['msj'=>"Repetido"]);
-		// 					}
-		// 				}else{
-		// 					$exec = $this->modulo->Modificar($datos); 
-		// 					echo json_encode($exec);
-		// 				}
-		// 			}else{
-		// 				echo json_encode(['msj'=>"Error"]);
-		// 			}
-		// 		}else{
-		// 			echo json_encode(['msj'=>"Vacio"]);
-		// 		}
-		// 	}
-		// }
-
-		// public function Eliminar(){
-		// 	if($_POST){		
-		// 		if (isset($_POST['Eliminar']) && isset($_POST['modeloDelete'])) {
-		// 			$buscar = $this->modulo->getOne($_POST['modeloDelete']);
-		// 			if($buscar['msj']=="Good"){
-		// 				if(count($buscar['data'])>1){
-		// 					$data = $buscar['data'][0];
-		// 					$exec = $this->modulo->Eliminar($_POST['modeloDelete']);
-		// 					$exec['data'] = $data;
-		// 					echo json_encode($exec);
-		// 				}else{
-		// 					echo json_encode(['msj'=>"Error"]);
-		// 				}
-		// 			}else{
-		// 				echo json_encode(['msj'=>"Error"]);
-		// 			}
-		// 		}
-
-		// 	}
-		// }
 
 
 	

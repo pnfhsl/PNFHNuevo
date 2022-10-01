@@ -295,11 +295,8 @@
 							'cedula_recuperacion' => $usuario['cedula']
 						);
 						$resp = $this->email($usuario, $token);
-						// print_r($resp);
-						if($resp['msj']=="Good"){
+						echo json_encode($resp);
 
-							echo json_encode(['msj'=>"Good"]);
-						}
 					}else{
 						echo json_encode(['msj'=>"Vacio"]);
 					}

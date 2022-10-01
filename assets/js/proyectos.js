@@ -63,7 +63,7 @@ $(document).ready(function(){
             var html = '';
             html += '<option value="">Seleccione una sección</option>';
             for (var i = 0; i < data.length; i++) {
-              html += '<option value="'+data[i]['cod_seccion']+'">'+data[i]['nombre_seccion']+'</option>';
+              html += '<option value="'+data[i]['cod_seccion']+'">'+data[i]['nombre_seccion']+" ("+data[i]['year_periodo']+"-"+data[i]['nombre_periodo']+')</option>';
             }
             $("#seccion").html(html);
 
@@ -123,7 +123,7 @@ $(document).ready(function(){
             var html = '';
             html += '<option value="">Seleccione una sección</option>';
             for (var i = 0; i < data.length; i++) {
-              html += '<option value="'+data[i]['cod_seccion']+'">'+data[i]['nombre_seccion']+'</option>';
+              html += '<option value="'+data[i]['cod_seccion']+'">'+data[i]['nombre_seccion']+" ("+data[i]['year_periodo']+"-"+data[i]['nombre_periodo']+')</option>';
             }
             $("#seccion"+id).html(html);
 

@@ -7,6 +7,7 @@
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\profesoresModel as profesoresModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 
 	class profesoresController{
@@ -14,9 +15,11 @@
 		private $url;
 		private $profesor;
 		private $bitacora;
+		private $notificacion;
 
 		function __construct($url){			
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 			$this->profesor = new profesoresModel();
 		}

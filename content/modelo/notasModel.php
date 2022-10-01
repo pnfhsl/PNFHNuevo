@@ -16,12 +16,19 @@
 		public function __construct(){
 			parent::__construct();
 		}
-		public function Consultar(){
-			
+		public function Consultar($cedula="", $campo="Profesores"){
 			try {
-				// $query = parent::prepare("SELECT * FROM notas, seccion_alumno, alumnos, secciones, clases, saberes WHERE notas.id_SA = seccion_alumno.id_SA and seccion_alumno.cod_seccion = secciones.cod_seccion and seccion_alumno.cedula_alumno = alumnos.cedula_alumno and notas.id_clase = clases.id_clase and clases.id_SC = saberes.id_SC and notas.estatus = 1");
-				$query = parent::prepare("SELECT DISTINCT periodos.id_periodo, periodos.nombre_periodo, periodos.year_periodo, periodos.fecha_apertura, periodos.fecha_cierre, secciones.cod_seccion, secciones.id_periodo, secciones.nombre_seccion, secciones.trayecto_seccion, saberes.id_SC, saberes.nombreSC, saberes.trayecto_SC, saberes.fase_SC, clases.id_clase, clases.cedula_profesor FROM periodos, secciones, saberes, clases, notas, seccion_alumno WHERE periodos.id_periodo = secciones.id_periodo and secciones.cod_seccion = clases.cod_seccion and saberes.id_SC = clases.id_SC and notas.id_clase = notas.id_clase and seccion_alumno.cod_seccion = secciones.cod_seccion and seccion_alumno.id_SA = notas.id_SA and notas.id_clase = clases.id_clase and periodos.estatus = 1 and secciones.estatus = 1 and notas.estatus = 1 and clases.estatus = 1 and saberes.estatus = 1");
-				// $query = parent::prepare("SELECT * WHERE periodos.id_periodo = secciones.id_periodo and secciones.cod_seccion = clases.cod_seccion and saberes.id_SC = clases.id_SC and notas.id_clase = notas.id_clase and seccion_alumno.cod_seccion = secciones.cod_seccion and seccion_alumno.id_SA = notas.id_SA and notas.id_clase = clases.id_clase and periodos.estatus = 1 and secciones.estatus = 1 and notas.estatus = 1 and clases.estatus = 1 and saberes.estatus = 1");
+				if($cedula==""){
+					$query = parent::prepare("SELECT DISTINCT periodos.id_periodo, periodos.nombre_periodo, periodos.year_periodo, periodos.fecha_apertura, periodos.fecha_cierre, secciones.cod_seccion, secciones.id_periodo, secciones.nombre_seccion, secciones.trayecto_seccion, saberes.id_SC, saberes.nombreSC, saberes.trayecto_SC, saberes.fase_SC, clases.id_clase, clases.cedula_profesor FROM periodos, secciones, saberes, clases, notas, seccion_alumno WHERE periodos.id_periodo = secciones.id_periodo and secciones.cod_seccion = clases.cod_seccion and saberes.id_SC = clases.id_SC and notas.id_clase = notas.id_clase and seccion_alumno.cod_seccion = secciones.cod_seccion and seccion_alumno.id_SA = notas.id_SA and notas.id_clase = clases.id_clase and periodos.estatus = 1 and secciones.estatus = 1 and notas.estatus = 1 and clases.estatus = 1 and saberes.estatus = 1");
+				}else{
+					if($campo=="Profesores"){
+						$query = parent::prepare("SELECT DISTINCT periodos.id_periodo, periodos.nombre_periodo, periodos.year_periodo, periodos.fecha_apertura, periodos.fecha_cierre, secciones.cod_seccion, secciones.id_periodo, secciones.nombre_seccion, secciones.trayecto_seccion, saberes.id_SC, saberes.nombreSC, saberes.trayecto_SC, saberes.fase_SC, clases.id_clase, clases.cedula_profesor FROM periodos, secciones, saberes, clases, notas, seccion_alumno WHERE periodos.id_periodo = secciones.id_periodo and secciones.cod_seccion = clases.cod_seccion and saberes.id_SC = clases.id_SC and notas.id_clase = notas.id_clase and seccion_alumno.cod_seccion = secciones.cod_seccion and seccion_alumno.id_SA = notas.id_SA and notas.id_clase = clases.id_clase and periodos.estatus = 1 and secciones.estatus = 1 and notas.estatus = 1 and clases.estatus = 1 and saberes.estatus = 1 and clases.cedula_profesor = '{$cedula}'");
+					}
+					if($campo=="Alumnos"){
+						$query = parent::prepare("SELECT * FROM notificaciones, periodos, secciones, alumnos, saberes, clases, notas, seccion_alumno WHERE notificaciones.codigo_tabla = notas.id_nota and periodos.id_periodo = secciones.id_periodo and secciones.cod_seccion = clases.cod_seccion and saberes.id_SC = clases.id_SC and notas.id_clase = notas.id_clase and seccion_alumno.cod_seccion = secciones.cod_seccion and seccion_alumno.cedula_alumno = alumnos.cedula_alumno and seccion_alumno.id_SA = notas.id_SA and notas.id_clase = clases.id_clase and periodos.estatus = 1 and secciones.estatus = 1 and notas.estatus = 1 and clases.estatus = 1 and saberes.estatus = 1 and alumnos.cedula_alumno = '{$cedula}'");
+					}
+				}
+				
 				$respuestaArreglo = "";
 				$query->execute();
 				$query->setFetchMode(parent::FETCH_ASSOC);
@@ -35,6 +42,22 @@
 			}
 		}
 
+
+		public function ConsultarNotasTutor($cedula){
+			try {
+				$query = parent::prepare("SELECT DISTINCT periodos.id_periodo, periodos.nombre_periodo, periodos.year_periodo, periodos.fecha_apertura, periodos.fecha_cierre, secciones.cod_seccion, secciones.id_periodo, secciones.nombre_seccion, secciones.trayecto_seccion, saberes.id_SC, saberes.nombreSC, saberes.trayecto_SC, saberes.fase_SC, clases.id_clase, clases.cedula_profesor, proyectos.cod_proyecto, proyectos.titulo_proyecto, proyectos.trayecto_proyecto, proyectos.cedula_profesor FROM periodos, secciones, saberes, clases, notas, seccion_alumno, grupos, proyectos WHERE periodos.id_periodo = secciones.id_periodo and secciones.cod_seccion = clases.cod_seccion and saberes.id_SC = clases.id_SC and notas.id_clase = notas.id_clase and seccion_alumno.cod_seccion = secciones.cod_seccion and seccion_alumno.id_SA = notas.id_SA and notas.id_clase = clases.id_clase and periodos.estatus = 1 and secciones.estatus = 1 and notas.estatus = 1 and clases.estatus = 1 and saberes.estatus = 1 and seccion_alumno.id_SA = grupos.id_SA and grupos.cod_proyecto = proyectos.cod_proyecto and proyectos.cedula_profesor = '{$cedula}'");
+				// $query = parent::prepare("SELECT * FROM periodos, secciones, saberes, clases, notas, seccion_alumno, grupos, proyectos WHERE proyectos.cod_proyecto = grupos.cod_proyecto and grupos.id_SA = seccion_alumno.id_SA and periodos.id_periodo = secciones.id_periodo and secciones.cod_seccion = clases.cod_seccion and saberes.id_SC = clases.id_SC and notas.id_clase = notas.id_clase and seccion_alumno.cod_seccion = secciones.cod_seccion and seccion_alumno.id_SA = notas.id_SA and notas.id_clase = clases.id_clase and periodos.estatus = 1 and secciones.estatus = 1 and notas.estatus = 1 and clases.estatus = 1 and saberes.estatus = 1 and proyectos.cedula_profesor = '{$cedula}'");
+				$respuestaArreglo = '';
+				$query->execute();
+				$query->setFetchMode(parent::FETCH_ASSOC);
+				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
+				return $respuestaArreglo;
+			} catch (PDOException $e) {
+				$errorReturn = ['estatus' => false];
+				$errorReturn += ['info' => "error sql:{$e}"];
+				return $errorReturn;
+			}
+		}
 
 		public function ConsultarNotasAlumnos($cod_seccion=""){
 			

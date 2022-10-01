@@ -10,6 +10,7 @@
 	use content\modelo\proyectosModel as proyectosModel;
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\alumnosModel as alumnosModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 
 
@@ -20,10 +21,11 @@
 		private $seccion;
 		private $alumno;
 		private $bitacora;
+		private $notificacion;
 
 		function __construct($url){
-
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 			$this->seccion = new seccionesModel();
 			$this->proyecto = new proyectosModel();

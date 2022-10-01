@@ -4,7 +4,7 @@
       <div class="user-panel">
         <div class="pull-left image ReadlImage2 img-circle" style="background:#fff;padding:0;margin:0;">
           <!-- <?php echo $fotoPerfil; ?> -->
-          <img src="<?php echo _ROUTE_ ?>assets/img/user-3.png" style="background:#fff;" class="img-circle imageImage2">
+          <img src="<?=_ROUTE_.$fotoPerfil; ?>" style="background:#fff;" class="img-circle imageImage2">
         </div>
         <div class="pull-left info">
           <p>
@@ -145,9 +145,9 @@
 
         <li class="header">NAVEGACION PRINCIPAL </li>
         <?php require_once('accesos.php'); ?>
-        <!-- ======================================================================================================================= -->
+        <!-- =================================================================== -->
         <!--  HOME   -->
-        <!-- ======================================================================================================================= -->
+        <!-- =================================================================== -->
         <?php if ($url == "Home") { ?>
           <li class="active">
           <?php } else { ?>
@@ -162,7 +162,7 @@
           </a>
           </li>
 
-          <!-- ======================================================================================================================= -->
+          <!-- ================================================================== -->
 
 
 

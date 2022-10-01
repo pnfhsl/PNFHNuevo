@@ -9,6 +9,7 @@
 	use content\modelo\seccionesModel as seccionesModel;
 	use content\modelo\periodosModel as periodosModel;
 	use content\modelo\alumnosModel as alumnosModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 
 	class seccionesController{
@@ -18,10 +19,12 @@
 		private $periodo;
 		private $alumno;
 		private $bitacora;
+		private $notificacion;
 
 		function __construct($url){
 
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 
 			$this->seccion = new seccionesModel();
@@ -51,16 +54,18 @@
 					$buscar = $this->seccion->getOne($_POST['cod_seccion']);
 					echo json_encode($buscar);
 				}
-				if(isset($_POST['Buscar']) && isset($_POST['alumnos']) && isset($_POST['trayecto'])){
+				if(isset($_POST['Buscar']) && isset($_POST['alumnos']) && isset($_POST['trayecto'])  && isset($_POST['periodo'])){
 					$trayecto = $_POST['trayecto'];
-					// echo $trayecto;
+					$periodo = $_POST['periodo'];
+					// echo "T: ".$trayecto." | ";
+					// echo "P: ".$periodo." | ";
 					$buscar = $this->alumno->Consultar($trayecto);
 					// print_r($buscar);
 					$response = [];
 					if(count($buscar)>0){
 						$response['data'] = $buscar;
 						$response['msj'] = "Good";
-						$buscar2 = $this->seccion->ConsultarSecciones($trayecto);
+						$buscar2 = $this->seccion->ConsultarSecciones($trayecto, $periodo);
 						if(count($buscar2)>0){
 							$response['msjSecciones'] = "Good";
 							$response['dataSecciones'] = $buscar2;
@@ -152,7 +157,8 @@
 		}
 
 		public function Modificar(){
-			if($_POST){		
+			if($_POST){
+				// print_r($_POST);
 				if (!empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['seccion']) && !empty($_POST['trayecto']) && !empty($_POST['periodo'])  && !empty($_POST['alumnos'])) {
 					$datos['id'] = $_POST['codigo'];
 					$datos['seccion'] = mb_strtoupper($_POST['seccion']);

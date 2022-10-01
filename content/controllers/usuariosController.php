@@ -10,6 +10,7 @@
 	use content\modelo\rolesModel as rolesModel;
 	use content\modelo\alumnosModel as alumnosModel;
 	use content\modelo\profesoresModel as profesoresModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 
 	class usuariosController{
@@ -20,10 +21,12 @@
 		private $alumno;
 		private $profesor;
 		private $bitacora;
+		private $notificacion;
 
 		function __construct($url){
 			
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 			$this->usuario = new usuariosModel();
 			$this->rol = new rolesModel();

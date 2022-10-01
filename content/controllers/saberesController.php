@@ -7,6 +7,7 @@
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\saberesModel as saberesModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 
 	class saberesController{
@@ -14,9 +15,11 @@
 		private $url;
 		private $saber;
 		private $bitacora;
+		private $notificacion;
 
 		function __construct($url){			
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 			$this->saber = new saberesModel();
 		}

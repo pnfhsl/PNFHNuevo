@@ -7,15 +7,18 @@
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\permisosModel as permisosModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 	class permisosController{
 		use Utility;
 		private $url;
 		private $permiso;
 		private $bitacora;
+		private $notificacion;
 
 		function __construct($url){			
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 			$this->permiso = new permisosModel();
 		}

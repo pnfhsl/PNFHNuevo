@@ -10,7 +10,9 @@
 	use content\modelo\saberesModel as saberesModel;
 	use content\modelo\clasesModel as clasesModel;
 	use content\modelo\bitacoraModel as bitacoraModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
+	
 	class notasController{
 		use Utility;
 		private $url;
@@ -19,11 +21,13 @@
 		private $saber;
 		private $clase;
 		private $bitacora;
+		private $notificacion;
 
 		private $idNota;
 		function __construct($url){
 			
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 			$this->nota = new notasModel();
 			$this->seccion = new seccionesModel();
@@ -32,18 +36,57 @@
 		}
 
 		public function Consultar(){			
+			if(!empty($_POST['id_notificacion2']) && !empty($_POST['lista']) && !empty($_POST['visto'])){
+				$this->notificacion->RevisarNotificacion();
+				header("location:./".$this->encriptar("Notas"));
+			}else{
+
 				$objModel = new homeModel;
 				$_css = new headElement;
 				$_css->Heading();
 				$this->bitacora->monitorear($this->url);
-				$alumnos = $this->nota->ConsultarNotasAlumnos();
-				$notas = $this->nota->Consultar();
+				
+				if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
+					$notas = $this->nota->Consultar($_SESSION['cuenta_persona']['cedula'], $_SESSION['cuenta_usuario']['nombre_rol']);
+					$url = $this->url;
+					require_once("view/notasAlumnoView.php");
+				}else{
+					$alumnos = $this->nota->ConsultarNotasAlumnos();
+					if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario"){
+						$notas = $this->nota->Consultar();
+						$secciones = $this->clase->ConsultarSeccionClase();
+					}
+					if($_SESSION['cuenta_usuario']['nombre_rol']=="Administrador"){
+						$notas = $this->nota->Consultar();
+						$secciones = $this->clase->ConsultarSeccionClase();
+					}
+					if($_SESSION['cuenta_usuario']['nombre_rol']=="Profesores"){
+						$notasProf = $this->nota->Consultar($_SESSION['cuenta_persona']['cedula'], $_SESSION['cuenta_usuario']['nombre_rol']);
+						$notasTutor = $this->nota->ConsultarNotasTutor($_SESSION['cuenta_persona']['cedula']);
+						$notas = [];
+						$nume = 0;
+						foreach ($notasProf as $key) {
+							if(!empty($key['cod_seccion']) && !empty($key['id_SC']) && !empty($key['id_clase'])){
+								$notas[$nume] = $key;
+								$nume++;
+							}
+						}
+						foreach ($notasTutor as $key) {
+							if(!empty($key['cod_seccion']) && !empty($key['id_SC']) && !empty($key['id_clase'])){
+								$notas[$nume] = $key;
+								$nume++;
+							}
+						}
+						// echo count($notas);
+						$secciones = $this->clase->ConsultarSeccionProfesor($_SESSION['cuenta_persona']['cedula']);
+					}
+					$saberes = $this->saber->Consultar();
+					$url = $this->url;
+					require_once("view/notasView.php");
 
-				$secciones = $this->seccion->Consultar();
-				$saberes = $this->saber->Consultar();
-				$url = $this->url;
-				require_once("view/notasView.php");
-			
+				}
+
+			}
 		}
 		
 
@@ -68,29 +111,21 @@
 						$datos['id'] = $idNota;
 						$datos['alumno'] = $_POST['idSA'][$i];
 						$datos['nota'] = $_POST['notas'][$i];
+
 						// $responses = [];
-						$buscar = $this->nota->buscar($datos['saber'], $datos['alumno']);		//buscar de acuerdo al alumno y saber - nuevo metodo buscar???
+						$buscar = $this->nota->buscar($datos['id_clase'], $datos['alumno']);		//buscar de acuerdo al alumno y saber - nuevo metodo buscar???
+						// print_r($buscar);
+
 						if($buscar['msj']=="Good"){
 							if(count($buscar['data'])>1){
-								// if($buscar['data'][0]['estatus']==0){
-									// echo " -- Modificar -- ";
-									// echo $idNota;
 									$datos['id'] = $buscar['data'][0]['id_nota'];
-									// $datos['id'] = $idNota;
 									$exec = $this->nota->Modificar($datos); 
 									if($exec['msj']=="Good"){
-										// $responses[$i] = 1;
 										$suma += 1;
 									}
 									if($exec['msj']=="Error"){
-										// $responses[$i] = 2;
 										$suma += 2;
 									}
-									// echo json_encode($exec);
-								// }else{
-									// echo " -- Repetido -- ";
-									// echo json_encode(['msj'=>"Repetido"]);
-								// }
 							}else{
 								// echo " -- Agregar -- ";
 								$exec = $this->nota->Agregar($datos);
@@ -113,9 +148,22 @@
 						// echo " N.".$i.": Resp.";
 						// echo $responses[$i]." -- ";
 						// echo "Array: ".print_r($responses)." <br> ";
+						$dataNotificacion['tabla_notificacion']="notas";
+						$dataNotificacion['elemento_tabla']="codigo";
+						$dataNotificacion['id_tabla'] = -1;
+						$dataNotificacion['codigo_tabla'] = $datos['id'];
+						$dataNotificacion['fecha_notificacion'] = date('Y-m-d');
+						$dataNotificacion['hora_notificacion'] = date('h:i a');
+						$dataNotificacion['visto_alumnos'] = 0;
+						$dataNotificacion['visto_profesores'] = 0;
+						$dataNotificacion['visto_admin'] = 9;
+						$dataNotificacion['visto_superusuario'] = 9;
+						$buscarNotificacion = $this->notificacion->Buscar($dataNotificacion);
+						if(count($buscarNotificacion)<1){
+							$res = $this->notificacion->Agregar($dataNotificacion);
+						}
 
 					}
-
 					if($suma == count($_POST['notas'])){
 						$this->bitacora->monitorear($this->url);
 						echo json_encode(['msj'=>"Good"]);

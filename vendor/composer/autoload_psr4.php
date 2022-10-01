@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'phpseclib\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'content\\' => array($baseDir . '/content'),
     'config\\' => array($baseDir . '/content/config'),
     'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),

@@ -67,22 +67,36 @@ $(document).ready(function(){
     }
   }); 
 
+  $("#periodo").change(function(){
+    html = '';
+    html += '<option value="" selected>Seleccione un trayecto</option>';
+    html += '<option value="1">Trayecto I</option>';
+    html += '<option value="2">Trayecto II</option>';
+    html += '<option value="3">Trayecto III</option>';
+    html += '<option value="4">Trayecto IV</option>';
+    $('#trayecto').html(html);
+    html2 = "";
+    html2 += '<option disabled="" value="">Cargar Alumnos</option>';
+    $("#alumnos").html(html2);
+  });
+
   $('#trayecto').change(function(){
     var url = $("#url").val();
     var trayecto = $(this).val();
+    var periodo = $("#periodo").val();
     if(trayecto==""){
       var html = '';
       html += '<option disabled="" value="">Cargar Alumnos</option>';
       $("#alumnos").html(html);
-
     }else{
       $.ajax({
         url: url+'/Buscar',    
         type: 'POST',  
         data: {
-          Buscar: true,   
-          alumnos: true,   
-          trayecto: trayecto,       
+          Buscar: true,
+          alumnos: true,
+          trayecto: trayecto,
+          periodo: periodo,
         },
         success: function(respuesta){       
           // alert(respuesta);
@@ -106,8 +120,8 @@ $(document).ready(function(){
               html += '<option value="'+data[i]['cedula_alumno']+'"';
               if(dataSecciones.length>0){
                 for (var j = 0; j < dataSecciones.length; j++) {
-                  if(dataSecciones[j]['trayecto_alumno']==data[i]['trayecto_alumno']){
-                    html += 'disabled="disabled"'
+                  if((dataSecciones[j]['trayecto_alumno']==data[i]['trayecto_alumno']) && dataSecciones[j]['cedula_alumno']==data[i]['cedula_alumno']){
+                    html += 'disabled="disabled"';
                   }
                 }
               }
@@ -136,6 +150,9 @@ $(document).ready(function(){
     var id = $(this).attr("name");
     // console.log(id);
     var trayecto = $(this).val();
+    // alert(id);
+    var periodo = $("#periodo"+id).val();
+    // alert(periodo);
     if(trayecto==""){
       var html = '';
       html += '<option disabled="" value="">Cargar Alumnos</option>';
@@ -148,9 +165,10 @@ $(document).ready(function(){
         data: {
           Buscar: true,   
           alumnos: true,   
-          trayecto: trayecto,       
+          trayecto: trayecto,
+          periodo: periodo,
         },
-        success: function(respuesta){       
+        success: function(respuesta){ 
           // alert(respuesta);
           var resp = JSON.parse(respuesta);   
           // alert(resp.msj);
@@ -172,7 +190,8 @@ $(document).ready(function(){
               html += '<option value="'+data[i]['cedula_alumno']+'"';
               if(dataSecciones.length>0){
                 for (var j = 0; j < dataSecciones.length; j++) {
-                  if(dataSecciones[j]['cedula_alumno']==data[i]['cedula_alumno']){
+                  // if(dataSecciones[j]['cedula_alumno']==data[i]['cedula_alumno']){
+                  if((dataSecciones[j]['trayecto_alumno']==data[i]['trayecto_alumno']) && dataSecciones[j]['cedula_alumno']==data[i]['cedula_alumno']){
                     if(dataSecciones[j]['cod_seccion']==id){
                       html += 'selected="selected"';
                     }else{
@@ -217,10 +236,10 @@ $(document).ready(function(){
       }).then((isConfirm) => {
           if (isConfirm.value){ 
 
-            let nombre = $("#nombreeditar"+id).val();  
-            let periodo = $("#periodoeditar"+id).val();     
-            let trayecto = $("#trayectoeditar"+id).val();
-            let alumnos = $("#alumnoseditar"+id).val();
+            let nombre = $("#nombre"+id).val();  
+            let periodo = $("#periodo"+id).val();     
+            let trayecto = $("#trayecto"+id).val();
+            let alumnos = $("#alumnos"+id).val();
             
             // alert(id + " " + nombre + " " + periodo + " " + trayecto + " ");
             // alert(id + " " + nombre + " " + periodo + " " + trayecto + " " + alumnos);

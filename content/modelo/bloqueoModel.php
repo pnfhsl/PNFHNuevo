@@ -47,7 +47,7 @@ class bloqueoModel extends database{
 
     }
 
-    public function BuscarCodigo($cedula){			
+    public function BuscarCodigo($cedula){
         try{
             // $sql = "SELECT * FROM rsa, usuarios WHERE firma_digital = '{$firma}'  and rsa.cedula_usuario = usuarios.cedula_usuario";
             $sql = "SELECT * FROM rsa WHERE cedula_usuario = '{$cedula}'";
@@ -60,9 +60,9 @@ class bloqueoModel extends database{
             $errorReturn += ['info' => "error sql:{$e}"];
             return $errorReturn;
         }
-        
-
     }
+
+    
 
     public function Encrypt($codigo, $llave){
         $public_key = openssl_pkey_get_public($llave);
@@ -72,12 +72,8 @@ class bloqueoModel extends database{
     } 
 
     public function Decrypt($codigo, $llave){
-        // var_dump($llave);
-        // var_dump($codigo);
         $decode = base64_decode($codigo);
-        // var_dump($decode);
         $private_key = openssl_pkey_get_private($llave);
-        // var_dump($private_key);
         $rs = openssl_private_decrypt($decode, $decrypted, $private_key);
         return $decrypted;
     } 

@@ -10,6 +10,7 @@
 	use content\modelo\saberesModel as saberesModel;
 	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\profesoresModel as profesoresModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 
 	class clasesController{
@@ -21,8 +22,11 @@
 		private $profesor;
 		private $bitacora;
 		private $idClase;
+		private $notificacion;
+		
 		function __construct($url){
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->clase = new clasesModel();
 			$this->seccion = new seccionesModel();
 			$this->saber = new saberesModel();
