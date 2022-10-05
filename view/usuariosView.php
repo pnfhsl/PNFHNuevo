@@ -42,31 +42,20 @@
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
+              <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
               <div class="col-xs-12 col-sm-6" style="text-align:right">
-
-
-                <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarUsuario">Agregar Nuevo</button>
-                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-                <!--=====================================
-                MODAL AGREGAR USUARIO
-                ======================================-->
-
-                <div id="modalAgregarUsuario" class="modal fade" role="dialog">
-                  <div class="modal-dialog tamModals" style="text-align:left;">
-                    <div class="modal-content">
-                        <!--=====================================
-                        CABEZA DEL MODAL
-                        ======================================-->
-
+                <?php if($amUsuariosR=="1"): ?>
+                  <!--=====================================
+                    MODAL AGREGAR USUARIO
+                  ======================================-->
+                  <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarUsuario">Agregar Nuevo</button>
+                  <div id="modalAgregarUsuario" class="modal fade" role="dialog">
+                    <div class="modal-dialog tamModals" style="text-align:left;">
+                      <div class="modal-content">
                         <div class="modal-header" style="background:#3c8dbc; color:white">
                           <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
                           <h4 class="modal-title" style="text-align: left;">Agregar Usuario</h4>
                         </div>
-
-                        <!--=====================================
-                        CUERPO DEL MODAL
-                        ======================================-->
 
                         <div class="modal-body"  style="max-height:70vh;overflow:auto;">
                           <div class="box-body">
@@ -121,7 +110,6 @@
                                 </div>
                               </div>
 
-
                               <!-- Entrada para el Correo -->
                               <div class="form-group col-xs-12 col-sm-12">
                                 <label for="correo">Correo electrónico</label>
@@ -134,7 +122,6 @@
                                   <span id="correoS" class="mensajeError"></span>
                                 </div>
                               </div>
-
 
                               <input type="hidden" value="1" class="optpass">
                               <!-- ENTRADA PARA EL PASSWORD -->
@@ -165,26 +152,18 @@
                           </div>
                         </div>
 
-                        <!--=====================================
-                        PIE DEL MODAL
-                        ======================================-->
-
                         <div class="modal-footer">
                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
                           <button type="submit" class="btn btn-primary" id="guardar">Guardar</button>
                         </div>
-
-
-                      <!-- </form> -->
-
+                      </div>
                     </div>
-
                   </div>
-
-                </div>
-
+                <?php endif; ?>
               </div>
             </div>
+
+
             <!-- /.box-header -->
 
             <div class="box-body ">
@@ -353,9 +332,8 @@
                                     </div>
 
 
-
                                     <!-- ENTRADA PARA EL PASSWORD -->
-                                    <button class="btn btn-primary cont" style="width:90%;margin-left:5%;margin-right:5%;" id="cont<?=$data['cedula_usuario']?>" value="<?=$data['cedula_usuario']?>"><span class="text-center">Contraseña</span></button>
+                                    <button class="btn btn-primary cont" style="width:90%;margin-left:5%;margin-right:5%;margin-top:10px;" id="cont<?=$data['cedula_usuario']?>" value="<?=$data['cedula_usuario']?>"><span class="text-center">Abrir Contraseña</span></button>
                                     <button class="btn btn-primary contadorBoxPassword" style="width:90%;margin-left:5%;margin-right:5%;display:none" id="cont<?=$data['cedula_usuario']?>" value="<?=$data['cedula_usuario']?>"  data-toggle="collapse" data-target="#collapseOne<?=$data['cedula_usuario']?>" aria-expanded="false" aria-controls="collapseOne<?=$data['cedula_usuario']?>"><span class="text-center">Contraseña</span></button>
                                     </br>
                                     </br>
@@ -364,8 +342,8 @@
                                       <div class="form-group col-xs-12 col-sm-6">
                                         <label for="nuevoPassword<?=$data['cedula_usuario']?>">Contraseña</label>
                                         <div class="input-group">
-                                          <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                          <input type="password" class="form-control input-lg nuevoPassword"placeholder="Nueva contraseña" id="nuevoPassword<?=$data['cedula_usuario']?>" maxlength="32" value="" name="<?=$data['cedula_usuario']?>" required>
+                                          <span class="input-group-addon" style="width:5%;"><i class="fa fa-key"></i></span>
+                                          <input type="password" style="width:100%;" class="form-control input-lg nuevoPassword" placeholder="Nueva contraseña" id="nuevoPassword<?=$data['cedula_usuario']?>" maxlength="32" value="" name="<?=$data['cedula_usuario']?>" required>
                                         </div>
                                         <div style="width:100%;text-align:right;">
                                           <span id="nombreP<?=$data['cedula_usuario']?>" class="mensajeError"></span>
@@ -375,8 +353,8 @@
                                       <div class="form-group col-xs-12 col-sm-6">
                                         <label for="confirmarPassword<?=$data['cedula_usuario']?>">Confirmar contraseña</label>
                                         <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                        <input type="password" name="<?=$data['cedula_usuario']?>" class="form-control input-lg confirmarPassword" placeholder="Confirmar contraseña" id="confirmarPassword<?=$data['cedula_usuario']?>" maxlength="32" value="" required>
+                                        <span class="input-group-addon" style="width:5%;"><i class="fa fa-key"></i></span>
+                                        <input type="password" style="width:100%;" name="<?=$data['cedula_usuario']?>" class="form-control input-lg confirmarPassword" placeholder="Confirmar contraseña" id="confirmarPassword<?=$data['cedula_usuario']?>" maxlength="32" value="" required>
                                         </div>
                                         <div style="width:100%;text-align:right;">
                                           <span id="nombrePC<?=$data['cedula_usuario']?>" class="mensajeError"></span>
@@ -411,6 +389,9 @@
 
                         </div>
                       </div>
+
+
+
                       <!-- Modificar -->
                     
                     <?php endif; ?>
@@ -448,6 +429,53 @@
 
             </div>
             <!-- /.box-body -->
+            <button type="button" id="verificarButton" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalVerificarDatos" style="display:none;">Verificar</button>
+            <div id="modalVerificarDatos" class="modalVerificarDatos modal fade modalVerificarDatos" role="dialog">
+              <div class="modal-dialog tamModals" style="text-align:left;">
+                <div class="modal-content">
+                  <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
+                    <!--=====================================
+                    CABEZA DEL MODAL
+                    ======================================-->
+                    <div class="modal-header" style="background:#3c8dbc; color:white">
+                      <button type="button" class="close verificarCerrar" data-dismiss="modal" style="top:25px;" >&times;</button>
+                      <h4 class="modal-title" style="text-align: left;">Verificar cuenta de usuario</h4>
+                    </div>
+                    <!--=====================================
+                    CUERPO DEL MODAL
+                    ======================================-->
+                    <div class="modal-body" style="max-height:70vh;overflow:auto;">
+                      <div class="box-body">
+                        <div class="row">
+                          <!-- $_SESSION['cuenta_usuario']['password_usuario'] -->
+                          <!-- ENTRADA PARA EL NOMBRE -->
+                          <div class="form-group col-xs-12 col-sm-12">
+                            <p style="font-size:1.2em">Saludos, <b><?=$_SESSION['cuenta_persona']['nombre']." ".$_SESSION['cuenta_persona']['apellido'];?></b> Por favor, ingresa la contraseña de su cuenta de usuario.</p>
+                          </div>
+                          <div class="form-group col-xs-12 col-sm-12">
+                            <label for="passwordVerificar">Contraseña</label>
+                            <div class="input-group" style="width:100%;">
+                              <span class="input-group-addon" style="width:5%;"><i class="fa fa-key"></i></span> 
+                              <input type="password" class="form-control input-lg passwordVerificar" id="passwordVerificar" style="width:100%;" placeholder="Ingresar su contraseña" required>
+                            </div>
+                            <div style="width:100%;text-align:right;">
+                              <span id="passwordVerificarM" class="mensajeError"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--=====================================
+                    PIE DEL MODAL
+                    ======================================-->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default pull-left verificarCerrar" data-dismiss="modal">Salir</button>
+                      <button type="submit" class="btn btn-primary passwordVerificarButtonModal" name="" id="verificar">Verificar</button>
+                    </div>
+                  <!-- </form> -->
+                </div>
+              </div>
+            </div>
           </div>
           <!-- /.box -->
         </div>

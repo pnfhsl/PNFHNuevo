@@ -72,7 +72,7 @@
 		public function recuperarPass($user, $pass){		//Se hace una consulta de los usuarios recibidos
 			
 			try{
-				$this->pass_recuperar = md5($pass);
+				$this->pass_recuperar = $pass;
 				$sql = "UPDATE usuarios SET password_usuario = '{$this->pass_recuperar}' WHERE cedula_usuario = '{$user}'";
 				$query = parent::prepare($sql);
 				$query->execute();          
@@ -117,7 +117,7 @@
 
 		public function busquedaCorreo($correo){
 			try {
-				$query = parent::prepare('SELECT cedula_usuario AS cedula, correo AS correo, nombre_usuario AS nombre 
+				$query = parent::prepare('SELECT cedula_usuario AS cedula, correo AS correo, nombre_usuario AS nombre, estatus 
 				FROM usuarios WHERE correo = :correo');
 				$respuestaArreglo = '';
 				$query->execute(['correo'=>$correo]);

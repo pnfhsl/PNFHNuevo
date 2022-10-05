@@ -48,7 +48,8 @@ class perfilController
 		$objModel = new homeModel;
 		$_css = new headElement;
 		$_css->Heading();
-		$perfiles = $this->perfil->Consultar();
+		$perfiles = $this->perfil->Consultar($_SESSION['cuenta_usuario']['cedula_usuario']);
+		// print_r($perfiles);
 		// $imagen = $this->perfil->ConsultaImagen($_SESSION['cuenta_usuario']['cedula_usuario']);
 		if ($_SESSION['cuenta_usuario']['nombre_rol'] === "Superusuario" || $_SESSION['cuenta_usuario']['nombre_rol'] === "Administrador" || $_SESSION['cuenta_usuario']['nombre_rol'] === "Profesores") {
 			$resp = $this->perfil->ConsultarProfesor($_SESSION['cuenta_usuario']['cedula_usuario']);

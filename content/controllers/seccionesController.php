@@ -86,7 +86,7 @@
 
 					$codSeccion = "T".$_POST['trayecto']."P".$_POST['periodo']."S";
 					$codSeccion = $this->seccion->ExtraerPK($codSeccion); // "C2Y2022LDR5PED83P327"	
-					$datos['id'] = $codSeccion;
+					$datos['cod_seccion'] = $codSeccion;
 					$datos['seccion'] = mb_strtoupper($_POST['nombre']);
 					$datos['id_periodo'] = $_POST['periodo'];
 					$datos['trayecto'] = $_POST['trayecto'];
@@ -98,14 +98,14 @@
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($buscar['data'][0]['estatus']==0){
-								$datos['id'] = $buscar['data'][0]['cod_seccion'];
-								$exec = $this->seccion->Modificar($datos); 
+								$datos['cod_seccion'] = $buscar['data'][0]['cod_seccion'];
+								$exec = $this->seccion->ValidarAgregarOModificar($datos, "Modificar"); 
 
 								if($exec["msj"] == "Good"){
-									$exec = $this->seccion->EliminarSeccionAlumno($datos['id']);
+									$exec = $this->seccion->EliminarSeccionAlumno($datos['cod_seccion']);
 									 	if($exec["msj"] == "Good"){
 											
-											$data['cod_seccion'] = $datos['id'];  
+											$data['cod_seccion'] = $datos['cod_seccion'];  
 											foreach ($datos['alumnos'] as $alumnos) {
 												$data['cedula_alumno'] = $alumnos;
 													$exec = $this->seccion->AgregarSecAlumno($data); 
@@ -125,12 +125,12 @@
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->seccion->Agregar($datos); 
+							$exec = $this->seccion->ValidarAgregarOModificar($datos, "Agregar"); 
 							if($exec["msj"] == "Good"){
-								$exec = $this->seccion->EliminarSeccionAlumno($datos['id']);
+								$exec = $this->seccion->EliminarSeccionAlumno($datos['cod_seccion']);
 								 	if($exec["msj"] == "Good"){
 										
-										$data['cod_seccion'] = $datos['id'];  
+										$data['cod_seccion'] = $datos['cod_seccion'];  
 										foreach ($datos['alumnos'] as $alumnos) {
 											$data['cedula_alumno'] = $alumnos;
 												$exec = $this->seccion->AgregarSecAlumno($data); 
@@ -160,7 +160,7 @@
 			if($_POST){
 				// print_r($_POST);
 				if (!empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['seccion']) && !empty($_POST['trayecto']) && !empty($_POST['periodo'])  && !empty($_POST['alumnos'])) {
-					$datos['id'] = $_POST['codigo'];
+					$datos['cod_seccion'] = $_POST['codigo'];
 					$datos['seccion'] = mb_strtoupper($_POST['seccion']);
 					$datos['id_periodo'] = $_POST['periodo'];
 					$datos['trayecto'] = $_POST['trayecto'];
@@ -171,13 +171,13 @@
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$buscar['data'][0]['cod_seccion']){
-								$datos['id'] = $buscar['data'][0]['cod_seccion'];
-								$exec = $this->seccion->Modificar($datos); 
+								$datos['cod_seccion'] = $buscar['data'][0]['cod_seccion'];
+								$exec = $this->seccion->ValidarAgregarOModificar($datos, "Modificar"); 
 								if($exec["msj"] == "Good"){
-									$exec = $this->seccion->EliminarSeccionAlumno($datos['id']);
+									$exec = $this->seccion->EliminarSeccionAlumno($datos['cod_seccion']);
 									 	if($exec["msj"] == "Good"){
 											
-											$data['cod_seccion'] = $datos['id'];  
+											$data['cod_seccion'] = $datos['cod_seccion'];  
 											foreach ($datos['alumnos'] as $alumnos) {
 												$data['cedula_alumno'] = $alumnos;
 													$exec = $this->seccion->AgregarSecAlumno($data); 
@@ -195,12 +195,12 @@
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->seccion->Modificar($datos);
+							$exec = $this->seccion->ValidarAgregarOModificar($datos, "Modificar");
 							if($exec["msj"] == "Good"){
-								$exec = $this->seccion->EliminarSeccionAlumno($datos['id']);
+								$exec = $this->seccion->EliminarSeccionAlumno($datos['cod_seccion']);
 								 	if($exec["msj"] == "Good"){
 										
-										$data['cod_seccion'] = $datos['id'];  
+										$data['cod_seccion'] = $datos['cod_seccion'];  
 										foreach ($datos['alumnos'] as $alumnos) {
 											$data['cedula_alumno'] = $alumnos;
 												$exec = $this->seccion->AgregarSecAlumno($data); 

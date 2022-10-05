@@ -23,11 +23,14 @@ class perfilModel extends database
 		// $this->con = parent::__construct();
 		parent::__construct();
 	}
-	public function Consultar()
+	public function Consultar($cedula)
 	{
-
 		try {
-			$query = parent::prepare('SELECT * FROM modulos WHERE estatus = 1');
+			if($cedula!=""){
+				$query = parent::prepare("SELECT * FROM rsa WHERE estatus = 1 and cedula_usuario = '{$cedula}'");
+			}else{
+				$query = parent::prepare("SELECT * FROM modulos WHERE estatus = 1");
+			}
 			$respuestaArreglo = '';
 			$query->execute();
 			$query->setFetchMode(parent::FETCH_ASSOC);

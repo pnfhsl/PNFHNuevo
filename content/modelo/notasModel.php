@@ -101,62 +101,6 @@
 			}
 		}
 
-
-		// public function ConsultarSecciones(){
-			
-		// 	try {
-		// 		$query = parent::prepare('SELECT * FROM secciones WHERE estatus = 1');
-		// 		$respuestaArreglo = '';
-		// 		$query->execute();
-		// 		$query->setFetchMode(parent::FETCH_ASSOC);
-		// 		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-		// 		$respuestaArreglo += ['estatus' => true];
-		// 		return $respuestaArreglo;
-		// 	} catch (PDOException $e) {
-		// 		$errorReturn = ['estatus' => false];
-		// 		$errorReturn += ['info' => "error sql:{$e}"];
-		// 		return $errorReturn;
-		// 	}
-		// }
-
-		// public function ConsultarSaberes(){
-			
-		// 	try {
-		// 		$query = parent::prepare('SELECT * FROM saberes WHERE estatus = 1');
-		// 		$respuestaArreglo = '';
-		// 		$query->execute();
-		// 		$query->setFetchMode(parent::FETCH_ASSOC);
-		// 		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-		// 		$respuestaArreglo += ['estatus' => true];
-		// 		return $respuestaArreglo;
-		// 	} catch (PDOException $e) {
-		// 		$errorReturn = ['estatus' => false];
-		// 		$errorReturn += ['info' => "error sql:{$e}"];
-		// 		return $errorReturn;
-		// 	}
-		// }	
-
-
-		// public function ConsultarSA(){
-			
-		// 	try {
-		// 		$query = parent::prepare('SELECT * FROM seccion_alumno WHERE estatus = 1');
-		// 		$respuestaArreglo = '';
-		// 		$query->execute();
-		// 		$query->setFetchMode(parent::FETCH_ASSOC);
-		// 		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-		// 		$respuestaArreglo += ['estatus' => true];
-		// 		return $respuestaArreglo;
-		// 	} catch (PDOException $e) {
-		// 		$errorReturn = ['estatus' => false];
-		// 		$errorReturn += ['info' => "error sql:{$e}"];
-		// 		return $errorReturn;
-		// 	}
-		// }
-
-
-
-
 		public function ConsultaPK($idNota){
 			try {
 				$query = parent::prepare("SELECT * FROM notas WHERE estatus = 1 and id_nota LIKE '%{$idNota}%'");
@@ -173,8 +117,7 @@
 			}
 		}
 
-
-		function ExtraerPK($idNota){
+		public function ExtraerPK($idNota){
 			// echo $idNota." --- ";
 			$numss = $this::ConsultaPK($idNota);
 			// print_r($numss);
@@ -198,24 +141,49 @@
 		}
 
 
-
-
-		public function setAgregar($datos){
-			$this->id = $datos['id'];
-			$this->saber = $datos['saber'];
-			$this->alumno = $datos['alumno'];
-			$this->nota = $datos['nota'];
-			$this->Agregar();
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"id",'expresion'=>'/[^a-zA-Z0-9]/'],
+				'1' => ['campo'=>"id_clase",'expresion'=>'/[^0-9]/'],
+				'2' => ['campo'=>"alumno",'expresion'=>'/[^0-9]/'],
+				'3' => ['campo'=>"nota",'expresion'=>'/[^0-9 . ,]/'],
+			];
+			// $resExp = 0;
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp." | ";
+					// echo "\n\n";
+					return $resExp;
+				}
+			}
 		}
-
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
 		public function Agregar($datos){
 
 			try{
 			// echo $datos['id'];
 	        $query = parent::prepare("INSERT INTO notas (id_nota, id_clase, id_SA, nota, fecha_nota, hora_nota, estatus) VALUES (:id_nota, :id_clase, :id_SA, :nota, :fecha, :hora, 1)");
-	        /*$query->bindValue(':id_nota', $datos['id']);*/
 	        $query->bindValue(':id_nota', $datos['id']);
-	        // var_dump($datos['id']);
 	        $query->bindValue(':id_clase', $datos['id_clase']);
 	        $query->bindValue(':id_SA', $datos['alumno']);
 	        $query->bindValue(':nota', $datos['nota']);
@@ -240,7 +208,6 @@
 	      }
 		}
 		
-
 		public function Modificar($datos){
 
 			try{

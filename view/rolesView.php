@@ -40,49 +40,23 @@
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
+              <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
               <div class="col-xs-12 col-sm-6" style="text-align:right">
-
-
-                <!--=====================================
-                MODAL MODIFICAR Roles
-                ======================================-->
-
-
-                <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarRoles">Agregar Nuevo</button>
-                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-                <!--=====================================
-                MODAL AGREGAR Roles
-                ======================================-->
-
-                <div id="modalAgregarRoles" class="modalAgregarRoles modal fade" role="dialog">
-                  
-                  <div class="modal-dialog tamModals" style="text-align:left;">
-
-                    <div class="modal-content">
-
-
-                        <!--=====================================
-                        CABEZA DEL MODAL
-                        ======================================-->
-
+                <?php if($amRolesR=="1"): ?>
+                  <!--=====================================
+                    MODAL MODIFICAR Roles
+                  ======================================-->
+                  <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarRoles">Agregar Nuevo</button>
+                  <div id="modalAgregarRoles" class="modalAgregarRoles modal fade" role="dialog">
+                    <div class="modal-dialog tamModals" style="text-align:left;">
+                      <div class="modal-content">
                         <div class="modal-header" style="background:#3c8dbc; color:white">
-
                           <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
                           <h4 class="modal-title" style="text-align: left;">Agregar Rol</h4>
-
                         </div>
 
-                        <!--=====================================
-                        CUERPO DEL MODAL
-                        ======================================-->
-
                         <div class="modal-body" style="max-height:70vh;overflow:auto;">
-
                           <div class="box-body">
-
-                  
                             <div class="row">
                               <!-- ENTRADA PARA EL NOMBRE -->
                               <div class="form-group col-xs-12 col-sm-12">
@@ -95,9 +69,7 @@
                                   <span id="nombreS" class="mensajeError"></span>
                                 </div>
                               </div>
-
                               <br>
-
                               <div class="form-group col-xs-12 col-sm-12">
                                 <table class="table text-center">
                                   <thead>
@@ -145,34 +117,18 @@
                                   </tbody>
                                 </table>
                               </div>
-                            
                             </div>
-
-
                           </div>
-
                         </div>
-
-                        <!--=====================================
-                        PIE DEL MODAL
-                        ======================================-->
 
                         <div class="modal-footer">
-
                           <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
                           <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
                         </div>
-
-
-
+                      </div>
                     </div>
-
                   </div>
-
-                </div>
-
+                <?php endif; ?>
               </div>
             </div>
 

@@ -42,44 +42,24 @@
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
+              <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
               <div class="col-xs-12 col-sm-6" style="text-align:right">
-                <button class="btn enviar2" style=""  data-toggle="modal" data-target="#modalAgregarSeccion">Agregar Nuevo</button>
-                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-                <!--=====================================
-                  MODAL AGREGAR Seccion
-                ======================================-->
-
-                <div id="modalAgregarSeccion" class="modalAgregarSeccion modal fade" role="dialog" style="text-align:left;">
-                  <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;">
-
-                    <div class="modal-content">
-
-                      <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-                        <!--=====================================
-                        CABEZA DEL MODAL
-                        ======================================-->
-                        <?php //print_r($gruposAlumnos); ?>
-
+                <?php if ($amProyectosR=="1"): ?>
+                  <button class="btn enviar2" style=""  data-toggle="modal" data-target="#modalAgregarSeccion">Agregar Nuevo</button>
+                  <!--=====================================
+                    MODAL AGREGAR Seccion
+                  ======================================-->
+                  <div id="modalAgregarSeccion" class="modalAgregarSeccion modal fade" role="dialog" style="text-align:left;">
+                    <div class="modal-dialog" style="width:60%;margin-left:20%;margin-right:20%;text-align:left;">
+                      <div class="modal-content">
                         <div class="modal-header" style="background:#3c8dbc; color:white">
-
                           <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
                           <h4 class="modal-title" style="text-align: left;">Agregar Proyecto</h4>
-
                         </div>
 
-                        <!--=====================================
-                        CUERPO DEL MODAL
-                        ======================================-->
-
                         <div class="modal-body" style="max-height:70vh;overflow:auto;">
-
                           <div class="box-body">
-
                             <div class="row">
-                              
                               <!-- ENTRADA PARA EL USUARIO -->
                               <div class="form-group col-xs-12 col-sm-12">
                                 <label for="nombre">Nombre</label>
@@ -91,7 +71,6 @@
                                   <span id="nombreS" class="mensajeError"></span>
                                 </div>
                               </div>
-
 
                               <!-- ENTRADA PARA EL TRAYECTO -->
                               <div class="form-group col-xs-12 col-sm-12">
@@ -110,7 +89,6 @@
                                   <span id="trayectoS"  class="mensajeError"></span>
                                 </div>
                               </div>
-
 
                               <div class="form-group col-xs-12 col-sm-12">
                                 <label for="seccion">sección</label>
@@ -136,7 +114,6 @@
                                   <span id="seccionS"  class="mensajeError"></span>
                                 </div>
                               </div>
-
 
                               <div class="form-group col-xs-12 col-sm-12">
                                 <label for="alumnos">Alumnos</label>
@@ -187,35 +164,18 @@
                                   <span id="tutorS" class="mensajeError"></span>
                                 </div>
                               </div>
-
-
                             </div>
-
-                                               
                           </div>
-
                         </div>
-
-                        <!--=====================================
-                        PIE DEL MODAL
-                        ======================================-->
 
                         <div class="modal-footer">
-
                           <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
                           <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
                         </div>
-
-
-                      <!-- </form> -->
-
+                      </div>
                     </div>
-
                   </div>
-
-                </div>
+                <?php endif; ?>
               </div>
             </div>
             <!-- /.box-header -->

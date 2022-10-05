@@ -83,171 +83,115 @@
                   <img src="assets/img/logolista.png" style="width:25px;">
                   <h3 class="box-title"><?php echo "" . $url . ""; ?></h3>
                 </div>
+                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
                 <div class="col-xs-12 col-sm-6" style="text-align:right">
-
-                  <button type="button" class="btn btn-next btn-fill btn btn-success btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarArchivo">Subir archivo</button>
-                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-                  <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
-
-                    <div class="modal-dialog tamModals">
-
-                      <div class="modal-content">
-
-                        <!-- <form role="form" method="post" enctype="multipart/form-data" id="form_data"> -->
-
-
-                          <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                            <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
-
-                            <h4 class="modal-title" style="text-align: left;">Agregar Data</h4>
-
-                          </div>
-
-                          <div class="modal-body">
-
-                            <div class="box-body">
-
-                              <br>
-                              <div class="file-input text-center custom-input-file">
-                                <input type="file" name="file[]" multiple id="file-input" class="file-input__input input-file" accept=".xls, .xlsx" />
-                                <label class="file-input__label" for="file-input">
-                                  <i class="fa fa-upload zmdi zmdi-upload"></i>
-                                  <span> Seleccionar Archivo</span></label>
-                                <span id="archivoSeleccionado"></span>
-                              </div>
-                              <div>
-                                <span>
-                                </span>
-                              </div>
-                              <br>
-
-
+                  <?php if($amProfesoresR=="1"): ?>
+                    <button type="button" class="btn btn-next btn-fill btn btn-success btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarArchivo">Subir archivo</button>
+                    <div id="modalAgregarArchivo" class="#modalAgregarArchivo modal fade" role="dialog">
+                      <div class="modal-dialog tamModals">
+                        <div class="modal-content">
+                          <!-- <form role="form" method="post" enctype="multipart/form-data" id="form_data"> -->
+                            <div class="modal-header" style="background:#3c8dbc; color:white">
+                              <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+                              <h4 class="modal-title" style="text-align: left;">Agregar Data</h4>
                             </div>
+                            <div class="modal-body">
+                              <div class="box-body">
+                                <br>
+                                <div class="file-input text-center custom-input-file">
+                                  <input type="file" name="file[]" multiple id="file-input" class="file-input__input input-file" accept=".xls, .xlsx" />
+                                  <label class="file-input__label" for="file-input">
+                                    <i class="fa fa-upload zmdi zmdi-upload"></i>
+                                    <span> Seleccionar Archivo</span></label>
+                                  <span id="archivoSeleccionado"></span>
+                                </div>
+                                <div>
+                                  <span>
+                                  </span>
+                                </div>
+                                <br>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+                              <span type="submit" class="btn btn-primary subir" id="subir">Subir</span>
+                            </div>
+                          <!-- </form> -->
+                        </div>
+                      </div>
+                    </div>
 
+                    <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarProf">Agregar Nuevo</button>
+                    <div id="modalAgregarProf" class="#modalAgregarProf modal fade" role="dialog">
+                      <div class="modal-dialog tamModals" style="text-align:left;">
+                        <div class="modal-content">
+                          <div class="modal-header" style="background:#3c8dbc; color:white">
+                            <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
+                            <h4 class="modal-title" style="text-align: left;">Agregar Profesor</h4>
+                          </div>
+                          <div class="modal-body" style="max-height:70vh;overflow:auto;">
+                            <div class="box-body">
+                              <div class="row">
+                                <!-- ENTRADA PARA EL USUARIO -->
+                                <div class="form-group col-xs-12 col-sm-12">
+                                  <label for="cedula">Cedula</label>
+                                  <div class="input-group" style="width:100%;">
+                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                    <input type="text" class="form-control input-lg" name="nuevaCedula" placeholder="Ingresar cedula" id="cedula" maxlength="8" required>
+                                  </div>
+                                  <div style="width:100%;text-align:right;">
+                                    <span id="cedulaS" class="mensajeError"></span>
+                                  </div>
+                                </div>
+
+                                <!-- ENTRADA PARA EL NOMBRE -->
+                                <div class="form-group col-xs-12 col-sm-12">
+                                  <label for="nombre">Nombre</label>
+                                  <div class="input-group" style="width:100%;">
+                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                    <input type="text" class="form-control input-lg" name="nuevoNombre" id="nombre" placeholder="Ingresar nombre" maxlength="25" required>
+                                  </div>
+                                  <div style="width:100%;text-align:right;">
+                                    <span id="nombreS" class="mensajeError"></span>
+                                  </div>
+                                </div>
+
+                                <!-- ENTRADA PARA EL APELLIDO -->
+                                <div class="form-group col-xs-12 col-sm-12">
+                                  <label for="apellido">Apellido</label>
+                                  <div class="input-group" style="width:100%;">
+                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                    <input type="text" class="form-control input-lg" name="nuevoApellido" id="apellido" placeholder="Ingresar apellido" maxlength="25" required>
+                                  </div>
+                                  <div style="width:100%;text-align:right;">
+                                    <span id="apellidoS" class="mensajeError"></span>
+                                  </div>
+                                </div>
+
+                                <!--ENTRADA TELÉFONO -->
+                                <div class="form-group col-xs-12 col-sm-12">
+                                  <label for="telefono">Telefono</label>
+                                  <div class="input-group" style="width:100%;">
+                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
+                                    <input type="text" class="form-control input-lg" name="nuevoTeleono" id="telefono" placeholder="Ingresar Nro Telefonico" maxlength="11" required>
+                                  </div>
+                                  <div style="width:100%;text-align:right;">
+                                    <span id="telefonoS" class="mensajeError"></span>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
                           </div>
 
                           <div class="modal-footer">
-
                             <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                            <span type="submit" class="btn btn-primary subir" id="subir">Subir</span>
-
+                            <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
                           </div>
-
-
-                        <!-- </form> -->
-
+                        </div>
                       </div>
-
                     </div>
-
-                  </div>
-
-
-                  <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarProf">Agregar Nuevo</button>
-
-
-                  <div id="modalAgregarProf" class="#modalAgregarProf modal fade" role="dialog">
-
-                    <div class="modal-dialog tamModals" style="text-align:left;">
-
-                      <div class="modal-content">
-
-                        <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-
-                        <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                          <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
-
-                          <h4 class="modal-title" style="text-align: left;">Agregar Profesor</h4>
-
-                        </div>
-
-                        <div class="modal-body" style="max-height:70vh;overflow:auto;">
-
-                          <div class="box-body">
-
-                            <div class="row">
-
-                              <!-- ENTRADA PARA EL USUARIO -->
-                              <div class="form-group col-xs-12 col-sm-12">
-                                <label for="cedula">Cedula</label>
-                                <div class="input-group" style="width:100%;">
-                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
-                                  <input type="text" class="form-control input-lg" name="nuevaCedula" placeholder="Ingresar cedula" id="cedula" maxlength="8" required>
-                                </div>
-                                <div style="width:100%;text-align:right;">
-                                  <span id="cedulaS" class="mensajeError"></span>
-                                </div>
-                              </div>
-
-
-                              <!-- ENTRADA PARA EL NOMBRE -->
-                              <div class="form-group col-xs-12 col-sm-12">
-                                <label for="nombre">Nombre</label>
-                                <div class="input-group" style="width:100%;">
-                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                  <input type="text" class="form-control input-lg" name="nuevoNombre" id="nombre" placeholder="Ingresar nombre" maxlength="25" required>
-                                </div>
-                                <div style="width:100%;text-align:right;">
-                                  <span id="nombreS" class="mensajeError"></span>
-                                </div>
-                              </div>
-
-
-                              <!-- ENTRADA PARA EL APELLIDO -->
-                              <div class="form-group col-xs-12 col-sm-12">
-                                <label for="apellido">Apellido</label>
-                                <div class="input-group" style="width:100%;">
-                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                  <input type="text" class="form-control input-lg" name="nuevoApellido" id="apellido" placeholder="Ingresar apellido" maxlength="25" required>
-                                </div>
-                                <div style="width:100%;text-align:right;">
-                                  <span id="apellidoS" class="mensajeError"></span>
-                                </div>
-                              </div>
-
-                              <!--ENTRADA TELÉFONO -->
-                              <div class="form-group col-xs-12 col-sm-12">
-                                <label for="telefono">Telefono</label>
-                                <div class="input-group" style="width:100%;">
-                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
-                                  <input type="text" class="form-control input-lg" name="nuevoTeleono" id="telefono" placeholder="Ingresar Nro Telefonico" maxlength="11" required>
-                                </div>
-                                <div style="width:100%;text-align:right;">
-                                  <span id="telefonoS" class="mensajeError"></span>
-                                </div>
-                              </div>
-
-
-                            </div>
-
-                          </div>
-
-                        </div>
-
-
-                        <div class="modal-footer">
-
-                          <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                          <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
-                        </div>
-
-
-                        <!-- </form> -->
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-
+                  <?php endif; ?>
                 </div>
               </div>
               <!-- /.box-header -->

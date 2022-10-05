@@ -101,23 +101,8 @@
 			}
 		}
 
-		// public function ConsultarSeccionAlumnos2(){
-		// 	try {
-		// 		$query = parent::prepare("SELECT DISTINCT secciones.cod_seccion, nombre_seccion, trayecto_seccion FROM periodos, secciones, seccion_alumno, alumnos WHERE periodos.id_periodo = secciones.id_periodo and secciones.cod_seccion = seccion_alumno.cod_seccion and seccion_alumno.cedula_alumno=alumnos.cedula_alumno and alumnos.estatus = 1 and periodos.estatus = 1 and secciones.estatus = 1");
-		// 		$respuestaArreglo = '';
-		// 		$query->execute();
-		// 		$query->setFetchMode(parent::FETCH_ASSOC);
-		// 		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-		// 		return $respuestaArreglo;
-		// 	} catch (PDOException $e) {
-		// 		$errorReturn = ['estatus' => false];
-		// 		$errorReturn += ['info' => "error sql:{$e}"];
-		// 		return $errorReturn;
-		// 	}
-		// }
-
 		public function AgregarSecAlumno($datos){
-           try{
+          	try{
            	   $query = parent:: prepare('INSERT INTO seccion_alumno (id_SA, cod_seccion, cedula_alumno, estatus) VALUES (DEFAULT, :cod_seccion, :cedula_alumno, 1)');
 
                 $query->bindValue(':cod_seccion', $datos['cod_seccion']);
@@ -140,12 +125,54 @@
 			}
           }
 		
+          public function ValidarAgregar($datos){
+			$result = Agregar($datos);
+			return $result;
+		}
+
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"cod_seccion",'expresion'=>'/[^0-9 a-zA-Z]/'],
+				'1' => ['campo'=>"seccion",'expresion'=>'/[^0-9 S s H h]/'],
+				'2' => ['campo'=>"trayecto",'expresion'=>'/[^0-9]/'],
+				'3' => ['campo'=>"id_periodo",'expresion'=>'/[^0-9]/'],
+			];
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp;
+					// echo "\n";
+					return $resExp;
+				}
+			}
+		}
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			// echo "Retorno: ".$return."\n\n";
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
 
 		public function Agregar($datos){
 			try{
 				$query = parent::prepare('INSERT INTO secciones (cod_seccion, id_periodo, nombre_seccion, trayecto_seccion, estatus) VALUES (:cod_seccion, :id_periodo, :nombre_seccion, :trayecto_seccion, 1)');
 
-				$query->bindValue(':cod_seccion', $datos['id']);
+				$query->bindValue(':cod_seccion', $datos['cod_seccion']);
 				$query->bindValue(':nombre_seccion', $datos['seccion']);
 		    	$query->bindValue(':trayecto_seccion', $datos['trayecto']);
 		    	$query->bindValue(':id_periodo', $datos['id_periodo']);
@@ -164,12 +191,10 @@
 				return $errorReturn; 
 			}
 		}
-
-
 		public function Modificar($datos){
 			try{
 				$query = parent::prepare('UPDATE secciones SET id_periodo = :id_periodo, nombre_seccion=:nombre_seccion, trayecto_seccion = :trayecto_seccion, estatus=1 WHERE cod_seccion = :cod_seccion');
-				$query->bindValue(':cod_seccion', $datos['id']);
+				$query->bindValue(':cod_seccion', $datos['cod_seccion']);
 				$query->bindValue(':nombre_seccion', $datos['seccion']);
 		    	$query->bindValue(':trayecto_seccion', $datos['trayecto']);
 		    	$query->bindValue(':id_periodo', $datos['id_periodo']);
@@ -186,7 +211,6 @@
 				return $errorReturn; 
 			}
 		}
-
 
 		public function Eliminar($cod){
 			try {
@@ -224,7 +248,7 @@
 			}
 		}
 
-		function ExtraerPK($codSeccion){
+		public function ExtraerPK($codSeccion){
 			// echo $codSeccion." --- ";
 			$numss = $this::ConsultaPK($codSeccion);
 			// print_r($numss);

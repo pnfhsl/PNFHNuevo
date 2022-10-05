@@ -34,6 +34,13 @@ $(document).ready(function(){
   $('.nombreModificar').on('input', function () {      
     this.value = this.value.replace(/[^0-9 a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú ]/g,''); });
 
+  // $('#nuevoPassword').on('input', function () {
+  //   var pass = this.value;
+  //   var validate = checkPassword(pass);
+  //   alert(pass);
+  //   alert(validate);
+  // });
+
   $('#pass').on('input', function () {      
     this.value = this.value.replace(/^[a-z0-9_-]{$/,''); });
 
@@ -205,8 +212,85 @@ $(document).ready(function(){
 
   $(".cont").click(function(){
     var id = $(this).val();
-    // alert($(".optpass"+id).val());
-    $(".contadorBoxPassword").click();
+    if($(".optpass"+id).val()=="0"){
+      swal.fire({ 
+        title: "¿Desea cambiar la contraseña al usuario?",
+        text: "Se mostrar el formulario para confirmar sus datos, ¿desea continuar?",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonText: "¡Si!",
+        cancelButtonText: "No", 
+        closeOnConfirm: false,
+        closeOnCancel: false 
+      }).then((isConfirm) => {
+        if (isConfirm.value){  
+          $("#verificarButton").click();
+        }else { 
+          swal.fire({
+            type: 'error',
+            title: '¡Proceso cancelado!',
+          });
+        } 
+      });
+    }else{
+      $(this).html("Abrir Contraseña");
+      $(".contadorBoxPassword").click();
+    }
+  });
+
+  $(".passwordVerificarButtonModal").click(function(){
+    var url = $("#url").val();
+    var pass = $(".passwordVerificar").val();
+    $.ajax({
+      url: url+'/Buscar',    
+      type: 'POST',  
+      data: {
+        verificarPasswordCuenta: true,   
+        pass: pass,       
+      },
+      success: function(respuesta){       
+        // alert(respuesta);
+        if(respuesta=="1"){
+          // alert("contraseña correcta");
+          Swal.fire({
+            type: 'success',
+            title: '¡Verificado correctamente!',
+            footer: 'SCHSL',
+            timer: 2000,
+            showCloseButton: false,            
+            showConfirmButton: false,
+          }).then((isConfirm) => {
+            $(".cont").html("Cerrar Contraseña");
+            $(".contadorBoxPassword").click();
+            $(".verificarCerrar").click();
+            $(".passwordVerificar").val("");
+          });
+        }
+        if(respuesta=="2"){
+          Swal.fire({
+            type: 'error',
+            title: '¡Verificación erronea!',
+            footer: 'SCHSL',
+            timer: 2000,
+            showCloseButton: false,            
+            showConfirmButton: false,
+          }).then((isConfirm) => {
+            $(".verificarCerrar").click();
+            $(".passwordVerificar").val("");
+          });
+        }
+      },
+      error: function(respuesta){       
+        // alert(respuesta);
+        var resp = JSON.parse(respuesta);
+        console.log(resp);
+
+      }
+    });
+  });
+
+  $(".verificarCerrar").click(function(){
+    $(".passwordVerificar").val("");
   });
 
   $(".contadorBoxPassword").click(function(){
@@ -366,39 +450,133 @@ $(document).ready(function(){
       $("#cedulaS"+id).html("");
     }
   });
+
   $(".nuevoPassword").keyup(function(){
     var id = $(this).attr("name");
-    var pass1 = $("#nuevoPassword"+id).val();
-    var pass2 = $("#confirmarPassword"+id).val();
+    var pass = $("#nuevoPassword"+id).val();
+    var rpass = checkPassword(pass);
+    var passConfirm = $("#confirmarPassword"+id).val();
+    var rpassConfirm = checkPassword(passConfirm);
+    if (rpass == true && rpassConfirm == true) {
+      // var rpass = false;
+      // if (pass.trim() != "" && passConfirm.trim() != "") {
+      if(pass == passConfirm){ 
+        $("#nombrePC"+id).html("");  
+        $("#nombrePC"+id).html("Las contraseñas coinciden");
+        $("#nombrePC"+id).attr("style","color:green !important");
+          // rpass = true;
+      }else{
+        $("#nombrePC"+id).html("Las contraseñas deben ser iguales");
+        // $("#nombrePC"+id).html("Las contraseñas no coinciden");
+        $("#nombrePC"+id).removeAttr("style");
+         // rpass = false;
+      }   
+    }else{
+      if(rpass==false){
+        // alert(pass);
+        // alert(rpass);
+        if(pass.trim()==""){
+          // alert('Pass Esta vacio');
+          $("#nombreP"+id).html("Debe ingresar su nueva contraseña");
+        }else{
+          // alert('Pass No esta vacio');
+          $("#nombreP"+id).html("La contraseña debe contener al menos 8 digitos, una letra en minuscula, una letra en mayuscula, un numero y un caracter especial");
+        }
+      }else{
+        $("#nombreP"+id).html("");
+      }
+      if(rpassConfirm==false){
+        if(passConfirm.trim()==""){
+          // alert('PassConfirm Esta vacio');
+          $("#nombrePC"+id).html("Debe confirmar su nueva contraseña");
+        }else{
+          // alert('PassConfirm No esta vacio');
+          $("#nombrePC"+id).html("Al confirmar la contraseña debe contener al menos 8 digitos, una letra en minuscula, una letra en mayuscula, un numero y un caracter especial");
+        }
+      }else{
+        $("#nombrePC"+id).html("");
+      }
+
+      // rpass = false;
+    }
     // alert(id);
     // alert(pass1);
     // alert(pass2);
-    if(pass1.trim()!=""){
-      $("#nombreP"+id).html("");
-    }
-    if(pass1 == pass2){
-      $("#nombrePC"+id).html("Las contraseñas coinciden");
-      $("#nombrePC"+id).attr("style","color:green !important");
-    }else{
-      $("#nombrePC"+id).html("Las contraseñas no coinciden");
-      $("#nombrePC"+id).removeAttr("style");
-    }
+    
+
+    // if(pass1.trim()!=""){
+    //   $("#nombreP"+id).html("");
+    // }
+    // if(pass1 == pass2){
+    //   $("#nombrePC"+id).html("Las contraseñas coinciden");
+    //   $("#nombrePC"+id).attr("style","color:green !important");
+    // }else{
+    //   $("#nombrePC"+id).html("Las contraseñas no coinciden");
+    //   $("#nombrePC"+id).removeAttr("style");
+    // }
   });
+
   $(".confirmarPassword").keyup(function(){
     var id = $(this).attr("name");
-    var pass1 = $("#nuevoPassword"+id).val();
-    var pass2 = $("#confirmarPassword"+id).val();
-    if(pass2.trim()!=""){
-      $("#nombrePC"+id).html("");
-      $("#nombrePC"+id).removeAttr("style");
-    }
-    if(pass1 == pass2){
-      $("#nombrePC"+id).html("Las contraseñas coinciden");
-      $("#nombrePC"+id).attr("style","color:green !important");
+    // var pass1 = $("#nuevoPassword"+id).val();
+    // var pass2 = $("#confirmarPassword"+id).val();
+    var pass = $("#nuevoPassword"+id).val();
+    var rpass = checkPassword(pass);
+    var passConfirm = $("#confirmarPassword"+id).val();
+    var rpassConfirm = checkPassword(passConfirm);
+
+    if (rpass == true && rpassConfirm == true) {
+      // var rpass = false;
+      // if (pass.trim() != "" && passConfirm.trim() != "") {
+      if(pass == passConfirm){ 
+        $("#nombrePC"+id).html("");  
+        $("#nombrePC"+id).html("Las contraseñas coinciden");
+        $("#nombrePC"+id).attr("style","color:green !important");
+          // rpass = true;
+      }else{
+        $("#nombrePC"+id).html("Las contraseñas deben ser iguales");
+        // $("#nombrePC"+id).html("Las contraseñas no coinciden");
+        $("#nombrePC"+id).removeAttr("style");
+         // rpass = false;
+      }   
     }else{
-      $("#nombrePC"+id).html("Las contraseñas no coinciden");
-      $("#nombrePC"+id).removeAttr("style");
+      if(rpass==false){
+        if(pass.trim()==""){
+          // alert('Pass Esta vacio');
+          $("#nombreP"+id).html("Debe ingresar su nueva contraseña");
+        }else{
+          // alert('Pass No esta vacio');
+          $("#nombreP"+id).html("La contraseña debe contener al menos 8 digitos, una letra en minuscula, una letra en mayuscula, un numero y un caracter especial");
+        }
+      }else{
+        $("#nombreP"+id).html("");
+      }
+      if(rpassConfirm==false){
+        if(passConfirm.trim()==""){
+          // alert('PassConfirm Esta vacio');
+          $("#nombrePC"+id).html("Debe confirmar su nueva contraseña");
+        }else{
+          // alert('PassConfirm No esta vacio');
+          $("#nombrePC"+id).html("Al confirmar la contraseña debe contener al menos 8 digitos, una letra en minuscula, una letra en mayuscula, un numero y un caracter especial");
+        }
+      }else{
+        $("#nombrePC"+id).html("");
+      }
+
+      // rpass = false;
     }
+
+    // if(pass2.trim()!=""){
+    //   $("#nombrePC"+id).html("");
+    //   $("#nombrePC"+id).removeAttr("style");
+    // }
+    // if(pass1 == pass2){
+    //   $("#nombrePC"+id).html("Las contraseñas coinciden");
+    //   $("#nombrePC"+id).attr("style","color:green !important");
+    // }else{
+    //   $("#nombrePC"+id).html("Las contraseñas no coinciden");
+    //   $("#nombrePC"+id).removeAttr("style");
+    // }
   });
 
 
@@ -457,6 +635,17 @@ $(document).ready(function(){
                   location.reload();
                 });
               }
+              if (data.msj === "Invalido") {
+                  Swal.fire({
+                      type: 'warning',
+                      title: '¡Datos invalidos!',
+                      text: 'Los datos ingresados son invalido',
+                      footer: 'SCHSL',
+                      timer: 3000,
+                      showCloseButton: false,
+                      showConfirmButton: false,
+                  });
+              }
               if (data.msj === "Repetido") {   
                   Swal.fire({
                     type: 'warning',
@@ -468,7 +657,7 @@ $(document).ready(function(){
               if (data.msj === "Error") {   
                   Swal.fire({
                     type: 'error',
-                    title: '¡Error la guardar los cambio!',
+                    title: '¡Error al guardar los cambio!',
                     text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                     footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                   });
@@ -500,6 +689,7 @@ $(document).ready(function(){
     // alert(rol + '  '  + cedula + ' ' + user + ' ' + pass);
 
   });
+
 
   $(".modificarBtn").click(function(){
     var url = $("#url").val();
@@ -560,9 +750,9 @@ $(document).ready(function(){
     // alert(id);
     
     var response = validar(true, id);
+    // alert(response);
     /*console.log(response);
     window.alert(response);*/
-    // alert(response);
     if(response){
       swal.fire({ 
           title: "¿Desea guardar los datos?",
@@ -604,12 +794,12 @@ $(document).ready(function(){
 
               },
               success: function(resp){
-              // alert(resp);
-              // window.alert("Hola mundo");   
-              // console.log(resp); 
+                // alert(resp);
+                // window.alert("Hola mundo");   
+                // console.log(resp); 
                 // window.alert(resp);
                 var datos = JSON.parse(resp);   
-                if (datos.msj === "Good") {   
+                  if (datos.msj === "Good") {   
                     Swal.fire({
                         type: 'success',
                         title: '¡Registro Exitoso!',
@@ -619,6 +809,17 @@ $(document).ready(function(){
                           location.reload();
                       } );
                   } 
+                  if (datos.msj === "Invalido") {
+                      Swal.fire({
+                          type: 'warning',
+                          title: '¡Datos invalidos!',
+                          text: 'Los datos ingresados son invalido',
+                          footer: 'SCHSL',
+                          timer: 3000,
+                          showCloseButton: false,
+                          showConfirmButton: false,
+                      });
+                  }
                   if (datos.msj === "Repetido") {   
                     Swal.fire({
                       type: 'warning',
@@ -630,7 +831,7 @@ $(document).ready(function(){
                   if (datos.msj === "Error") {   
                     Swal.fire({
                       type: 'error',
-                      title: '¡Error la guardar los cambio!',
+                      title: '¡Error al guardar los cambio!',
                       text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                       footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                     });
@@ -720,7 +921,7 @@ $(document).ready(function(){
                           if (datos.msj === "Error") {   
                             Swal.fire({
                               type: 'error',
-                              title: '¡Error la guardar los cambios!',
+                              title: '¡Error al guardar los cambios!',
                               text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                               footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                             });
@@ -758,6 +959,10 @@ $(document).ready(function(){
   });
 
 }); 
+function checkPassword(str){
+  var re = /^(?=.*\d)(?=.*[!@#$%^/&.*+-])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  return re.test(str);
+}
 
 function validar(modificar = false, id=""){
     var form = "";
@@ -819,28 +1024,51 @@ function validar(modificar = false, id=""){
     if (optionPass==1) {
 
       var pass = $(form+" #nuevoPassword"+id).val();
+      var rpass = checkPassword(pass);
       var passConfirm = $(form+" #confirmarPassword"+id).val();
-      var rpass = false;
-      if (pass.trim() != "" && passConfirm.trim() != "") {
+      var rpassConfirm = checkPassword(passConfirm);
+      // alert(rpass);
+      // alert(rpassConfirm);
+      var rpass3 = false;
+      if (rpass == true && rpassConfirm == true) {
+        // var rpass = false;
+        // if (pass.trim() != "" && passConfirm.trim() != "") {
         if(pass == passConfirm){ 
           $(form+" #nombrePC"+id).html("");  
-            rpass = true;
+          rpass3 = true;
+            // rpass = true;
         }else{
           $(form+" #nombrePC"+id).html("Las contraseñas deben ser iguales");
-           rpass = false;
+          rpass3 = false;
+           // rpass = false;
         }   
       }else{
-        if(pass.trim()==""){
-          $(form+" #nombreP"+id).html("Debe ingresar su nueva contraseña");
+        if(rpass==false){
+          if(pass.trim()==""){
+            // alert('Pass Esta vacio');
+            $(form+" #nombreP"+id).html("Debe ingresar su nueva contraseña");
+          }else{
+            // alert('Pass No esta vacio');
+            $(form+" #nombreP"+id).html("La contraseña debe contener al menos 8 digitos, una letra en minuscula, una letra en mayuscula, un numero y un caracter especial");
+          }
         }
-        if(passConfirm.trim()==""){
-          $(form+" #nombrePC"+id).html("Debe ingresar y confirmar su nueva contraseña");
+        if(rpassConfirm==false){
+          if(passConfirm.trim()==""){
+            // alert('PassConfirm Esta vacio');
+            $(form+" #nombrePC"+id).html("Debe confirmar su nueva contraseña");
+          }else{
+            // alert('PassConfirm No esta vacio');
+            $(form+" #nombreP"+id).html("Al confirmar la contraseña debe contener al menos 8 digitos, una letra en minuscula, una letra en mayuscula, un numero y un caracter especial");
+          }
         }
-        rpass = false;
+
+        // rpass = false;
       }
       // alert(rpass);
     }else{
       var rpass = true;
+      var rpassConfirm = true;
+      var rpass3 = true;
     }
     // $("#cont").click(function(){
       
@@ -866,10 +1094,8 @@ function validar(modificar = false, id=""){
       }
     }
 
-
-
     var validado = false;
-    if(rnombre==true && rcorreo && rpass==true && rrol==true && rcedula==true && rpass==true && valnombre == "1" && valcorreo == "1"){
+    if(rnombre==true && rcorreo && rrol==true && rcedula==true && rpass==true && rpassConfirm==true && rpass3 == true && valnombre == "1" && valcorreo == "1"){
       validado=true;
     }else{
       validado=false;

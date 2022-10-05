@@ -41,87 +41,44 @@
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
+              <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
               <div class="col-xs-12 col-sm-6" style="text-align:right">
-
-
-                <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarModulo">Agregar Nuevo</button>
-                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-                <!--=====================================
-                MODAL AGREGAR PROF
-                ======================================-->
-
-                <div id="modalAgregarModulo" class="modalAgregarModulo modal fade" role="dialog">
-                  
-                  <div class="modal-dialog tamModals" style="text-align:left;">
-
-                    <div class="modal-content">
-
-                      <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-                        <!--=====================================
-                        CABEZA DEL MODAL
-                        ======================================-->
-
+                <?php if($amModulosR=="1"): ?>
+                  <!--=====================================
+                  MODAL AGREGAR PROF
+                  ======================================-->
+                  <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarModulo">Agregar Nuevo</button>
+                  <div id="modalAgregarModulo" class="modalAgregarModulo modal fade" role="dialog">
+                    <div class="modal-dialog tamModals" style="text-align:left;">
+                      <div class="modal-content">
                         <div class="modal-header" style="background:#3c8dbc; color:white">
-
                           <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
                           <h4 class="modal-title" style="text-align: left;">Agregar Módulo</h4>
-
                         </div>
-
-                        <!--=====================================
-                        CUERPO DEL MODAL
-                        ======================================-->
 
                         <div class="modal-body">
-
                           <div class="box-body">
-
-                                                    
                             <!-- ENTRADA PARA EL NOMBRE -->
-                            
                             <div class="form-group">
-                              
-                              <div class="input-group">
-                              
-                                <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-
-                                <input type="text" class="form-control input-lg" name="nuevoNombre" id="nombre" placeholder="Ingresar nombre" maxlength="30" required>
-
+                              <div class="input-group" style="width:100%;">
+                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
+                                <input type="text" class="form-control input-lg" style="width:100%;" name="nuevoNombre" id="nombre" placeholder="Ingresar nombre" maxlength="30" required>
                               </div>
-                              <span id="nombreM" class="mensajeError"></span>
-
+                              <div style="width:100%;text-align:right;">
+                                <span id="nombreM" class="mensajeError"></span>
+                              </div>
                             </div>
-
-                    
-
                           </div>
-
                         </div>
-
-                        <!--=====================================
-                        PIE DEL MODAL
-                        ======================================-->
 
                         <div class="modal-footer">
-
                           <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
                           <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
                         </div>
-
-
-                      <!-- </form> -->
-
+                      </div>
                     </div>
-
                   </div>
-
-                </div>
-
+                <?php endif; ?>
               </div>
             </div>
 
@@ -200,14 +157,10 @@
 
                                   <!-- ENTRADA PARA EL NOMBRE -->
                                   
-                                  <div class="form-group">
-                                    
-                                    <div class="input-group">
-                                    
-                                      <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-
-                                      <input type="text" class="form-control input-lg nombreModificar" value="<?=$data['nombre_modulo']?>" name="nuevoNombre" id="nombre<?=$data['id_modulo']?>" placeholder="Ingresar nombre" required>
-
+                                  <div class="form-group col-xs-12 col-sm-12">
+                                    <div class="input-group" style="width:100%;">
+                                      <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
+                                      <input type="text" class="form-control input-lg nombreModificar" style="width:100%;" value="<?=$data['nombre_modulo']?>" name="nuevoNombre" id="nombre<?=$data['id_modulo']?>" placeholder="Ingresar nombre" required>
                                     </div>
                                     <div style="width: 100%; text-align: right;">
                                       <span id="nombreM<?=$data['id_modulo']?>" class="mensajeError"></span>                                  

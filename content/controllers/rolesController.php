@@ -69,16 +69,16 @@
 						if(count($buscar['data'])>1){
 							if($buscar['data'][0]['estatus']=="0"){
 								$datos['id_rol'] = $buscar['data'][0]['id_rol'];
-								$exec = $this->rol->setModificar($datos); 
+								$exec = $this->rol->ValidarAgregarOModificar($datos, "Modificar"); 
 								if($exec['msj']=="Good"){
 									$data['id_rol'] = $datos['id_rol'];
-									$execB = $this->rol->setEliminarAccesosP($data);
+									$execB = $this->rol->EliminarAccesosP($data);
 									if($execB['msj']=="Good"){
 										foreach ($accesos as $acc) {
 											if($acc['valor']=="on"){
 												$data['id_modulo'] = $acc['id_modulo'];
 												$data['id_permiso'] = $acc['id_permiso'];
-												$exec = $this->rol->setAgregarAccesos($data);
+												$exec = $this->rol->AgregarAccesos($data);
 											}
 										}
 										echo json_encode($exec);
@@ -86,26 +86,27 @@
 										echo json_encode(['msj'=>"Error"]);
 									}
 								}else{
-									echo json_encode(['msj'=>"Error"]);
+									echo json_encode($exec);
+									// echo json_encode(['msj'=>"Error"]);
 								}
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->rol->setAgregar($datos);
+							$exec = $this->rol->ValidarAgregarOModificar($datos, "Agregar");
 							if($exec['msj']=="Good"){
 								if(!empty($exec['data'])){
 									$dat = $exec['data'];
 									if(!empty($dat['id'])){
 										$id_rol = $dat['id'];
 										$data['id_rol'] = $id_rol;
-										$execB = $this->rol->setEliminarAccesosP($data);
+										$execB = $this->rol->EliminarAccesosP($data);
 										if($execB['msj']=="Good"){
 											foreach ($accesos as $acc) {
 												if($acc['valor']=="on"){
 													$data['id_modulo'] = $acc['id_modulo'];
 													$data['id_permiso'] = $acc['id_permiso'];
-													$exec = $this->rol->setAgregarAccesos($data);
+													$exec = $this->rol->AgregarAccesos($data);
 												}
 											}
 											echo json_encode($exec);
@@ -119,7 +120,8 @@
 									echo json_encode(['msj'=>"Error"]);
 								}
 							}else{
-								echo json_encode(['msj'=>"Error"]);
+								echo json_encode($exec);
+								// echo json_encode(['msj'=>"Error"]);
 							}
 						}
 					}else{
@@ -155,16 +157,16 @@
 						if(count($buscar['data'])>1){
 							if($_POST['id']==$buscar['data'][0]['id_rol']){
 								$datos['id_rol'] = $buscar['data'][0]['id_rol'];
-								$exec = $this->rol->setModificar($datos); 
+								$exec = $this->rol->ValidarAgregarOModificar($datos, "Modificar"); 
 								if($exec['msj']=="Good"){
 									$data['id_rol'] = $datos['id_rol'];
-									$execB = $this->rol->setEliminarAccesosP($data);
+									$execB = $this->rol->EliminarAccesosP($data);
 									if($execB['msj']=="Good"){
 										foreach ($accesos as $acc) {
 											if($acc['valor']=="on"){
 												$data['id_modulo'] = $acc['id_modulo'];
 												$data['id_permiso'] = $acc['id_permiso'];
-												$exec = $this->rol->setAgregarAccesos($data);
+												$exec = $this->rol->AgregarAccesos($data);
 											}
 										}
 										echo json_encode($exec);
@@ -172,22 +174,23 @@
 										echo json_encode(['msj'=>"Error"]);
 									}
 								}else{
-									echo json_encode(['msj'=>"Error"]);
+									echo json_encode($exec);
+									// echo json_encode(['msj'=>"Error"]);
 								}
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->rol->setModificar($datos);
+							$exec = $this->rol->ValidarAgregarOModificar($datos, "Modificar");
 							if($exec['msj']=="Good"){
 								$data['id_rol'] = $datos['id_rol'];
-								$execB = $this->rol->setEliminarAccesosP($data);
+								$execB = $this->rol->EliminarAccesosP($data);
 								if($execB['msj']=="Good"){
 									foreach ($accesos as $acc) {
 										if($acc['valor']=="on"){
 											$data['id_modulo'] = $acc['id_modulo'];
 											$data['id_permiso'] = $acc['id_permiso'];
-											$exec = $this->rol->setAgregarAccesos($data);
+											$exec = $this->rol->AgregarAccesos($data);
 										}
 									}
 									echo json_encode($exec);
@@ -195,7 +198,8 @@
 									echo json_encode(['msj'=>"Error"]);
 								}
 							}else{
-								echo json_encode(['msj'=>"Error"]);
+								echo json_encode($exec);
+								// echo json_encode(['msj'=>"Error"]);
 							}
 						}
 					}else{
@@ -215,8 +219,8 @@
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
 							$data['id_rol'] = $_POST['userDelete'];
-							$exec = $this->rol->setEliminar($data);
-							$exec2 = $this->rol->setEliminarAccesosP($data);
+							$exec = $this->rol->Eliminar($data);
+							$exec2 = $this->rol->EliminarAccesosP($data);
 							$exec['data'] = $data;
 							echo json_encode($exec);
 						}else{
