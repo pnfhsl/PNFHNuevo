@@ -194,6 +194,8 @@
                   <td style="width:20%">
                     <span class="contenido2">
                       <?php echo mb_strtoupper($data['nombre_seccion']); ?>
+                      <br>
+                      <small>(<?=$data['year_periodo'];   ?>)</small>
                     </span>
                   </td>
                   <td style="width:20%">
@@ -360,14 +362,18 @@
                                           <label for="periodo<?=$data['cod_seccion']?>">Período</label>
                                           <div class="input-group" style="width:100%;">
                                             <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                            <select class="form-control select2 input-lg periodoModificar" style="width:100%;" name="<?=$data['cod_seccion']?>" placeholder="Ingresar periodo" id="periodo<?=$data['cod_seccion']?>" required>
-                                              <option value="">Seleccione un periodo</option>
+                                            <select class="form-control select2 input-lg periodoModificar" style="width:100%;" name="<?=$data['cod_seccion']?>" placeholder="Ingresar periodo" id="periodo<?=$data['cod_seccion']?>" required readonly>
+                                              <!-- <option value="">Seleccione un periodo</option> Nuevo Que este comentado --> 
                                               <?php
                                               foreach ($periodos as $per):
                                                 if(!empty($per['id_periodo'])):
+                                                  if($data['id_periodo']==$per['id_periodo']){ //Nuevo
                                               ?>
-                                              <option <?php if($data['id_periodo']==$per['id_periodo']){ echo "selected"; } ?> value="<?=$per['id_periodo']?>"><?=mb_strtoupper($per['year_periodo']."-".$per['nombre_periodo']); ?></option>
-                                              <?php 
+                                              <option <?php if($data['id_periodo']==$per['id_periodo']){ echo "selected"; } ?> value="<?=$per['id_periodo']; ?>"><?=mb_strtoupper($per['year_periodo']."-".$per['nombre_periodo']); ?></option>
+                                              <?php
+
+                                                  } //Nuevo
+                                              
                                                 endif;
                                               endforeach;
                                               ?>
@@ -405,7 +411,7 @@
                                             <span id="nombreS<?=$data['cod_seccion']?>" class="mensajeError"></span>
                                           </div>
                                         </div>
-                                    
+                                        
                                         <div class="form-group col-xs-12 col-sm-12" style="margin-top:;">
                                           <label for="alumnos<?=$data['cod_seccion']?>">Alumnos</label>
                                           <div class="input-group " style="width:100%;">
@@ -417,17 +423,19 @@
                                                 if(!empty($alum['cedula_alumno'])):
                                                   if($alum['trayecto_alumno']==$data['trayecto_seccion']){
                                               ?>
-                                              <option <?php foreach ($seccionAlumnos as $secAlum) {
-                                                if(!empty($secAlum['cedula_alumno'])){
-                                                    if($secAlum['cedula_alumno'] == $alum['cedula_alumno']){
-                                                      if($secAlum['cod_seccion'] == $data['cod_seccion']){
+                                              <option 
+                                                <?php foreach ($seccionAlumnos as $secAlum) {
+                                                  if(!empty($secAlum['cedula_alumno'])){
+                                                    if( ($data['id_periodo']==$secAlum['id_periodo']) && ($alum['trayecto_alumno']==$secAlum['trayecto_alumno']) ){
+                                                      if( ($data['cod_seccion']==$secAlum['cod_seccion']) && ($alum['cedula_alumno']==$secAlum['cedula_alumno']) ){
                                                         echo "selected";
-                                                      }else{
+                                                      }else if( ($data['cod_seccion']!=$secAlum['cod_seccion']) && ($alum['cedula_alumno']==$secAlum['cedula_alumno']) ){
                                                         echo "disabled";
                                                       }
                                                     }
-                                                }
-                                              } ?> value="<?=$alum['cedula_alumno']?>" ><?=$alum['cedula_alumno']." ".ucwords(mb_strtolower($alum['nombre_alumno']))." "."".ucwords(mb_strtolower($alum['apellido_alumno']))." "?></option>
+                                                  }
+                                                } ?> 
+                                                value="<?=$alum['cedula_alumno']?>" ><?=$alum['cedula_alumno']." ".ucwords(mb_strtolower($alum['nombre_alumno']))." "."".ucwords(mb_strtolower($alum['apellido_alumno']))." "?></option>
                                               <?php 
                                                   }
                                                 endif;

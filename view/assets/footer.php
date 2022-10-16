@@ -1,4 +1,5 @@
 <div class="box-cargando" style="background:rgba(0,0,0,.8);position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100vh;z-index:1100;text-align:center;display:none;color:#767676;">
+
 <!-- <img src="assets/gifty/loading-11.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
 <!-- <img src="assets/gifty/loading-25.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
 <!-- <img src="assets/gifty/loading-22.gif" alt="cargando" style="margin-top:10vh;max-height:100vh;max-width:100vh;">  -->
@@ -52,11 +53,10 @@
 <input type="hidden" value="<?php echo $_GET['dp'] ?>" class='num_despacho'>
 
 <?php } ?>
-
 <footer class="main-footer">
 
     <div class="pull-right hidden-xs string">
-
+        <input type="hidden" id="urlNotificaciones" value="<?=$this->encriptar(ucwords(mb_strtolower('Notificaciones'))); ?>">
       <b>Version</b> 2.0
 
     </div>
@@ -115,5 +115,109 @@ $(document).ready(function(){
     //     $(".wrapper").attr("style","padding-right:0 !important;width:100% !important;");
     //     $("body").attr("style","padding-right:0 !important;width:100% !important;");
     // });
+    // NuevoPeriodo();
+    CierrePeriodoSubidaNotas();
+    // NotificacionVerificacionDeNotas();
+    $(".lanzarNotificacion").click(function(){
+        var id = $(this).attr("id");
+        // alert(id);
+        // alert('asd');
+        $(".formNotificaciones"+id).submit();
+    });
 });
+function NuevoPeriodo(){
+    var url = $("#urlNotificaciones").val();
+    $.ajax({
+        url: url+'/NuevoPeriodo',    
+        type: 'POST',  
+        data: {
+            Buscar: true,
+        },
+        success: function(respuesta){       
+            // alert(respuesta);
+            var resp = JSON.parse(respuesta);
+            console.log(resp);
+            // if (resp.msj == "Good") {
+            //     var data = resp.data;
+            //     var dataSaberes = "";
+            //     if(resp.msjSaberes=="Good"){
+            //         dataSaberes = resp.dataSaberes;
+            //     }
+            //     // console.log("DATA: ");
+            //     // console.log(data);
+            //     // console.log("SABERES: ");
+            //     // console.log(dataSaberes);
+            //     var html = '';
+            //     html += '<option value="">Saber Complementario</option>';
+            //     for (var i = 0; i < data.length; i++) {
+            //         html += '<option value="'+data[i]['id_SC']+'" ';
+
+            //         if(dataSaberes.length>0){
+            //             for (var j = 0; j < dataSaberes.length; j++) {
+            //                 if(dataSaberes[j]['id_SC']==data[i]['id_SC']){
+            //                     html += 'disabled="disabled"';
+            //                 }
+            //             }
+            //         }
+                  
+            //         html += ' >'+data[i]['nombreSC']+'</option>';
+            //     }
+            //     $("#saber").html(html);
+            // }
+            // if(resp.msj == "Vacio"){
+            //     var html = '';
+            //     html += '<option value="">Saber Complementario</option>';
+            //     $("#saber").html(html);
+            // }
+        },
+        error: function(respuesta){       
+            // alert(respuesta);
+            var resp = JSON.parse(respuesta);
+            console.log(resp);
+        }
+    });
+    // setTimeout("NuevoPeriodo()",2000);
+}
+function CierrePeriodoSubidaNotas(){
+    var url = $("#urlNotificaciones").val();
+    $.ajax({
+        url: url+'/CierrePeriodoSubidaNotas',    
+        type: 'POST',  
+        data: {
+            Buscar: true,
+        },
+        success: function(respuesta){       
+            // alert(respuesta);
+            // var resp = JSON.parse(respuesta);
+            // console.log(resp);
+        },
+        error: function(respuesta){       
+            // alert(respuesta);
+            // var resp = JSON.parse(respuesta);
+            // console.log(resp);
+        }
+    });
+    // setTimeout("CierrePeriodoSubidaNotas()",2000);
+}
+function NotificacionVerificacionDeNotas(){
+    var url = $("#urlNotificaciones").val();
+    $.ajax({
+        url: url+'/NotificacionVerificacionDeNotas',    
+        type: 'POST',  
+        data: {
+            Buscar: true,
+        },
+        success: function(respuesta){       
+            // alert(respuesta);
+            // var resp = JSON.parse(respuesta);
+            // console.log(resp);
+        },
+        error: function(respuesta){       
+            // alert(respuesta);
+            // var resp = JSON.parse(respuesta);
+            // console.log(resp);
+        }
+    });
+    // setTimeout("NotificacionVerificacionDeNotas()",2000);
+}
 </script>

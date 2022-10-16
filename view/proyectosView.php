@@ -477,7 +477,7 @@
                                           ?>
                                           <option 
                                             <?php foreach ($gruposSec as $grupos){ if (!empty($grupos['cod_seccion'])){ if($grupos['cod_proyecto'] == $data['cod_proyecto']){ if($grupos['cod_seccion'] == $secc['cod_seccion']){ echo "selected"; } } } } ?>
-                                            value="<?=$secc['cod_seccion']?>"><?=mb_strtoupper($secc['nombre_seccion']).""; ?></option>
+                                            value="<?=$secc['cod_seccion']?>"><?=mb_strtoupper($secc['nombre_seccion'])." (".$secc['year_periodo']."-".$secc['nombre_periodo'].")"; ?></option>
                                           <?php 
                                               endif; 
                                             endif;

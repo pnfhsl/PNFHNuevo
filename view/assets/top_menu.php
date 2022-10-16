@@ -40,19 +40,16 @@
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle box_notificaciones" data-toggle="dropdown">
               <i class="fa fa-bell-o" style="font-size:1.2em"></i>
-              <span class="label cantidad_notificaciones d-none">10</span>
+              <?php require_once'code/topNotificaciones.php'; ?>
+              <span class="label cantidad_notificaciones" <?php if($cantidadNoVistas>0){ ?> style="background:red" <?php } ?>><?php if($cantidadNoVistas>0){ echo $cantidadNoVistas; } ?></span>
             </a>
             <ul class="dropdown-menu" class="notification" ><!-- style="width:320px" -->
-              <li class="header"><b>Tiene <span class="cantidadNoVista"></span> <span class="tipoNovista"></span></b></li>
+              <li class="header"><b>Tiene <span class="cantidadNoVista"><?=$cantidadNoVistas; ?></span> <span class="tipoNovista">notificaciones sin revisar</span></b></li>
               <li>
                 <ul class="menu menu_notificaciones" ><!-- style="width:400px" -->
-
-                  <!-- <li>
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                    </a>
-                  </li> -->
-
+                  <?php
+                    require_once'code/bodyNotificaciones.php';
+                  ?>
                 </ul>
               </li>
               <li class="footer"><a href="?route=Notificaciones">Ver Todas</a></li>
@@ -76,16 +73,19 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <?php 
-                  $fotoPerfil = "public/assets/img/perfil/Masculino.png";
+                  $fotoPerfil = "assets/img/perfil/user-default.png";
+                  if($_SESSION['cuenta_usuario']['imagen']!=""){
+                    $fotoPerfil = $_SESSION['cuenta_usuario']['imagen'];
+                  }
               ?>
-              <img src="<?=_ROUTE_?>assets/img/user-3.png" style='background:#fff' class="user-image" alt="User Image">
+              <img src="<?=_ROUTE_.$fotoPerfil;?>" style='background:#fff;width:30px;height:30px;margin-top:-5px;' class="user-image" alt="User Image">
               <span class="hidden-xs">
               <?php echo $_SESSION['cuenta_persona']['nombre'] . " " . $_SESSION['cuenta_persona']['apellido']; ?>
               </span>
             </a>
             <ul class="dropdown-menu" style="box-shadow:0px 0px 2px #000">
               <li class="user-header " style="background:url(<?=$fotoPortada?>);background-size:100% 100%;">
-                    <img src="<?=_ROUTE_?>assets/img/user-3.png" style='background:#fff' class="img-circle" alt="User Image">
+                    <img src="<?=_ROUTE_.$fotoPerfil;?>" style='background:#fff' class="img-circle" alt="User Image">
                     
                     <p style="color:#fff;text-shadow:0px 0px 3px #000">
                       Web Developer
@@ -112,3 +112,7 @@
       <input type="hidden" class="rolhidden" value="<?php echo $rol; ?>">
     </nav>
   </header>
+
+<?php
+
+?>

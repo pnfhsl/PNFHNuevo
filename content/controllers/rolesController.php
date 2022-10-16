@@ -9,6 +9,7 @@
 	use content\modelo\rolesModel as rolesModel;
 	use content\modelo\permisosModel as permisosModel;
 	use content\modelo\modulosModel as modulosModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 	class rolesController{
 	use Utility;
@@ -17,10 +18,12 @@
 		private $modulo;
 		private $permisos;
 		private $bitacora;
+		private $notificacion;
+
 
 		function __construct($url){
-			
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 			$this->rol = new rolesModel();
 			$this->permiso = new permisosModel();

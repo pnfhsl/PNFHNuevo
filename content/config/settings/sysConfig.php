@@ -8,6 +8,7 @@
 	define("_ROUTE_" , "/PNFHNuevo/");					/* direccion del proyecto */
 	define("_THEME_" , "/PNFHNuevo/assets");			/* Direccion de recursos y estilos */
 	define("_INDEX_FILE_" , "/PNFHNuevo/index.php");	/* direccion del archivo index */
+	define("_IMG_" , "assets/img/perfil");
 
 	define('_DIRECTORY_', 'content/controllers/'); 					/* Direccion de controladores */
 	define("_MODEL_" , "content/modelo/");							/* direccion de los modelos */
@@ -17,7 +18,7 @@
 	define("_URL_" , "http://localhost/PNFHNuevo/");					/* nombre del servidor */
 
 	define('_DB_MANAGER_', 	'mysql');						        /* manejador de base de datos */
-	define("_DB_WEB_" , "pnfhslt4");								/* nombre de la base de datos */
+	define("_DB_WEB_" , "pnfh4");								/* nombre de la base de datos */
 	define('_HOST_', 		'localhost');							/* nombre del host */
 	define("_DB_USER_", "root");									/* nombre del usuario de la base de datos */
 	define("_DB_PASS_", "");										/* contraseña de la base de datos  */

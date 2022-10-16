@@ -84,13 +84,15 @@ class usuariosModel extends database
 		$dat['firma'] = $cedulaEncriptada;
 		$dat['public'] = $public;
 		$dat['private'] = $private;
+		$actualDate = date('Y-m-d');
 		try {
 
-			$query = parent::prepare("INSERT INTO rsa (id_rsa, cedula_usuario, llave_publica, llave_privada, firma_digital, estatus) VALUES (DEFAULT, :cedula_usuario, :llave_publica, :llave_privada, :firma_digital, 1)");
+			$query = parent::prepare("INSERT INTO rsa (id_rsa, cedula_usuario, llave_publica, llave_privada, firma_digital, fecha_acceso, estatus) VALUES (DEFAULT, :cedula_usuario, :llave_publica, :llave_privada, :firma_digital, :fecha_acceso, 1)");
 			$query->bindValue(':cedula_usuario', $dat['cedula_usuario']);
 			$query->bindValue(':llave_publica', ($dat['public']));
 			$query->bindValue(':llave_privada', $dat['private']);
 			$query->bindValue(':firma_digital', $dat['firma']);
+			$query->bindValue(':fecha_acceso', $actualDate);
 			$query->execute();
 			$respuestaArreglo = $query->fetchAll();
 			if ($respuestaArreglo += ['estatus' => true]) {

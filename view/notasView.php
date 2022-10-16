@@ -78,7 +78,7 @@
                                   <select class="form-control input-lg select2" style="width:100%;" name="nuevoRol" id="seccion">
                                     <option value="">Sección</option>
                                     <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])): ?>
-                                        <option value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
+                                        <option value="<?php echo $date['cod_seccion'] ?>"><?=$date['nombre_seccion'] ?> (<?=$date['year_periodo']."-".$date['nombre_periodo']; ?>)</option>
                                     <?php endif; endforeach; ?>
                                   </select>
                                 </div>
@@ -199,6 +199,8 @@
                   <td style="width:25%">
                     <span class="contenido2">
                       <?php echo $data['nombre_seccion']; ?>
+                      <br>
+                      <small>(<?php echo $data['year_periodo']."-".$data['nombre_periodo']; ?>)</small>
                     </span>
                   </td>
                   <td style="width:25%">
@@ -424,7 +426,7 @@
                               <div class="modal-body" style="max-height:70vh;overflow:auto">
                               <div class="box-body">
                                 <div class="row" style="width:100%;">
-                                  
+
                                   <!-- ENTRADA PARA LA SECCION -->
                                   <div class="form-group col-xs-12 col-sm-6">
                                     <label for="seccion">Sección</label>
@@ -434,7 +436,7 @@
                                         <!-- <option value="">Sección</option> -->
                                         <?php foreach ($secciones as $date): if(!empty($date['cod_seccion'])): ?>
                                           <?php if($data['cod_seccion']==$date['cod_seccion']){ ?>
-                                            <option selected="selected"  value="<?php echo $date['cod_seccion'] ?>"><?php echo $date['nombre_seccion'] ?></option>
+                                            <option selected="selected"  value="<?php echo $date['cod_seccion'] ?>"><?=$date['nombre_seccion'] ?> (<?=$date['year_periodo']."-".$date['nombre_periodo']; ?>)</option>
                                             <?php } ?>
                                         <?php endif; endforeach; ?>
                                       </select>

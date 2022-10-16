@@ -7,20 +7,19 @@
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\bitacoraModel as bitacoraModel;
 	use content\modelo\mantenimientoModel as mantenimientoModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 	class mantenimientoController{
 		use Utility;
 		private $url;
 		private $manteniment;
 		private $bitacora;
+		private $notificacion;
+		
 
 		function __construct($url){
-			// if(empty($_POST['ajax'])){
-				// $objModel = new homeModel;
-				// $_css = new headElement;
-				// $_css->Heading();
-			// }
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 			$this->manteniment = new mantenimientoModel();
 
@@ -31,11 +30,6 @@
 				$_css = new headElement;
 				$_css->Heading();
 				$this->bitacora->monitorear($this->url);
-				// $notas = $this->nota->Consultar();			
-				// $alumnos = $this->nota->ConsultarAlumnos();			
-				// $secciones = $this->nota->ConsultarSecciones();			
-				// $saberes = $this->nota->ConsultarSaberes();			
-				// $sa = $this->nota->ConsultarSA();			
 				$url = $this->url;
 				require_once("view/mantenimientoView.php");
 			

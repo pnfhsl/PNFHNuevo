@@ -6,6 +6,7 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\cohortesModel as cohortesModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 
 	class cohortesController{
 		private $url;

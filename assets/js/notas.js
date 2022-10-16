@@ -473,7 +473,7 @@ $(document).ready(function(){
                 notas: notas,
               },
               success: function(resp){
-                console.log(resp); 
+                // console.log(resp); 
                 // alert(resp);
 
                 var datos = JSON.parse(resp); 

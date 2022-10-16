@@ -6,6 +6,7 @@
 	use content\component\headElement as headElement;
 	use content\modelo\homeModel as homeModel;
 	use content\modelo\bitacoraModel as bitacoraModel;
+	use content\modelo\notificacionesModel as notificacionesModel;
 	use content\traits\Utility;
 
 	class bitacoraController{
@@ -13,8 +14,11 @@
 		private $url;
 		private $home;
 		private $bitacora;
+		private $notificacion;
+		
 		function __construct($url){
 			$this->url = $url;
+			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
 		}
 
