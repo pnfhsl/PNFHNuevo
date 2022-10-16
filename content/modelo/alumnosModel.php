@@ -106,6 +106,46 @@
 
 		}
 
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"cedula",'expresion'=>'/[^0-9]/'],
+				'1' => ['campo'=>"nombre",'expresion'=>'/[^a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú ]/'],
+				'2' => ['campo'=>"apellido",'expresion'=>'/[^a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú ]/'],
+				'3' => ['campo'=>"telefono",'expresion'=>'/[^0-9]/'],
+				'4' => ['campo'=>"trayecto",'expresion'=>'/[^0-9]/'],
+				'5' => ['campo'=>"id",'expresion'=>'/[^0-9]/'],
+			];
+			// $resExp = 0;
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp." | ";
+					// echo "\n\n";
+					return $resExp;
+				}
+			}
+		}
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
+
 		public function Agregar($datos){
 
 			try{
@@ -131,7 +171,6 @@
 		        return $errorReturn; 
 	      }
 		}
-
 		public function Modificar($datos){
 
 			try{

@@ -42,125 +42,121 @@
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
+              <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
               <div class="col-xs-12 col-sm-6" style="text-align:right">
-                <button class="btn enviar2" style=""  data-toggle="modal" data-target="#modalAgregarSeccion">Agregar Nuevo</button>
-                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-                 <!--=====================================
-                  MODAL AGREGAR Seccion
-                  ======================================-->
-
+                <?php if($amSeccionesR=="1"): ?>
+                  <button class="btn enviar2" style=""  data-toggle="modal" data-target="#modalAgregarSeccion">Agregar Nuevo</button>
+                    <!--=====================================
+                      MODAL AGREGAR Seccion
+                    ======================================-->
                   <div id="modalAgregarSeccion" class="modal fade" role="dialog" style="text-align:left;">
                     <div class="modal-dialog tamModals" style="text-align:left;">
-                      <?php #style="margin-right:auto;margin-left:auto;width:80%;" ?>
                       <div class="modal-content">
-                          <!--=====================================
-                          CABEZA DEL MODAL
-                          ======================================-->
-                          <div class="modal-header" style="background:#3c8dbc; color:white">
-                            <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-                            <h4 class="modal-title" style="text-align: left;">Agregar Sección</h4>
-                          </div>
-                          <!--=====================================
-                          CUERPO DEL MODAL
-                          ======================================-->
-                          <div class="modal-body" style="max-height:70vh;overflow:auto;">
-                            <div class="box-body">
-                              <!-- ENTRADA PARA EL USUARIO -->
-                              <div class="row">
+                        <!--=====================================
+                        CABEZA DEL MODAL
+                        ======================================-->
+                        <div class="modal-header" style="background:#3c8dbc; color:white">
+                          <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+                          <h4 class="modal-title" style="text-align: left;">Agregar Sección</h4>
+                        </div>
+                        <!--=====================================
+                        CUERPO DEL MODAL
+                        ======================================-->
+                        <div class="modal-body" style="max-height:70vh;overflow:auto;">
+                          <div class="box-body">
+                            <!-- ENTRADA PARA EL USUARIO -->
+                            <div class="row">
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="periodo">Período</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                  <select class="form-control select2 input-lg" style="width:100%;" name="periodo" placeholder="Ingresar periodo" id="periodo" required>
+                                    <option value="">Seleccione un periodo</option>
+                                    <?php
+                                    foreach ($periodos as $per):
+                                      if(!empty($per['id_periodo'])):
+                                    ?>
+                                    <option value="<?=$per['id_periodo']?>"><?=mb_strtoupper($per['year_periodo']."-".$per['nombre_periodo']); ?></option>
+                                    <?php 
+                                      endif;
+                                    endforeach;
+                                    ?>
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="periodoS" class="mensajeError"></span>
+                                </div>
+                              </div>
 
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="periodo">Período</label>
-                                  <div class="input-group" style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                    <select class="form-control select2 input-lg" style="width:100%;" name="periodo" placeholder="Ingresar periodo" id="periodo" required>
-                                      <option value="">Seleccione un periodo</option>
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="trayecto">Trayecto</label>
+                                <div class="input-group " style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                  <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayecto" required>
+                                    <option value="">Seleccione un trayecto</option>
+                                    <option value="1">Trayecto I</option>
+                                    <option value="2">Trayecto II</option>
+                                    <option value="3">Trayecto III</option>
+                                    <option value="4">Trayecto IV</option>
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="trayectoS" class="mensajeError"></span>
+                                </div>
+                              </div>
+
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="nombre">Nombre</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
+                                  <input type="text" class="form-control input-lg" name="nombre" id="nombre" placeholder="Ingresar nombre (Ej.: SH3001)" maxlength="6" required>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="nombreS" class="mensajeError"></span>
+                                </div>
+                              </div>
+
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="alumnos">Alumnos</label>
+                                <div class="input-group " style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                  <select class="form-control select2SeccionAlumnos input-lg" style="width:100%;" name="trayecto" placeholder="Cargar alumnos" id="alumnos" multiple="multiple" required>
+                                    <option value="" disabled="">Cargar Alumnos</option>
+                                     <?php
+                                    foreach ($alumnos as $alum):
+                                      if(!empty($alum['cedula_alumno'])):
+                                    ?>
+                                    <!-- <option  -->
                                       <?php
-                                      foreach ($periodos as $per):
-                                        if(!empty($per['id_periodo'])):
+                                        // foreach ($seccionAlumnos as $key): if(!empty($key['cedula_alumno'])): if($key['cedula_alumno'] == $alum['cedula_alumno']):
+                                        //   echo 'disabled="disabled"';
+                                        // endif; endif; endforeach;
                                       ?>
-                                      <option value="<?=$per['id_periodo']?>"><?=mb_strtoupper($per['year_periodo']."-".$per['nombre_periodo']); ?></option>
-                                      <?php 
-                                        endif;
-                                      endforeach;
-                                      ?>
-                                    </select>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="periodoS" class="mensajeError"></span>
-                                  </div>
+                                     <!-- value="<?=$alum['cedula_alumno']?>"><?=mb_strtoupper($alum['cedula_alumno'])." ".$alum['nombre_alumno']." "."".$alum['apellido_alumno']." "?></option> -->
+                                    <?php 
+                                      endif;
+                                    endforeach;
+                                    ?>
+                                  </select>
                                 </div>
-
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="trayecto">Trayecto</label>
-                                  <div class="input-group " style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                    <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayecto" required>
-                                      <option value="">Seleccione un trayecto</option>
-                                      <option value="1">Trayecto I</option>
-                                      <option value="2">Trayecto II</option>
-                                      <option value="3">Trayecto III</option>
-                                      <option value="4">Trayecto IV</option>
-                                    </select>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="trayectoS" class="mensajeError"></span>
-                                  </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="alumnosS" class="mensajeError"></span>
                                 </div>
-
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="nombre">Nombre</label>
-                                  <div class="input-group" style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
-                                    <input type="text" class="form-control input-lg" name="nombre" id="nombre" placeholder="Ingresar nombre (Ej.: SH3001)" maxlength="6" required>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="nombreS" class="mensajeError"></span>
-                                  </div>
-                                </div>
-
-                                <div class="form-group col-xs-12 col-sm-12">
-                                  <label for="alumnos">Alumnos</label>
-                                  <div class="input-group " style="width:100%;">
-                                    <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                    <select class="form-control select2SeccionAlumnos input-lg" style="width:100%;" name="trayecto" placeholder="Cargar alumnos" id="alumnos" multiple="multiple" required>
-                                      <option value="" disabled="">Cargar Alumnos</option>
-                                       <?php
-                                      foreach ($alumnos as $alum):
-                                        if(!empty($alum['cedula_alumno'])):
-                                      ?>
-                                      <!-- <option  -->
-                                        <?php
-                                          // foreach ($seccionAlumnos as $key): if(!empty($key['cedula_alumno'])): if($key['cedula_alumno'] == $alum['cedula_alumno']):
-                                          //   echo 'disabled="disabled"';
-                                          // endif; endif; endforeach;
-                                        ?>
-                                       <!-- value="<?=$alum['cedula_alumno']?>"><?=mb_strtoupper($alum['cedula_alumno'])." ".$alum['nombre_alumno']." "."".$alum['apellido_alumno']." "?></option> -->
-                                      <?php 
-                                        endif;
-                                      endforeach;
-                                      ?>
-                                    </select>
-                                  </div>
-                                  <div style="width:100%;text-align:right;">
-                                    <span id="alumnosS" class="mensajeError"></span>
-                                  </div>
-                                </div>
-
                               </div>
                             </div>
                           </div>
-                          <!--=====================================
-                          PIE DEL MODAL
-                          ======================================-->
-                          <div class="modal-footer">
-                            <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-                            <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-                          </div>
-
+                        </div>
+                        <!--=====================================
+                        PIE DEL MODAL
+                        ======================================-->
+                        <div class="modal-footer">
+                          <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+                          <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
+                        </div>
                       </div>
                     </div>
                   </div>
+                <?php endif; ?>
               </div>
             </div>
             <!-- /.box-header -->

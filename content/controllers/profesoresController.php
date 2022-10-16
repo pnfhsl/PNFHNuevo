@@ -73,13 +73,13 @@
 							// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
 								$datos['id'] = $datos['cedula'];
-								$exec = $this->profesor->Modificar($datos); 
+								$exec = $this->profesor->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->profesor->Agregar($datos); 
+							$exec = $this->profesor->ValidarAgregarOModificar($datos, "Agregar"); 
 							echo json_encode($exec);
 						}
 					}else{
@@ -105,13 +105,13 @@
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$_POST['cedula']){
-								$exec = $this->profesor->Modificar($datos); 
+								$exec = $this->profesor->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->profesor->Modificar($datos); 
+							$exec = $this->profesor->ValidarAgregarOModificar($datos, "Modificar"); 
 							echo json_encode($exec);
 						}
 					}else{

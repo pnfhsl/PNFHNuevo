@@ -53,13 +53,13 @@
 							// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
 								$datos['id'] = $datos['cedula'];
-								$exec = $this->modulo->Modificar($datos); 
+								$exec = $this->modulo->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->modulo->Agregar($datos); 
+							$exec = $this->modulo->ValidarAgregarOModificar($datos, "Agregar"); 
 							echo json_encode($exec);
 						}
 					}else{
@@ -83,13 +83,13 @@
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data']);
 							if($_POST['codigo']==$buscar['data'][0]['id_modulo']){
-								$exec = $this->modulo->Modificar($datos); 
+								$exec = $this->modulo->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->modulo->Modificar($datos); 
+							$exec = $this->modulo->ValidarAgregarOModificar($datos, "Modificar"); 
 							echo json_encode($exec);
 						}
 					}else{

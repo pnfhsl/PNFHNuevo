@@ -12,8 +12,6 @@
 		private $profesor;
 		private $nota;
 
-
-
 		public function __construct(){
 			// $this->con = parent::__construct();
 			parent::__construct();
@@ -72,75 +70,6 @@
 				return $errorReturn;
 			}
 		}
-
-		// public function ConsultarProfesores(){
-		// 	try {
-		// 		$query = parent::prepare('SELECT * FROM profesores WHERE estatus = 1');
-		// 		$respuestaArreglo = '';
-		// 		$query->execute();
-		// 		$query->setFetchMode(parent::FETCH_ASSOC);
-		// 		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-		// 		$respuestaArreglo += ['estatus' => true];
-		// 		return $respuestaArreglo;
-		// 	} catch (PDOException $e) {
-		// 		$errorReturn = ['estatus' => false];
-		// 		$errorReturn += ['info' => "error sql:{$e}"];
-		// 		return $errorReturn;
-		// 	}
-		// }
-
-
-		// public function ConsultarSecciones(){
-			
-		// 	try {
-		// 		$query = parent::prepare('SELECT * FROM secciones WHERE estatus = 1');
-		// 		$respuestaArreglo = '';
-		// 		$query->execute();
-		// 		$query->setFetchMode(parent::FETCH_ASSOC);
-		// 		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-		// 		$respuestaArreglo += ['estatus' => true];
-		// 		return $respuestaArreglo;
-		// 	} catch (PDOException $e) {
-		// 		$errorReturn = ['estatus' => false];
-		// 		$errorReturn += ['info' => "error sql:{$e}"];
-		// 		return $errorReturn;
-		// 	}
-		// }
-
-		// public function ConsultarSaberes(){
-			
-		// 	try {
-		// 		$query = parent::prepare('SELECT * FROM saberes WHERE estatus = 1');
-		// 		$respuestaArreglo = '';
-		// 		$query->execute();
-		// 		$query->setFetchMode(parent::FETCH_ASSOC);
-		// 		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-		// 		$respuestaArreglo += ['estatus' => true];
-		// 		return $respuestaArreglo;
-		// 	} catch (PDOException $e) {
-		// 		$errorReturn = ['estatus' => false];
-		// 		$errorReturn += ['info' => "error sql:{$e}"];
-		// 		return $errorReturn;
-		// 	}
-		// }
-
-		// public function ConsultarSA(){
-			
-		// 	try {
-		// 		$query = parent::prepare('SELECT * FROM seccion_alumno WHERE estatus = 1');
-		// 		$respuestaArreglo = '';
-		// 		$query->execute();
-		// 		$query->setFetchMode(parent::FETCH_ASSOC);
-		// 		$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-		// 		$respuestaArreglo += ['estatus' => true];
-		// 		return $respuestaArreglo;
-		// 	} catch (PDOException $e) {
-		// 		$errorReturn = ['estatus' => false];
-		// 		$errorReturn += ['info' => "error sql:{$e}"];
-		// 		return $errorReturn;
-		// 	}
-		// }
-
 
 		public function getOneId($datos){
 			// echo $datos['saber']." - ";
@@ -203,39 +132,103 @@
 		      }
 	    }
 
-
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"saber",'expresion'=>'/[^0-9]/'],
+				'1' => ['campo'=>"profesor",'expresion'=>'/[^0-9]/'],
+				'2' => ['campo'=>"seccion",'expresion'=>'/[^0-9 a-zA-Z]/'],
+				'3' => ['campo'=>"id_clase",'expresion'=>'/[^0-9]/'],
+			];
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp;
+					// echo "\n";
+					return $resExp;
+				}
+			}
+		}
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
 	    public function Agregar($datos){
-
 			try{
-			// echo $datos['id'];
-	        $query = parent::prepare("INSERT INTO clases (id_clase, id_SC, cod_seccion, cedula_profesor, estatus) VALUES (DEFAULT, :id_SC, :cod_seccion, :cedula_profesor, 1)");
-	        /*$query->bindValue(':id_nota', $datos['id']);*/
-	      /*  $query->bindValue(':id_clase', $datos['id_clase']);*/
-	        // var_dump($datos['id']);
-	      // $query->bindValue(':id_clase', );
-	      // var_dump($datos['id']);
-	        $query->bindValue(':id_SC', $datos['saber']);
-	        $query->bindValue(':cedula_profesor', $datos['profesor']);
-	        $query->bindValue(':cod_seccion', $datos['seccion']);
+				$query = parent::prepare("INSERT INTO clases (id_clase, id_SC, cod_seccion, cedula_profesor, estatus) VALUES (DEFAULT, :id_SC, :cod_seccion, :cedula_profesor, 1)");
+				$query->bindValue(':id_SC', $datos['saber']);
+				$query->bindValue(':cedula_profesor', $datos['profesor']);
+				$query->bindValue(':cod_seccion', $datos['seccion']);
+				$query->execute();
+				$respuestaArreglo = $query->fetchAll();
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					return $Result;
+				}
+			} catch(PDOException $e){
+				$errorReturn = ['estatus' => false];
+				$errorReturn['msj'] = "Error";
+				$errorReturn += ['info' => "Error sql:{$e}"];
+				return $errorReturn; 
+			}
+		}
 
-	        $query->execute();
-	        $respuestaArreglo = $query->fetchAll();
-	        /*print_r($datos['id']);
-	        print_r($respuestaArreglo);
-	        */
+		public function Modificar($datos){
+			try{
+
+				$query = parent::prepare('UPDATE clases SET  id_SC=:id_SC, cod_seccion=:cod_seccion, cedula_profesor=:cedula_profesor, estatus=1 WHERE id_clase = :id_clase');
+				$query->bindValue(':id_clase', $datos['id_clase']);
+				$query->bindValue(':id_SC', $datos['saber']);
+				$query->bindValue(':cedula_profesor', $datos['profesor']);
+				$query->bindValue(':cod_seccion', $datos['seccion']);
+				$query->execute();
+				$respuestaArreglo = $query->fetchAll();
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					return $Result;
+				}
+			} catch(PDOException $e){
+				$errorReturn = ['estatus' => false];
+				$errorReturn['msj'] = "Error";
+				$errorReturn += ['info' => "Error sql:{$e}"];
+				return $errorReturn; 
+			}
+		}
+
+		public function Eliminar($id){
+			try {
+	        $query = parent::prepare('UPDATE clases SET estatus = 0 WHERE id_clase = :id');
+	        $query->execute(['id'=>$id]);
+	        $query->setFetchMode(parent::FETCH_ASSOC);
+	        $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
 	        if ($respuestaArreglo += ['estatus' => true]) {
 	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
 				return $Result;
 	        }
-	      } catch(PDOException $e){
-	      	// print_r($e);
-	        	$errorReturn = ['estatus' => false];
+	        }
+	        catch (PDOException $e)
+	        {
+	            $errorReturn = ['estatus' => false];
 	      		$errorReturn['msj'] = "Error";
-		        $errorReturn += ['info' => "Error sql:{$e}"];
-		        return $errorReturn; 
-	      }
+	        $errorReturn += ['info' => "Error sql:{$e}"];
+	        return $errorReturn; ;
+	        } 
 		}
-
 
 		public function getOneC($id){
 		      try {
@@ -260,79 +253,6 @@
 		        return $errorReturn;
 		      }
 	    }
- 
-
-
-		public function Eliminar($id){
-			try {
-	        $query = parent::prepare('UPDATE clases SET estatus = 0 WHERE id_clase = :id');
-	        $query->execute(['id'=>$id]);
-	        $query->setFetchMode(parent::FETCH_ASSOC);
-	        $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
-	        if ($respuestaArreglo += ['estatus' => true]) {
-	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-				return $Result;
-	        }
-	        }
-	        catch (PDOException $e)
-	        {
-	            $errorReturn = ['estatus' => false];
-	      		$errorReturn['msj'] = "Error";
-	        $errorReturn += ['info' => "Error sql:{$e}"];
-	        return $errorReturn; ;
-	        } 
-		}
-
-
-
-			public function Modificar($datos){
-
-			try{
-	        $query = parent::prepare('UPDATE clases SET  id_SC=:id_SC, cod_seccion=:cod_seccion, cedula_profesor=:cedula_profesor, estatus=1 WHERE id_clase = :id_clase');
- 		    $query->bindValue(':id_clase', $datos['id_clase']);
- 		    $query->bindValue(':id_SC', $datos['saber']);
-	        $query->bindValue(':cedula_profesor', $datos['profesor']);
-	        $query->bindValue(':cod_seccion', $datos['seccion']);
-
-	        $query->execute();
-	        $respuestaArreglo = $query->fetchAll();
-	        if ($respuestaArreglo += ['estatus' => true]) {
-	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-				return $Result;
-	        }
-	      } catch(PDOException $e){
-
-	        $errorReturn = ['estatus' => false];
-	      		$errorReturn['msj'] = "Error";
-		        $errorReturn += ['info' => "Error sql:{$e}"];
-		        return $errorReturn; 
-	      }
-		}
-
-			   /* public function buscar($idClase, $idSA){
-		      try {
-		    	$query = parent::prepare('SELECT * FROM notas WHERE id_clase = :idClase and id_SA = :idSA');
-		    	$respuestaArreglo = '';
-		        $query->execute(['idClase'=>$idClase, 'idSA'=>$idSA]);
-		        $respuestaArreglo = $query->fetchAll();
-		        if ($respuestaArreglo += ['estatus' => true]) {
-		        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-		        	$Result['data'] = ['ejecucion'=>true];
-		        	if(count($respuestaArreglo)>1){
-		        		$Result['data'] = $respuestaArreglo;
-		        	}
-					// echo json_encode($Result);
-					return $Result;
-		        }
-		       //return $respuestaArreglo;
-		      //require_once 'Vista/usuarios.php';
-		      } catch (PDOException $e) {
-		        $errorReturn = ['estatus' => false];
-		        $errorReturn += ['info' => "error sql:{$e}"];
-		        return $errorReturn;
-		      }
-	    }*/
-
 
 
 	}

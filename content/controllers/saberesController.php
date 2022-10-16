@@ -56,7 +56,7 @@
 						$this->bitacora->monitorear($this->url);
 					    if(count($buscar['data'])>1){
 					    	if($_POST['']==$_POST['nombreSC']){
-								$exec = $this->saber->Modificar($datos); 
+								$exec = $this->saber->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 
 							}else{
@@ -64,7 +64,7 @@
 							}
 
 						}else{
-							$exec = $this->saber->Agregar($datos); 
+							$exec = $this->saber->ValidarAgregarOModificar($datos, "Agregar"); 
 							echo json_encode($exec);
 						}
 
@@ -94,13 +94,13 @@
 						if(count($buscar['data'])>1){
 							$busq = $buscar['data'][0];
 							if($datos['id_SC']==$busq['id_SC']){
-								$exec = $this->saber->Modificar($datos); 
+								$exec = $this->saber->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->saber->Modificar($datos); 
+							$exec = $this->saber->ValidarAgregarOModificar($datos, "Modificar"); 
 							echo json_encode($exec);
 						}
 					}else{

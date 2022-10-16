@@ -77,6 +77,43 @@
 			}
 		}
 
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"id",'expresion'=>'/[^a-zA-Z0-9]/'],
+				'1' => ['campo'=>"nombre",'expresion'=>'/[^a-zA-Z Ñ ñ Á á É é Í í Ó ó Ú ú ]/'],
+				'2' => ['campo'=>"trayecto",'expresion'=>'/[^0-9]/'],
+				'3' => ['campo'=>"cedula_tutor",'expresion'=>'/[^0-9]/'],
+			];
+			// $resExp = 0;
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp." | ";
+					// echo "\n\n";
+					return $resExp;
+				}
+			}
+		}
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
 		public function Agregar($datos){
 			try{
 				$query = parent::prepare("INSERT INTO proyectos (cod_proyecto, titulo_proyecto, trayecto_proyecto, cedula_profesor, estatus) VALUES (:cod_proyecto, :titulo_proyecto, :trayecto_proyecto, :cedula_tutor, 1)");
@@ -124,7 +161,10 @@
 			}
 		}
 
-
+		public function ValidarModificar($datos){
+			$result = Modificar($datos);
+			return $result;
+		}
 		public function Modificar($datos){
 			try{
 				$query = parent::prepare('UPDATE proyectos SET titulo_proyecto = :titulo_proyecto, trayecto_proyecto=:trayecto_proyecto, cedula_profesor=:cedula_tutor, estatus=1 WHERE cod_proyecto = :cod_proyecto');

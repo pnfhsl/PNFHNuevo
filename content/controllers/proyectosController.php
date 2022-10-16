@@ -126,7 +126,7 @@
 						if(count($buscar['data'])>1){
 							if($buscar['data'][0]['estatus']==0){
 								$datos['id'] = $buscar['data'][0]['cod_proyecto'];
-								$exec = $this->proyecto->Modificar($datos); 
+								$exec = $this->proyecto->ValidarAgregarOModificar($datos, "Modificar"); 
 								if($exec['msj']=="Good"){
 									$exec2 = $this->proyecto->EliminarGrupos($datos['id']);
 									if($exec2['msj']=="Good"){
@@ -150,7 +150,7 @@
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->proyecto->Agregar($datos); 
+							$exec = $this->proyecto->ValidarAgregarOModificar($datos, "Agregar"); 
 							if($exec['msj']=="Good"){
 								$exec2 = $this->proyecto->EliminarGrupos($datos['id']);
 								if($exec2['msj']=="Good"){
@@ -202,7 +202,7 @@
 						if(count($buscar['data'])>1){
 							if($_POST['codigo'] == $buscar['data'][0]['cod_proyecto']){
 								$datos['id'] = $buscar['data'][0]['cod_proyecto'];
-								$exec = $this->proyecto->Modificar($datos); 
+								$exec = $this->proyecto->ValidarAgregarOModificar($datos, "Modificar"); 
 								if($exec['msj']=="Good"){
 									$exec2 = $this->proyecto->EliminarGrupos($datos['id']);
 									if($exec2['msj']=="Good"){
@@ -226,7 +226,7 @@
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->proyecto->Modificar($datos); 
+							$exec = $this->proyecto->ValidarAgregarOModificar($datos, "Modificar"); 
 							if($exec['msj']=="Good"){
 								$exec2 = $this->proyecto->EliminarGrupos($datos['id']);
 								if($exec2['msj']=="Good"){

@@ -53,15 +53,45 @@
 			}
 		}
 
-		public function setAgregar($datos){
-			$this->nombre_rol = $datos['nombre'];
-			return $this->Agregar();
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"nombre",'expresion'=>'/[^0-9 a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú ]/'],
+				'1' => ['campo'=>"id_rol",'expresion'=>'/[^0-9]/'],
+			];
+			// $resExp = 0;
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp." | ";
+					// echo "\n\n";
+					return $resExp;
+				}
+			}
 		}
-		private function Agregar(){
-
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
+		private function Agregar($datos){
 			try{
 	        $query = parent::prepare('INSERT INTO roles (id_rol, nombre_rol, estatus) VALUES (DEFAULT, :nombre_rol, 1)');
-	        $query->bindValue(':nombre_rol', $this->nombre_rol);
+	        $query->bindValue(':nombre_rol', $datos['nombre']);
 	        $query->execute();
 	        $respuestaArreglo = $query->fetchAll();
 	        if ($respuestaArreglo += ['estatus' => true]) {
@@ -82,20 +112,13 @@
 	      }
 		}
 
-
-		public function setAgregarAccesos($data){
-			$this->id_rol = $data['id_rol'];
-			$this->id_modulo = $data['id_modulo'];
-			$this->id_permiso = $data['id_permiso'];
-			return $this->AgregarAccesos();
-		}
-		private function AgregarAccesos(){
+		public function AgregarAccesos($data){
 
 			try{
 	        $query = parent::prepare('INSERT INTO accesos (id_accesos, id_rol, id_modulo, id_permiso, estatus) VALUES (DEFAULT, :id_rol, :id_modulo, :id_permiso, 1)');
-	        $query->bindValue(':id_rol', $this->id_rol);
-	        $query->bindValue(':id_modulo', $this->id_modulo);
-	        $query->bindValue(':id_permiso', $this->id_permiso);
+	        $query->bindValue(':id_rol', $data['id_rol']);
+	        $query->bindValue(':id_modulo', $data['id_modulo']);
+	        $query->bindValue(':id_permiso', $data['id_permiso']);
 	        $query->execute();
 	        $respuestaArreglo = $query->fetchAll();
 	        // print_r($respuestaArreglo);
@@ -112,18 +135,12 @@
 	      }
 		}
 
-
-		public function setModificar($datos){
-			$this->id_rol = $datos['id_rol'];
-			$this->nombre_rol = $datos['nombre'];
-			return $this->Modificar();
-		}
-		private function Modificar(){
+		private function Modificar($datos){
 
 			try{
 	        $query = parent::prepare('UPDATE roles SET nombre_rol=:nombre_rol, estatus=1 WHERE id_rol = :id_rol');
-	        $query->bindValue(':nombre_rol', $this->nombre_rol);
-	        $query->bindValue(':id_rol', $this->id_rol);
+	        $query->bindValue(':nombre_rol', $datos['nombre']);
+	        $query->bindValue(':id_rol', $datos['id_rol']);
 	        $query->execute();
 	        $respuestaArreglo = $query->fetchAll();
 	        if ($respuestaArreglo += ['estatus' => true]) {
@@ -139,16 +156,10 @@
 	      }
 		} 
 
-
-		public function setEliminar($data){
-			// print_r($data);
-			$this->id_rol = $data['id_rol'];
-			return $this->Eliminar();
-		}
-		private function Eliminar(){
+		public function Eliminar($data){
 			try {
 	        $query = parent::prepare('UPDATE roles SET estatus = 0 WHERE id_rol = :id_rol');
-	        $query->execute(['id_rol'=>$this->id_rol]);
+	        $query->execute(['id_rol'=>$data['id_rol']]);
 	        $query->setFetchMode(parent::FETCH_ASSOC);
 	        $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
 	        if ($respuestaArreglo += ['estatus' => true]) {
@@ -165,14 +176,10 @@
 	        }
 		}
 
-		public function setEliminarAccesosP($data){
-			$this->id_rol = $data['id_rol'];
-			return $this->EliminarAccesosP();
-		}
-		private function EliminarAccesosP(){
+		public function EliminarAccesosP($data){
 			try {
-	        $query = parent::prepare('DELETE FROM accesos WHERE id_rol = :id_rol');
-	        $query->execute(['id_rol'=>$this->id_rol]);
+	        $query = parent::prepare("DELETE FROM accesos WHERE id_rol = :id_rol");
+	        $query->execute(['id_rol'=>$data['id_rol']]);
 	        $query->setFetchMode(parent::FETCH_ASSOC);
 	        $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
 	        if ($respuestaArreglo += ['estatus' => true]) {

@@ -70,13 +70,13 @@
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']=="0"){
-								$exec = $this->periodo->Modificar($datos); 
+								$exec = $this->periodo->ValidarAgregarOModificar($datos,"Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->periodo->Agregar($datos);
+							$exec = $this->periodo->ValidarAgregarOModificar($datos,"Agregar");
 						 	echo json_encode($exec);
 						}
 
@@ -110,13 +110,13 @@
 						if(count($buscar['data'])>1){
 							$busq = $buscar['data'][0];
 							if($datos['id_periodo']==$busq['id_periodo']){
-								$exec = $this->periodo->Modificar($datos); 
+								$exec = $this->periodo->ValidarAgregarOModificar($datos,"Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->periodo->Modificar($datos); 
+							$exec = $this->periodo->ValidarAgregarOModificar($datos,"Modificar"); 
 							echo json_encode($exec);
 						}
 					}else{

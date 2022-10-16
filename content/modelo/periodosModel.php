@@ -32,6 +32,44 @@
 			}
 		}
 
+
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"numeroPr",'expresion'=>'/[^I]/'],
+				'1' => ['campo'=>"yearPeriodo",'expresion'=>'/[^0-9]/'],
+				'2' => ['campo'=>"fechaAP",'expresion'=>'/[^0-9 -- ]/'],
+				'3' => ['campo'=>"fechaAC",'expresion'=>'/[^0-9 -- ]/'],
+				'4' => ['campo'=>"id_periodo",'expresion'=>'/[^0-9]/'],
+			];
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp;
+					// echo "\n";
+					return $resExp;
+				}
+			}
+		}
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
 		public function Agregar($datos){
 			try{
 				$query = parent::prepare('INSERT INTO periodos (id_periodo, nombre_periodo, year_periodo, fecha_apertura, fecha_cierre, estatus) VALUES (DEFAULT, :nombre_periodo, :year_periodo, :fecha_apertura, :fecha_cierre, 1)');
@@ -81,6 +119,7 @@
 			        return $errorReturn; 
 		    }
 		}
+
 		public function Eliminar($id){
 			try {
 		        $query = parent::prepare('UPDATE periodos SET estatus = 0 WHERE id_periodo = :id_periodo');
@@ -99,6 +138,7 @@
 		        return $errorReturn; ;
 		    }
 		}
+
 		public function getOne($numero, $year){
 			try {
 			    $query = parent::prepare('SELECT * FROM periodos WHERE nombre_periodo = :numeroPr and year_periodo = :yearPR');

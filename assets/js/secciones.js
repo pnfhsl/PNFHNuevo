@@ -271,6 +271,14 @@ $(document).ready(function(){
                         location.reload();
                     } );
                   } 
+                  if (datos.msj === "Invalido") {
+                    Swal.fire({
+                        type: 'warning',
+                        title: '¡Datos invalidos!',
+                        text: 'Los datos ingresados son invalido',
+                        footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                    });
+                  }
                   if (datos.msj === "Repetido") {   
                     Swal.fire({
                       type: 'warning',
@@ -282,7 +290,7 @@ $(document).ready(function(){
                   if (datos.msj === "Error") {   
                     Swal.fire({
                       type: 'error',
-                      title: '¡Error la guardar los cambio!',
+                      title: '¡Error al guardar los cambio!',
                       text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                       footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                     });
@@ -465,7 +473,7 @@ $(document).ready(function(){
                           if (datos.msj === "Error") {   
                             Swal.fire({
                               type: 'error',
-                              title: '¡Error la guardar los cambio!',
+                              title: '¡Error al guardar los cambio!',
                               text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                               footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                             });
@@ -553,6 +561,14 @@ $(document).ready(function(){
                           location.reload();
                       } );
                     } 
+                    if (datos.msj === "Invalido") {
+                      Swal.fire({
+                          type: 'warning',
+                          title: '¡Datos invalidos!',
+                          text: 'Los datos ingresados son invalido',
+                          footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
+                      });
+                    }
                     if (datos.msj === "Repetido") {   
                       Swal.fire({
                         type: 'warning',
@@ -564,7 +580,7 @@ $(document).ready(function(){
                     if (datos.msj === "Error") {   
                       Swal.fire({
                         type: 'error',
-                        title: '¡Error la guardar los cambio!',
+                        title: '¡Error al guardar los cambio!',
                         text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                         footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                       });

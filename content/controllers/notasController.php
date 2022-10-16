@@ -105,6 +105,8 @@
 						}
 					}
 					$suma = 0;
+					$msj = [];
+					$numb = 0;
 					for ($i=0; $i < count($_POST['notas']); $i++) { 
 						$idNota = "S".$_POST['saber']."S".$_POST['seccion']."N";
 						$idNota = $this->nota->ExtraerPK($idNota); // "C2Y2022LDR5PED83P327"	
@@ -119,26 +121,39 @@
 						if($buscar['msj']=="Good"){
 							if(count($buscar['data'])>1){
 									$datos['id'] = $buscar['data'][0]['id_nota'];
-									$exec = $this->nota->Modificar($datos); 
+									$exec = $this->nota->ValidarAgregarOModificar($datos, "Agregar"); 
 									if($exec['msj']=="Good"){
 										$suma += 1;
+										$msj[$numb] = "Good";
+										$msj = "Good";
 									}
 									if($exec['msj']=="Error"){
+										$msj[$numb] = "Error";
 										$suma += 2;
+									}
+									if($exec['msj']=="Invalido"){
+										$msj[$numb] = "Invalido";
+										$suma += 0;
 									}
 							}else{
 								// echo " -- Agregar -- ";
-								$exec = $this->nota->Agregar($datos);
+								$exec = $this->nota->ValidarAgregarOModificar($datos, "Agregar");
 								if($exec['msj']=="Good"){
-									// $responses[$i] = 1;
 									$suma += 1;
+									$msj[$numb] = "Good";
+									$msj = "Good";
 								}
 								if($exec['msj']=="Error"){
-									// $responses[$i] = 2;
+									$msj[$numb] = "Error";
 									$suma += 2;
-								} 
+								}
+								if($exec['msj']=="Invalido"){
+									$msj[$numb] = "Invalido";
+									$suma += 0;
+								}
 								// echo json_encode($exec);
 							}
+							$numb++;
 						}else{
 							// $responses[$i] = 2;
 									$suma += 2;
@@ -168,7 +183,11 @@
 						$this->bitacora->monitorear($this->url);
 						echo json_encode(['msj'=>"Good"]);
 					}else{
-						echo json_encode(['msj'=>"Error"]);
+						if($suma == 0){
+							echo json_encode(['msj'=>"Invalido"]);
+						}else{
+							echo json_encode(['msj'=>"Error"]);
+						}
 					}
 				}else{
 					echo json_encode(['msj'=>"Vacio"]);
@@ -194,6 +213,8 @@
 						}
 					}
 					$suma = 0;
+					$msj = [];
+					$numb = 0;
 					$result = $this->nota->LimpiarNotas($datos['id_clase']);
 					if($result['msj']=="Good"){
 						for ($i=0; $i < count($_POST['notas']); $i++) { 
@@ -206,19 +227,20 @@
 							$buscar = $this->nota->buscar($datos['saber'], $datos['alumno']);		//buscar de acuerdo al alumno y saber - nuevo metodo buscar???
 							if($buscar['msj']=="Good"){
 								if(count($buscar['data'])>1){
-									// if($buscar['data'][0]['estatus']==0){
-										// echo " -- Modificar -- ";
-										// echo $idNota;
 										$datos['id'] = $buscar['data'][0]['id_nota'];
-										// $datos['id'] = $idNota;
-										$exec = $this->nota->Modificar($datos); 
+										$exec = $this->nota->ValidarAgregarOModificar($datos, "Agregar");
 										if($exec['msj']=="Good"){
-											// $responses[$i] = 1;
 											$suma += 1;
+											$msj[$numb] = "Good";
+											$msj = "Good";
 										}
 										if($exec['msj']=="Error"){
-											// $responses[$i] = 2;
+											$msj[$numb] = "Error";
 											$suma += 2;
+										}
+										if($exec['msj']=="Invalido"){
+											$msj[$numb] = "Invalido";
+											$suma += 0;
 										}
 										// echo json_encode($exec);
 									// }else{
@@ -227,15 +249,20 @@
 									// }
 								}else{
 									// echo " -- Agregar -- ";
-									$exec = $this->nota->Agregar($datos);
+									$exec = $this->nota->ValidarAgregarOModificar($datos, "Agregar");
 									if($exec['msj']=="Good"){
-										// $responses[$i] = 1;
 										$suma += 1;
+										$msj[$numb] = "Good";
+										$msj = "Good";
 									}
 									if($exec['msj']=="Error"){
-										// $responses[$i] = 2;
+										$msj[$numb] = "Error";
 										$suma += 2;
-									} 
+									}
+									if($exec['msj']=="Invalido"){
+										$msj[$numb] = "Invalido";
+										$suma += 0;
+									}
 									// echo json_encode($exec);
 								}
 							}else{
@@ -253,7 +280,11 @@
 							$this->bitacora->monitorear($this->url);
 							echo json_encode(['msj'=>"Good"]);
 						}else{
-							echo json_encode(['msj'=>"Error"]);
+							if($suma == 0){
+								echo json_encode(['msj'=>"Invalido"]);
+							}else{
+								echo json_encode(['msj'=>"Error"]);
+							}
 						}
 					}else{
 						echo json_encode(['msj'=>"Error"]);

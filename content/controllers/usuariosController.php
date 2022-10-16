@@ -24,7 +24,6 @@
 		private $notificacion;
 
 		function __construct($url){
-			
 			$this->url = $url;
 			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
@@ -35,7 +34,6 @@
 		}
 
 		public function Consultar(){
-						
 				$objModel = new homeModel;
 				$_css = new headElement;
 				$_css->Heading();
@@ -52,7 +50,7 @@
 			if($_POST){
 				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['user']) && !empty($_POST['correo']) && !empty($_POST['pass']) && !empty($_POST['rol'])) {
 					$datos['cedula'] = $_POST['cedula'];
-					$datos['user'] = ucwords(mb_strtolower($_POST['user']));
+					$datos['nombre'] = ucwords(mb_strtolower($_POST['user']));
 					$datos['correo'] = mb_strtolower($_POST['correo']);
 					$datos['pass'] = $this->encriptar($_POST['pass']);
 					$datos['rol'] = $_POST['rol'];
@@ -66,13 +64,13 @@
 							if($buscar['data'][0]['estatus']==0){
 								// echo "Actualizara";
 								$datos['cedula'] = $datos['cedula'];
-								$exec = $this->usuario->Modificar($datos); 
+								$exec = $this->usuario->ValidarAgregarOModificar($datos,"Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->usuario->Agregar($datos);
+							$exec = $this->usuario->ValidarAgregarOModificar($datos,"Agregar");
 							echo json_encode($exec);
 							// echo "Agregaraa";
 						}
@@ -102,13 +100,13 @@
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$_POST['cedula']){
-								$exec = $this->usuario->Modificar($datos); 
+								$exec = $this->usuario->ValidarAgregarOModificar($datos,"Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->usuario->Modificar($datos);
+							$exec = $this->usuario->ValidarAgregarOModificar($datos,"Modificar");
 							/*var_dump($datos); */
 							echo json_encode($exec);
 						}
@@ -149,6 +147,13 @@
 				if (isset($_POST['Buscar']) && isset($_POST['userModif'])) {
 					$resultado = $this->usuario->getOne($_POST['userModif']);
 					echo json_encode($resultado);
+				}
+				if(isset($_POST['verificarPasswordCuenta']) && isset($_POST['pass'])){
+					if( $this->encriptar($_POST['pass']) == $_SESSION['cuenta_usuario']['password_usuario'] ){
+						echo "1";
+					}else{
+						echo "2";
+					}
 				}
 				if(isset($_POST['BuscarSegunRol']) && isset($_POST['id_rol'])){
 					$id_rol = $_POST['id_rol'];

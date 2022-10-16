@@ -365,7 +365,7 @@
 
                         <?php if ((!empty($amBitacora) && $amBitacora == 1) || (!empty($amBloqueados) && $amBloqueados == 1) || (!empty($amModulos) && $amModulos == 1) || (!empty($amPermisos) && $amPermisos == 1) || (!empty($amRoles) && $amRoles == 1)) { ?>
 
-                          <?php if ($url == "Modulos" || $url == "Permisos" || $url == "Roles" || $url == "Bitacora") { ?>
+                          <?php if ($url == "Modulos" || $url == "Permisos" || $url == "Roles" || $url == "Bloqueo" || $url == "Bitacora") { ?>
                             <li class="active treeview">
                             <?php } else { ?>
                             <li class="treeview">

@@ -33,14 +33,42 @@
 			}
 		}
 
-		public function setAgregar($datos){
-			$this->id_SC = $dato['id_SC'];
-			$this->nombreSC = $datos['nombreSC'];
-			$this->trayectoSC =  $datos['trayectoSC'];
-			$this->faseSC = $datos['faseSC'];
-			$this->Agregar();
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"nombreSC",'expresion'=>'/[^0-9 a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú]/'],
+				'1' => ['campo'=>"trayectoSC",'expresion'=>'/[^0-9]/'],
+				'2' => ['campo'=>"faseSC",'expresion'=>'/[^0-9]/'],
+				'3' => ['campo'=>"id_SC",'expresion'=>'/[^0-9]/'],
+			];
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp;
+					// echo "\n";
+					return $resExp;
+				}
+			}
 		}
-
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
 		public function Agregar($datos){
 
 			try{
@@ -64,8 +92,7 @@
 		        return $errorReturn; 
 	      }
 		}
-
-	public function Modificar($datos){
+		public function Modificar($datos){
 
 			try{
 	        $query = parent::prepare('UPDATE saberes SET nombreSC=:nombreSC, trayecto_SC = :trayecto_SC, fase_SC = :fase_SC, estatus = 1 WHERE id_SC = :id_SC');

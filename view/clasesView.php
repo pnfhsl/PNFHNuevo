@@ -42,46 +42,29 @@
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
+              <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
               <div class="col-xs-12 col-sm-6" style="text-align:right">
-                <!--=====================================
-                MODAL MODIFICAR CLASES
-                ======================================-->
-                <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarClase">Agregar Nuevo</button>
-                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-                <!--=====================================
-                MODAL AGREGAR PROF
-                ======================================-->
-                <div id="modalAgregarClase" class="modalAgregarClase modal fade" role="dialog">
-                  
-                  <div class="modal-dialog tamModals tamModals" style="text-align:left;">
-
-                    <div class="modal-content">
-
-                      <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
+                <?php if($amClasesR=="1"): ?>
+                  <!--=====================================
+                    MODAL AGREGAR PROF
+                  ======================================-->
+                  <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarClase">Agregar Nuevo</button>
+                  <div id="modalAgregarClase" class="modalAgregarClase modal fade" role="dialog">
+                    <div class="modal-dialog tamModals tamModals" style="text-align:left;">
+                      <div class="modal-content">
                         <!--=====================================
                         CABEZA DEL MODAL
                         ======================================-->
-
                         <div class="modal-header" style="background:#3c8dbc; color:white">
-
                           <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
                           <h4 class="modal-title" style="text-align: left;">Agregar Clase</h4>
-
                         </div>
-
                         <!--=====================================
                         CUERPO DEL MODAL
                         ======================================-->
-
                         <div class="modal-body" style="max-height:70vh;overflow:auto">
-
                           <div class="box-body">
-
                             <div class="row">
-
                               <!-- ENTRADA PARA SELECCIONAR SECCIONES-->
                               <div class="form-group col-xs-12 col-sm-12">
                                 <label for="seccion">Seccion</label>
@@ -98,7 +81,6 @@
                                   <span id="seccionS" class="mensajeError" ></span>
                                 </div>
                               </div>
-
 
                               <!-- ENTRADA PARA SELECCIONAR SABERES -->
                               <div class="form-group col-xs-12 col-sm-12">
@@ -117,7 +99,6 @@
                                 </div>
                               </div>
                             
-                            
                               <!-- ENTRADA PARA LOS ALUMNOS -->
                               <div class="form-group col-xs-12 col-sm-12">
                                 <label for="profesor">Profesor</label>
@@ -134,34 +115,21 @@
                                   <span id="profesorS" class="mensajeError"></span>
                                 </div>
                               </div>
-
                             </div>
-
                           </div>
-
-
                         </div>  
 
                         <!--=====================================
                         PIE DEL MODAL
                         ======================================-->
-
                         <div class="modal-footer">
-
                           <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
                           <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
                         </div>
-
-
-                      <!-- </form> -->
-
+                      </div>
                     </div>
-
                   </div>
-                </div>
-
+                <?php endif; ?>
               </div>
             </div>
 
