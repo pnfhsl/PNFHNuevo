@@ -15,7 +15,6 @@
 			
 		}
 		public function Aprobacion(){
-			
 			try {
 				$query = parent::prepare('SELECT * FROM notas WHERE estatus = 1');
 				$respuestaArreglo = '';

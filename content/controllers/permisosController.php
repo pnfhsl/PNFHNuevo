@@ -28,14 +28,15 @@
 			$_css = new headElement;
 			$_css->Heading();
 			$this->bitacora->monitorear($this->url);
-			$permisos = $this->permiso->Consultar();
+			$permisos = $this->permiso->validarConsultar("Consultar");
 			$url = $this->url;
 			require_once("view/permisosView.php");
 		}
+
 		public function Buscar(){
 			if($_POST){		
 				if (isset($_POST['Buscar']) && isset($_POST['permisoM'])) {
-					$buscar = $this->permiso->getOne($_POST['permisoM']);
+					$buscar = $this->permiso->validarConsultar("getOne", $_POST['permisoM']);
 					echo json_encode($buscar);
 				}
 
@@ -46,20 +47,20 @@
 			if($_POST){		
 				if (!empty($_POST['Agregar']) && !empty($_POST['nombre']) ) {
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
-					$buscar = $this->permiso->getOneNombre($datos['nombre']);
+					$buscar = $this->permiso->validarConsultar("getOneNombre", $datos['nombre']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
 								$datos['id'] = $datos['cedula'];
-								$exec = $this->permiso->Modificar($datos); 
+								$exec = $this->permiso->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->permiso->Agregar($datos); 
+							$exec = $this->permiso->ValidarAgregarOModificar($datos, "Agregar"); 
 							echo json_encode($exec);
 						}
 					}else{
@@ -77,18 +78,18 @@
 				if (!empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['nombre'])) {
 					$datos['id'] = $_POST['codigo'];
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
-					$buscar = $this->permiso->getOneNombre($datos['nombre']);
+					$buscar = $this->permiso->validarConsultar("getOneNombre", $datos['nombre']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$buscar['data'][0]['id_permiso']){
-								$exec = $this->permiso->Modificar($datos); 
+								$exec = $this->permiso->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->permiso->Modificar($datos); 
+							$exec = $this->permiso->ValidarAgregarOModificar($datos, "Modificar"); 
 							echo json_encode($exec);
 						}
 					}else{
@@ -103,12 +104,12 @@
 		public function Eliminar(){
 			if($_POST){		
 				if (isset($_POST['Eliminar']) && isset($_POST['permisoDelete'])) {
-					$buscar = $this->permiso->getOne($_POST['permisoDelete']);
+					$buscar = $this->permiso->validarConsultar("getOne", $_POST['permisoDelete']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
-							$exec = $this->permiso->Eliminar($_POST['permisoDelete']);
+							$exec = $this->permiso->validarEliminar($_POST['permisoDelete']);
 							$exec['data'] = $data;
 							echo json_encode($exec);
 						}else{

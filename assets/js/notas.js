@@ -28,7 +28,6 @@ $(document).ready(function(){
   });
 
   console.clear();
-
   
   $('#seccion').change(function(){
     var url = $("#url").val();
@@ -230,7 +229,7 @@ $(document).ready(function(){
                         html += "</td>";
                         html += "<td>";
                           nada = "";
-                          html += "<span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' value='0' max='1' min='0' step='0.1' id='nota"+data[i]['cedula_alumno']+"' required oninput='this.value=this.value.replace(/[^0-9 .]/g,"+","+");' ></span>";
+                          html += "<span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onkeyup='if( $(this).val() > 1.0 ){ $(this).val( ($(this).val()/10) ); $(this).focus(); }' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' value='0' max='1' min='0' step='0.1' id='nota"+data[i]['cedula_alumno']+"' required oninput='this.value=this.value.replace(/[^0-9 .]/g,"+","+");' ></span>";
                           //alert(this.value)
                         html += "</td>";
                       html += "</tr>";
@@ -376,7 +375,7 @@ $(document).ready(function(){
                           html += "<span>"+data[i]["apellido_alumno"]+"</span>";
                         html += "</td>";
                         html += "<td>";
-                          html += "<span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' value='0' max='1' min='0' step='0.1' id='nota"+data[i]['cedula_alumno']+"' style='width:100%;' required oninput='this.value=this.value.replace(/[^0-9 .]/g,"+","+");'></span>";
+                          html += "<span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onkeyup='if( $(this).val() > 1.0 ){ $(this).val( ($(this).val()/10) ); $(this).focus(); }' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' value='0' max='1' min='0' step='0.1' id='nota"+data[i]['cedula_alumno']+"' style='width:100%;' required oninput='this.value=this.value.replace(/[^0-9 .]/g,"+","+");'></span>";
                         html += "</td>";
                       html += "</tr>";
                       html += "<tr style='padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;'>";
@@ -487,6 +486,17 @@ $(document).ready(function(){
                       location.reload();
                   } );
                 } 
+                if (datos.msj === "Invalido") {
+                      Swal.fire({
+                          type: 'warning',
+                          title: '¡Datos invalidos!',
+                          text: 'Los datos ingresados son invalido',
+                          footer: 'SCHSL',
+                          timer: 3000,
+                          showCloseButton: false,
+                          showConfirmButton: false,
+                      });
+                }
                 if (datos.msj === "Repetido") {   
                   Swal.fire({
                     type: 'warning',
@@ -498,7 +508,7 @@ $(document).ready(function(){
                 if (datos.msj === "Error") {   
                   Swal.fire({
                     type: 'error',
-                    title: '¡Error la guardar los cambio!',
+                    title: '¡Error al guardar los cambio!',
                     text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                     footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                   });
@@ -589,7 +599,7 @@ $(document).ready(function(){
     var url = $("#url").val();
     // var id = $(this).val();
     swal.fire({ 
-          title: "¿Desea Visualizar las notas?",
+          title: "¿Desea Listar las notas?",
           text: "Se mostrara la tabla para ver los datos, ¿desea continuar?",
           type: "question",
           showCancelButton: true,
@@ -690,8 +700,8 @@ $(document).ready(function(){
               success: function(resp){
                 // alert(resp);
                 var datos = JSON.parse(resp);   
-                if (datos.msj === "Good") {   
-                  // alert("asdasd");
+                  if (datos.msj === "Good") {   
+                    // alert("asdasd");
                       Swal.fire({
                         type: 'success',
                         title: '¡Modificacion Exitosa!', 
@@ -701,6 +711,17 @@ $(document).ready(function(){
                           location.reload();
                       } );
                   } 
+                  if (datos.msj === "Invalido") {
+                      Swal.fire({
+                          type: 'warning',
+                          title: '¡Datos invalidos!',
+                          text: 'Los datos ingresados son invalido',
+                          footer: 'SCHSL',
+                          timer: 3000,
+                          showCloseButton: false,
+                          showConfirmButton: false,
+                      });
+                  }
                   if (datos.msj === "Repetido") {   
                     Swal.fire({
                       type: 'warning',
@@ -712,7 +733,7 @@ $(document).ready(function(){
                   if (datos.msj === "Error") {   
                     Swal.fire({
                       type: 'error',
-                      title: '¡Error la guardar los cambio!',
+                      title: '¡Error al guardar los cambio!',
                       text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                       footer: 'SCHSL', timer: 3000, showCloseButton: false, showConfirmButton: false,
                     });
@@ -823,7 +844,6 @@ $(document).ready(function(){
       });
   });
 
-
 });  
 
 function validar(modificar = false, id=""){
@@ -848,10 +868,10 @@ function validar(modificar = false, id=""){
       notaAlumno[i] = $(form+" #nota"+ids).val();
       // alert(notaAlumno[i]);
       aNota[i] = 0;
-      if(notaAlumno[i] > 0 && notaAlumno[i] <= 1){ 
+      if(notaAlumno[i] >= 0 && notaAlumno[i] <= 1){ 
         aNota[i] = 1;  
         $(form+" #notaS"+ids).html("");
-      }else if (notaAlumno[i] <= 0) {
+      }else if (notaAlumno[i] < 0) {
         aNota[i] = 0;
         $(form+" #notaS"+ids).html("La calificación del alumno debe ser mayor a 0pt");
       }else if (notaAlumno[i] > 1) {

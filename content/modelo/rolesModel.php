@@ -18,8 +18,78 @@
 			// $this->con = parent::__construct();
 			parent::__construct();
 		}
-		public function Consultar(){
-			
+
+		public function validarConsultar($metodo, $data=""){
+			if($metodo=="Consultar"){
+				$result = self::Consultar();
+				return $result;
+			}
+			if($metodo=="ConsultarAccesos"){
+				$result = self::ConsultarAccesos($data);
+				return $result;
+			}
+			if($metodo=="getOne"){
+				$result = self::getOne($data);
+				return $result;
+			}
+			if($metodo=="getOneId"){
+				$result = self::getOneId($data);
+				return $result;
+			}
+		}
+
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="AgregarAccesos" || $metodo=="agregaraccesos"){
+					$result = self::AgregarAccesos($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
+		
+		public function validarEliminar($metodo, $data){
+			if($metodo=="Eliminar"){
+				$result = self::Eliminar($data);
+				return $result;
+			}
+			if($metodo=="EliminarAccesosP"){
+				$result = self::EliminarAccesosP($data);
+				return $result;
+			}
+		}
+
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"nombre",'expresion'=>'/[^0-9 a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú ]/'],
+				'1' => ['campo'=>"id_rol",'expresion'=>'/[^0-9]/'],
+			];
+			// $resExp = 0;
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp." | ";
+					// echo "\n\n";
+					return $resExp;
+				}
+			}
+		}
+
+		private function Consultar(){
 			try {
 				$query = parent::prepare('SELECT * FROM roles WHERE estatus = 1');
 				$respuestaArreglo = '';
@@ -34,7 +104,7 @@
 			}
 		}
 
-		public function ConsultarAccesos($id_rol=""){
+		private function ConsultarAccesos($id_rol=""){
 			try {
 				if($id_rol==""){
 					$query = parent::prepare("SELECT * FROM accesos WHERE estatus = 1");
@@ -53,143 +123,7 @@
 			}
 		}
 
-		public function setAgregar($datos){
-			$this->nombre_rol = $datos['nombre'];
-			return $this->Agregar();
-		}
-		private function Agregar(){
-
-			try{
-	        $query = parent::prepare('INSERT INTO roles (id_rol, nombre_rol, estatus) VALUES (DEFAULT, :nombre_rol, 1)');
-	        $query->bindValue(':nombre_rol', $this->nombre_rol);
-	        $query->execute();
-	        $respuestaArreglo = $query->fetchAll();
-	        if ($respuestaArreglo += ['estatus' => true]) {
-	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-	        	$id = $this->getLastId("roles", "id_rol");
-		        if($respuestaArreglo['estatus']==true){
-		        	$Result['data']['ejecucion']=true;
-					$Result['data']['id'] = $id;
-		        }
-				return $Result;
-	        }
-	      } catch(PDOException $e){
-	      	// print_r($e);
-	        	$errorReturn = ['estatus' => false];
-	      		$errorReturn['msj'] = "Error";
-		        $errorReturn += ['info' => "Error sql:{$e}"];
-		        return $errorReturn; 
-	      }
-		}
-
-
-		public function setAgregarAccesos($data){
-			$this->id_rol = $data['id_rol'];
-			$this->id_modulo = $data['id_modulo'];
-			$this->id_permiso = $data['id_permiso'];
-			return $this->AgregarAccesos();
-		}
-		private function AgregarAccesos(){
-
-			try{
-	        $query = parent::prepare('INSERT INTO accesos (id_accesos, id_rol, id_modulo, id_permiso, estatus) VALUES (DEFAULT, :id_rol, :id_modulo, :id_permiso, 1)');
-	        $query->bindValue(':id_rol', $this->id_rol);
-	        $query->bindValue(':id_modulo', $this->id_modulo);
-	        $query->bindValue(':id_permiso', $this->id_permiso);
-	        $query->execute();
-	        $respuestaArreglo = $query->fetchAll();
-	        // print_r($respuestaArreglo);
-	        if ($respuestaArreglo += ['estatus' => true]) {
-	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-				return $Result;
-	        }
-	      } catch(PDOException $e){
-	      	// print_r($e);
-	        	$errorReturn = ['estatus' => false];
-	      		$errorReturn['msj'] = "Error";
-		        $errorReturn += ['info' => "Error sql:{$e}"];
-		        return $errorReturn; 
-	      }
-		}
-
-
-		public function setModificar($datos){
-			$this->id_rol = $datos['id_rol'];
-			$this->nombre_rol = $datos['nombre'];
-			return $this->Modificar();
-		}
-		private function Modificar(){
-
-			try{
-	        $query = parent::prepare('UPDATE roles SET nombre_rol=:nombre_rol, estatus=1 WHERE id_rol = :id_rol');
-	        $query->bindValue(':nombre_rol', $this->nombre_rol);
-	        $query->bindValue(':id_rol', $this->id_rol);
-	        $query->execute();
-	        $respuestaArreglo = $query->fetchAll();
-	        if ($respuestaArreglo += ['estatus' => true]) {
-	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-				return $Result;
-	        }
-	      } catch(PDOException $e){
-
-	        $errorReturn = ['estatus' => false];
-	      		$errorReturn['msj'] = "Error";
-		        $errorReturn += ['info' => "Error sql:{$e}"];
-		        return $errorReturn; 
-	      }
-		} 
-
-
-		public function setEliminar($data){
-			// print_r($data);
-			$this->id_rol = $data['id_rol'];
-			return $this->Eliminar();
-		}
-		private function Eliminar(){
-			try {
-	        $query = parent::prepare('UPDATE roles SET estatus = 0 WHERE id_rol = :id_rol');
-	        $query->execute(['id_rol'=>$this->id_rol]);
-	        $query->setFetchMode(parent::FETCH_ASSOC);
-	        $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
-	        if ($respuestaArreglo += ['estatus' => true]) {
-	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-				return $Result;
-	        }
-	        }
-	        catch (PDOException $e)
-	        {
-	            $errorReturn = ['estatus' => false];
-	      		$errorReturn['msj'] = "Error";
-	        $errorReturn += ['info' => "Error sql:{$e}"];
-	        return $errorReturn; ;
-	        }
-		}
-
-		public function setEliminarAccesosP($data){
-			$this->id_rol = $data['id_rol'];
-			return $this->EliminarAccesosP();
-		}
-		private function EliminarAccesosP(){
-			try {
-	        $query = parent::prepare('DELETE FROM accesos WHERE id_rol = :id_rol');
-	        $query->execute(['id_rol'=>$this->id_rol]);
-	        $query->setFetchMode(parent::FETCH_ASSOC);
-	        $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
-	        if ($respuestaArreglo += ['estatus' => true]) {
-	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-				return $Result;
-	        }
-	        }
-	        catch (PDOException $e)
-	        {
-	            $errorReturn = ['estatus' => false];
-	      		$errorReturn['msj'] = "Error";
-	        $errorReturn += ['info' => "Error sql:{$e}"];
-	        return $errorReturn; ;
-	        }
-		}
-
-		public function getOne($nombre){
+		private function getOne($nombre){
 		      try {
 		    	$query = parent::prepare('SELECT * FROM roles WHERE nombre_rol = :nombre');
 		    	$respuestaArreglo = '';
@@ -212,7 +146,8 @@
 		        return $errorReturn;
 		      }
 	    }
-	    public function getOneId($id){
+
+	    private function getOneId($id){
 		      try {
 		    	$query = parent::prepare('SELECT * FROM roles WHERE id_rol = :id_rol');
 		    	$respuestaArreglo = '';
@@ -235,6 +170,113 @@
 		        return $errorReturn;
 		      }
 	    }
+
+		private function Agregar($datos){
+			try{
+	        $query = parent::prepare('INSERT INTO roles (id_rol, nombre_rol, estatus) VALUES (DEFAULT, :nombre_rol, 1)');
+	        $query->bindValue(':nombre_rol', $datos['nombre']);
+	        $query->execute();
+	        $respuestaArreglo = $query->fetchAll();
+	        if ($respuestaArreglo += ['estatus' => true]) {
+	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+	        	$id = $this->getLastId("roles", "id_rol");
+		        if($respuestaArreglo['estatus']==true){
+		        	$Result['data']['ejecucion']=true;
+					$Result['data']['id'] = $id;
+		        }
+				return $Result;
+	        }
+	      } catch(PDOException $e){
+	      	// print_r($e);
+	        	$errorReturn = ['estatus' => false];
+	      		$errorReturn['msj'] = "Error";
+		        $errorReturn += ['info' => "Error sql:{$e}"];
+		        return $errorReturn; 
+	      }
+		}
+
+		private function AgregarAccesos($data){
+
+			try{
+	        $query = parent::prepare('INSERT INTO accesos (id_accesos, id_rol, id_modulo, id_permiso, estatus) VALUES (DEFAULT, :id_rol, :id_modulo, :id_permiso, 1)');
+	        $query->bindValue(':id_rol', $data['id_rol']);
+	        $query->bindValue(':id_modulo', $data['id_modulo']);
+	        $query->bindValue(':id_permiso', $data['id_permiso']);
+	        $query->execute();
+	        $respuestaArreglo = $query->fetchAll();
+	        // print_r($respuestaArreglo);
+	        if ($respuestaArreglo += ['estatus' => true]) {
+	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+				return $Result;
+	        }
+	      } catch(PDOException $e){
+	      	// print_r($e);
+	        	$errorReturn = ['estatus' => false];
+	      		$errorReturn['msj'] = "Error";
+		        $errorReturn += ['info' => "Error sql:{$e}"];
+		        return $errorReturn; 
+	      }
+		}
+
+		private function Modificar($datos){
+			try{
+		        $query = parent::prepare('UPDATE roles SET nombre_rol=:nombre_rol, estatus=1 WHERE id_rol = :id_rol');
+		        $query->bindValue(':nombre_rol', $datos['nombre']);
+		        $query->bindValue(':id_rol', $datos['id_rol']);
+		        $query->execute();
+		        $respuestaArreglo = $query->fetchAll();
+		        if ($respuestaArreglo += ['estatus' => true]) {
+		        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					return $Result;
+		        }
+		    } catch(PDOException $e){
+
+		        $errorReturn = ['estatus' => false];
+		      		$errorReturn['msj'] = "Error";
+			        $errorReturn += ['info' => "Error sql:{$e}"];
+			        return $errorReturn; 
+		    }
+		} 
+
+		private function Eliminar($data){
+			try {
+	        $query = parent::prepare('UPDATE roles SET estatus = 0 WHERE id_rol = :id_rol');
+	        $query->execute(['id_rol'=>$data['id_rol']]);
+	        $query->setFetchMode(parent::FETCH_ASSOC);
+	        $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
+	        if ($respuestaArreglo += ['estatus' => true]) {
+	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+				return $Result;
+	        }
+	        }
+	        catch (PDOException $e)
+	        {
+	            $errorReturn = ['estatus' => false];
+	      		$errorReturn['msj'] = "Error";
+	        $errorReturn += ['info' => "Error sql:{$e}"];
+	        return $errorReturn; ;
+	        }
+		}
+
+		private function EliminarAccesosP($data){
+			try {
+	        $query = parent::prepare("DELETE FROM accesos WHERE id_rol = :id_rol");
+	        $query->execute(['id_rol'=>$data['id_rol']]);
+	        $query->setFetchMode(parent::FETCH_ASSOC);
+	        $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
+	        if ($respuestaArreglo += ['estatus' => true]) {
+	        	$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+				return $Result;
+	        }
+	        }
+	        catch (PDOException $e)
+	        {
+	            $errorReturn = ['estatus' => false];
+	      		$errorReturn['msj'] = "Error";
+	        $errorReturn += ['info' => "Error sql:{$e}"];
+	        return $errorReturn; ;
+	        }
+		}
 
 		private function getLastId($tabla,$id){
 			//$sql='SELECT '.$id.' FROM '.$tabla.' ORDER BY '.$id.' desc';

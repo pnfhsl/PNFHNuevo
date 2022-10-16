@@ -42,114 +42,86 @@
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
-              <div class="col-xs-12 col-sm-6" style="text-align:right">
-
-              <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarSC">Agregar Nuevo</button>
               <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-              <div id="modalAgregarSC" class="modalAgregarSC modal fade" role="dialog">
-                
-                <div class="modal-dialog tamModals" style="text-align:left;">
-
-                  <div class="modal-content">
-
-
-                      <!--=====================================
-                      CABEZA DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                        <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
-                        <h4 class="modal-title" style="text-align: left;">Agregar Saber Complementario</h4>
-
-                      </div>
-
-                      <!--=====================================
-                      CUERPO DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-body" style="max-height:70vh;overflow:auto;">
-
-                        <div class="box-body">
-
-                          <div class="row">
-                            
-                            <!-- ENTRADA PARA EL NOMBRE DEL SC -->
-                            <div class="form-group col-xs-12 col-sm-12"> 
-                              <label for="nombreSC">Nombre</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                <input type="text" class="form-control input-lg" name="nuevoNombre" placeholder="Ingresar Saber Complementario" id="nombreSC" required>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="nombreS" class="mensajeError"></span>
-                              </div>
-                            </div>
-
-                          
-                            <!-- ENTRADA PARA EL TRAYECTO -->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="trayectoSC">Trayecto</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayectoSC"  required>
-                                  <option value="" style="text-align: left;">Seleccione un trayecto</option>
-                                  <option value="1">Trayecto I</option>
-                                  <option value="2">Trayecto II</option>
-                                  <option value="3">Trayecto III</option>
-                                  <option value="4">Trayecto IV</option>
-                                </select>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="trayectoS" class="mensajeError"></span>
-                              </div>
-                            </div>
-
-
-                            <!-- ENTRADA PARA EL FASE -->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="faseSC">Fase</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
-                                <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar fase" id="faseSC" required>
-                                  <option value="">Seleccione un Fase</option>
-                                  <option value="1">Fase I</option>
-                                  <option value="2">Fase II</option>   
-                                </select>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="faseS" class="mensajeError"></span>
-                              </div>
-                            </div>
-
-
-                          </div>
-                                <!-- <span id="fase" class="mensajeError"></span> -->
+              <div class="col-xs-12 col-sm-6" style="text-align:right">
+                <?php if($amSaberesR=="1"): ?>
+                  <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarSC">Agregar Nuevo</button>
+                  <div id="modalAgregarSC" class="modalAgregarSC modal fade" role="dialog">
+                    <div class="modal-dialog tamModals" style="text-align:left;">
+                      <div class="modal-content">
+                        <!--=====================================
+                        CABEZA DEL MODAL
+                        ======================================-->
+                        <div class="modal-header" style="background:#3c8dbc; color:white">
+                          <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+                          <h4 class="modal-title" style="text-align: left;">Agregar Saber Complementario</h4>
                         </div>
+                        <!--=====================================
+                        CUERPO DEL MODAL
+                        ======================================-->
+                        <div class="modal-body" style="max-height:70vh;overflow:auto;">
+                          <div class="box-body">
+                            <div class="row">
+                              <!-- ENTRADA PARA EL NOMBRE DEL SC -->
+                              <div class="form-group col-xs-12 col-sm-12"> 
+                                <label for="nombreSC">Nombre</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                  <input type="text" class="form-control input-lg" name="nuevoNombre" placeholder="Ingresar Saber Complementario" id="nombreSC" required>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="nombreS" class="mensajeError"></span>
+                                </div>
+                              </div>
 
+                              <!-- ENTRADA PARA EL TRAYECTO -->
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="trayectoSC">Trayecto</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                  <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar trayecto" id="trayectoSC"  required>
+                                    <option value="" style="text-align: left;">Seleccione un trayecto</option>
+                                    <option value="1">Trayecto I</option>
+                                    <option value="2">Trayecto II</option>
+                                    <option value="3">Trayecto III</option>
+                                    <option value="4">Trayecto IV</option>
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="trayectoS" class="mensajeError"></span>
+                                </div>
+                              </div>
+
+                              <!-- ENTRADA PARA EL FASE -->
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="faseSC">Fase</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span> 
+                                  <select class="form-control select2 input-lg" style="width:100%;" name="trayecto" placeholder="Ingresar fase" id="faseSC" required>
+                                    <option value="">Seleccione un Fase</option>
+                                    <option value="1">Fase I</option>
+                                    <option value="2">Fase II</option>   
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="faseS" class="mensajeError"></span>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                        <!--=====================================
+                        PIE DEL MODAL
+                        ======================================-->
+                        <div class="modal-footer">
+                          <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+                          <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
+                        </div>
                       </div>
-
-                      <!--=====================================
-                      PIE DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-footer">
-
-                        <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                        <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
-                      </div>
-
-
+                    </div>
                   </div>
-
-                </div>
-
-              </div>
-
+                <?php endif; ?>
               </div>
             </div>
             <!-- /.box-header -->

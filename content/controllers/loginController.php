@@ -45,8 +45,6 @@
 
 		public function Consultar(){
 			// echo $this->encriptar('admin');
-
-			
 			if($_POST){
 				if (isset($_POST['username']) && isset($_POST['loginSistema']) && isset($_POST['password'])) {
 					$resp = $this->login->loginSistema(ucwords(mb_strtolower($_POST['username'])), $this->encriptar($_POST['password'])); //pasa el user y pass
@@ -61,7 +59,7 @@
 						
 					if($resp['msj'] == "Good"){
 						if($permitirContinuar=="1"){
-							$intentos = $this->usuario->Intentos(ucwords(mb_strtolower($_POST['username'])));
+							$intentos = $this->usuario->validarConsultar("Intentos", ucwords(mb_strtolower($_POST['username'])));
 							$int = 0;
 							$estatus = -1;
 							if(!empty($resp['data']) && count($resp['data'])>0){
@@ -85,11 +83,11 @@
 								// $_SESSION['correo'] = $dataTemp['correo'];
 								// $_SESSION['estatus'] = $dataTemp['estatus'];
 
-								$accesos = $this->rol->ConsultarAccesos($_SESSION['cuenta_usuario']['id_rol']);
+								$accesos = $this->rol->validarConsultar("ConsultarAccesos",$_SESSION['cuenta_usuario']['id_rol']);
 								$_SESSION['accesos_usuario'] = $accesos;
 
 								if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
-									$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+									$alumnos = $this->alumno->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 									if($alumnos['msj']=="Good"){
 										if(count($alumnos['data']) > 1){
 											$_SESSION['cuenta_persona'] = $alumnos['data'][0];
@@ -112,7 +110,7 @@
 										}
 									}
 								}else{
-									$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+									$profesores = $this->profesor->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 									if($profesores['msj']=="Good"){
 										if(count($profesores['data']) > 1){
 											$_SESSION['cuenta_persona'] = $profesores['data'][0];
@@ -153,7 +151,7 @@
 								if($estatus=="2"){
 									$resp['stat'] = "2";
 								}
-								$this->usuario->Bloqueo(ucwords(mb_strtolower($_POST['username'])), 0);
+								$this->usuario->validarConsultar("Bloqueo", ucwords(mb_strtolower($_POST['username'])), 0);
 							}
 
 							if($intentos[0]["intentos"] >= 3){
@@ -171,7 +169,7 @@
 							echo json_encode($resps);
 						}
 					}else{
-						$intentos = $this->usuario->Intentos(ucwords(mb_strtolower($_POST['username'])));
+						$intentos = $this->usuario->validarConsultar("Intentos", ucwords(mb_strtolower($_POST['username'])));
 						$int = 0;
 						if(count($intentos)>0){
 							$int = $intentos[0]["intentos"];
@@ -189,15 +187,15 @@
 									$intentos[0]["intentos"] += 1;
 								}
 								$fallos = $intentos[0]["intentos"];
-								$respuest = $this->usuario->Bloqueo(ucwords(mb_strtolower($_POST['username'])),$fallos);
+								$respuest = $this->usuario->validarConsultar("Bloqueo", ucwords(mb_strtolower($_POST['username'])),$fallos);
 							}
 							if($estat <= 2 && $intentos[0]["intentos"] >= 3){
 								$cedula = $this->login->busquedaCedula(ucwords(mb_strtolower($_POST['username'])));
 								//var_dump($cedula);
-								$preguntas = $this->login->Consultar($cedula[0]['cedula_usuario']);
+								$preguntas = $this->login->validarConsultar("Consultar", $cedula[0]['cedula_usuario']);
 								//var_dump($cedula[0]['cedula_usuario']);
 								// $preg = array('look' => "Bloqueo", 'preguntas' => $preguntas);
-								$resp = array('look' => "Bloqueo", 'preguntas' => $preguntas);
+								$resp = array('look' => "Bloqueo", 'preguntas' => $preguntas, 'cedula'=>$cedula[0]['cedula_usuario']);
 								// $resp = array('look' => "Bloqueo");
 							}
 						}
@@ -223,9 +221,7 @@
 
 				$url = $this->url;
 				require_once("view/loginView.php");
-
 			}
-
 		}
 		
 		private function email($usuario, $token){
@@ -241,7 +237,9 @@
 					$mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
 					$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
 					$mail->Username   = 'pnfhsl10@gmail.com'; //SMTP username
-					$mail->Password   = 'laielvidadiuxrzq'; //SMTP password
+					// $mail->Password   = 'laielvidadiuxrzq'; //SMTP password
+					$mail->Password   = 'rhrxnkbnlbobftjv'; //SMTP password
+					
 					$mail->SMTPSecure = 'ssl';         //Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
 					$mail->Port       = 465;   //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 					$mail->CharSet = 'UTF-8';                              
@@ -284,19 +282,26 @@
 		public function enviarLink(){
 			if (isset($_POST['correo'])) {
 				$usuarios = $this->login->busquedaCorreo($_POST['correo']);
-				if($usuarios['msj']){
+				// print_r($usuarios);
+				if($usuarios['msj']=="Good"){
 					if(!empty($usuarios['data'])){
 						$usuario = $usuarios['data'][0];
-						// print_r($usuario);
-						$token = bin2hex(random_bytes(10));
-						unset($_SESSION['RC']);
-						$_SESSION['RC'] = array(
-							'token' => $this->encriptar($token),
-							'cedula_recuperacion' => $usuario['cedula']
-						);
-						$resp = $this->email($usuario, $token);
-						echo json_encode($resp);
-
+						if($usuario['estatus']=="1"){
+							$token = bin2hex(random_bytes(10));
+							unset($_SESSION['RC']);
+							$_SESSION['RC'] = array(
+								'token' => $this->encriptar($token),
+								'cedula_recuperacion' => $usuario['cedula']
+							);
+							$resp = $this->email($usuario, $token);
+							echo json_encode($resp);
+						}
+						if($usuario['estatus']=="2"){
+							echo json_encode(['msj'=>"Vacio"]);
+						}
+						if($usuario['estatus']=="3"){
+							echo json_encode(['msj'=>"Bloqueado"]);
+						}
 					}else{
 						echo json_encode(['msj'=>"Vacio"]);
 					}
@@ -306,35 +311,35 @@
 			}
 		}
 
+
 		public function recuperarAcceso($param){
 			// echo $param."<br/>"; //Token que viene del correo
 			$token = $this->encriptar($param); //Encriptar ese token para comparar con el que está en sesión
 			// echo $token."<br/>";
 			// var_dump($_SESSION['RC']['cedula_recuperacion']);//Esto es lo que se encuntra en la variable SESSION 
 
-			// if($token == $_SESSION['RC']['token']){
-			// 	// echo "<br/><br/> Token es correcto <br/><br/>";
-			// 	// Obtener datos del usuario usando cedula_recuperacion que esta en sesión. Debería ser con id en realidad
+			if($token == $_SESSION['RC']['token']){
+				// echo "<br/><br/> Token es correcto <br/><br/>";
+				// Obtener datos del usuario usando cedula_recuperacion que esta en sesión. Debería ser con id en realidad
 
-			// 	//Luego importar la vista para cambio de contraseña
-			// 	$objModel = new homeModel;
-			// 	$_css = new headElement;
-			// 	$_css->Heading();
-			// 	$url = $this->url;
-			// 	require_once("view/recuperarView.php");
-			// } else {
-			// 	if($_POST){
-			// 		if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
-			// 			// var_dump($_SESSION['RC']['cedula_recuperacion']);
-			// 			$exec = $this->login->recuperarPass($_SESSION['RC']['cedula_recuperacion'], $_POST['pass']);
-			// 			// var_dump($exec);
-			// 			echo json_encode($exec);					
-			// 		}
-			// 	}else{
-			// 		//Mostrar vista de error (Homero dice: D'oh!)
-			// 		require_once("errorController.php");
-			// 	}
-			// }
+				//Luego importar la vista para cambio de contraseña
+				$objModel = new homeModel;
+				$_css = new headElement;
+				$_css->Heading();
+				$url = $this->url;
+				require_once("view/recuperarView.php");
+			} else {
+				if($_POST){
+					if (isset($_POST['recuperarSistema']) && isset($_POST['pass']) ) {
+						// var_dump($_SESSION['RC']['cedula_recuperacion']);
+						$exec = $this->login->recuperarPass($_SESSION['RC']['cedula_recuperacion'], $this->encriptar($_POST['pass']));
+						echo json_encode($exec);
+					}
+				}else{
+					//Mostrar vista de error (Homero dice: D'oh!)
+					require_once("errorController.php");
+				}
+			}
 
 		}
 

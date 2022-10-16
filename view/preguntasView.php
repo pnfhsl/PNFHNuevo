@@ -35,57 +35,86 @@
                 </div>
                   <div class="box-body">
                     <div class="form-group">
-                        <label>Pregunta #1</label>
-                        <select class="form-control" id="preg_uno">
-                          <?php 
-                            foreach ($preguntas as $data):
-                              if(!empty($data['id'])):  
-                          ?>
-                          <option value="<?php echo $data['id']; ?>"><?php echo $data['pregunta']; ?></option>
-                          <?php
-                            endif; endforeach;
-                          ?>
-                        </select>
+                      <label for="preg_uno">Pregunta #1</label>
+                      <select class="form-control" id="preg_uno">
+                        <option value=""></option>
+                        <?php 
+                          foreach ($preguntas as $data):
+                            if(!empty($data['id'])):  
+                        ?>
+                        <option class="optionpreg preg_uno<?php echo $data['id']; ?>" value="<?php echo $data['id']; ?>"><?php echo $data['pregunta']; ?></option>
+                        <?php
+                          endif; endforeach;
+                        ?>
+                      </select>
+                      <div style="width:100%;text-align:right;">
+                        <span id="error_preg_uno" class="mensajeError"></span>
+                      </div>
                     </div>
+
+
                     <div class="form-group">
-                      <label for="">Respuesta</label>
+                      <label for="resp_uno">Respuesta #1</label>
                       <input type="text" class="form-control" id="resp_uno" placeholder="Ingrese su respuesta">
+                      <div style="width:100%;text-align:right;">
+                        <span id="error_resp_uno" class="mensajeError"></span>
+                      </div>
                     </div>
 
+
+
                     <div class="form-group">
-                        <label>Pregunta #2</label>
-                        <select class="form-control" id="preg_dos">
+                      <label for="preg_dos">Pregunta #2</label>
+                      <select class="form-control" id="preg_dos">
+                        <option value=""></option>
                         <?php 
-                            foreach ($preguntas as $data):
-                              if(!empty($data['id'])):  
-                          ?>
-                          <option value="<?php echo $data['id']; ?>"><?php echo $data['pregunta']; ?></option>
-                          <?php
-                            endif; endforeach;
-                          ?>
-                        </select>
+                          foreach ($preguntas as $data):
+                            if(!empty($data['id'])):  
+                        ?>
+                        <option class="optionpreg preg_dos<?php echo $data['id']; ?>" value="<?php echo $data['id']; ?>"><?php echo $data['pregunta']; ?></option>
+                        <?php
+                          endif; endforeach;
+                        ?>
+                      </select>
+                      <div style="width:100%;text-align:right;">
+                        <span id="error_preg_dos" class="mensajeError"></span>
+                      </div>
                     </div>
+
+
                     <div class="form-group">
-                      <label for="">Respuesta</label>
+                      <label for="resp_dos">Respuesta #2</label>
                       <input type="text" class="form-control" id="resp_dos" placeholder="Ingrese su respuesta">
+                      <div style="width:100%;text-align:right;">
+                        <span id="error_resp_dos" class="mensajeError"></span>
+                      </div>
                     </div>
 
+
+
                     <div class="form-group">
-                        <label>Pregunta #3</label>
-                        <select class="form-control" id="preg_tres">
+                      <label for="preg_tres">Pregunta #3</label>
+                      <select class="form-control" id="preg_tres">
+                        <option value=""></option>
                         <?php 
-                            foreach ($preguntas as $data):
-                              if(!empty($data['id'])):  
-                          ?>
-                          <option value="<?php echo $data['id']; ?>"><?php echo $data['pregunta']; ?></option>
-                          <?php
-                            endif; endforeach;
-                          ?>
-                        </select>
+                          foreach ($preguntas as $data):
+                            if(!empty($data['id'])):  
+                        ?>
+                        <option class="optionpreg preg_tres<?php echo $data['id']; ?>" value="<?php echo $data['id']; ?>"><?php echo $data['pregunta']; ?></option>
+                        <?php
+                          endif; endforeach;
+                        ?>
+                      </select>
+                      <div style="width:100%;text-align:right;">
+                        <span id="error_preg_tres"  class="mensajeError"></span>
+                      </div>
                     </div>
                     <div class="form-group">
-                      <label for="">Respuesta</label>
+                      <label for="resp_tres">Respuesta #3</label>
                       <input type="text" class="form-control" id="resp_tres" placeholder="Ingrese su respuesta">
+                      <div style="width:100%;text-align:right;">
+                        <span id="error_resp_tres" class="mensajeError"></span>
+                      </div>
                     </div>
                   </div>
                 
@@ -115,7 +144,80 @@ $(document).ready(function() { //Al Cargar la paginaZ
     
   console.clear();
 
+  $("#preg_uno").change(function(){
+    var id = $(this).val();
+    $(".optionpreg").removeAttr("disabled");
+    $(".optionpreg").removeAttr("style");
+    
+    $(".preg_dos"+id).attr("disabled","disabled");
+    $(".preg_dos"+id).attr("style","color:#777;background:#ccc;");
+    $(".preg_tres"+id).attr("disabled","disabled");
+    $(".preg_tres"+id).attr("style","color:#777;background:#ccc;");
+
+    var id2 = $("#preg_dos").val();
+    $(".preg_uno"+id2).attr("disabled","disabled");
+    $(".preg_uno"+id2).attr("style","color:#777;background:#ccc;");
+    $(".preg_tres"+id2).attr("disabled","disabled");
+    $(".preg_tres"+id2).attr("style","color:#777;background:#ccc;");
+
+    var id3 = $("#preg_tres").val();
+    $(".preg_uno"+id3).attr("disabled","disabled");
+    $(".preg_uno"+id3).attr("style","color:#777;background:#ccc;");
+    $(".preg_dos"+id3).attr("disabled","disabled");
+    $(".preg_dos"+id3).attr("style","color:#777;background:#ccc;");
+  });
+
+  $("#preg_dos").change(function(){
+    var id = $(this).val();
+    $(".optionpreg").removeAttr("disabled");
+    $(".optionpreg").removeAttr("style");
+    
+    $(".preg_uno"+id).attr("disabled","disabled");
+    $(".preg_uno"+id).attr("style","color:#777;background:#ccc;");
+    $(".preg_tres"+id).attr("disabled","disabled");
+    $(".preg_tres"+id).attr("style","color:#777;background:#ccc;");
+
+    var id1 = $("#preg_uno").val();
+    $(".preg_dos"+id1).attr("disabled","disabled");
+    $(".preg_dos"+id1).attr("style","color:#777;background:#ccc;");
+    $(".preg_tres"+id1).attr("disabled","disabled");
+    $(".preg_tres"+id1).attr("style","color:#777;background:#ccc;");
+
+    var id3 = $("#preg_tres").val();
+    $(".preg_uno"+id3).attr("disabled","disabled");
+    $(".preg_uno"+id3).attr("style","color:#777;background:#ccc;");
+    $(".preg_dos"+id3).attr("disabled","disabled");
+    $(".preg_dos"+id3).attr("style","color:#777;background:#ccc;");
+  });
+
+  $("#preg_tres").change(function(){
+    var id = $(this).val();
+    $(".optionpreg").removeAttr("disabled");
+    $(".optionpreg").removeAttr("style");
+    
+    $(".preg_uno"+id).attr("disabled","disabled");
+    $(".preg_uno"+id).attr("style","color:#777;background:#ccc;");
+    $(".preg_dos"+id).attr("disabled","disabled");
+    $(".preg_dos"+id).attr("style","color:#777;background:#ccc;");
+
+    var id1 = $("#preg_uno").val();
+    $(".preg_dos"+id1).attr("disabled","disabled");
+    $(".preg_dos"+id1).attr("style","color:#777;background:#ccc;");
+    $(".preg_tres"+id1).attr("disabled","disabled");
+    $(".preg_tres"+id1).attr("style","color:#777;background:#ccc;");
+
+    var id2 = $("#preg_dos").val();
+    $(".preg_uno"+id2).attr("disabled","disabled");
+    $(".preg_uno"+id2).attr("style","color:#777;background:#ccc;");
+    $(".preg_tres"+id2).attr("disabled","disabled");
+    $(".preg_tres"+id2).attr("style","color:#777;background:#ccc;");
+
+  });
+
   $("#guardar").click(function(){
+    var result = false;
+    result = validar();
+    if(result==true){
       var url = $("#url").val();
       swal.fire({ 
             title: "¿Desea guardar los datos?",
@@ -203,8 +305,101 @@ $(document).ready(function() { //Al Cargar la paginaZ
                 });
           } 
       });
+    }
   });
 });
+
+function validar(){
+  var preg1 = $("#preg_uno").val();
+  var rpreg1 = false;
+
+  var preg2 = $("#preg_dos").val();
+  var rpreg2 = false;
+
+  var preg3 = $("#preg_tres").val();
+  var rpreg3 = false;
+
+  if(preg1 != ""){
+    rpreg1=true;
+    $("#error_preg_uno").html("");
+  }else{
+    $("#error_preg_uno").html("Seleccionar pregunta de seguridad #1");
+    rpreg1=false;
+  }
+
+  if(preg2 != ""){
+    rpreg2=true;
+    $("#error_preg_dos").html("");
+  }else{
+    $("#error_preg_dos").html("Seleccionar pregunta de seguridad #2");
+    rpreg2=false;
+  }
+
+  if(preg3 != ""){
+    rpreg3=true;
+    $("#error_preg_tres").html("");
+  }else{
+    $("#error_preg_tres").html("Seleccionar pregunta de seguridad #3");
+    rpreg3=false;
+  }
+
+  var resp1 = $("#resp_uno").val();
+  var rresp1 = false;
+
+  var resp2 = $("#resp_dos").val();
+  var rresp2 = false;
+
+  var resp3 = $("#resp_tres").val();
+  var rresp3 = false;
+
+  if(resp1.trim() != ""){
+    if(resp1.length > 2){
+      $("#error_resp_uno").html("");
+      rresp1=true;
+    }else{
+      $("#error_resp_uno").html("La respuesta de seguridad debe ser mas amplia");
+      rresp1=false;      
+    }
+  }else{
+    $("#error_resp_uno").html("Ingresar su respuesta de seguridad #1");
+    rresp1=false;
+  }
+
+  if(resp2.trim() != ""){
+    if(resp2.length > 2 ){
+      $("#error_resp_dos").html("");
+      rresp2=true;
+    }else{
+      $("#error_resp_dos").html("La respuesta de seguridad debe ser mas amplia");
+      rresp2=false;
+    }
+  }else{
+    $("#error_resp_dos").html("Ingresar su respuesta de seguridad #2");
+    rresp2=false;
+  }
+
+  if(resp3.trim() != ""){
+    if(resp3.length > 2){
+      $("#error_resp_tres").html("");
+      rresp3=true;
+    }else{
+      $("#error_resp_tres").html("La respuesta de seguridad debe ser mas amplia");
+      rresp3=false;
+    }
+  }else{
+    $("#error_resp_tres").html("Ingresar su respuesta de seguridad #3");
+    rresp3=false;
+  }
+
+
+  var validado = false;
+  if(rpreg1==true && rpreg2==true && rpreg3==true && rresp1==true && rresp2==true && rresp3==true){
+    validado = true;
+  }
+  // alert(validado);
+  return validado;
+
+}
 </script>
 </body>
 </html>

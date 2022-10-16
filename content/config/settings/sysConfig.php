@@ -5,9 +5,9 @@
 
 	/* Definimos las constantes que usaremos */
 	
-	define("_ROUTE_" , "/PNFHNuevo/");					/* direccion del proyecto */
-	define("_THEME_" , "/PNFHNuevo/assets");			/* Direccion de recursos y estilos */
-	define("_INDEX_FILE_" , "/PNFHNuevo/index.php");	/* direccion del archivo index */
+	define("_ROUTE_" , "/PNFH/");					/* direccion del proyecto */
+	define("_THEME_" , "/PNFH/assets");			/* Direccion de recursos y estilos */
+	define("_INDEX_FILE_" , "/PNFH/index.php");	/* direccion del archivo index */
 	define("_IMG_" , "assets/img/perfil");
 
 	define('_DIRECTORY_', 'content/controllers/'); 					/* Direccion de controladores */
@@ -15,15 +15,15 @@
 	define("_CONTROLLER_" , "Controller.php");						/* complemento para la llamada de controladores */
 	
 	define("_DB_SERVER_" , "http://localhost/");
-	define("_URL_" , "http://localhost/PNFHNuevo/");					/* nombre del servidor */
+	define("_URL_" , "http://localhost/PNFH/");					/* nombre del servidor */
 
 	define('_DB_MANAGER_', 	'mysql');						        /* manejador de base de datos */
-	define("_DB_WEB_" , "pnfh4");								/* nombre de la base de datos */
+	define("_DB_WEB_" , "higiene");								/* nombre de la base de datos */
 	define('_HOST_', 		'localhost');							/* nombre del host */
 	define("_DB_USER_", "root");									/* nombre del usuario de la base de datos */
 	define("_DB_PASS_", "");										/* contraseña de la base de datos  */
-	define("_COMPLEMENT_" , "/PNFHNuevo/view/assets/");					/* direccion del proyecto */
-	define("_NAMESYSTEM_" , "PNFH 2.0");					/* direccion del proyecto */
+	define("_COMPLEMENT_" , "/PNFH/view/assets/");					/* direccion del proyecto */
+	define("_NAMESYSTEM_" , "PNFH");					/* direccion del proyecto */
 
 	/* clase con el nombre config  */
 	class sysConfig{

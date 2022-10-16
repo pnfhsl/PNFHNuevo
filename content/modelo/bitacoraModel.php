@@ -36,8 +36,7 @@
 			}
 		}
 
-
-		public function Agregar($date){
+		private function Agregar($date){
 
 			try{
 	        $query = parent::prepare('INSERT INTO bitacora (id_bitacora, cedula_usuario, modulo_bitacora, accion_bitacora, fecha_bitacora, hora_bitacora, estatus) VALUES (DEFAULT, :cedula_usuario, :modulo_bitacora, :accion_bitacora, :fecha_bitacora, :hora_bitacora, 1)');

@@ -24,7 +24,6 @@
 		private $notificacion;
 
 		function __construct($url){
-			
 			$this->url = $url;
 			$this->notificacion = new notificacionesModel();
 			$this->bitacora = new bitacoraModel();
@@ -35,15 +34,14 @@
 		}
 
 		public function Consultar(){
-						
 				$objModel = new homeModel;
 				$_css = new headElement;
 				$_css->Heading();
 				$this->bitacora->monitorear($this->url);
-				$usuarios = $this->usuario->Consultar();
-				$usuariosAlumnos = $this->alumno->Consultar();
-				$usuariosProfesores = $this->profesor->Consultar();
-				$roles = $this->rol->Consultar();
+				$usuarios = $this->usuario->validarConsultar("Consultar");
+				$usuariosAlumnos = $this->alumno->validarConsultar("Consultar");
+				$usuariosProfesores = $this->profesor->validarConsultar("Consultar");
+				$roles = $this->rol->validarConsultar("Consultar");
 				$url = $this->url;
 				require_once("view/usuariosView.php");
 		}
@@ -52,11 +50,11 @@
 			if($_POST){
 				if (!empty($_POST['cedula']) && !empty($_POST['Agregar']) && !empty($_POST['user']) && !empty($_POST['correo']) && !empty($_POST['pass']) && !empty($_POST['rol'])) {
 					$datos['cedula'] = $_POST['cedula'];
-					$datos['user'] = ucwords(mb_strtolower($_POST['user']));
+					$datos['nombre'] = ucwords(mb_strtolower($_POST['user']));
 					$datos['correo'] = mb_strtolower($_POST['correo']);
 					$datos['pass'] = $this->encriptar($_POST['pass']);
 					$datos['rol'] = $_POST['rol'];
-					$buscar = $this->usuario->getOne($_POST['cedula']);
+					$buscar = $this->usuario->validarConsultar("getOne", $_POST['cedula']);
 
 						//print_r($buscar);
 					if($buscar['msj']=="Good"){
@@ -66,13 +64,13 @@
 							if($buscar['data'][0]['estatus']==0){
 								// echo "Actualizara";
 								$datos['cedula'] = $datos['cedula'];
-								$exec = $this->usuario->Modificar($datos); 
+								$exec = $this->usuario->ValidarAgregarOModificar($datos,"Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->usuario->Agregar($datos);
+							$exec = $this->usuario->ValidarAgregarOModificar($datos,"Agregar");
 							echo json_encode($exec);
 							// echo "Agregaraa";
 						}
@@ -96,19 +94,19 @@
 					$datos['correo'] = mb_strtolower($_POST['correo']);
 					$datos['rol'] = $_POST['rol'];
 					$datos['nuevoPassword'] = $this->encriptar($_POST['nuevoPassword']);
-					$buscar = $this->usuario->getOne($_POST['cedula']);
+					$buscar = $this->usuario->validarConsultar("getOne", $_POST['cedula']);
 					// var_dump($datos['nuevoPassword']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$_POST['cedula']){
-								$exec = $this->usuario->Modificar($datos); 
+								$exec = $this->usuario->ValidarAgregarOModificar($datos,"Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->usuario->Modificar($datos);
+							$exec = $this->usuario->ValidarAgregarOModificar($datos,"Modificar");
 							/*var_dump($datos); */
 							echo json_encode($exec);
 						}
@@ -125,12 +123,12 @@
 		public function Eliminar(){
 			if($_POST){		
 				if (isset($_POST['Eliminar']) && isset($_POST['userDelete'])) {
-					$buscar = $this->usuario->getOne($_POST['userDelete']);
+					$buscar = $this->usuario->validarConsultar("getOne", $_POST['userDelete']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
-							$exec = $this->usuario->Eliminar($_POST['userDelete']);
+							$exec = $this->usuario->validarEliminar("Eliminar", $_POST['userDelete']);
 							$exec['data'] = $data;
 							echo json_encode($exec);
 						}else{
@@ -147,13 +145,20 @@
 		public function Buscar(){
 			if($_POST){		
 				if (isset($_POST['Buscar']) && isset($_POST['userModif'])) {
-					$resultado = $this->usuario->getOne($_POST['userModif']);
+					$resultado = $this->usuario->validarConsultar("getOne", $_POST['userModif']);
 					echo json_encode($resultado);
+				}
+				if(isset($_POST['verificarPasswordCuenta']) && isset($_POST['pass'])){
+					if( $this->encriptar($_POST['pass']) == $_SESSION['cuenta_usuario']['password_usuario'] ){
+						echo "1";
+					}else{
+						echo "2";
+					}
 				}
 				if(isset($_POST['BuscarSegunRol']) && isset($_POST['id_rol'])){
 					$id_rol = $_POST['id_rol'];
 					// echo $id_rol;
-					$roles = $this->rol->getOneId($id_rol);
+					$roles = $this->rol->validarConsultar("getOneId", $id_rol);
 					if($roles['msj']=="Good"){
 						if(count($roles['data'])>1){
 							$data = $roles['data'][0];
@@ -161,7 +166,7 @@
 							$usuarios = [];
 							$buscar = [];
 							if($data['nombre_rol']=="Alumnos"){
-								$usuarios = $this->alumno->Consultar();
+								$usuarios = $this->alumno->validarConsultar("Consultar");
 								$nAlum = 0;
 								foreach ($usuarios as $key) {
 									$buscar[$nAlum]['codigo'] = $key['cedula_alumno'];
@@ -174,7 +179,7 @@
 								}
 							}
 							if( ($data['nombre_rol']=="Profesores") || ($data['nombre_rol']=="Administrador") || $data['nombre_rol']=="Superusuario" ){
-								$usuarios = $this->profesor->Consultar();
+								$usuarios = $this->profesor->validarConsultar("Consultar");
 								$nProf = 0;
 								foreach ($usuarios as $key) {
 									$buscar[$nProf]['codigo'] = $key['cedula_profesor'];
@@ -188,7 +193,7 @@
 							if(count($buscar)>0){
 								$response['msj'] = "Good";
 								$response['data'] = $buscar;
-								$buscar2 = $this->usuario->getOneRolId($id_rol);
+								$buscar2 = $this->usuario->validarConsultar("getOneRolId", $id_rol);
 								if(count($buscar2)>0){
 									$response['msjUsuario'] = "Good";
 									$response['dataUsuario'] = $buscar2;
@@ -210,7 +215,7 @@
 				if(isset($_POST['VerificarUnicoUsername']) && isset($_POST['username']) && isset($_POST['id'])){
 					$user = ucwords(mb_strtolower($_POST['username']));
 					$id = $_POST['id'];
-					$buscar = $this->usuario->Buscar("username", $user);
+					$buscar = $this->usuario->validarConsultar("Buscar", "username", $user);
 					if(count($buscar)>0){
 						if($id==""){
 							echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
@@ -229,7 +234,7 @@
 				if(isset($_POST['VerificarUnicoCorreo']) && isset($_POST['correo'])){
 					$correo = mb_strtolower($_POST['correo']);
 					$id = $_POST['id'];
-					$buscar = $this->usuario->Buscar("correo", $correo);
+					$buscar = $this->usuario->validarConsultar("Buscar", "correo", $correo);
 					if(count($buscar)>0){
 						if($id==""){
 							echo json_encode(['msj'=>"Good", 'valido'=>"0"]);

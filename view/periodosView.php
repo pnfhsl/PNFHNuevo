@@ -42,140 +42,106 @@
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
+              <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
               <div class="col-xs-12 col-sm-6" style="text-align:right">
-
-                <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarPeriodo">Agregar Nuevo</button>
-                  <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-
-
-                <div id="modalAgregarPeriodo" class="modal fade" role="dialog">
-                
-                <div class="modal-dialog tamModals" style="text-align:left;">
-
-                  <div class="modal-content">
-
-                    <!-- <form role="form" method="post" enctype="multipart/form-data"> -->
-
-
-                      <!--=====================================
-                      CABEZA DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-header" style="background:#3c8dbc; color:white">
-
-                        <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
-
-                        <h4 class="modal-title" style="text-align: left;">Agregar Periodo</h4>
-
-                      </div>
-
-                      <!--=====================================
-                      CUERPO DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-body" style="max-height:70vh;overflow:auto;">
-
-                        <div class="box-body">
-
-                          <div class="row">
-                            
-                            <!-- ENTRADA PARA EL AÑO DEL PERIODO -->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="year">Año del Periodo</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
-                                <!-- <input type="text" class="form-control input-lg" name="year" id="year" placeholder="Año (Ej.: 2000)" maxlength="4"  required> -->
-                                <select class="form-control select2 input-lg" style="width:100%;" name="year" id="year">
-                                  <option value="">Año (Ej.: <?=date('Y'); ?>)</option>
-                                  <?php for ($i=date('Y'); $i >= 2015; $i--): ?>
-                                  <option value="<?=$i?>"><?=$i?></option>
-                                  <?php endfor; ?>
-                                </select>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="yearP" class="mensajeError"></span>
-                              </div>
-                            </div>
-
-                            
-                            <!--ENTRADA PARA EL NOMBRE DEL PERIODO-->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="periodo">Periodo</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
-                                <input type="text" class="form-control input-lg" style="width:40%;background:none;" name="nuevoNombre" placeholder="Año (Ej.: <?=date('Y')?>)"  maxlength="6" id="nombrePr" readonly>
-                                <div style="width:10%;display:inline-block;">
-                                  <input type="text" value="-" class="form-control input-lg" style="text-align:center;padding:0;background:none;" readonly>
-                                </div>
-                                <div style="width:50%;display:inline-block;">
-                                  <select class="form-control input-lg" style="width:100%;" id="numeroPr">
-                                    <option value="">Numero de Periodo</option>
-                                    <option value="I">I</option>
-                                    <option value="II">II</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="nombreP" class="mensajeError"></span>
-                              </div>
-                            </div>
-
-                            
-                            <!-- ENTRADA PARA EL PERIODO DE APERTURA-->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="fechaA">Fecha de apertura</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
-                                <input type="date" class="form-control input-lg" name="fechaAP" id="fechaA" placeholder="Apertura" required>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="fechaAP" class="mensajeError"></span>
-                              </div>
-                            </div>
-
-                            
-                            <!-- ENTRADA PARA EL PERIODO DE CIERRE-->
-                            <div class="form-group col-xs-12 col-sm-12">
-                              <label for="fechaC">Fecha de culminación</label>
-                              <div class="input-group" style="width:100%;">
-                                <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
-                                <input type="date" class="form-control input-lg" name="fechaAC" id="fechaC" placeholder="Cierre" required>
-                              </div>
-                              <div style="width:100%;text-align:right;">
-                                <span id="fechaCP" class="mensajeError"></span>
-                                <span id="fechaV" class="mensajeError"></span>
-                              </div>
-                            </div>
-
-                          </div>                          
-
-      
+                <?php if($amPeriodosR=="1"): ?>
+                  <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarPeriodo">Agregar Nuevo</button>
+                  <div id="modalAgregarPeriodo" class="modal fade" role="dialog">
+                    <div class="modal-dialog tamModals" style="text-align:left;">
+                      <div class="modal-content">
+                        <!--=====================================
+                        CABEZA DEL MODAL
+                        ======================================-->
+                        <div class="modal-header" style="background:#3c8dbc; color:white">
+                          <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
+                          <h4 class="modal-title" style="text-align: left;">Agregar Periodo</h4>
                         </div>
 
+                        <!--=====================================
+                        CUERPO DEL MODAL
+                        ======================================-->
+                        <div class="modal-body" style="max-height:70vh;overflow:auto;">
+                          <div class="box-body">
+                            <div class="row">
+                              <!-- ENTRADA PARA EL AÑO DEL PERIODO -->
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="year">Año del Periodo</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
+                                  <!-- <input type="text" class="form-control input-lg" name="year" id="year" placeholder="Año (Ej.: 2000)" maxlength="4"  required> -->
+                                  <select class="form-control select2 input-lg" style="width:100%;" name="year" id="year">
+                                    <option value="">Año (Ej.: <?=date('Y'); ?>)</option>
+                                    <?php for ($i=date('Y'); $i >= 2015; $i--): ?>
+                                    <option value="<?=$i?>"><?=$i?></option>
+                                    <?php endfor; ?>
+                                  </select>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="yearP" class="mensajeError"></span>
+                                </div>
+                              </div>
+                              
+                              <!--ENTRADA PARA EL NOMBRE DEL PERIODO-->
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="periodo">Periodo</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
+                                  <input type="text" class="form-control input-lg" style="width:40%;background:none;" name="nuevoNombre" placeholder="Año (Ej.: <?=date('Y')?>)"  maxlength="6" id="nombrePr" readonly>
+                                  <div style="width:10%;display:inline-block;">
+                                    <input type="text" value="-" class="form-control input-lg" style="text-align:center;padding:0;background:none;width:100%;" readonly>
+                                  </div>
+                                  <div style="width:50%;display:inline-block;">
+                                    <select class="form-control input-lg" style="width:100%;" id="numeroPr">
+                                      <option value="">Numero de Periodo</option>
+                                      <option value="I">I</option>
+                                      <option value="II">II</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="nombreP" class="mensajeError"></span>
+                                </div>
+                              </div>
+
+                              <!-- ENTRADA PARA EL PERIODO DE APERTURA-->
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="fechaA">Fecha de apertura</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
+                                  <input type="date" class="form-control input-lg" name="fechaAP" id="fechaA" placeholder="Apertura" required>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="fechaAP" class="mensajeError"></span>
+                                </div>
+                              </div>
+
+                              <!-- ENTRADA PARA EL PERIODO DE CIERRE-->
+                              <div class="form-group col-xs-12 col-sm-12">
+                                <label for="fechaC">Fecha de culminación</label>
+                                <div class="input-group" style="width:100%;">
+                                  <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span> 
+                                  <input type="date" class="form-control input-lg" name="fechaAC" id="fechaC" placeholder="Cierre" required>
+                                </div>
+                                <div style="width:100%;text-align:right;">
+                                  <span id="fechaCP" class="mensajeError"></span>
+                                  <span id="fechaV" class="mensajeError"></span>
+                                </div>
+                              </div>
+                            </div>                          
+                          </div>
+                        </div>
+
+                        <!--=====================================
+                        PIE DEL MODAL
+                        ======================================-->
+                        <div class="modal-footer">
+                          <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
+                          <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
+                        </div>
                       </div>
-
-                      <!--=====================================
-                      PIE DEL MODAL
-                      ======================================-->
-
-                      <div class="modal-footer">
-
-                        <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
-                        <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
-                      </div>
-
-
-                    <!-- </form> -->
-
+                    </div>
                   </div>
-
-                </div>
-
-              </div>
-
+                <?php endif; ?>
               </div>
             </div>
             <!-- /.box-header -->
@@ -307,12 +273,12 @@
                                             <span class="input-group-addon" style="width:5%;"><i class="fa fa-address-card"></i></span>
                                             <input type="text" class="form-control input-lg nombrePrModificar" style="width:40%;background:none;" name="<?=$data['id_periodo']?>" placeholder="Año (Ej.: <?=date('Y')?>)" value="<?=$data['year_periodo']?>" maxlength="6" id="nombrePr<?=$data['id_periodo']?>" readonly>
                                             <div style="width:10%;display:inline-block;">
-                                              <input type="text" value="-" class="form-control input-lg" style="text-align:center;padding:0;background:none;" readonly>
+                                              <input type="text" value="-" class="form-control input-lg" style="text-align:center;padding:0;background:none;width:100%;" readonly>
                                             </div>
                                             <div style="width:50%;display:inline-block;">
                                               <select class="form-control input-lg numeroPrModificar" style="width:100%;" id="numeroPr<?=$data['id_periodo']?>">
                                                 <option value="">Numero de Periodo</option>
-                                                <option <?php if($data['year_periodo']=="I" || $data['year_periodo']=="i"){ ?> selected="selected" <?php } ?> value="I">I</option>
+                                                <option <?php if($data['nombre_periodo']=="I" || $data['nombre_periodo']=="i"){ ?> selected="selected" <?php } ?> value="I">I</option>
                                                 <option <?php if($data['nombre_periodo']=="II" || $data['nombre_periodo']=="ii" || $data['nombre_periodo']=="Ii" || $data['nombre_periodo']=="iI"){ ?> selected="selected" <?php } ?> value="II">II</option>
                                               </select>
                                             </div>

@@ -47,22 +47,23 @@
 				$this->bitacora->monitorear($this->url);
 				
 				if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
-					$notas = $this->nota->Consultar($_SESSION['cuenta_persona']['cedula'], $_SESSION['cuenta_usuario']['nombre_rol']);
+					$notas = $this->nota->validarConsultar("Consultar", $_SESSION['cuenta_persona']['cedula'], $_SESSION['cuenta_usuario']['nombre_rol']);
 					$url = $this->url;
 					require_once("view/notasAlumnoView.php");
 				}else{
-					$alumnos = $this->nota->ConsultarNotasAlumnos();
+					$alumnos = $this->nota->validarConsultar("ConsultarNotasAlumnos");
 					if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario"){
-						$notas = $this->nota->Consultar();
-						$secciones = $this->clase->ConsultarSeccionClase();
+						$notas = $this->nota->validarConsultar("Consultar");
+						$secciones = $this->clase->validarConsultar("ConsultarSeccionClase");
+
 					}
 					if($_SESSION['cuenta_usuario']['nombre_rol']=="Administrador"){
-						$notas = $this->nota->Consultar();
-						$secciones = $this->clase->ConsultarSeccionClase();
+						$notas = $this->nota->validarConsultar("Consultar");
+						$secciones = $this->clase->validarConsultar("ConsultarSeccionClase");
 					}
 					if($_SESSION['cuenta_usuario']['nombre_rol']=="Profesores"){
-						$notasProf = $this->nota->Consultar($_SESSION['cuenta_persona']['cedula'], $_SESSION['cuenta_usuario']['nombre_rol']);
-						$notasTutor = $this->nota->ConsultarNotasTutor($_SESSION['cuenta_persona']['cedula']);
+						$notasProf = $this->nota->validarConsultar("Consultar", $_SESSION['cuenta_persona']['cedula'], $_SESSION['cuenta_usuario']['nombre_rol']);
+						$notasTutor = $this->nota->validarConsultar("ConsultarNotasTutor", $_SESSION['cuenta_persona']['cedula']);
 						$notas = [];
 						$nume = 0;
 						foreach ($notasProf as $key) {
@@ -78,9 +79,9 @@
 							}
 						}
 						// echo count($notas);
-						$secciones = $this->clase->ConsultarSeccionProfesor($_SESSION['cuenta_persona']['cedula']);
+						$secciones = $this->clase->validarConsultar("ConsultarSeccionProfesor", $_SESSION['cuenta_persona']['cedula']);
 					}
-					$saberes = $this->saber->Consultar();
+					$saberes = $this->saber->validarConsultar("Consultar");
 					$url = $this->url;
 					require_once("view/notasView.php");
 
@@ -97,7 +98,7 @@
 					$datos['seccion'] = $_POST['seccion'];
 					$datos['saber'] = $_POST['saber'];
 					$datos['id_clase'] = "";
-					$clases = $this->clase->getOne($datos);
+					$clases = $this->clase->validarConsultar("getOne", $datos);
 					if($clases['msj']=="Good"){
 						if(count($clases['data'])>1){
 							$claseAct = $clases['data'][0];
@@ -105,6 +106,8 @@
 						}
 					}
 					$suma = 0;
+					$msj = [];
+					$numb = 0;
 					for ($i=0; $i < count($_POST['notas']); $i++) { 
 						$idNota = "S".$_POST['saber']."S".$_POST['seccion']."N";
 						$idNota = $this->nota->ExtraerPK($idNota); // "C2Y2022LDR5PED83P327"	
@@ -113,32 +116,45 @@
 						$datos['nota'] = $_POST['notas'][$i];
 
 						// $responses = [];
-						$buscar = $this->nota->buscar($datos['id_clase'], $datos['alumno']);		//buscar de acuerdo al alumno y saber - nuevo metodo buscar???
+						$buscar = $this->nota->validarConsultar("buscar", $datos['id_clase'], $datos['alumno']);		//buscar de acuerdo al alumno y saber - nuevo metodo buscar???
 						// print_r($buscar);
 
 						if($buscar['msj']=="Good"){
 							if(count($buscar['data'])>1){
 									$datos['id'] = $buscar['data'][0]['id_nota'];
-									$exec = $this->nota->Modificar($datos); 
+									$exec = $this->nota->ValidarAgregarOModificar($datos, "Agregar"); 
 									if($exec['msj']=="Good"){
 										$suma += 1;
+										$msj[$numb] = "Good";
+										$msj = "Good";
 									}
 									if($exec['msj']=="Error"){
+										$msj[$numb] = "Error";
 										$suma += 2;
+									}
+									if($exec['msj']=="Invalido"){
+										$msj[$numb] = "Invalido";
+										$suma += 0;
 									}
 							}else{
 								// echo " -- Agregar -- ";
-								$exec = $this->nota->Agregar($datos);
+								$exec = $this->nota->ValidarAgregarOModificar($datos, "Agregar");
 								if($exec['msj']=="Good"){
-									// $responses[$i] = 1;
 									$suma += 1;
+									$msj[$numb] = "Good";
+									$msj = "Good";
 								}
 								if($exec['msj']=="Error"){
-									// $responses[$i] = 2;
+									$msj[$numb] = "Error";
 									$suma += 2;
-								} 
+								}
+								if($exec['msj']=="Invalido"){
+									$msj[$numb] = "Invalido";
+									$suma += 0;
+								}
 								// echo json_encode($exec);
 							}
+							$numb++;
 						}else{
 							// $responses[$i] = 2;
 									$suma += 2;
@@ -168,7 +184,11 @@
 						$this->bitacora->monitorear($this->url);
 						echo json_encode(['msj'=>"Good"]);
 					}else{
-						echo json_encode(['msj'=>"Error"]);
+						if($suma == 0){
+							echo json_encode(['msj'=>"Invalido"]);
+						}else{
+							echo json_encode(['msj'=>"Error"]);
+						}
 					}
 				}else{
 					echo json_encode(['msj'=>"Vacio"]);
@@ -186,7 +206,7 @@
 					$datos['seccion'] = $_POST['seccion'];
 					$datos['saber'] = $_POST['saber'];
 					$datos['id_clase'] = "";
-					$clases = $this->clase->getOne($datos);
+					$clases = $this->clase->validarConsultar("getOne", $datos);
 					if($clases['msj']=="Good"){
 						if(count($clases['data'])>1){
 							$claseAct = $clases['data'][0];
@@ -194,7 +214,9 @@
 						}
 					}
 					$suma = 0;
-					$result = $this->nota->LimpiarNotas($datos['id_clase']);
+					$msj = [];
+					$numb = 0;
+					$result = $this->nota->validarEliminar("LimpiarNotas", $datos['id_clase']);
 					if($result['msj']=="Good"){
 						for ($i=0; $i < count($_POST['notas']); $i++) { 
 							$idNota = "S".$_POST['saber']."S".$_POST['seccion']."N";
@@ -203,22 +225,23 @@
 							$datos['alumno'] = $_POST['idSA'][$i];
 							$datos['nota'] = $_POST['notas'][$i];
 							// $responses = [];
-							$buscar = $this->nota->buscar($datos['saber'], $datos['alumno']);		//buscar de acuerdo al alumno y saber - nuevo metodo buscar???
+							$buscar = $this->nota->validarConsultar("buscar", $datos['saber'], $datos['alumno']);		//buscar de acuerdo al alumno y saber - nuevo metodo buscar???
 							if($buscar['msj']=="Good"){
 								if(count($buscar['data'])>1){
-									// if($buscar['data'][0]['estatus']==0){
-										// echo " -- Modificar -- ";
-										// echo $idNota;
 										$datos['id'] = $buscar['data'][0]['id_nota'];
-										// $datos['id'] = $idNota;
-										$exec = $this->nota->Modificar($datos); 
+										$exec = $this->nota->ValidarAgregarOModificar($datos, "Agregar");
 										if($exec['msj']=="Good"){
-											// $responses[$i] = 1;
 											$suma += 1;
+											$msj[$numb] = "Good";
+											$msj = "Good";
 										}
 										if($exec['msj']=="Error"){
-											// $responses[$i] = 2;
+											$msj[$numb] = "Error";
 											$suma += 2;
+										}
+										if($exec['msj']=="Invalido"){
+											$msj[$numb] = "Invalido";
+											$suma += 0;
 										}
 										// echo json_encode($exec);
 									// }else{
@@ -227,15 +250,20 @@
 									// }
 								}else{
 									// echo " -- Agregar -- ";
-									$exec = $this->nota->Agregar($datos);
+									$exec = $this->nota->ValidarAgregarOModificar($datos, "Agregar");
 									if($exec['msj']=="Good"){
-										// $responses[$i] = 1;
 										$suma += 1;
+										$msj[$numb] = "Good";
+										$msj = "Good";
 									}
 									if($exec['msj']=="Error"){
-										// $responses[$i] = 2;
+										$msj[$numb] = "Error";
 										$suma += 2;
-									} 
+									}
+									if($exec['msj']=="Invalido"){
+										$msj[$numb] = "Invalido";
+										$suma += 0;
+									}
 									// echo json_encode($exec);
 								}
 							}else{
@@ -253,7 +281,11 @@
 							$this->bitacora->monitorear($this->url);
 							echo json_encode(['msj'=>"Good"]);
 						}else{
-							echo json_encode(['msj'=>"Error"]);
+							if($suma == 0){
+								echo json_encode(['msj'=>"Invalido"]);
+							}else{
+								echo json_encode(['msj'=>"Error"]);
+							}
 						}
 					}else{
 						echo json_encode(['msj'=>"Error"]);
@@ -271,12 +303,12 @@
 			if($_POST){		
 				if (isset($_POST['Eliminar']) && isset($_POST['notaDelete'])) {
 					list($cod_seccion, $id_SC, $id_clase) =explode('-', $_POST['notaDelete']);
-					$buscar = $this->nota->getOne($id_clase);
+					$buscar = $this->nota->validarConsultar("getOne", $id_clase);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
-							$exec = $this->nota->Eliminar($id_clase);
+							$exec = $this->nota->validarEliminar("Eliminar", $id_clase);
 							$exec['data'] = $data;
 							echo json_encode($exec);
 						}else{
@@ -294,19 +326,19 @@
 			if($_POST){		
 				if (isset($_POST['Buscar']) && isset($_POST['notaModif'])) {
 					list($cod_seccion, $id_SC, $id_clase) =explode('-', $_POST['notaModif']);
-					$buscar = $this->nota->getOne($id_clase);
+					$buscar = $this->nota->validarConsultar("getOne", $id_clase);
 					// $buscar = $this->nota->getOne($_POST['notaModif']);
 					echo json_encode($buscar);
 				}
 				if(isset($_POST['Buscar']) && isset($_POST['saberes']) && isset($_POST['cod_seccion'])){
 					$cod_seccion = $_POST['cod_seccion'];
-					$seccionesG = $this->seccion->getOne($cod_seccion);
+					$seccionesG = $this->seccion->validarConsultar("getOne", $cod_seccion);
 					// print_r($seccionesG);
 					$trayecto = "";
 					$fase = "";
 					if(!empty($seccionesG['data'][0]['trayecto_seccion'])){
 						$trayecto = $seccionesG['data'][0]['trayecto_seccion'];
-						$secciones = $this->seccion->Consultar($trayecto);
+						$secciones = $this->seccion->validarConsultar("Consultar", $trayecto);
 						foreach ($secciones as $key) {
 							if(!empty($key['cod_seccion'])){
 								if($key['cod_seccion']==$cod_seccion){
@@ -328,13 +360,13 @@
 						if($fase=="I"){ $faseN = "1"; }else if($fase=="1"){ $faseN = "1"; }
 						if($fase=="II"){ $faseN = "2"; }else if($fase=="2"){ $faseN = "2"; }
 						// echo $trayectoN."-".	$faseN;
-						$buscar = $this->saber->getSaber($trayectoN,$faseN);
+						$buscar = $this->saber->validarConsultar("getSaber", $trayectoN,$faseN);
 						// print_r($buscar);
 						if(count($buscar)>0){
 							$response['data'] = $buscar;
 							$response['msj'] = "Good";
 							// $buscar2 = $this->notas->Consultar($cod_seccion);
-							$buscar2 = $this->nota->ConsultarNotasAlumnos($cod_seccion);
+							$buscar2 = $this->nota->validarConsultar("ConsultarNotasAlumnos", $cod_seccion);
 							// print_r($buscar2);
 							if(count($buscar2)>0){
 								$response['msjSaberes'] = "Good";
@@ -354,7 +386,7 @@
 				if(isset($_POST['Buscar']) && isset($_POST['alumnosSeccion']) && isset($_POST['id_SC']) && isset($_POST['cod_seccion'])){
 					$cod_seccion = $_POST['cod_seccion'];
 					$id_SC = $_POST['id_SC'];
-					$alumnos = $this->nota->ConsultarAlumnos($cod_seccion, $id_SC);
+					$alumnos = $this->nota->validarConsultar("ConsultarAlumnos", $cod_seccion, $id_SC);
 					// echo "Seccion: ".$cod_seccion." || Saber: ".$id_SC;
 					$response = [];
 					if(count($alumnos)>0){

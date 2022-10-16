@@ -38,11 +38,12 @@
 			$_css->Heading();
 			$this->bitacora->monitorear($this->url);
 
-			$secciones = $this->seccion->Consultar();
-			$seccionAlumnos = $this->seccion->ConsultarSeccionAlumnos();
+			$secciones = $this->seccion->validarConsultar("Consultar");
+			$seccionAlumnos = $this->seccion->validarConsultar("ConsultarSeccionAlumnos");
 			// $secAlumnos = $this->seccion->ConsultarSeccionAlumnos2();
-			$periodos = $this->periodo->Consultar();
-			$alumnos = $this->alumno->Consultar();
+			$periodos = $this->periodo->validarConsultar("Consultar");
+			$alumnos = $this->alumno->validarConsultar("Consultar");
+			// print_r($alumnos);
 
 			$url = $this->url;
 			require_once("view/seccionesView.php");
@@ -51,7 +52,7 @@
 		public function Buscar(){
 			if($_POST){		
 				if (isset($_POST['Buscar']) && isset($_POST['cod_seccion'])) {
-					$buscar = $this->seccion->getOne($_POST['cod_seccion']);
+					$buscar = $this->seccion->validarConsultar("getOne", $_POST['cod_seccion']);
 					echo json_encode($buscar);
 				}
 				if(isset($_POST['Buscar']) && isset($_POST['alumnos']) && isset($_POST['trayecto'])  && isset($_POST['periodo'])){
@@ -59,13 +60,13 @@
 					$periodo = $_POST['periodo'];
 					// echo "T: ".$trayecto." | ";
 					// echo "P: ".$periodo." | ";
-					$buscar = $this->alumno->Consultar($trayecto);
+					$buscar = $this->alumno->validarConsultar("Consultar", $trayecto);
 					// print_r($buscar);
 					$response = [];
 					if(count($buscar)>0){
 						$response['data'] = $buscar;
 						$response['msj'] = "Good";
-						$buscar2 = $this->seccion->ConsultarSecciones($trayecto, $periodo);
+						$buscar2 = $this->seccion->validarConsultar("ConsultarSecciones", $trayecto, $periodo);
 						if(count($buscar2)>0){
 							$response['msjSecciones'] = "Good";
 							$response['dataSecciones'] = $buscar2;
@@ -86,29 +87,29 @@
 
 					$codSeccion = "T".$_POST['trayecto']."P".$_POST['periodo']."S";
 					$codSeccion = $this->seccion->ExtraerPK($codSeccion); // "C2Y2022LDR5PED83P327"	
-					$datos['id'] = $codSeccion;
+					$datos['cod_seccion'] = $codSeccion;
 					$datos['seccion'] = mb_strtoupper($_POST['nombre']);
 					$datos['id_periodo'] = $_POST['periodo'];
 					$datos['trayecto'] = $_POST['trayecto'];
 					$datos['alumnos'] = $_POST['alumnos'];
 
-					$buscar = $this->seccion->getOneData($datos);
+					$buscar = $this->seccion->validarConsultar("getOneData", $datos);
 					// print_r($buscar);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($buscar['data'][0]['estatus']==0){
-								$datos['id'] = $buscar['data'][0]['cod_seccion'];
-								$exec = $this->seccion->Modificar($datos); 
+								$datos['cod_seccion'] = $buscar['data'][0]['cod_seccion'];
+								$exec = $this->seccion->ValidarAgregarOModificar($datos, "Modificar"); 
 
 								if($exec["msj"] == "Good"){
-									$exec = $this->seccion->EliminarSeccionAlumno($datos['id']);
+									$exec = $this->seccion->validarEliminar("EliminarSeccionAlumno", $datos['cod_seccion']);
 									 	if($exec["msj"] == "Good"){
 											
-											$data['cod_seccion'] = $datos['id'];  
+											$data['cod_seccion'] = $datos['cod_seccion'];  
 											foreach ($datos['alumnos'] as $alumnos) {
 												$data['cedula_alumno'] = $alumnos;
-													$exec = $this->seccion->AgregarSecAlumno($data); 
+													$exec = $this->seccion->ValidarAgregarOModificar("AgregarSecAlumno", $data); 
 											}
 
 											echo json_encode($exec);
@@ -125,15 +126,15 @@
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->seccion->Agregar($datos); 
+							$exec = $this->seccion->ValidarAgregarOModificar($datos, "Agregar"); 
 							if($exec["msj"] == "Good"){
-								$exec = $this->seccion->EliminarSeccionAlumno($datos['id']);
+								$exec = $this->seccion->validarEliminar("EliminarSeccionAlumno", $datos['cod_seccion']);
 								 	if($exec["msj"] == "Good"){
 										
-										$data['cod_seccion'] = $datos['id'];  
+										$data['cod_seccion'] = $datos['cod_seccion'];  
 										foreach ($datos['alumnos'] as $alumnos) {
 											$data['cedula_alumno'] = $alumnos;
-												$exec = $this->seccion->AgregarSecAlumno($data); 
+												$exec = $this->seccion->ValidarAgregarOModificar("AgregarSecAlumno", $data); 
 										}
 
 										echo json_encode($exec);
@@ -160,27 +161,27 @@
 			if($_POST){
 				// print_r($_POST);
 				if (!empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['seccion']) && !empty($_POST['trayecto']) && !empty($_POST['periodo'])  && !empty($_POST['alumnos'])) {
-					$datos['id'] = $_POST['codigo'];
+					$datos['cod_seccion'] = $_POST['codigo'];
 					$datos['seccion'] = mb_strtoupper($_POST['seccion']);
 					$datos['id_periodo'] = $_POST['periodo'];
 					$datos['trayecto'] = $_POST['trayecto'];
 					$datos['alumnos'] = $_POST['alumnos'];
 					// echo json_encode($datos['alumnos']);	
-					$buscar = $this->seccion->getOneData($datos);
+					$buscar = $this->seccion->validarConsultar("getOneData", $datos);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo']==$buscar['data'][0]['cod_seccion']){
-								$datos['id'] = $buscar['data'][0]['cod_seccion'];
-								$exec = $this->seccion->Modificar($datos); 
+								$datos['cod_seccion'] = $buscar['data'][0]['cod_seccion'];
+								$exec = $this->seccion->ValidarAgregarOModificar($datos, "Modificar"); 
 								if($exec["msj"] == "Good"){
-									$exec = $this->seccion->EliminarSeccionAlumno($datos['id']);
+									$exec = $this->seccion->validarEliminar("EliminarSeccionAlumno", $datos['cod_seccion']);
 									 	if($exec["msj"] == "Good"){
 											
-											$data['cod_seccion'] = $datos['id'];  
+											$data['cod_seccion'] = $datos['cod_seccion'];  
 											foreach ($datos['alumnos'] as $alumnos) {
 												$data['cedula_alumno'] = $alumnos;
-													$exec = $this->seccion->AgregarSecAlumno($data); 
+													$exec = $this->seccion->ValidarAgregarOModificar("AgregarSecAlumno", $data); 
 											}
 
 											echo json_encode($exec);
@@ -195,15 +196,15 @@
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->seccion->Modificar($datos);
+							$exec = $this->seccion->ValidarAgregarOModificar($datos, "Modificar");
 							if($exec["msj"] == "Good"){
-								$exec = $this->seccion->EliminarSeccionAlumno($datos['id']);
+								$exec = $this->seccion->validarEliminar("EliminarSeccionAlumno", $datos['cod_seccion']);
 								 	if($exec["msj"] == "Good"){
 										
-										$data['cod_seccion'] = $datos['id'];  
+										$data['cod_seccion'] = $datos['cod_seccion'];  
 										foreach ($datos['alumnos'] as $alumnos) {
 											$data['cedula_alumno'] = $alumnos;
-												$exec = $this->seccion->AgregarSecAlumno($data); 
+												$exec = $this->seccion->ValidarAgregarOModificar("AgregarSecAlumno", $data); 
 										}
 
 										echo json_encode($exec);
@@ -228,13 +229,13 @@
 		public function Eliminar(){
 			if($_POST){		
 				if (isset($_POST['Eliminar']) && isset($_POST['cod_seccion'])) {
-					$buscar = $this->seccion->getOne($_POST['cod_seccion']);
+					$buscar = $this->seccion->validarConsultar("getOne", $_POST['cod_seccion']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
-							$exec = $this->seccion->Eliminar($_POST['cod_seccion']);
-							$exec2 = $this->seccion->EliminarSeccionAlumno($_POST['cod_seccion']);
+							$exec = $this->seccion->validarEliminar("Eliminar", $_POST['cod_seccion']);
+							$exec2 = $this->seccion->validarEliminar("EliminarSeccionAlumno", $_POST['cod_seccion']);
 							$exec['data'] = $data;
 							echo json_encode($exec);
 						}else{

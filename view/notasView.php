@@ -40,36 +40,24 @@
                 <img src="assets/img/logolista.png" style="width:25px;">
                 <h3 class="box-title"><?php echo "".$url.""; ?></h3>
               </div>
+              <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
               <div class="col-xs-12 col-sm-6" style="text-align:right">
-
-                <!--=====================================
-                MODAL MODIFICAR PROF
-                ======================================-->
-                <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarNota">Agregar Nuevo</button>
-                <input type="hidden" id="url" value="<?= $this->encriptar($this->url); ?>">
-
-                <!--=====================================
-                  MODAL AGREGAR PROF
-                ======================================-->
-                <div id="modalAgregarNota" class="modalAgregarNota modal fade" role="dialog">
-                
-                  <div class="modal-dialog tamModals" style="text-align:left;">
-
-                    <div class="modal-content">
-                        <!--=====================================
-                        CABEZA DEL MODAL
-                        ======================================-->
+                <?php if($amNotasR=="1"): ?>
+                  <button type="button" class="btn enviar2 btn-next btn-fill btn btn-primary btn-wd btn-sm" data-toggle="modal" data-target="#modalAgregarNota">Agregar Nuevo</button>
+                  <!--=====================================
+                    MODAL AGREGAR PROF
+                  ======================================-->
+                  <div id="modalAgregarNota" class="modalAgregarNota modal fade" role="dialog">
+                    <div class="modal-dialog tamModals" style="text-align:left;">
+                      <div class="modal-content">
                         <div class="modal-header" style="background:#3c8dbc; color:white">
                           <button type="button" class="close" data-dismiss="modal" style="top:25px;" >&times;</button>
                           <h4 class="modal-title" style="text-align: left;">Agregar Nota</h4>
                         </div>
-                        <!--=====================================
-                        CUERPO DEL MODAL
-                        ======================================-->
+
                         <div class="modal-body" style="max-height:70vh;overflow:auto">
                           <div class="box-body">
                             <div class="row" style="width:100%;">
-                              
                               <!-- ENTRADA PARA LA SECCION -->
                               <div class="form-group col-xs-12 col-sm-6">
                                 <label for="seccion">Sección</label>
@@ -105,10 +93,6 @@
                                   <span id="error_saber" class="mensajeError" ></span>
                                 </div>
                               </div>
-
-
-
-
                             </div>
                             
                             <div class="row">
@@ -120,8 +104,6 @@
                             <div class="row">
                               <hr>
                             </div>
-
-
 
                             <div class="row boxlist_alumnosnotas" style="display:none;">
 
@@ -135,32 +117,18 @@
                               </div> -->
 
                             </div>
-                           
-
-
-
-                            
-                            
-
-
-                             
 
                           </div>
-
                         </div>
-                        <!--=====================================
-                        PIE DEL MODAL
-                        ======================================-->
+
                         <div class="modal-footer">
-
                           <span type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</span>
-
                           <span type="submit" class="btn btn-primary" id="guardar">Guardar</span>
-
                         </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                <?php endif; ?>
 
               </div>
 
@@ -546,7 +514,7 @@
                                               <td><?=$alumnotas['nombre_alumno'];?></td>
                                               <td><?=$alumnotas['apellido_alumno'];?></td>
                                               <td>
-                                                <span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' <?php if($alumnotas['nota']!=""){ echo "value='".$alumnotas['nota']."'"; }else{ echo "value='0'"; } ?> max='1' min='0' style='width:100%;' step='0.1' id='nota<?=$alumnotas['cedula_alumno'];?>' required oninput="this.value=this.value.replace(/[^0-9 .]/g, '');" ></span>
+                                                <span><input type='number' class='form-control notasAlumnos' name='notasAlumnos[]' onkeyup='if( $(this).val() > 1.0 ){ $(this).val( ($(this).val()/10) ); $(this).focus(); }' onfocusout='if($(this).val()>=1){ $(this).val(1); } if($(this).val()<=0){ $(this).val(0); }' <?php if($alumnotas['nota']!=""){ echo "value='".$alumnotas['nota']."'"; }else{ echo "value='0'"; } ?> max='1' min='0' style='width:100%;' step='0.1' id='nota<?=$alumnotas['cedula_alumno'];?>' required oninput="this.value=this.value.replace(/[^0-9 .]/g, '');" ></span>
                                               </td>
                                             </tr>
                                             <tr style='padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;'>

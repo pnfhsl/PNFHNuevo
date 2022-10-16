@@ -87,7 +87,6 @@
 			return $resul;
 		}
 
-
 		public function Restaurar($file){
 			$cnn = new mysqli(_HOST_,_DB_USER_,_DB_PASS_,_DB_WEB_);
 			$this->mysqlRestoreFilename = $file;
@@ -132,7 +131,6 @@
 			
 			return $response;
 		}
-
 
 		public function BorrarFile($file){
 			// unset($file);

@@ -78,7 +78,7 @@ $(document).ready(function () {
         console.log(formData);
         $("#subir").attr('disabled', true);
         // console.log($("#subir").attr('disabled', true));
-        var url = $(this).val();
+        var url = $("#url").val();
         $.ajax({
             url: url+'/Cargar',
             type: 'POST',
@@ -88,7 +88,7 @@ $(document).ready(function () {
             processData: false,
             success: function (respuesta) {
                 // alert(respuesta);
-                console.log('hola');
+                console.log(respuesta);
                 var datos = JSON.parse(respuesta);
                 if (datos.msj === "Good") {
                     Swal.fire({
@@ -102,8 +102,7 @@ $(document).ready(function () {
                     }).then((isConfirm) => {
                         location.reload();
                     });
-                }
-                if (datos.msj === "Error") {
+                } else {
                     Swal.fire({
                         position: 'center',
                         type: 'danger',
@@ -163,27 +162,27 @@ $(document).ready(function () {
         this.value = this.value.replace(/[^a-zA-Z ñ Ñ Á á É é Í í Ó ó Ú ú ]/g, '');
     });
 
-    $('#telefono').on('input', function () {
-        this.value = this.value.replace(/[^0-9+ ]/g, '');
-        if (this.value.length >= 11 && this.value.length <= 11) {
-            $("#telefonoS").html("");
-        } else {
-            $("#telefonoS").html("El número de celular debe contener 11 caracteres");
-        }
-    });
+    // $('#telefono').on('input', function () {
+    //     this.value = this.value.replace(/[^0-9+ ]/g, '');
+    //     if (this.value.length >= 11 && this.value.length <= 11) {
+    //         $("#telefonoS").html("");
+    //     } else {
+    //         $("#telefonoS").html("El número de celular debe contener 11 caracteres");
+    //     }
+    // });
 
-    $('.telefonoModificar').on('input', function () {
-        var id = $(this).attr("name");
-        // var ids = $(this).attr("id");
-        // var index = ids.indexOf(" ");
-        // var id = ids.substring(index+1);
-        this.value = this.value.replace(/[^0-9+ ]/g, '');
-        if (this.value.length >= 11 && this.value.length <= 11) {
-            $("#telefonoS" + id).html("");
-        } else {
-            $("#telefonoS" + id).html("El número de celular debe contener 11 caracteres");
-        }
-    });
+    // $('.telefonoModificar').on('input', function () {
+    //     var id = $(this).attr("name");
+    //     // var ids = $(this).attr("id");
+    //     // var index = ids.indexOf(" ");
+    //     // var id = ids.substring(index+1);
+    //     this.value = this.value.replace(/[^0-9+ ]/g, '');
+    //     if (this.value.length >= 11 && this.value.length <= 11) {
+    //         $("#telefonoS" + id).html("");
+    //     } else {
+    //         $("#telefonoS" + id).html("El número de celular debe contener 11 caracteres");
+    //     }
+    // });
 
     $("#trayecto").change(function () {
         var trayecto = $(this).val();
@@ -203,7 +202,8 @@ $(document).ready(function () {
         }
     });
 
-    $("#guardar").click(function () {
+    $("#guardar").click(function (e) {
+        e.preventDefault();
         let url = $("#url").val();
         // alert(url);
         var response = validar();
@@ -226,7 +226,7 @@ $(document).ready(function () {
                     let cedula = $("#cedula").val();
                     let nombre = $("#nombre").val();
                     let apellido = $("#apellido").val();
-                    let telefono = $("#telefono").val();
+                    // let telefono = $("#telefono").val();
                     let trayecto = $("#trayecto").val();
 
                     /*alert(cedula + ' ' + nombre + ' ' + apellido + ' ' + especialidad);*/
@@ -238,7 +238,7 @@ $(document).ready(function () {
                             cedula: cedula,
                             nombre: nombre,
                             apellido: apellido,
-                            telefono: telefono,
+                            // telefono: telefono,
                             trayecto: trayecto,
                         },
                         success: function (resp) {
@@ -260,6 +260,17 @@ $(document).ready(function () {
                                     location.reload();
                                 });
                             }
+                            if (datos.msj === "Invalido") {
+                                Swal.fire({
+                                    type: 'warning',
+                                    title: '¡Datos invalidos!',
+                                    text: 'Los datos ingresados son invalido',
+                                    footer: 'SCHSL',
+                                    timer: 3000,
+                                    showCloseButton: false,
+                                    showConfirmButton: false,
+                                });
+                            }
                             if (datos.msj === "Repetido") {
                                 Swal.fire({
                                     type: 'warning',
@@ -274,7 +285,7 @@ $(document).ready(function () {
                             if (datos.msj === "Error") {
                                 Swal.fire({
                                     type: 'error',
-                                    title: '¡Error la guardar los cambio!',
+                                    title: '¡Error al guardar los cambio!',
                                     text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                                     footer: 'SCHSL',
                                     timer: 3000,
@@ -381,7 +392,7 @@ $(document).ready(function () {
                     let nombre = $("#nombre" + id).val();
                     let apellido = $("#apellido" + id).val();
                     let correo = $("#correo" + id).val();
-                    let telefono = $("#telefono" + id).val();
+                    // let telefono = $("#telefono" + id).val();
                     let trayecto = $("#trayecto" + id).val();
 
                     $.ajax({
@@ -394,7 +405,7 @@ $(document).ready(function () {
                             nombre: nombre,
                             apellido: apellido,
                             correo: correo,
-                            telefono: telefono,
+                            // telefono: telefono,
                             trayecto: trayecto,
 
                         },
@@ -417,6 +428,17 @@ $(document).ready(function () {
                                     location.reload();
                                 });
                             }
+                            if (datos.msj === "Invalido") {
+                                Swal.fire({
+                                    type: 'warning',
+                                    title: '¡Datos invalidos!',
+                                    text: 'Los datos ingresados son invalido',
+                                    footer: 'SCHSL',
+                                    timer: 3000,
+                                    showCloseButton: false,
+                                    showConfirmButton: false,
+                                });
+                            }
                             if (datos.msj === "Repetido") {
                                 Swal.fire({
                                     type: 'warning',
@@ -431,7 +453,7 @@ $(document).ready(function () {
                             if (datos.msj === "Error") {
                                 Swal.fire({
                                     type: 'error',
-                                    title: '¡Error la guardar los cambio!',
+                                    title: '¡Error al guardar los cambio!',
                                     text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                                     footer: 'SCHSL',
                                     timer: 3000,
@@ -532,7 +554,7 @@ $(document).ready(function () {
                                 if (datos.msj === "Error") {
                                     Swal.fire({
                                         type: 'error',
-                                        title: '¡Error la guardar los cambio!',
+                                        title: '¡Error al guardar los cambio!',
                                         text: 'Intente de nuevo, si el error persiste por favor contacte con el soporte',
                                         footer: 'SCHSL',
                                         timer: 3000,
@@ -576,6 +598,19 @@ $(document).ready(function () {
     });
 });
 
+
+const cerrarmodal = () => {
+    $("#modalAgregarAlum").modal('hide')
+    $("#formAgregar").trigger('reset');
+    $("#formAgregar #cedulaS").html("");
+    $("#formAgregar #nombreS").html("");
+    $("#formAgregar #apellidoS").html("");
+    $("#formAgregar #trayectoS").html("");
+
+}  
+$('#cerrarM').click(cerrarmodal);
+$('#salirM').click(cerrarmodal);
+
 function validar(modificar = false, id = "") {
     var form = "";
     if (!modificar) {
@@ -611,15 +646,15 @@ function validar(modificar = false, id = "") {
         $(form + " #apellidoS" + id).html("Debe ingresar el apellido del alumno");
     }
 
-    var telefono = $(form + " #telefono" + id).val();
-    var rtelefono = false;
-    // alert(telefono);
-    if (telefono.length >= 11 && telefono.length <= 11) {
-        $(form + " #telefonoS" + id).html("");
-        rtelefono = true;
-    } else {
-        $(form + " #telefonoS" + id).html("La telefono debe contener 11 caracteres");
-    }
+    // var telefono = $(form + " #telefono" + id).val();
+    // var rtelefono = false;
+    // // alert(telefono);
+    // if (telefono.length >= 11 && telefono.length <= 11) {
+    //     $(form + " #telefonoS" + id).html("");
+    //     rtelefono = true;
+    // } else {
+    //     $(form + " #telefonoS" + id).html("La telefono debe contener 11 caracteres");
+    // }
 
     var trayecto = $(form + " #trayecto" + id).val();
     var rtrayecto = false;
@@ -631,7 +666,7 @@ function validar(modificar = false, id = "") {
     }
 
     var validado = false;
-    if (rcedula == true && rnombre == true && rapellido == true && rtelefono == true && rtrayecto == true) {
+    if (rcedula == true && rnombre == true && rapellido == true /* && rtelefono == true */ && rtrayecto == true) {
         validado = true;
     } else {
         validado = false;

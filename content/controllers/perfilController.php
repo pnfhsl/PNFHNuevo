@@ -48,10 +48,11 @@ class perfilController
 		$objModel = new homeModel;
 		$_css = new headElement;
 		$_css->Heading();
-		$perfiles = $this->perfil->Consultar();
+		$perfiles = $this->perfil->validarConsultar("Consultar", $_SESSION['cuenta_usuario']['cedula_usuario']);
+		// print_r($perfiles);
 		// $imagen = $this->perfil->ConsultaImagen($_SESSION['cuenta_usuario']['cedula_usuario']);
 		if ($_SESSION['cuenta_usuario']['nombre_rol'] === "Superusuario" || $_SESSION['cuenta_usuario']['nombre_rol'] === "Administrador" || $_SESSION['cuenta_usuario']['nombre_rol'] === "Profesores") {
-			$resp = $this->perfil->ConsultarProfesor($_SESSION['cuenta_usuario']['cedula_usuario']);
+			$resp = $this->perfil->validarConsultar("ConsultarProfesor", $_SESSION['cuenta_usuario']['cedula_usuario']);
 			// var_dump($resp);
 			// var_dump($usuarios[0]['correo']);
 			$ci = $resp[0]['cedula_profesor'];
@@ -60,19 +61,19 @@ class perfilController
 			$telef = $resp[0]['telefono_profesor'];
 			$trayecto = "";
 		} else if ($_SESSION['cuenta_usuario']['nombre_rol'] === "Alumnos") {
-			$resp = $this->perfil->ConsultarAlumno($_SESSION['cuenta_usuario']['cedula_usuario']);
+			$resp = $this->perfil->validarConsultar("ConsultarAlumno", $_SESSION['cuenta_usuario']['cedula_usuario']);
 			$ci = $resp[0]['cedula_alumno'];
 			$nombre = $resp[0]['nombre_alumno'];
 			$apellido = $resp[0]['apellido_alumno'];
 			$telef = $resp[0]['telefono_alumno'];
 			$trayecto = $resp[0]['trayecto_alumno'];
 		}
-		$usuarios = $this->perfil->ConsultarUsuario($_SESSION['cuenta_usuario']['cedula_usuario']);
+		$usuarios = $this->perfil->validarConsultar("ConsultarUsuario", $_SESSION['cuenta_usuario']['cedula_usuario']);
 		$correo = $usuarios[0]['correo'];
 		$usuario = $usuarios[0]['nombre_usuario'];
 		$password = $usuarios[0]['password_usuario'];
 		$rol = $usuarios[0]['id_rol'];
-		$alumnos = $this->alumno->Consultar();
+		$alumnos = $this->alumno->validarConsultar("Consultar");
 		$url = $this->url;
 		require_once("view/perfilView.php");
 	}
@@ -98,21 +99,21 @@ class perfilController
 					$datos['trayecto'] = $_POST['trayecto'];
 					$datos['telefono'] = $_POST['telefono'];
 					$datos['correo'] = $_POST['correo'];
-					$buscar = $this->alumno->getOne($_POST['cedula']);
+					$buscar = $this->alumno->validarConsultar("getOne", $_POST['cedula']);
 					if ($buscar['msj'] == "Good") {
 						if (count($buscar['data']) > 1) {
 							if ($_POST['codigo'] == $_POST['cedula']) {
-								$exec = $this->alumno->Modificar($datos);
-								$modif = $this->perfil->ModificarCorreo($datos); 
+								$exec = $this->alumno->ValidarAgregarOModificar($datos, "Modificar");
+								$modif = $this->perfil->ValidarAgregarOModificar($datos, "ModificarCorreo"); 
 								$Result = array('exec' => $exec, 'email' => $modif);
 								
 								// OPEN ACTUALIZANDO VARIABLES SESSION
-								$resp = $this->usuario->getOne($datos['cedula'], true);
+								$resp = $this->usuario->validarConsultar("getOne", $datos['cedula'], true);
 								if($resp['msj']=="Good"){
 									$dataTemp = $resp['data'][0];
 									$_SESSION['cuenta_usuario'] = $dataTemp;
 									if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
-										$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+										$alumnos = $this->alumno->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 										if($alumnos['msj']=="Good"){
 											if(count($alumnos['data']) > 1){
 												$_SESSION['cuenta_persona'] = $alumnos['data'][0];
@@ -135,7 +136,7 @@ class perfilController
 											}
 										}
 									}else{
-										$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+										$profesores = $this->profesor->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 										if($profesores['msj']=="Good"){
 											if(count($profesores['data']) > 1){
 												$_SESSION['cuenta_persona'] = $profesores['data'][0];
@@ -177,8 +178,8 @@ class perfilController
 								echo json_encode(['msj' => "Repetido"]);
 							}
 						} else {
-							$exec = $this->alumno->Modificar($datos);
-							$modif = $this->perfil->ModificarCorreo($datos);  
+							$exec = $this->alumno->ValidarAgregarOModificar($datos,"Modificar");
+							$modif = $this->perfil->ValidarAgregarOModificar($datos,"ModificarCorreo");  
 							$Result = array('exec' => $exec, 'email' => $modif);
 							echo json_encode($Result);
 						}
@@ -200,23 +201,23 @@ class perfilController
 					$datos['apellido'] = ucwords(mb_strtolower($_POST['apellido']));
 					$datos['telefono'] = $_POST['telefono'];
 					$datos['correo'] = $_POST['correo'];
-					$buscar = $this->profesor->getOne($_POST['cedula']);
+					$buscar = $this->profesor->validarConsultar("getOne", $_POST['cedula']);
 					if ($buscar['msj'] == "Good") {
 						if (count($buscar['data']) > 1) {
 							if ($_POST['codigo'] == $_POST['cedula']) {
-								$exec = $this->profesor->Modificar($datos);
-								$modif = $this->perfil->ModificarCorreo($datos);
+								$exec = $this->profesor->ValidarAgregarOModificar($datos,"Modificar");
+								$modif = $this->perfil->ValidarAgregarOModificar($datos,"ModificarCorreo");
 								// echo json_encode($exec);
 								// echo json_encode($modif);
 								$Result = array('exec' => $exec, 'email' => $modif);
 
 								// OPEN ACTUALIZANDO VARIABLES SESSION
-								$resp = $this->usuario->getOne($datos['cedula'], true);
+								$resp = $this->usuario->validarConsultar("getOne", $datos['cedula'], true);
 								if($resp['msj']=="Good"){
 									$dataTemp = $resp['data'][0];
 									$_SESSION['cuenta_usuario'] = $dataTemp;
 									if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
-										$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+										$alumnos = $this->alumno->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 										if($alumnos['msj']=="Good"){
 											if(count($alumnos['data']) > 1){
 												$_SESSION['cuenta_persona'] = $alumnos['data'][0];
@@ -239,7 +240,7 @@ class perfilController
 											}
 										}
 									}else{
-										$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+										$profesores = $this->profesor->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 										if($profesores['msj']=="Good"){
 											if(count($profesores['data']) > 1){
 												$_SESSION['cuenta_persona'] = $profesores['data'][0];
@@ -280,8 +281,8 @@ class perfilController
 								echo json_encode(['msj' => "Repetido"]);
 							}
 						} else {
-							$exec = $this->profesor->Modificar($datos);
-							$modif = $this->perfil->ModificarCorreo($datos);
+							$exec = $this->profesor->ValidarAgregarOModificar($datos, "Modificar");
+							$modif = $this->perfil->ValidarAgregarOModificar($datos, "ModificarCorreo");
 							$Result = array('exec' => $exec, 'email' => $modif);
 								echo json_encode($Result);
 							// echo json_encode($exec);
@@ -322,7 +323,7 @@ class perfilController
 		if(isset($_POST['VerificarUnicoUsername']) && isset($_POST['username']) && isset($_POST['id'])){
 			$user = ucwords(mb_strtolower($_POST['username']));
 			$id = $_POST['id'];
-			$buscar = $this->usuario->Buscar("username", $user);
+			$buscar = $this->usuario->validarConsultar("Buscar", "username", $user);
 			if(count($buscar)>0){
 				// print_r($buscar);
 				if($id==""){
@@ -342,7 +343,7 @@ class perfilController
 		if(isset($_POST['VerificarUnicoCorreo']) && isset($_POST['correo'])){
 			$correo = mb_strtolower($_POST['correo']);
 			$id = $_POST['id'];
-			$buscar = $this->usuario->Buscar("correo", $correo);
+			$buscar = $this->usuario->validarConsultar("Buscar", "correo", $correo);
 			if(count($buscar)>0){
 				if($id==""){
 					echo json_encode(['msj'=>"Good", 'valido'=>"0"]);
@@ -380,17 +381,17 @@ class perfilController
 					unlink($destino);
 					// if(copy($tmp_name, $_SERVER["DOCUMENT_ROOT"].$destino)){
 					if(copy($tmp_name, $destino)){
-						$upd = $this->perfil->Img($destino, $user);
+						$upd = $this->perfil->ValidarAgregarOModificar($destino, "Img", $user);
 					}
 				}
 				// OPEN ACTUALIZANDO VARIABLES SESSION
 				$cedularUser = $_SESSION['cuenta_usuario']['cedula_usuario'];
-				$resp = $this->usuario->getOne($cedularUser, true);
+				$resp = $this->usuario->validarConsultar("getOne", $cedularUser, true);
 				if($resp['msj']=="Good"){
 					$dataTemp = $resp['data'][0];
 					$_SESSION['cuenta_usuario'] = $dataTemp;
 					if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
-						$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+						$alumnos = $this->alumno->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 						if($alumnos['msj']=="Good"){
 							if(count($alumnos['data']) > 1){
 								$_SESSION['cuenta_persona'] = $alumnos['data'][0];
@@ -413,7 +414,7 @@ class perfilController
 							}
 						}
 					}else{
-						$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+						$profesores = $this->profesor->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 						if($profesores['msj']=="Good"){
 							if(count($profesores['data']) > 1){
 								$_SESSION['cuenta_persona'] = $profesores['data'][0];
@@ -464,20 +465,20 @@ class perfilController
 				$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
 				$datos['rol'] = $_POST['rol'];
 				$datos['nuevoPassword'] = $this->encriptar($_POST['nuevoPassword']);
-				$buscar = $this->usuario->getOne($_POST['cedula']);
+				$buscar = $this->usuario->validarConsultar("getOne", $_POST['cedula']);
 				// var_dump($datos['nuevoPassword']);
 				if($buscar['msj']=="Good"){
 					if(count($buscar['data'])>1){
 						if($_POST['codigo']==$_POST['cedula']){
-							$exec = $this->usuario->Modificar($datos);
+							$exec = $this->usuario->ValidarAgregarOModificar($datos, "Modificar");
 
 							// OPEN ACTUALIZANDO VARIABLES SESSION
-							$resp = $this->usuario->getOne($datos['cedula'], true);
+							$resp = $this->usuario->validarConsultar("getOne", $datos['cedula'], true);
 							if($resp['msj']=="Good"){
 								$dataTemp = $resp['data'][0];
 								$_SESSION['cuenta_usuario'] = $dataTemp;
 								if($_SESSION['cuenta_usuario']['nombre_rol']=="Alumnos"){
-									$alumnos = $this->alumno->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+									$alumnos = $this->alumno->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 									if($alumnos['msj']=="Good"){
 										if(count($alumnos['data']) > 1){
 											$_SESSION['cuenta_persona'] = $alumnos['data'][0];
@@ -500,7 +501,7 @@ class perfilController
 										}
 									}
 								}else{
-									$profesores = $this->profesor->getOne($_SESSION['cuenta_usuario']['cedula_usuario']);
+									$profesores = $this->profesor->validarConsultar("getOne", $_SESSION['cuenta_usuario']['cedula_usuario']);
 									if($profesores['msj']=="Good"){
 										if(count($profesores['data']) > 1){
 											$_SESSION['cuenta_persona'] = $profesores['data'][0];
@@ -540,7 +541,7 @@ class perfilController
 							echo json_encode(['msj'=>"Repetido"]);
 						}
 					}else{
-						$exec = $this->usuario->Modificar($datos);
+						$exec = $this->usuario->ValidarAgregarOModificar("Modificar", $datos);
 						/*var_dump($datos); */
 						echo json_encode($exec);
 					}

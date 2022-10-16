@@ -35,7 +35,7 @@
 			$this->bitacora->monitorear($this->url);
 			
 			$url = $this->url;
-			$preguntas = $this->preg->Consultar();
+			$preguntas = $this->preg->validarConsultar("Consultar");
 			require_once("view/preguntasView.php");
 		}
 
@@ -56,16 +56,16 @@
 					$datos['resp'] = array($_POST['resp_uno'], $_POST['resp_dos'], $_POST['resp_tres']);
 					$datos['cedula'] = $_SESSION['cuenta_usuario']['cedula_usuario'];
 	
-					$buscar = $this->preg->getOne($datos['cedula']);
+					$buscar = $this->preg->validarConsultar("getOne", $datos['cedula']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
-						$exec2 = $this->preg->Eliminar($datos['cedula']);
+						$exec2 = $this->preg->ValidarEliminar("Eliminar", $datos['cedula']);
 						if($exec2['msj']=="Good"){
-							$exec = $this->preg->Agregar($datos);
+							$exec = $this->preg->ValidarAgregarOModificar("Agregar", $datos);
 							if($exec['msj']=="Good"){
 								$dat['cedula'] = $_SESSION['cuenta_usuario']['cedula_usuario'];
 								$_SESSION['cuenta_usuario']['estatus'] = "1";
-								$exec = $this->usuario->CompletarDatos($dat);
+								$exec = $this->usuario->ValidarAgregarOModificar("CompletarDatos", $dat);
 								$cedula = $dat['cedula'];
 								$firma = $this->encriptar($dat['cedula']);
 
@@ -77,9 +77,13 @@
 								// $public_key = $this->encriptar($llaves['public']);
 								// $private_key = $this->encriptar($llaves['private']);
 								
-								$exec3 = $this->usuario->LimpiarLlaves($cedula);
+								$exec3 = $this->usuario->ValidarEliminar("LimpiarLlaves", $cedula);
 								if($exec3['msj']=="Good"){
-									$exec = $this->usuario->GuardarLlaves($cedula, $firma, $public_key, $private_key);
+									$dat['cedula'] = $cedula;
+									$dat['firma'] = $firma;
+									$dat['public_key'] = $public_key;
+									$dat['private_key'] = $private_key;
+									$exec = $this->usuario->ValidarAgregarOModificar("GuardarLlaves", $dat);
 								}
 							}	
 							echo json_encode($exec);

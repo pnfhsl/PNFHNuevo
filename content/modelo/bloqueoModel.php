@@ -16,7 +16,6 @@ class bloqueoModel extends database{
         parent::__construct();
     }
     public function Consultar(){
-        
         try {
             $query = parent::prepare('SELECT * FROM usuarios, roles WHERE usuarios.estatus = 3 and usuarios.id_rol = roles.id_rol');
             $respuestaArreglo = '';
@@ -43,10 +42,8 @@ class bloqueoModel extends database{
             $errorReturn += ['info' => "error sql:{$e}"];
             return $errorReturn;
         }
-        
-
     }
-
+        
     public function BuscarCodigo($cedula){
         try{
             // $sql = "SELECT * FROM rsa, usuarios WHERE firma_digital = '{$firma}'  and rsa.cedula_usuario = usuarios.cedula_usuario";
@@ -61,8 +58,6 @@ class bloqueoModel extends database{
             return $errorReturn;
         }
     }
-
-    
 
     public function Encrypt($codigo, $llave){
         $public_key = openssl_pkey_get_public($llave);
@@ -98,9 +93,7 @@ class bloqueoModel extends database{
       }
     }
 
-    public function Unlook($user, $int, $newPass)
-	{
-
+    public function Unlook($user, $int, $newPass){
 		try {
 			$query = parent::prepare("UPDATE usuarios SET intentos=:intentos, estatus=2, password_usuario=:newPass WHERE cedula_usuario = '{$user}'");
 			// $query->bindValue(':cedula_usuario', $user);
@@ -121,24 +114,24 @@ class bloqueoModel extends database{
 			return $errorReturn;
 		}
 	}
+
     public function Eliminar($cedula){
         try {
-        // $query = parent::prepare('UPDATE respuestas SET estatus = 0 WHERE cedula_usuario = :cedula_usuario');
-        $query = parent::prepare("DELETE FROM rsa WHERE cedula_usuario = :cedula_usuario");
-        $query->execute(['cedula_usuario'=>$cedula]);
-        $query->setFetchMode(parent::FETCH_ASSOC);
-        $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
-        if ($respuestaArreglo += ['estatus' => true]) {
-            $Result = array('msj' => "Good");       //Si todo esta correcto y consigue al usuario
-            return $Result;
-        }
-        }
-        catch (PDOException $e)
-        {
+            // $query = parent::prepare('UPDATE respuestas SET estatus = 0 WHERE cedula_usuario = :cedula_usuario');
+            $query = parent::prepare("DELETE FROM rsa WHERE cedula_usuario = :cedula_usuario");
+            $query->execute(['cedula_usuario'=>$cedula]);
+            $query->setFetchMode(parent::FETCH_ASSOC);
+            $respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
+            if ($respuestaArreglo += ['estatus' => true]) {
+                $Result = array('msj' => "Good");       //Si todo esta correcto y consigue al usuario
+                return $Result;
+            }
+        } catch (PDOException $e) {
             $errorReturn = ['estatus' => false];
-              $errorReturn['msj'] = "Error";
-        $errorReturn += ['info' => "Error sql:{$e}"];
-        return $errorReturn; ;
+            $errorReturn['msj'] = "Error";
+            $errorReturn += ['info' => "Error sql:{$e}"];
+            return $errorReturn; ;
         }
     }
+    
 }

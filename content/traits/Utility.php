@@ -34,19 +34,12 @@ trait Utility
     }
 
 
-
-
-
-
-
-    public function encriptarContrasena($password)
-    {
+    public function encriptarContrasena($password){
         $salida = password_hash($password, PASSWORD_DEFAULT, ['cost' => 8]);
         return $salida;
     }
 
-    public function verificarContrasena($password_verificar, $password)
-    {
+    public function verificarContrasena($password_verificar, $password) {
         $salida = password_verify($password_verificar, $password);
         return $salida;
     }
@@ -54,8 +47,7 @@ trait Utility
     /**
      * LIMPIAR DATOS
      */
-    public function limpiaCadena($cadena)
-    {
+    public function limpiaCadena($cadena) {
         $cadena = trim($cadena); //Elimina espacios al inicio y al final de la cadena
         $cadena = stripcslashes($cadena); //Elimina Barras Invertidas de la cadena
         $cadena = str_replace('<script>', '', $cadena);

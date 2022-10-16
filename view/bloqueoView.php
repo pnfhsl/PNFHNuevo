@@ -215,7 +215,7 @@
 
                                                                                                             <span class="input-group-addon" style="width:5%;"><i class="fa fa-user"></i></span>
                                                                                                             <input type="text" class="form-control input-lg" name="codigo" id="codigoAdmin<?php echo $data['cedula_usuario']; ?>" placeholder="Código generado" readonly>
-                                                                                                            <span class="input-group-addon" id="copyClip<?php echo $data['cedula_usuario']; ?>" data-clipboard-target="#codigoAdmin<?php echo $data['cedula_usuario']; ?>" style="width:5%;"><a href="#"><i class="fa fa-clipboard" style="color:#04a7c9"></i></a></span>
+                                                                                                            <span class="input-group-addon" id="copyClip<?php echo $data['cedula_usuario']; ?>" data-clipboard-target="#codigoAdmin<?php echo $data['cedula_usuario']; ?>" style="width:5%;"><a href="#">Copiar <i class="fa fa-clipboard" style="color:#04a7c9"></i></a></span>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>

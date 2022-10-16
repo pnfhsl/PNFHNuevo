@@ -65,6 +65,7 @@
 				return $errorReturn;
 			}
 		}
+		
 		public function BuscarClasesPorNotificacionProfesor($data, $cedula){
 			try {
 				$tabla = $data['tabla_notificacion'];

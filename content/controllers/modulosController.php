@@ -28,14 +28,14 @@
 			$_css = new headElement;
 			$_css->Heading();
 			$this->bitacora->monitorear($this->url);
-			$modulos = $this->modulo->Consultar();
+			$modulos = $this->modulo->validarConsultar("Consultar");
 			$url = $this->url;
 			require_once("view/modulosView.php");
 		}
 		public function Buscar(){
 			if($_POST){		
 				if (isset($_POST['Buscar']) && isset($_POST['moduloM'])) {
-					$buscar = $this->modulo->getOne($_POST['moduloM']);
+					$buscar = $this->modulo->validarConsultar("getOne", $_POST['moduloM']);
 					echo json_encode($buscar);
 				}
 
@@ -46,20 +46,20 @@
 			if($_POST){		
 				if (!empty($_POST['Agregar']) && !empty($_POST['nombre']) ) {
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
-					$buscar = $this->modulo->getOneNombre($datos['nombre']);
+					$buscar = $this->modulo->validarConsultar("getOneNombre", $datos['nombre']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data'][0]['estatus']);
 							if($buscar['data'][0]['estatus']==0){
 								$datos['id'] = $datos['cedula'];
-								$exec = $this->modulo->Modificar($datos); 
+								$exec = $this->modulo->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->modulo->Agregar($datos); 
+							$exec = $this->modulo->ValidarAgregarOModificar($datos, "Agregar"); 
 							echo json_encode($exec);
 						}
 					}else{
@@ -77,19 +77,19 @@
 				if (!empty($_POST['codigo']) && !empty($_POST['Editar']) && !empty($_POST['nombre'])) {
 					$datos['id'] = $_POST['codigo'];
 					$datos['nombre'] = ucwords(mb_strtolower($_POST['nombre']));
-					$buscar = $this->modulo->getOneNombre($datos['nombre']);
+					$buscar = $this->modulo->validarConsultar("getOneNombre", $datos['nombre']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							// print_r($buscar['data']);
 							if($_POST['codigo']==$buscar['data'][0]['id_modulo']){
-								$exec = $this->modulo->Modificar($datos); 
+								$exec = $this->modulo->ValidarAgregarOModificar($datos, "Modificar"); 
 								echo json_encode($exec);
 							}else{
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->modulo->Modificar($datos); 
+							$exec = $this->modulo->ValidarAgregarOModificar($datos, "Modificar"); 
 							echo json_encode($exec);
 						}
 					}else{
@@ -104,12 +104,12 @@
 		public function Eliminar(){
 			if($_POST){		
 				if (isset($_POST['Eliminar']) && isset($_POST['modeloDelete'])) {
-					$buscar = $this->modulo->getOne($_POST['modeloDelete']);
+					$buscar = $this->modulo->validarConsultar("getOne", $_POST['modeloDelete']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
-							$exec = $this->modulo->Eliminar($_POST['modeloDelete']);
+							$exec = $this->modulo->validarEliminar($_POST['modeloDelete']);
 							$exec['data'] = $data;
 							echo json_encode($exec);
 						}else{

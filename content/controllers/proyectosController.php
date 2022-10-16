@@ -40,17 +40,17 @@
 
 			$this->bitacora->monitorear($this->url);
 
-			$proyectos = $this->proyecto->Consultar();
-			$profesores = $this->profesor->Consultar();
+			$proyectos = $this->proyecto->validarConsultar("Consultar");
+			$profesores = $this->profesor->validarConsultar("Consultar");
 
-			$gruposAlumnos = $this->proyecto->ConsultarGrupos();
+			$gruposAlumnos = $this->proyecto->validarConsultar("ConsultarGrupos");
 
 			// $secciones1 = $this->seccion->Consultar("1");
 			// $secciones2 = $this->seccion->Consultar("2");
 			// $secciones3 = $this->seccion->Consultar("3");
 			// $secciones4 = $this->seccion->Consultar("4");
-			$secciones = $this->seccion->Consultar();
-			$gruposSec = $this->proyecto->ConsultarGrupos2();
+			$secciones = $this->seccion->validarConsultar("Consultar");
+			$gruposSec = $this->proyecto->validarConsultar("ConsultarGrupos2");
 
 			// $alumnos1 = $this->alumno->Consultar("1");
 			// $alumnos2 = $this->alumno->Consultar("2");
@@ -61,7 +61,7 @@
 			// $seccionAlumnos2 = $this->seccion->ConsultarSeccionAlumnos("2");
 			// $seccionAlumnos3 = $this->seccion->ConsultarSeccionAlumnos("3");
 			// $seccionAlumnos4 = $this->seccion->ConsultarSeccionAlumnos("4");
-			$seccionAlumnos = $this->seccion->ConsultarSeccionAlumnos();
+			$seccionAlumnos = $this->seccion->validarConsultar("ConsultarSeccionAlumnos");
 			
 			$url = $this->url;
 			require_once("view/proyectosView.php");
@@ -70,12 +70,12 @@
 		public function Buscar(){
 			if($_POST){		
 				if (isset($_POST['Buscar']) && isset($_POST['cod_proyecto'])) {
-					$buscar = $this->proyecto->getOne($_POST['cod_proyecto']);
+					$buscar = $this->proyecto->validarConsultar("getOne", $_POST['cod_proyecto']);
 					echo json_encode($buscar);
 				}
 				if(isset($_POST['Buscar']) && isset($_POST['secciones']) && isset($_POST['trayecto'])){
 					$trayecto = $_POST['trayecto'];
-					$buscar = $this->seccion->Consultar($trayecto);
+					$buscar = $this->seccion->validarConsultar("Consultar", $trayecto);
 					$response = [];
 					if(count($buscar)>0){
 						$response['data'] = $buscar;
@@ -87,12 +87,12 @@
 				}
 				if(isset($_POST['Buscar']) && isset($_POST['alumnos']) && isset($_POST['cod_seccion'])){
 					$cod_seccion = $_POST['cod_seccion'];
-					$buscar = $this->seccion->ConsultarSeccionAlumnos($cod_seccion);
+					$buscar = $this->seccion->validarConsultar("ConsultarSeccionAlumnos", $cod_seccion);
 					$response = [];
 					if(count($buscar)>0){
 						$response['data'] = $buscar;
 						$response['msj'] = "Good";
-						$buscar2 = $this->proyecto->ConsultarGrupos($cod_seccion);
+						$buscar2 = $this->proyecto->validarConsultar("ConsultarGrupos", $cod_seccion);
 						if(count($buscar2)>0){
 							$response['msjProyectos'] = "Good";
 							$response['dataProyectos'] = $buscar2;
@@ -120,15 +120,15 @@
 					$datos['id_SA'] = $_POST['alumnos'];
 					$datos['cedula_tutor'] = $_POST['tutor'];
 
-					$buscar = $this->proyecto->getOneData($datos);
+					$buscar = $this->proyecto->validarConsultar("getOneData", $datos);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($buscar['data'][0]['estatus']==0){
 								$datos['id'] = $buscar['data'][0]['cod_proyecto'];
-								$exec = $this->proyecto->Modificar($datos); 
+								$exec = $this->proyecto->ValidarAgregarOModificar($datos, "Modificar"); 
 								if($exec['msj']=="Good"){
-									$exec2 = $this->proyecto->EliminarGrupos($datos['id']);
+									$exec2 = $this->proyecto->validarEliminar("EliminarGrupos", $datos['id']);
 									if($exec2['msj']=="Good"){
 										$data['cod_proyecto'] = $datos['id'];
 										$codGrupo = "P".$datos['id']."G";
@@ -136,7 +136,7 @@
 											$cod_Grupo = $this->proyecto->ExtraerPKGrupo($codGrupo); // "C2Y2022LDR5PED83P327"	
 											$data['cod_grupo'] = $cod_Grupo;
 											$data['id_SA'] = $id_SA;
-											$exec = $this->proyecto->AgregarGrupo($data); 
+											$exec = $this->proyecto->ValidarAgregarOModificar("AgregarGrupo", $data); 
 										}
 										echo json_encode($exec);
 									}else{
@@ -150,9 +150,9 @@
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->proyecto->Agregar($datos); 
+							$exec = $this->proyecto->ValidarAgregarOModificar($datos, "Agregar"); 
 							if($exec['msj']=="Good"){
-								$exec2 = $this->proyecto->EliminarGrupos($datos['id']);
+								$exec2 = $this->proyecto->validarEliminar("EliminarGrupos", $datos['id']);
 								if($exec2['msj']=="Good"){
 									$data['cod_proyecto'] = $datos['id'];
 									$codGrupo = "P".$datos['id']."G";
@@ -160,7 +160,7 @@
 										$cod_Grupo = $this->proyecto->ExtraerPKGrupo($codGrupo); // "C2Y2022LDR5PED83P327"	
 										$data['cod_grupo'] = $cod_Grupo;
 										$data['id_SA'] = $id_SA;
-										$exec = $this->proyecto->AgregarGrupo($data); 
+										$exec = $this->proyecto->EliminarGrupos("AgregarGrupo", $data); 
 									}
 									echo json_encode($exec);
 								}else{
@@ -196,15 +196,15 @@
 					$datos['cedula_tutor'] = $_POST['tutor'];
 					$datos['id_SA'] = $_POST['alumnos'];
 
-					$buscar = $this->proyecto->getOneData($datos);
+					$buscar = $this->proyecto->validarConsultar("getOneData", $datos);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							if($_POST['codigo'] == $buscar['data'][0]['cod_proyecto']){
 								$datos['id'] = $buscar['data'][0]['cod_proyecto'];
-								$exec = $this->proyecto->Modificar($datos); 
+								$exec = $this->proyecto->ValidarAgregarOModificar($datos, "Modificar"); 
 								if($exec['msj']=="Good"){
-									$exec2 = $this->proyecto->EliminarGrupos($datos['id']);
+									$exec2 = $this->proyecto->validarEliminar("EliminarGrupos", $datos['id']);
 									if($exec2['msj']=="Good"){
 										$data['cod_proyecto'] = $datos['id'];
 										$codGrupo = "P".$datos['id']."G";
@@ -212,7 +212,7 @@
 											$cod_Grupo = $this->proyecto->ExtraerPKGrupo($codGrupo); // "C2Y2022LDR5PED83P327"	
 											$data['cod_grupo'] = $cod_Grupo;
 											$data['id_SA'] = $id_SA;
-											$exec = $this->proyecto->AgregarGrupo($data); 
+											$exec = $this->proyecto->ValidarAgregarOModificar("AgregarGrupo", $data); 
 										}
 										echo json_encode($exec);
 									}else{
@@ -226,9 +226,9 @@
 								echo json_encode(['msj'=>"Repetido"]);
 							}
 						}else{
-							$exec = $this->proyecto->Modificar($datos); 
+							$exec = $this->proyecto->ValidarAgregarOModificar($datos, "Modificar"); 
 							if($exec['msj']=="Good"){
-								$exec2 = $this->proyecto->EliminarGrupos($datos['id']);
+								$exec2 = $this->proyecto->validarEliminar("EliminarGrupos", $datos['id']);
 								if($exec2['msj']=="Good"){
 									$data['cod_proyecto'] = $datos['id'];
 									$codGrupo = "P".$datos['id']."G";
@@ -236,7 +236,7 @@
 										$cod_Grupo = $this->proyecto->ExtraerPKGrupo($codGrupo); // "C2Y2022LDR5PED83P327"	
 										$data['cod_grupo'] = $cod_Grupo;
 										$data['id_SA'] = $id_SA;
-										$exec = $this->proyecto->AgregarGrupo($data); 
+										$exec = $this->proyecto->ValidarAgregarOModificar("AgregarGrupo", $data); 
 									}
 									echo json_encode($exec);
 								}else{
@@ -258,15 +258,15 @@
 		public function Eliminar(){
 			if($_POST){		
 				if (isset($_POST['Eliminar']) && isset($_POST['cod_proyecto'])) {
-					$buscar = $this->proyecto->getOne($_POST['cod_proyecto']);
+					$buscar = $this->proyecto->validarConsultar("getOne", $_POST['cod_proyecto']);
 					if($buscar['msj']=="Good"){
 						$this->bitacora->monitorear($this->url);
 						if(count($buscar['data'])>1){
 							$data = $buscar['data'][0];
-							$exec = $this->proyecto->Eliminar($_POST['cod_proyecto']);
+							$exec = $this->proyecto->validarEliminar("Eliminar", $_POST['cod_proyecto']);
 							if($exec['msj']=="Good"){
 
-								$exec = $this->proyecto->EliminarGrupos($_POST['cod_proyecto']);
+								$exec = $this->proyecto->validarEliminar("EliminarGrupos", $_POST['cod_proyecto']);
 								$exec['data'] = $data;
 								echo json_encode($exec);
 							}else{

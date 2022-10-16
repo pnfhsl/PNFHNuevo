@@ -77,12 +77,12 @@
             <section class="content">
 
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
 
                         <!-- Profile Image -->
                         <div class="box box-primary">
                             <div class="box-body box-profile user-header">
-                                <img class="profile-user-img img-responsive img-circle" style="border-radius:220px;width:220px;height:220px;" src="<?=$fotoPerfil; ?>" alt="User profile picture">
+                                <img class="profile-user-img img-responsive img-circle" style="border-radius:220px;width:25vh !important;height:25vh;" src="<?=$fotoPerfil; ?>" alt="User profile picture">
 
                                 <h3 class="profile-username text-center"> <?php echo $nombre . " " . $apellido; ?></h3>
 
@@ -111,9 +111,7 @@
 
 
                                             <div class="modal-body" style="max-height:70vh;overflow:auto;">
-
                                                 <div class="box-body">
-
                                                     <div class="row">
                                                         <div class="col 16 offset-13 ">
                                                             <form role="form" method="post" enctype="multipart/form-data" id="form_data">
@@ -134,79 +132,23 @@
                                                             </form>
                                                         </div>
                                                     </div>
-
                                                 </div>
-
                                             </div>
-
 
                                             <div class="modal-footer">
-
                                                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
                                                 <button type="submit" class="btn btn-primary modificarButtonFoto" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="imagen">Enviar</button>
-
                                             </div>
-
-
                                             <!-- </form> -->
-
                                         </div>
-
                                     </div>
-
                                 </div>
-
                             </div>
-                            <!-- /.box-body -->
                         </div>
-                        <!-- /.box -->
 
-                        <!-- About Me Box -->
-                        <div class="box box-primary">
-
-
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Sobre mí</h3>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <strong><i class="fa fa-book margin-r-5"></i> Llaves de Seguridad</strong>
-
-                                <p class="text-muted">
-                                    B.S. in Computer Science from the University of Tennessee at Knoxville
-                                </p>
-
-
-                                <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
-
-                                <p>
-                                    <span class="label label-danger">UI Design</span>
-                                    <span class="label label-success">Coding</span>
-                                    <span class="label label-info">Javascript</span>
-                                    <span class="label label-warning">PHP</span>
-                                    <span class="label label-primary">Node.js</span>
-                                </p>
-
-                                <hr>
-
-                                <hr>
-
-                                <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
-
-                                <p class="text-muted">Malibu, California</p>
-
-                                <!-- <hr> -->
-                                <!-- <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p> -->
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <!-- /.box -->
                     </div>
                     <!-- /.col -->
-                    <div class="col-md-9">
+                    <div class="col-md-8">
                         <div class="nav-tabs-custom">
                             <style>
                                 .modificarBtnContraseña:hover {
@@ -216,8 +158,15 @@
                             </style>
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#activity" data-toggle="tab">Datos Personales</a></li>
-                                <li><a href="#timeline" data-toggle="tab">Preguntas de Seguridad</a></li>
+                                <?php 
+                                    if($_SESSION['cuenta_usuario']['nombre_rol']=="Superusuario" || $_SESSION['cuenta_usuario']['nombre_rol']=="Administrador" ):
+                                ?>
+                                <li><a href="#RSA" data-toggle="tab">Seguridad</a></li>
+                                <?php endif; ?>
+                                
+                                <!-- <li><a href="#<time></time>line" data-toggle="tab">Preguntas de Seguridad</a></li> -->
                                 <li><a data-toggle="tab" class=" modificarBtnContraseña" style="padding:10px 15px;" id="<?= $_SESSION['cuenta_persona']['cedula'] ?>"> Contraseña</a></li>
+                                
                                 <!-- <li><button type="submit" class="btn modificarBtnContraseña btn-primary pull-right btn-block btn-sm" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>">Editar</button></li> -->
                                 <div class="col-sm-3">
                                     <!-- <button type="submit" class="btn modificarBtnContraseña btn-primary pull-right btn-block btn-sm" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>">Editar</button> -->
@@ -267,42 +216,18 @@
                                                             </div>
                                                             <input type="hidden" id="cedula" value="<?php echo $ci;  ?>">
                                                             <input type="hidden" id="rol" value="<?php echo $rol;  ?>">
-
-
-
-
                                                         </div>
-
                                                     </div>
-
                                                 </div>
-
-
                                                 <div class="modal-footer">
-
                                                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
                                                     <button type="submit" class="btn btn-primary modificarButtonModalC" value="<?= $_SESSION['cuenta_persona']['cedula'] ?>" id="modificar">Enviar</button>
-
                                                 </div>
-
-
                                                 <!-- </form> -->
-
                                             </div>
-
                                         </div>
-
                                     </div>
-
-
-
-
-
                                 </div>
-
-
-
 
 
                                 <div class="col-sm-3">
@@ -320,7 +245,7 @@
 
                                                     <button type="button" class="close" data-dismiss="modal" style="top:25px;">&times;</button>
 
-                                                    <h4 class="modal-title" style="text-align: left;">Modificar Datos</h4>
+                                                    <h4 class="modal-title" style="text-align: left;">Verificar cuenta de usuario</h4>
 
                                                 </div>
 
@@ -389,22 +314,11 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                </div>
 
                             </ul>
+
+
                             <div class="tab-content">
                                 <div class="active tab-pane" id="activity">
                                     <div class="post">
@@ -590,20 +504,44 @@
 
                                     <!-- /.post -->
                                 </div>
-                                <!-- /.tab-pane -->
-                                <div class="tab-pane" id="timeline">
-                                    <!-- The timeline -->
-                                    <ul class="timeline timeline-inverse">
-                                        <!-- timeline time label -->
 
-                                        <!-- /.timeline-label -->
-                                        <!-- timeline item -->
+                                <div class="tab-pane" id="RSA">
+                                    <div>
+                                        <div class="timeline-item ">
+                                            <div class="box-body">
+                                                <h3 class="timeline-header"><a>Firma Digital</a></h3>
+                                                <div class="timeline-body input-group " value="<?php echo $perfiles[0]['cedula_usuario']; ?>" style="width:100%;">
+                                                    <?php //echo $perfiles[0]['cedula_usuario']; ?>
+                                                        <!-- <?php print_r($perfiles[0]['cedula_usuario']); ?> -->
+                                                    <input type="text" class="form-control" id="firma<?php echo $perfiles[0]['cedula_usuario']; ?>1" value="<?=$perfiles[0]['firma_digital']; ?>1" readonly style="background:none;width:80%;">
+                                                    <button class="btn form-control input-group-addon usuarioG" data-clipboard-target="#firma<?php echo $perfiles[0]['cedula_usuario']; ?>1" value="<?=$perfiles[0]['cedula_usuario']; ?>1" style="width:20%;" id="copyClip<?php echo $perfiles[0]['cedula_usuario']; ?>1" >Copiar <i class="fa fa-clipboard" style="color:#04a7c9"></i></button>
+                                                    <!-- <span class="input-group-addon usuarioG" id="copyClip<?php echo $perfiles[0]['cedula_usuario']; ?>" data-clipboard-target="#firma<?php echo $perfiles[0]['cedula_usuario']; ?>" style="width:5%;"><a href="#"><i class="fa fa-clipboard" style="color:#04a7c9"></i></a></span> -->
+                                                </div>
+
+                                                <h3 class="timeline-header"><a>Llave publica</a></h3>
+                                                <div class="timeline-body input-group" style="width:100%;">
+                                                    <input type="text" class="form-control" id="llave_publica<?php echo $perfiles[0]['cedula_usuario']; ?>2" value="<?=$perfiles[0]['llave_publica']; ?>2" readonly style="background:none;width:80%;">
+                                                    <button class="btn form-control input-group-addon usuarioG" data-clipboard-target="#llave_publica<?php echo $perfiles[0]['cedula_usuario']; ?>2" value="<?=$perfiles[0]['cedula_usuario']; ?>2" style="width:20%;" id="copyClip<?php echo $perfiles[0]['cedula_usuario']; ?>2" >Copiar <i class="fa fa-clipboard" style="color:#04a7c9"></i></button>
+                                                </div>
+
+                                                <h3 class="timeline-header"><a>Llave privada</a></h3>
+                                                <div class="timeline-body input-group" style="width:100%;">
+                                                    <input type="text" class="form-control" id="llave_privada<?php echo $perfiles[0]['cedula_usuario']; ?>3" value="<?=$perfiles[0]['llave_privada']; ?>3" readonly style="background:none;width:80%;">
+                                                    <button class="btn form-control input-group-addon usuarioG" data-clipboard-target="#llave_privada<?php echo $perfiles[0]['cedula_usuario']; ?>3" value="<?=$perfiles[0]['cedula_usuario']; ?>3" style="width:20%;" id="copyClip<?php echo $perfiles[0]['cedula_usuario']; ?>3" >Copiar <i class="fa fa-clipboard" style="color:#04a7c9"></i></button>
+                                                    <!-- <button class="btn form-control input-group-addon"  data-clipboard-action="cut"  data-clipboard-target="#llave_privada" style="width:20%;"  alt="Copy to clipboard">Copiar <i class="fa fa-clipboard" style="color:#04a7c9"></i></button> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- PREGUNTAS DE SEGURIDAD -->
+                                <!-- <div class="tab-pane" id="timeline">
+                                    <ul class="timeline timeline-inverse">
                                         <li>
                                             <i class="fa fa-envelope bg-blue"></i> <br>
 
-
                                             <div class="timeline-item">
-                                                <!-- <span class="time"><i class="fa fa-clock-o"></i> 12:05</span> -->
 
                                                 <h3 class="timeline-header"><a>Pregunta #1</a></h3>
 
@@ -626,14 +564,10 @@
                                                 </div>
                                             </div>
                                         </li>
-                                        <!-- END timeline item -->
-                                        <!-- timeline item -->
                                         <li>
                                             <i class="fa fa-user bg-aqua"></i>
 
                                             <div class="timeline-item">
-                                                <!-- <span class="time"><i class="fa fa-clock-o"></i> 12:05</span> -->
-
                                                 <h3 class="timeline-header"><a href="#">Pregunta #2</a></h3>
 
                                                 <div class="timeline-body">
@@ -657,13 +591,10 @@
 
 
                                         </li>
-                                        <!-- END timeline item -->
-                                        <!-- timeline item -->
                                         <li>
                                             <i class="fa fa-comments bg-yellow"></i>
 
                                             <div class="timeline-item">
-                                                <!-- <span class="time"><i class="fa fa-clock-o"></i> 12:05</span> -->
 
                                                 <h3 class="timeline-header"><a href="#">Pregunta #3</a></h3>
 
@@ -686,38 +617,14 @@
                                                 </div>
                                             </div>
                                         </li>
-                                        <!-- END timeline item -->
-                                        <!-- timeline time label -->
-                                        <!-- <li class="time-label">
-                                            <span class="bg-green">
-                                                3 Jan. 2014
-                                            </span>
-                                        </li> -->
-                                        <!-- /.timeline-label -->
-                                        <!-- timeline item -->
-                                        <!-- <li>
-                                            <i class="fa fa-camera bg-purple"></i>
-
-                                            <div class="timeline-item">
-                                                <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-
-                                                <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                                                <div class="timeline-body">
-                                                    <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                                    <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                                    <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                                    <img src="http://placehold.it/150x100" alt="..." class="margin">
-                                                </div>
-                                            </div>
-                                        </li> -->
-                                        <!-- END timeline item -->
+                  
                                         <li>
                                             <i class="fa fa-clock-o bg-gray"></i>
                                         </li>
                                     </ul>
-                                </div>
-                                <!-- /.tab-pane -->
+                                </div> -->
+                                <!-- PREGUNTAS DE SEGURIDAD -->
+
 
 
                                 <!-- /.tab-pane -->
@@ -745,6 +652,7 @@
             <input type="hidden" class="responses" value="<?php echo $response ?>">
         <?php endif; ?>
         <script src="<?= _THEME_ ?>/js/perfil.js"></script>
+    <script src="<?= _THEME_ ?>/js/clipboard.min.js"></script>
 </body>
 
 </html>

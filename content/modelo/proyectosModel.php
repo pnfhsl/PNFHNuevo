@@ -21,8 +21,88 @@
 			// $this->con = parent::__construct();
 			parent::__construct();
 		}
-		public function Consultar(){
-			
+
+		public function validarConsultar($metodo, $data=""){
+			if($metodo=="Consultar"){
+				$result = self::Consultar();
+				return $result;
+			}
+			if($metodo=="ConsultarGrupos"){
+				$result = self::ConsultarGrupos($data);
+				return $result;
+			}
+			if($metodo=="ConsultarGrupos2"){
+				$result = self::ConsultarGrupos2($data);
+				return $result;
+			}
+			if($metodo=="getOne"){
+				$result = self::getOne($data);
+				return $result;
+			}
+			if($metodo=="getOneData"){
+				$result = self::getOneData($data);
+				return $result;
+			}
+			if($metodo=="getOneDataGrupo"){
+				$result = self::getOneDataGrupo($data);
+				return $result;
+			}
+		}
+
+		public function ValidarAgregarOModificar($datos, $metodo){
+			$res = [];
+			$return = 0;
+			foreach ($datos as $campo => $valor) {
+				$resExp = self::Validate($campo, $valor);
+				$return += $resExp;
+			}
+			if($return==0){
+				if($metodo=="Agregar" || $metodo=="agregar"){
+					$result = self::Agregar($datos);
+				}
+				if($metodo=="AgregarGrupo" || $metodo=="agregargrupo"){
+					$result = self::AgregarGrupo($datos);
+				}
+				if($metodo=="Modificar" || $metodo=="modificar"){
+					$result = self::Modificar($datos);
+				}
+				return $result;
+			}else{
+				return ['msj'=>"Invalido"];
+			}
+		}
+
+		public function validarEliminar($metodo, $data){
+			if($metodo=="Eliminar"){
+				$result = self::Eliminar($data);
+				return $result;
+			}
+			if($metodo=="EliminarGrupos"){
+				$result = self::EliminarGrupos($data);
+				return $result;
+			}
+		}
+
+		private function Validate($campo, $valor){
+			$pattern = [
+				'0' => ['campo'=>"id",'expresion'=>'/[^a-zA-Z0-9]/'],
+				'1' => ['campo'=>"nombre",'expresion'=>'/[^a-zA-Z Ñ ñ Á á É é Í í Ó ó Ú ú ]/'],
+				'2' => ['campo'=>"trayecto",'expresion'=>'/[^0-9]/'],
+				'3' => ['campo'=>"cedula_tutor",'expresion'=>'/[^0-9]/'],
+			];
+			// $resExp = 0;
+			foreach ($pattern as $exReg) {
+				if($exReg['campo']==$campo){
+					$resExp = preg_match_all($exReg['expresion'], $valor);
+					// echo "Campo: ".$campo." | Valor: ".$valor." | ";
+					// echo "ResExp: ".$resExp." | ";
+					// echo "\n\n";
+					return $resExp;
+				}
+			}
+		}
+
+		private function Consultar(){
 			try {
 				$query = parent::prepare("SELECT * FROM proyectos WHERE proyectos.estatus = 1");
 				$respuestaArreglo = '';
@@ -37,7 +117,7 @@
 			}
 		}
 
-		public function ConsultarGrupos($cod_seccion=""){
+		private function ConsultarGrupos($cod_seccion=""){
 			
 			try {
 				if($cod_seccion==""){
@@ -57,7 +137,7 @@
 			}
 		}
 
-		public function ConsultarGrupos2($cod_seccion=""){
+		private function ConsultarGrupos2($cod_seccion=""){
 			
 			try {
 				if($cod_seccion==""){
@@ -77,188 +157,7 @@
 			}
 		}
 
-		public function Agregar($datos){
-			try{
-				$query = parent::prepare("INSERT INTO proyectos (cod_proyecto, titulo_proyecto, trayecto_proyecto, cedula_profesor, estatus) VALUES (:cod_proyecto, :titulo_proyecto, :trayecto_proyecto, :cedula_tutor, 1)");
-
-				$query->bindValue(':cod_proyecto', $datos['id']);
-				$query->bindValue(':titulo_proyecto', $datos['nombre']);
-		    	$query->bindValue(':trayecto_proyecto', $datos['trayecto']);
-		    	$query->bindValue(':cedula_tutor', $datos['cedula_tutor']);
-		            
-				$query->execute();
-				$respuestasArreglo = $query->fetchAll();
-
-				if($respuestasArreglo += ['estatus' => true]) {
-					$Result = array ('msj' => 'Good');
-				}
-				return $Result;
-			} catch(PDOException $e){
-				$errorReturn = ['estatus' => false];
-				$errorReturn['msj'] = "Error";
-				$errorReturn += ['info' => "Error sql:{$e}"];
-				return $errorReturn; 
-			}
-		}
-
-		public function AgregarGrupo($data){
-			try{
-				$query = parent::prepare("INSERT INTO grupos (cod_grupo, id_SA, cod_proyecto, estatus) VALUES (:cod_grupo, :id_SA, :cod_proyecto, 1)");
-
-				$query->bindValue(':cod_grupo', $data['cod_grupo']);
-		    	$query->bindValue(':id_SA', $data['id_SA']);
-				$query->bindValue(':cod_proyecto', $data['cod_proyecto']);
-		            
-				$query->execute();
-				$respuestasArreglo = $query->fetchAll();
-
-				if($respuestasArreglo += ['estatus' => true]) {
-					$Result = array ('msj' => 'Good');
-				}
-				return $Result;
-			} catch(PDOException $e){
-				$errorReturn = ['estatus' => false];
-				$errorReturn['msj'] = "Error";
-				$errorReturn += ['info' => "Error sql:{$e}"];
-				return $errorReturn; 
-			}
-		}
-
-
-		public function Modificar($datos){
-			try{
-				$query = parent::prepare('UPDATE proyectos SET titulo_proyecto = :titulo_proyecto, trayecto_proyecto=:trayecto_proyecto, cedula_profesor=:cedula_tutor, estatus=1 WHERE cod_proyecto = :cod_proyecto');
-				$query->bindValue(':titulo_proyecto', $datos['nombre']);
-				$query->bindValue(':trayecto_proyecto', $datos['trayecto']);
-		    	$query->bindValue(':cedula_tutor', $datos['cedula_tutor']);
-		    	$query->bindValue(':cod_proyecto', $datos['id']);
-				$query->execute();
-				$respuestaArreglo = $query->fetchAll();
-				if ($respuestaArreglo += ['estatus' => true]) {
-					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-					return $Result;
-				}
-			} catch(PDOException $e){
-				$errorReturn = ['estatus' => false];
-				$errorReturn['msj'] = "Error";
-				$errorReturn += ['info' => "Error sql:{$e}"];
-				return $errorReturn; 
-			}
-		}
-
-
-		public function Eliminar($cod){
-			try {
-				$query = parent::prepare('UPDATE proyectos SET estatus = 0 WHERE cod_proyecto = :cod');
-				$query->execute(['cod'=>$cod]);
-				$query->setFetchMode(parent::FETCH_ASSOC);
-				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
-				if ($respuestaArreglo += ['estatus' => true]) {
-					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-					return $Result;
-				}
-			} catch (PDOException $e) {
-				$errorReturn = ['estatus' => false];
-				$errorReturn['msj'] = "Error";
-				$errorReturn += ['info' => "Error sql:{$e}"];
-				return $errorReturn; ;
-			}
-		}
-
-		public function EliminarGrupos($cod){
-			try {
-				$query = parent::prepare('DELETE FROM grupos WHERE cod_proyecto = :cod');
-				$query->execute(['cod'=>$cod]);
-				$query->setFetchMode(parent::FETCH_ASSOC);
-				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
-				if ($respuestaArreglo += ['estatus' => true]) {
-					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
-					return $Result;
-				}
-			} catch (PDOException $e) {
-				$errorReturn = ['estatus' => false];
-				$errorReturn['msj'] = "Error";
-				$errorReturn += ['info' => "Error sql:{$e}"];
-				return $errorReturn; ;
-			}
-		}
-
-		function ExtraerPK($codProyecto){
-			// echo $codSeccion." --- ";
-			$numss = $this::ConsultaPK($codProyecto);
-			// print_r($numss);
-			$numMax = 0;
-			if(count($numss)>1){
-				$len = strlen($codProyecto);
-				// echo $len;
-				foreach ($numss as $key) {
-					if(!empty($key['cod_proyecto'])){
-						$n = substr($key['cod_proyecto'], $len);
-						if($n > $numMax){
-							$numMax = $n;
-						}
-					}
-				}
-			}
-			$numero = $numMax+1;
-			// echo $numero;
-			$codProyecto .= $numero;
-			return $codProyecto;
-		}
-
-		function ExtraerPKGrupo($codGrupo){
-			$numss = $this::ConsultaPKGrupo($codGrupo);
-			$numMax = 0;
-			if(count($numss)>1){
-				$len = strlen($codGrupo);
-				foreach ($numss as $key) {
-					if(!empty($key['cod_grupo'])){
-						$n = substr($key['cod_grupo'], $len);
-						if($n > $numMax){
-							$numMax = $n;
-						}
-					}
-				}
-			}
-			$numero = $numMax+1;
-			$codGrupo .= $numero;
-			return $codGrupo;
-		}
-
-		public function ConsultaPK($codProyecto){
-			try {
-				$query = parent::prepare("SELECT * FROM proyectos WHERE estatus = 1 and cod_proyecto LIKE '%{$codProyecto}%'");
-				$respuestaArreglo = '';
-				$query->execute();
-				$query->setFetchMode(parent::FETCH_ASSOC);
-				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-				$respuestaArreglo += ['estatus' => true];
-				return $respuestaArreglo;
-			} catch (PDOException $e) {
-				$errorReturn = ['estatus' => false];
-				$errorReturn += ['info' => "error sql:{$e}"];
-				return $errorReturn;
-			}
-		}
-		public function ConsultaPKGrupo($codGrupo){
-			try {
-				$query = parent::prepare("SELECT * FROM grupos WHERE estatus = 1 and cod_grupo LIKE '%{$codGrupo}%'");
-				$respuestaArreglo = '';
-				$query->execute();
-				$query->setFetchMode(parent::FETCH_ASSOC);
-				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
-				$respuestaArreglo += ['estatus' => true];
-				return $respuestaArreglo;
-			} catch (PDOException $e) {
-				$errorReturn = ['estatus' => false];
-				$errorReturn += ['info' => "error sql:{$e}"];
-				return $errorReturn;
-			}
-		}
-
-
-
-		public function getOne($cod){
+		private function getOne($cod){
 			try {
 				$query = parent::prepare("SELECT * FROM proyectos WHERE cod_proyecto = :cod");
 				$query->bindValue(':cod', $cod);
@@ -282,8 +181,8 @@
 				return $errorReturn;
 			}
 		}
-		
-		public function getOneData($datos){
+
+		private function getOneData($datos){
 		      try {
 		    	$query = parent::prepare("SELECT * FROM proyectos WHERE titulo_proyecto = :nombre and trayecto_proyecto = :trayecto");
 		    	$query->bindValue(':nombre', $datos['nombre']);
@@ -309,7 +208,7 @@
 		      }
 	    }
 
-	    public function getOneDataGrupo($datos){
+	    private function getOneDataGrupo($datos){
 		      try {
 		    	$query = parent::prepare("SELECT * FROM proyectos WHERE titulo_proyecto = :nombre and trayecto_proyecto = :trayecto");
 		    	$query->bindValue(':nombre', $datos['nombre']);
@@ -334,6 +233,186 @@
 		        return $errorReturn;
 		      }
 	    }
+
+		private function ConsultaPK($codProyecto){
+			try {
+				$query = parent::prepare("SELECT * FROM proyectos WHERE estatus = 1 and cod_proyecto LIKE '%{$codProyecto}%'");
+				$respuestaArreglo = '';
+				$query->execute();
+				$query->setFetchMode(parent::FETCH_ASSOC);
+				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
+				$respuestaArreglo += ['estatus' => true];
+				return $respuestaArreglo;
+			} catch (PDOException $e) {
+				$errorReturn = ['estatus' => false];
+				$errorReturn += ['info' => "error sql:{$e}"];
+				return $errorReturn;
+			}
+		}
+
+		private function ConsultaPKGrupo($codGrupo){
+			try {
+				$query = parent::prepare("SELECT * FROM grupos WHERE estatus = 1 and cod_grupo LIKE '%{$codGrupo}%'");
+				$respuestaArreglo = '';
+				$query->execute();
+				$query->setFetchMode(parent::FETCH_ASSOC);
+				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC); 
+				$respuestaArreglo += ['estatus' => true];
+				return $respuestaArreglo;
+			} catch (PDOException $e) {
+				$errorReturn = ['estatus' => false];
+				$errorReturn += ['info' => "error sql:{$e}"];
+				return $errorReturn;
+			}
+		}
+
+		private function Agregar($datos){
+			try{
+				$query = parent::prepare("INSERT INTO proyectos (cod_proyecto, titulo_proyecto, trayecto_proyecto, cedula_profesor, estatus) VALUES (:cod_proyecto, :titulo_proyecto, :trayecto_proyecto, :cedula_tutor, 1)");
+
+				$query->bindValue(':cod_proyecto', $datos['id']);
+				$query->bindValue(':titulo_proyecto', $datos['nombre']);
+		    	$query->bindValue(':trayecto_proyecto', $datos['trayecto']);
+		    	$query->bindValue(':cedula_tutor', $datos['cedula_tutor']);
+		            
+				$query->execute();
+				$respuestasArreglo = $query->fetchAll();
+
+				if($respuestasArreglo += ['estatus' => true]) {
+					$Result = array ('msj' => 'Good');
+				}
+				return $Result;
+			} catch(PDOException $e){
+				$errorReturn = ['estatus' => false];
+				$errorReturn['msj'] = "Error";
+				$errorReturn += ['info' => "Error sql:{$e}"];
+				return $errorReturn; 
+			}
+		}
+
+		private function AgregarGrupo($data){
+			try{
+				$query = parent::prepare("INSERT INTO grupos (cod_grupo, id_SA, cod_proyecto, estatus) VALUES (:cod_grupo, :id_SA, :cod_proyecto, 1)");
+
+				$query->bindValue(':cod_grupo', $data['cod_grupo']);
+		    	$query->bindValue(':id_SA', $data['id_SA']);
+				$query->bindValue(':cod_proyecto', $data['cod_proyecto']);
+		            
+				$query->execute();
+				$respuestasArreglo = $query->fetchAll();
+
+				if($respuestasArreglo += ['estatus' => true]) {
+					$Result = array ('msj' => 'Good');
+				}
+				return $Result;
+			} catch(PDOException $e){
+				$errorReturn = ['estatus' => false];
+				$errorReturn['msj'] = "Error";
+				$errorReturn += ['info' => "Error sql:{$e}"];
+				return $errorReturn; 
+			}
+		}
+
+		private function Modificar($datos){
+			try{
+				$query = parent::prepare('UPDATE proyectos SET titulo_proyecto = :titulo_proyecto, trayecto_proyecto=:trayecto_proyecto, cedula_profesor=:cedula_tutor, estatus=1 WHERE cod_proyecto = :cod_proyecto');
+				$query->bindValue(':titulo_proyecto', $datos['nombre']);
+				$query->bindValue(':trayecto_proyecto', $datos['trayecto']);
+		    	$query->bindValue(':cedula_tutor', $datos['cedula_tutor']);
+		    	$query->bindValue(':cod_proyecto', $datos['id']);
+				$query->execute();
+				$respuestaArreglo = $query->fetchAll();
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					return $Result;
+				}
+			} catch(PDOException $e){
+				$errorReturn = ['estatus' => false];
+				$errorReturn['msj'] = "Error";
+				$errorReturn += ['info' => "Error sql:{$e}"];
+				return $errorReturn; 
+			}
+		}
+
+		private function Eliminar($cod){
+			try {
+				$query = parent::prepare('UPDATE proyectos SET estatus = 0 WHERE cod_proyecto = :cod');
+				$query->execute(['cod'=>$cod]);
+				$query->setFetchMode(parent::FETCH_ASSOC);
+				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					return $Result;
+				}
+			} catch (PDOException $e) {
+				$errorReturn = ['estatus' => false];
+				$errorReturn['msj'] = "Error";
+				$errorReturn += ['info' => "Error sql:{$e}"];
+				return $errorReturn; ;
+			}
+		}
+
+		private function EliminarGrupos($cod){
+			try {
+				$query = parent::prepare('DELETE FROM grupos WHERE cod_proyecto = :cod');
+				$query->execute(['cod'=>$cod]);
+				$query->setFetchMode(parent::FETCH_ASSOC);
+				$respuestaArreglo = $query->fetchAll(parent::FETCH_ASSOC);
+				if ($respuestaArreglo += ['estatus' => true]) {
+					$Result = array('msj' => "Good");		//Si todo esta correcto y consigue al usuario
+					return $Result;
+				}
+			} catch (PDOException $e) {
+				$errorReturn = ['estatus' => false];
+				$errorReturn['msj'] = "Error";
+				$errorReturn += ['info' => "Error sql:{$e}"];
+				return $errorReturn; ;
+			}
+		}
+
+		public function ExtraerPK($codProyecto){
+			// echo $codSeccion." --- ";
+			$numss = $this::ConsultaPK($codProyecto);
+			// print_r($numss);
+			$numMax = 0;
+			if(count($numss)>1){
+				$len = strlen($codProyecto);
+				// echo $len;
+				foreach ($numss as $key) {
+					if(!empty($key['cod_proyecto'])){
+						$n = substr($key['cod_proyecto'], $len);
+						if($n > $numMax){
+							$numMax = $n;
+						}
+					}
+				}
+			}
+			$numero = $numMax+1;
+			// echo $numero;
+			$codProyecto .= $numero;
+			return $codProyecto;
+		}
+
+		public function ExtraerPKGrupo($codGrupo){
+			$numss = $this::ConsultaPKGrupo($codGrupo);
+			$numMax = 0;
+			if(count($numss)>1){
+				$len = strlen($codGrupo);
+				foreach ($numss as $key) {
+					if(!empty($key['cod_grupo'])){
+						$n = substr($key['cod_grupo'], $len);
+						if($n > $numMax){
+							$numMax = $n;
+						}
+					}
+				}
+			}
+			$numero = $numMax+1;
+			$codGrupo .= $numero;
+			return $codGrupo;
+		}
+
+		
 
 	}
 
